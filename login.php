@@ -45,26 +45,27 @@ if (isset($_GET['accesscheck'])) {
 if (isset($_POST['username'])) {
   $loginUsername=$_POST['username'];
   $password=$_POST['pass'];
-  $MM_fldUserAuthorization = "";
+  $MM_fldUserAuthorization = "role";
   $MM_redirectLoginSuccess = "userhome.php";
-  $MM_redirectLoginFailed = "login_fail.php";
-  $MM_redirecttoReferrer = false;
+  $MM_redirectLoginFailed = "login.php";
+  $MM_redirecttoReferrer = true;
   mysql_select_db($database_conn, $conn);
-  
-  $LoginRS__query=sprintf("SELECT u_name, password FROM `user` WHERE u_name=%s AND password=%s AND approve_id=1",
-    GetSQLValueString($loginUsername, "text"), GetSQLValueString($password, "text")); 
+  	
+  $LoginRS__query=sprintf("SELECT u_name, password, role FROM `user` WHERE u_name=%s AND password=%s",
+  GetSQLValueString($loginUsername, "text"), GetSQLValueString($password, "text")); 
    
   $LoginRS = mysql_query($LoginRS__query, $conn) or die(mysql_error());
   $loginFoundUser = mysql_num_rows($LoginRS);
   if ($loginFoundUser) {
-     $loginStrGroup = "";
+    
+    $loginStrGroup  = mysql_result($LoginRS,0,'role');
     
 	if (PHP_VERSION >= 5.1) {session_regenerate_id(true);} else {session_regenerate_id();}
     //declare two session variables and assign them
     $_SESSION['MM_Username'] = $loginUsername;
     $_SESSION['MM_UserGroup'] = $loginStrGroup;	      
 
-    if (isset($_SESSION['PrevUrl']) && false) {
+    if (isset($_SESSION['PrevUrl']) && true) {
       $MM_redirectLoginSuccess = $_SESSION['PrevUrl'];	
     }
     header("Location: " . $MM_redirectLoginSuccess );
@@ -78,7 +79,7 @@ if (isset($_POST['username'])) {
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Login</title>
+<title>Untitled Document</title>
 </head>
 
 <body>
