@@ -13,7 +13,7 @@
   </p>
   <p>
     <label for="pass">Password :</label>
-    <input type="text" name="pass" id="pass" />
+    <input type="password" name="pass" id="pass" />
   </p>
   <p>
     <input type="submit" name="submit" id="submit" value="Submit" />
