@@ -46,12 +46,13 @@ if (isset($_POST['username'])) {
   $loginUsername=$_POST['username'];
   $password=$_POST['pass'];
   $MM_fldUserAuthorization = "role";
-  $MM_redirectLoginSuccess = "userhome.php";
+  $MM_redirectLoginSuccessUser = "userhome.php";
+  $MM_redirectLoginSuccessRoot = "admin_update.php";
   $MM_redirectLoginFailed = "login.php";
-  $MM_redirecttoReferrer = true;
+  $MM_redirecttoReferrer = false;
   mysql_select_db($database_conn, $conn);
   	
-  $LoginRS__query=sprintf("SELECT u_name, password, role FROM `user` WHERE u_name=%s AND password=%s",
+  $LoginRS__query=sprintf("SELECT u_name, password, role FROM `user` WHERE u_name=%s AND password=%s AND approve_id=1",
   GetSQLValueString($loginUsername, "text"), GetSQLValueString($password, "text")); 
    
   $LoginRS = mysql_query($LoginRS__query, $conn) or die(mysql_error());
@@ -65,10 +66,15 @@ if (isset($_POST['username'])) {
     $_SESSION['MM_Username'] = $loginUsername;
     $_SESSION['MM_UserGroup'] = $loginStrGroup;	      
 
-    if (isset($_SESSION['PrevUrl']) && true) {
+    if (isset($_SESSION['PrevUrl']) && false) {
       $MM_redirectLoginSuccess = $_SESSION['PrevUrl'];	
     }
-    header("Location: " . $MM_redirectLoginSuccess );
+	if ($_SESSION['MM_UserGroup'] == 'admin') {
+	  header("Location: ".$MM_redirectLoginSuccessRoot );
+	} elseif ($_SESSION['MM_UserGroup'] == 'student') {
+	  header("Location: ".$MM_redirectLoginSuccessUser);
+	}
+    //header("Location: " . $MM_redirectLoginSuccess );
   }
   else {
     header("Location: ". $MM_redirectLoginFailed );
@@ -83,7 +89,7 @@ if (isset($_POST['username'])) {
 </head>
 
 <body>
-<form id="form1" name="form1" method="POST" action="<?php echo $loginFormAction; ?>">
+<form ACTION="<?php echo $loginFormAction; ?>" id="form1" name="form1" method="POST">
   <p>
     <label for="username">Username : </label>
     <input type="text" name="username" id="username" />
@@ -96,5 +102,6 @@ if (isset($_POST['username'])) {
     <input type="submit" name="submit" id="submit" value="Submit" />
   </p>
 </form>
+<p>&nbsp;</p>
 </body>
 </html>
