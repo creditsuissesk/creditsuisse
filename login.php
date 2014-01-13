@@ -51,7 +51,7 @@ if (isset($_POST['username'])) {
   $MM_redirecttoReferrer = false;
   mysql_select_db($database_conn, $conn);
   
-  $LoginRS__query=sprintf("SELECT u_name, password FROM `user` WHERE u_name=%s AND password=%s",
+  $LoginRS__query=sprintf("SELECT u_name, password FROM `user` WHERE u_name=%s AND password=%s AND approve_id=1",
     GetSQLValueString($loginUsername, "text"), GetSQLValueString($password, "text")); 
    
   $LoginRS = mysql_query($LoginRS__query, $conn) or die(mysql_error());
