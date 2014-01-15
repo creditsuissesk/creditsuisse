@@ -118,7 +118,7 @@ script for calendar
 		new JsDatePick({
 			useMode:2,
 			target:"dob",
-			dateFormat:"%Y-%d-%m"
+			dateFormat:"%Y-%m-%d"
 			/*selectedDate:{				This is an example of what the full configuration offers.
 				day:5,						For full documentation about these settings please see the full version of the code.
 				month:9,

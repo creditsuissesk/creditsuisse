@@ -169,12 +169,12 @@ window.onload = function(){
 		new JsDatePick({
 			useMode:2,
 			target:"start_date",
-			dateFormat:"%Y-%d-%m"
+			dateFormat:"%Y-%m-%d"
 		});
 		new JsDatePick({
 			useMode:2,
 			target:"end_date",
-			dateFormat:"%Y-%d-%m"
+			dateFormat:"%Y-%m-%d"
 		});
 	};
 function MM_validateForm() { //v4.0
