@@ -30,6 +30,7 @@ if ((isset($_GET['doLogout'])) &&($_GET['doLogout']=="true")){
 <head>
 </head>
 <body>
+User's home <br />
 <a href="<?php echo $logoutAction ?>">Log Out</a>
 </body>
 <?php

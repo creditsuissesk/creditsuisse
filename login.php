@@ -47,6 +47,7 @@ if (isset($_POST['username'])) {
   $password=$_POST['pass'];
   $MM_fldUserAuthorization = "role";
   $MM_redirectLoginSuccessUser = "userhome.php";
+  $MM_redirectLoginSuccessAuthor = "authorhome.php";
   $MM_redirectLoginSuccessRoot = "admin_update.php";
   $MM_redirectLoginFailed = "login.php";
   $MM_redirecttoReferrer = false;
@@ -73,6 +74,8 @@ if (isset($_POST['username'])) {
 	  header("Location: ".$MM_redirectLoginSuccessRoot );
 	} elseif ($_SESSION['MM_UserGroup'] == 'student') {
 	  header("Location: ".$MM_redirectLoginSuccessUser);
+	} elseif ($_SESSION['MM_UserGroup'] == 'author') {
+	  header("Location: ".$MM_redirectLoginSuccessAuthor);
 	}
     //header("Location: " . $MM_redirectLoginSuccess );
   }
