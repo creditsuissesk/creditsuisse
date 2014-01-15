@@ -49,6 +49,7 @@ if (isset($_POST['username'])) {
   $MM_redirectLoginSuccessUser = "userhome.php";
   $MM_redirectLoginSuccessAuthor = "authorhome.php";
   $MM_redirectLoginSuccessRoot = "admin_update.php";
+  $MM_redirectLoginSuccessCM = "cmhome.php";
   $MM_redirectLoginFailed = "login.php";
   $MM_redirecttoReferrer = false;
   mysql_select_db($database_conn, $conn);
@@ -75,7 +76,8 @@ if (isset($_POST['username'])) {
 	} elseif ($_SESSION['MM_UserGroup'] == 'student') {
 	  header("Location: ".$MM_redirectLoginSuccessUser);
 	} elseif ($_SESSION['MM_UserGroup'] == 'author') {
-	  header("Location: ".$MM_redirectLoginSuccessAuthor);
+	  header("Location: ".$MM_redirectLoginSuccessAuthor)			;}elseif ($_SESSION['MM_UserGroup'] == 'cm') {
+	  header("Location: ".$MM_redirectLoginSuccessCM);
 	}
     //header("Location: " . $MM_redirectLoginSuccess );
   }
@@ -88,7 +90,7 @@ if (isset($_POST['username'])) {
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Untitled Document</title>
+<title>Login</title>
 </head>
 
 <body>
