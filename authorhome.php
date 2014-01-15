@@ -127,6 +127,12 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "new_course")) {
   header(sprintf("Location: %s", $insertGoTo));
 }
 
+mysql_select_db($database_conn, $conn);
+$query_current_courses = sprintf("SELECT c_id,c_name,c_stream,start_date,end_date,avg_rating FROM course NATURAL JOIN create_course WHERE u_id=%s AND start_date<=DATE(NOW()) AND end_date>=DATE(NOW()) ORDER BY start_date ASC",GetSQLValueString($_SESSION['MM_UserID'], "int"));
+$current_courses = mysql_query($query_current_courses, $conn) or die(mysql_error());
+$row_current_courses = mysql_fetch_assoc($current_courses);
+$totalRows_current_courses = mysql_num_rows($current_courses);
+
 $colname_get_cid = "c_name";
 if (isset($_POST['c_name'])) {
   $colname_get_cid = $_POST['c_name'];
@@ -196,7 +202,7 @@ function MM_validateForm() { //v4.0
 </script>
 </head>
 
-<body>
+<body alink="#D6D6D6">
 <p>Author's home</p>
 <div id="TabbedPanels1" class="TabbedPanels">
   <ul class="TabbedPanelsTabGroup">
@@ -227,6 +233,7 @@ function MM_validateForm() { //v4.0
         </p>
         <p>&nbsp;</p>
         <p>&nbsp;</p>
+        <p>&nbsp;</p>
         <p>
           <label for="uid"></label>
         </p>
@@ -236,6 +243,24 @@ function MM_validateForm() { //v4.0
         </p>
       </form>
     </div>
+    <table width="531" border="1">
+      <tr>
+        <th scope="col">Course Name</th>
+        <th scope="col">Stream</th>
+        <th scope="col">Start Date</th>
+        <th scope="col">End Date</th>
+        <th scope="col">Average Rating</th>
+      </tr>
+     <?php do { ?>
+    <tr>
+      <td><a href="course_detail.php?recordID=<?php echo $row_current_courses['c_id']; ?>"><?php echo $row_current_courses['c_name']; ?></a></td>
+      <td><?php echo $row_current_courses['c_stream']; ?></td>
+      <td><?php echo $row_current_courses['start_date']; ?></td>
+      <td><?php echo $row_current_courses['end_date']; ?></td>
+      <td><?php echo $row_current_courses['avg_rating']; ?></td>
+          </tr>
+    <?php } while ($row_current_courses = mysql_fetch_assoc($current_courses)); ?>
+    </table>
     <p>&nbsp;</p>
     <table border="1">
       <tr>
@@ -257,5 +282,7 @@ var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1");
 </body>
 </html>
 <?php
+mysql_free_result($current_courses);
+
 mysql_free_result($get_cid);
 ?>
