@@ -127,21 +127,33 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "new_course")) {
   header(sprintf("Location: %s", $insertGoTo));
 }
 
-$colname_cid = "-1";
+$colname_get_cid = "c_name";
 if (isset($_POST['c_name'])) {
-  $colname_cid = $_POST['c_name'];
+  $colname_get_cid = $_POST['c_name'];
 }
 mysql_select_db($database_conn, $conn);
-$query_cid = sprintf("SELECT c_id FROM course WHERE c_name = %s", GetSQLValueString($colname_cid, "text"));
-$cid = mysql_query($query_cid, $conn) or die(mysql_error());
-$row_cid = mysql_fetch_assoc($cid);
-$totalRows_cid = mysql_num_rows($cid);
+$query_get_cid = sprintf("SELECT c_id FROM course WHERE c_name = %s", GetSQLValueString($colname_get_cid, "text"));
+
+$get_cid = mysql_query($query_get_cid, $conn) or die(mysql_error());
+$row_get_cid = mysql_fetch_assoc($get_cid);
+$totalRows_get_cid = mysql_num_rows($get_cid);
+
+if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "new_course")) {
+  $insertSQL2 = sprintf("INSERT INTO create_course (u_id,c_id) VALUES (%s,%s)",GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($row_get_cid['c_id'], "int")
+                       );
+
+  mysql_select_db($database_conn, $conn);
+  $Result1 = mysql_query($insertSQL2, $conn) or die(mysql_error());
+}
+
+
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Untitled Document</title>
+<title>Author's Home</title>
 <script src="SpryAssets/SpryTabbedPanels.js" type="text/javascript"></script>
 <link href="SpryAssets/SpryTabbedPanels.css" rel="stylesheet" type="text/css" />
 
@@ -215,11 +227,25 @@ function MM_validateForm() { //v4.0
         </p>
         <p>&nbsp;</p>
         <p>&nbsp;</p>
+        <p>
+          <label for="uid"></label>
+        </p>
         <p>&nbsp;</p>
-        <p>&nbsp;</p>
-        <input type="hidden" name="MM_insert" value="new_course" />
+        <p>
+          <input type="hidden" name="MM_insert" value="new_course" />
+        </p>
       </form>
     </div>
+    <p>&nbsp;</p>
+    <table border="1">
+      <tr>
+        <td>c_id</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+      </tr>
+    </table>
+<p>&nbsp;</p>
     <div class="TabbedPanelsContent">Content 2</div>
   </div>
 </div>
@@ -231,5 +257,5 @@ var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1");
 </body>
 </html>
 <?php
-mysql_free_result($cid);
+mysql_free_result($get_cid);
 ?>

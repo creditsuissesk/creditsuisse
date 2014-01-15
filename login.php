@@ -54,7 +54,7 @@ if (isset($_POST['username'])) {
   $MM_redirecttoReferrer = false;
   mysql_select_db($database_conn, $conn);
   	
-  $LoginRS__query=sprintf("SELECT u_name, password, role FROM `user` WHERE u_name=%s AND password=%s AND approve_id=1",
+  $LoginRS__query=sprintf("SELECT u_id, u_name, password, role FROM `user` WHERE u_name=%s AND password=%s AND approve_id=1",
   GetSQLValueString($loginUsername, "text"), GetSQLValueString($password, "text")); 
    
   $LoginRS = mysql_query($LoginRS__query, $conn) or die(mysql_error());
@@ -66,7 +66,8 @@ if (isset($_POST['username'])) {
 	if (PHP_VERSION >= 5.1) {session_regenerate_id(true);} else {session_regenerate_id();}
     //declare two session variables and assign them
     $_SESSION['MM_Username'] = $loginUsername;
-    $_SESSION['MM_UserGroup'] = $loginStrGroup;	      
+    $_SESSION['MM_UserGroup'] = $loginStrGroup;
+	$_SESSION['MM_UserID'] = mysql_result($LoginRS,0,'u_id');
 
     if (isset($_SESSION['PrevUrl']) && false) {
       $MM_redirectLoginSuccess = $_SESSION['PrevUrl'];	
@@ -106,6 +107,7 @@ if (isset($_POST['username'])) {
   <p>
     <input type="submit" name="submit" id="submit" value="Submit" />
   </p>
+  <p>&nbsp;</p>
 </form>
 <p>&nbsp;</p>
 </body>
