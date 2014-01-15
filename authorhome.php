@@ -253,7 +253,7 @@ function MM_validateForm() { //v4.0
       </tr>
      <?php do { ?>
     <tr>
-      <td><a href="course_detail.php?recordID=<?php echo $row_current_courses['c_id']; ?>"><?php echo $row_current_courses['c_name']; ?></a></td>
+      <td><a href="course_detail.php?c_id=<?php echo $row_current_courses['c_id']; ?>"><?php echo $row_current_courses['c_name']; ?></a></td>
       <td><?php echo $row_current_courses['c_stream']; ?></td>
       <td><?php echo $row_current_courses['start_date']; ?></td>
       <td><?php echo $row_current_courses['end_date']; ?></td>
