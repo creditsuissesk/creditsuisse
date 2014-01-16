@@ -260,49 +260,85 @@ function MM_validateForm() { //v4.0
       </form>
     </div>	<!---ends tab 1--->
     <div class="TabbedPanelsContent">
-    <table class="sortable" width="100%" border="1">
+    <div id="curr_courses">
+     <table>
+    <thead>
       <tr>
-        <th scope="col">Course Name</th>
-        <th scope="col">Stream</th>
-        <th scope="col">Start Date</th>
-        <th scope="col">End Date</th>
-        <th scope="col">Average Rating</th>
+        <th class="sort" data-sort="currentname">Course Name</th>
+        <th class="sort" data-sort="currentstream">Stream</th>
+        <th class="sort" data-sort="currentstart">Start Date</th>
+        <th class="sort" data-sort="currentend">End Date</th>
+        <th class="sort" data-sort="currentrating">Average Rating</th>
+        <th colspan="2">
+          <input type="text" class="search" placeholder="Search course" />
+        </th>
       </tr>
-     <?php do { ?>
+    </thead>
+    <tbody class="list">
+    <?php do { ?>
     <tr>
-      <td><a href="course_detail.php?c_id=<?php echo $row_current_courses['c_id']; ?>"><?php echo $row_current_courses['c_name']; ?></a></td>
-      <td><?php echo $row_current_courses['c_stream']; ?></td>
-      <td><?php echo $row_current_courses['start_date']; ?></td>
-      <td><?php echo $row_current_courses['end_date']; ?></td>
-      <td><?php echo $row_current_courses['avg_rating']; ?></td>
+      <td class="currentname"><a href="course_detail.php?c_id=<?php echo $row_current_courses['c_id']; ?>"><?php echo $row_current_courses['c_name']; ?></a></td>
+      <td class="currentstream"><?php echo $row_current_courses['c_stream']; ?></td>
+      <td class="currentstart"><?php echo $row_current_courses['start_date']; ?></td>
+      <td class="currentend"><?php echo $row_current_courses['end_date']; ?></td>
+      <td class="currentrating"><?php echo $row_current_courses['avg_rating']; ?></td>
         </tr>
     <?php } while ($row_current_courses = mysql_fetch_assoc($current_courses)); ?>
-    </table>
-    </div> <!---end of second tab--->
-    <div class="TabbedPanelsContent">
-    <table width="100%" class="sortable" border="1">
-      <tr>
-        <th scope="col">Course Name</th>
-        <th scope="col">Stream</th>
-        <th scope="col">Start Date</th>
-        <th scope="col">End Date</th>
-        <th scope="col">Average Rating</th>
-      </tr>
+      </tbody>
+      </table>
+    
+    </div>
+    <script>
+var currOptions = {
+  valueNames: [ 'currentname', 'currentstream','currentstart','currentend','currentrating']
+};
 
-        <?php do { ?>
+// Init list
+var currList = new List('curr_courses', currOptions);
+</script>
+    </div> <!---end of second tab--->
+    
+    <div class="TabbedPanelsContent">
+    <div id="all_courses">
+    
+    <table>
+    <thead>
+      <tr>
+        <th class="sort" data-sort="allname">Course Name</th>
+        <th class="sort" data-sort="allstream">Stream</th>
+        <th class="sort" data-sort="allstart">Start Date</th>
+        <th class="sort" data-sort="allend">End Date</th>
+        <th class="sort" data-sort="allrating">Average Rating</th>
+        <th colspan="2">
+          <input type="text" class="search" placeholder="Search course" />
+        </th>
+      </tr>
+    </thead>
+    <tbody class="list">
+     <?php do { ?>
               <tr>
-      <td><a href="course_detail.php?c_id=<?php echo $row_all_courses['c_id']; ?>"><?php echo $row_all_courses['c_name']; ?></a></td>
-      <td><?php echo $row_all_courses['c_stream']; ?></td>
-      <td><?php echo $row_all_courses['start_date']; ?></td>
-      <td><?php echo $row_all_courses['end_date']; ?></td>
-      <td><?php echo $row_all_courses['avg_rating']; ?></td>
+      <td class="allname"><a href="course_detail.php?c_id=<?php echo $row_all_courses['c_id']; ?>"><?php echo $row_all_courses['c_name']; ?></a></td>
+      <td class="allstream"><?php echo $row_all_courses['c_stream']; ?></td>
+      <td class="allstart"><?php echo $row_all_courses['start_date']; ?></td>
+      <td class="allend"><?php echo $row_all_courses['end_date']; ?></td>
+      <td class="allrating"><?php echo $row_all_courses['avg_rating']; ?></td>
           </tr>
     <?php } while ($row_all_courses = mysql_fetch_assoc($all_courses)); ?>
-    </table>
+      </tbody>
+      </table>
     </div>
 
-  </div>
-</div>
+    <script>
+var allOptions = {
+  valueNames: [ 'allname', 'allstream','allstart','allend','allrating' ]
+};
+
+// Init list
+var allList = new List('all_courses', allOptions);
+</script>
+    </div>
+	</div>
+    </div>
 <br />
 <a href="<?php echo $logoutAction ?>">Log out</a>
 <script type="text/javascript">
