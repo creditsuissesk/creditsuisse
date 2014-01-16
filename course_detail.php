@@ -98,10 +98,100 @@ $totalRows_course_students = mysql_num_rows($course_students);
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title><?php echo $row_course_details['c_name'];?></title>
 <script src="SpryAssets/SpryTabbedPanels.js" type="text/javascript"></script>
+<script src="list.js"></script><meta charset=utf-8 />
 <link href="SpryAssets/SpryTabbedPanels.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
+<style>
+.list {
+  font-family:sans-serif;
+  margin:0;
+  padding:20px 0 0;
+}
+.list > li {
+  display:block;
+  background-color: #eee;
+  padding:10px;
+  box-shadow: inset 0 1px 0 #fff;
+}
+.avatar {
+  max-width: 150px;
+}
+img {
+  max-width: 100%;
+}
+h3 {
+  font-size: 16px;
+  margin:0 0 0.3rem;
+  font-weight: normal;
+  font-weight:bold;
+}
+p {
+  margin:0;
+}
+
+input {
+  border:solid 1px #ccc;
+  border-radius: 5px;
+  padding:7px 14px;
+  margin-bottom:10px
+}
+input:focus {
+  outline:none;
+  border-color:#aaa;
+}
+.sort {
+  padding:8px 30px;
+  border-radius: 6px;
+  border:none;
+  display:inline-block;
+  color:#fff;
+  text-decoration: none;
+  background-color: #28a8e0;
+  height:30px;
+}
+.sort:hover {
+  text-decoration: none;
+  background-color:#1b8aba;
+}
+.sort:focus {
+  outline:none;
+}
+.sort:after {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  content:"";
+  position: relative;
+  top:-10px;
+  right:-5px;
+}
+.sort.asc:after {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #fff;
+  content:"";
+  position: relative;
+  top:13px;
+  right:-5px;
+}
+.sort.desc:after {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid #fff;
+  content:"";
+  position: relative;
+  top:-10px;
+  right:-5px;
+}
+</style>
 <h1><?php echo $row_course_details['c_name']?></h1>
 <div id="TabbedPanels1" class="TabbedPanels">
   <ul class="TabbedPanelsTabGroup">
@@ -114,24 +204,33 @@ $totalRows_course_students = mysql_num_rows($course_students);
       <p>&nbsp;<?php echo $row_course_details['description']; ?></p>
     </div>
     <div class="TabbedPanelsContent">
-      <table width="100%" border="1">
-        <tr>
-          <th scope="col">Name</th>
-          <th scope="col">Contact</th>
-          <th scope="col">Email</th>
-          <th scope="col">Date of Birth</th>
-          <th scope="col">Institute</th>
-          <th scope="col">Stream</th>
-        </tr>
-        <tr>
-         <td><?php echo $row_course_students['f_name'];?><?php echo $row_course_students['l_name'];?></td>
-      <td><?php echo $row_course_students['contact_no'];?></td>
-      <td><?php echo $row_course_students['u_name'];?></td>
-      <td><?php echo $row_course_students['dob'];?></td>
-      <td><?php echo $row_course_students['institute'];?></td>
-      <td><?php echo $row_course_students['stream'];?></td>
-        </tr>
-      </table>
+    	 <div id="users">
+    <input class="search" placeholder="Search" />
+    <button class="sort" data-sort="name">
+      Sort by name
+    </button>
+  
+    <ul class="list">
+     <?php do { ?>
+      <li>
+        <h3 class="name"><?php echo $row_course_students['f_name'];?><?php echo $row_course_students['l_name'];?></h3>
+        <p class="contact"><?php echo $row_course_students['contact_no'];?></p>
+        <p class="email"><?php echo $row_course_students['u_name'];?></p>
+        <p class="dob"><?php echo $row_course_students['dob'];?></p>
+        <p class="institute"><?php echo $row_course_students['institute'];?></p>
+        <p class="stream"><?php echo $row_course_students['stream'];?></p>
+      </li>
+          <?php } while ($row_course_students = mysql_fetch_assoc($course_students)); ?>
+    </ul>
+  </div>
+   
+      <script>
+var options = {
+  valueNames: [ 'name', 'contact','email','dob','institute','stream' ]
+};
+
+var userList = new List('users', options);
+</script>
       <p>&nbsp;</p>
     </div>
     <div class="TabbedPanelsContent">
