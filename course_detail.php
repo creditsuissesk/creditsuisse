@@ -123,6 +123,7 @@ table td, table th {
     <div class="TabbedPanelsContent">
       <p>&nbsp;<?php echo $row_course_details['description']; ?></p>
     </div>
+    <div class="TabbedPanelsContent">
     <div id="users">
   <table>
     <thead>
@@ -160,9 +161,9 @@ var options = {
 // Init list
 var userList = new List('users', options);
 </script>
+</div>
       <p>&nbsp;</p>
    </div>
-</div>
 </div>
 <p><a href="authorhome.php">Back to Home</a></p>
 <script type="text/javascript">
