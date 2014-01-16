@@ -170,9 +170,10 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "new_course")) {
 <link href="SpryAssets/SpryTabbedPanels.css" rel="stylesheet" type="text/css" />
 
 <!---
-script for sorttable
+script for list.js tables
 --->
-<script src="sorttable.js" type="text/javascript"></script>
+<script src="list.js"></script>
+<script src="jquery.min.js"></script>
 <!--
 script for calendar
 --->
@@ -257,7 +258,8 @@ function MM_validateForm() { //v4.0
           <input type="hidden" name="MM_insert" value="new_course" />
         </p>
       </form>
-    </div>
+    </div>	<!---ends tab 1--->
+    <div class="TabbedPanelsContent">
     <table class="sortable" width="100%" border="1">
       <tr>
         <th scope="col">Course Name</th>
@@ -276,6 +278,8 @@ function MM_validateForm() { //v4.0
         </tr>
     <?php } while ($row_current_courses = mysql_fetch_assoc($current_courses)); ?>
     </table>
+    </div> <!---end of second tab--->
+    <div class="TabbedPanelsContent">
     <table width="100%" class="sortable" border="1">
       <tr>
         <th scope="col">Course Name</th>
@@ -295,17 +299,8 @@ function MM_validateForm() { //v4.0
           </tr>
     <?php } while ($row_all_courses = mysql_fetch_assoc($all_courses)); ?>
     </table>
-    <p>&nbsp;</p>
-    <table border="1">
-      <tr>
-        <td>c_id</td>
-      </tr>
-      <tr>
-        <td>&nbsp;</td>
-      </tr>
-    </table>
-<p>&nbsp;</p>
-    <div class="TabbedPanelsContent">Content</div>
+    </div>
+
   </div>
 </div>
 <br />
