@@ -111,10 +111,10 @@ $totalRows_course_students = mysql_num_rows($course_students);
 </ul>
   <div class="TabbedPanelsContentGroup">
     <div class="TabbedPanelsContent">
-      <p>&nbsp;<?php echo $row_course_details['desc']; ?></p>
+      <p>&nbsp;<?php echo $row_course_details['description']; ?></p>
     </div>
     <div class="TabbedPanelsContent">
-      <table width="1085" border="1">
+      <table width="100%" border="1">
         <tr>
           <th scope="col">Name</th>
           <th scope="col">Contact</th>
@@ -134,7 +134,63 @@ $totalRows_course_students = mysql_num_rows($course_students);
       </table>
       <p>&nbsp;</p>
     </div>
-    <div class="TabbedPanelsContent">Content 2</div>
+    <div class="TabbedPanelsContent">
+    <script type="text/javascript" src="upclick.js"></script>
+      <form id="form1" name="form1" method="post" action="">
+        <p>File Type :
+</p>
+        <p>
+          <label>
+            <input type="radio" name="resourse_group" value="radio" id="resourse_group_0" />
+            Book</label>
+          <br />
+          <label>
+            <input type="radio" name="resourse_group" value="radio" id="resourse_group_1" />
+            Video Lecture</label>
+          <br />
+          <label>
+            <input type="radio" name="resourse_group" value="radio" id="resourse_group_2" />
+            Slides</label>
+          <br />
+          <label>
+            <input type="radio" name="resourse_group" value="radio" id="resourse_group_3" />
+            Research Paper</label>
+          <br />
+          <label>
+            <input type="radio" name="resourse_group" value="radio" id="resourse_group_4" />
+            Notes</label>
+          <br />
+          <label>
+            <input type="radio" name="resourse_group" value="radio" id="resourse_group_5" />
+            Others</label>
+          <br />
+        </p>
+      </form>
+      <p>
+        <input type="button" id="uploader" value="Upload">
+        <script type="text/javascript">
+
+   var uploader = document.getElementById('uploader');
+
+   upclick(
+     {
+      element: uploader,
+      action: './uploader.php', 
+      onstart:
+        function(filename)
+        {
+          alert('Start upload: '+filename);
+        },
+      oncomplete:
+        function(response_data) 
+        {
+          alert(response_data);
+        }
+     });
+
+   </script>
+        &nbsp;</p>
+    </div>
 </div>
 </div>
 <p><a href="authorhome.php">Back to Home</a></p>

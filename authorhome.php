@@ -110,11 +110,11 @@ if (isset($_SERVER['QUERY_STRING'])) {
 }
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "new_course")) {
-  $insertSQL = sprintf("INSERT INTO course (c_name, c_stream, start_date, end_date) VALUES (%s, %s, %s, %s)",
+  $insertSQL = sprintf("INSERT INTO course (c_name, c_stream, start_date, end_date,description) VALUES (%s, %s, %s, %s,%s)",
                        GetSQLValueString($_POST['c_name'], "text"),
                        GetSQLValueString($_POST['c_stream'], "text"),
                        GetSQLValueString($_POST['start_date'], "date"),
-                       GetSQLValueString($_POST['end_date'], "date"));
+                       GetSQLValueString($_POST['end_date'], "date"),GetSQLValueString($_POST['desc'], "text"));
 
   mysql_select_db($database_conn, $conn);
   $Result1 = mysql_query($insertSQL, $conn) or die(mysql_error());
@@ -126,6 +126,12 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "new_course")) {
   }
   header(sprintf("Location: %s", $insertGoTo));
 }
+
+mysql_select_db($database_conn, $conn);
+$query_all_courses = sprintf("SELECT c_id,c_name,c_stream,start_date,end_date,avg_rating FROM course NATURAL JOIN create_course WHERE u_id=%s",GetSQLValueString($_SESSION['MM_UserID'], "int"));
+$all_courses = mysql_query($query_all_courses, $conn) or die(mysql_error());
+$row_all_courses = mysql_fetch_assoc($all_courses);
+$totalRows_all_courses = mysql_num_rows($all_courses);
 
 mysql_select_db($database_conn, $conn);
 $query_current_courses = sprintf("SELECT c_id,c_name,c_stream,start_date,end_date,avg_rating FROM course NATURAL JOIN create_course WHERE u_id=%s AND start_date<=DATE(NOW()) AND end_date>=DATE(NOW()) ORDER BY start_date ASC",GetSQLValueString($_SESSION['MM_UserID'], "int"));
@@ -163,6 +169,10 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "new_course")) {
 <script src="SpryAssets/SpryTabbedPanels.js" type="text/javascript"></script>
 <link href="SpryAssets/SpryTabbedPanels.css" rel="stylesheet" type="text/css" />
 
+<!---
+script for sorttable
+--->
+<script src="sorttable.js" type="text/javascript"></script>
 <!--
 script for calendar
 --->
@@ -208,6 +218,7 @@ function MM_validateForm() { //v4.0
   <ul class="TabbedPanelsTabGroup">
     <li class="TabbedPanelsTab" tabindex="0">Create Course</li>
     <li class="TabbedPanelsTab" tabindex="0">Current Courses</li>
+    <li class="TabbedPanelsTab" tabindex="0">All Courses</li>
   </ul>
   <div class="TabbedPanelsContentGroup">
     <div class="TabbedPanelsContent">
@@ -226,7 +237,11 @@ function MM_validateForm() { //v4.0
           <input name="end_date" type="text" id="end_date" readonly="readonly" />
         </p>
         <p>
-          <input name="submit" type="submit" id="submit" onclick="MM_validateForm('c_name','','R','start_date','','R','c_stream','','R','end_date','','R');return document.MM_returnValue" value="Submit" />
+          <label for="desc">Course Description* :</label>
+          <textarea name="desc" id="desc" cols="45" rows="5"></textarea>
+        </p>
+        <p>
+          <input name="submit" type="submit" id="submit" onclick="MM_validateForm('c_name','','R','start_date','','R','c_stream','','R','end_date','','R','desc','','R');return document.MM_returnValue" value="Submit" />
           <input type="reset" name="reset" id="reset" value="Reset" />
           <?php require_once('Connections/conn.php'); ?>
 
@@ -243,7 +258,7 @@ function MM_validateForm() { //v4.0
         </p>
       </form>
     </div>
-    <table width="531" border="1">
+    <table class="sortable" width="100%" border="1">
       <tr>
         <th scope="col">Course Name</th>
         <th scope="col">Stream</th>
@@ -258,8 +273,27 @@ function MM_validateForm() { //v4.0
       <td><?php echo $row_current_courses['start_date']; ?></td>
       <td><?php echo $row_current_courses['end_date']; ?></td>
       <td><?php echo $row_current_courses['avg_rating']; ?></td>
-          </tr>
+        </tr>
     <?php } while ($row_current_courses = mysql_fetch_assoc($current_courses)); ?>
+    </table>
+    <table width="100%" class="sortable" border="1">
+      <tr>
+        <th scope="col">Course Name</th>
+        <th scope="col">Stream</th>
+        <th scope="col">Start Date</th>
+        <th scope="col">End Date</th>
+        <th scope="col">Average Rating</th>
+      </tr>
+
+        <?php do { ?>
+              <tr>
+      <td><a href="course_detail.php?c_id=<?php echo $row_all_courses['c_id']; ?>"><?php echo $row_all_courses['c_name']; ?></a></td>
+      <td><?php echo $row_all_courses['c_stream']; ?></td>
+      <td><?php echo $row_all_courses['start_date']; ?></td>
+      <td><?php echo $row_all_courses['end_date']; ?></td>
+      <td><?php echo $row_all_courses['avg_rating']; ?></td>
+          </tr>
+    <?php } while ($row_all_courses = mysql_fetch_assoc($all_courses)); ?>
     </table>
     <p>&nbsp;</p>
     <table border="1">
@@ -271,7 +305,7 @@ function MM_validateForm() { //v4.0
       </tr>
     </table>
 <p>&nbsp;</p>
-    <div class="TabbedPanelsContent">Content 2</div>
+    <div class="TabbedPanelsContent">Content</div>
   </div>
 </div>
 <br />
@@ -282,6 +316,8 @@ var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1");
 </body>
 </html>
 <?php
+mysql_free_result($all_courses);
+
 mysql_free_result($current_courses);
 
 mysql_free_result($get_cid);
