@@ -150,6 +150,13 @@ $get_cid = mysql_query($query_get_cid, $conn) or die(mysql_error());
 $row_get_cid = mysql_fetch_assoc($get_cid);
 $totalRows_get_cid = mysql_num_rows($get_cid);
 
+mysql_select_db($database_conn, $conn);
+$query_get_auth_info = sprintf("SELECT * FROM user WHERE u_id = %s",GetSQLValueString($_SESSION['MM_UserID'],"int"));
+
+$get_auth_info= mysql_query($query_get_auth_info, $conn) or die(mysql_error());
+$row_get_auth_info = mysql_fetch_assoc($get_auth_info);
+$totalRows_get_auth_info = mysql_num_rows($get_auth_info);
+
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "new_course")) {
   $insertSQL2 = sprintf("INSERT INTO create_course (u_id,c_id) VALUES (%s,%s)",GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($row_get_cid['c_id'], "int")
                        );
@@ -168,7 +175,8 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "new_course")) {
 <title>Author's Home</title>
 <script src="SpryAssets/SpryTabbedPanels.js" type="text/javascript"></script>
 <link href="SpryAssets/SpryTabbedPanels.css" rel="stylesheet" type="text/css" />
-
+<link href="templatemo_style.css?12" type="text/css" rel="stylesheet" />
+<link href="css/table.css" type="text/css" rel="stylesheet" /> 
 <!---
 script for list.js tables
 --->
@@ -180,6 +188,12 @@ script for calendar
 <link rel="stylesheet" type="text/css" media="all" href="jsDatePick_ltr.min.css" />
 <link href="SpryAssets/SpryValidationPassword.css" rel="stylesheet" type="text/css" />
 <link href="SpryAssets/SpryValidationConfirm.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+body,td,th {
+	color: #000000;
+	font-size: 14px;
+}
+</style>
 <script type="text/javascript" src="jsDatePick.min.1.3.js"></script>
 <script type="text/javascript">
 window.onload = function(){
@@ -214,7 +228,7 @@ function MM_validateForm() { //v4.0
 </head>
 
 <body alink="#D6D6D6">
-<p>Author's home</p>
+<h1>Hello, <?php echo $row_get_auth_info['f_name'];?></h1>
 <div id="TabbedPanels1" class="TabbedPanels">
   <ul class="TabbedPanelsTabGroup">
     <li class="TabbedPanelsTab" tabindex="0">Create Course</li>
@@ -261,6 +275,7 @@ function MM_validateForm() { //v4.0
     </div>	<!---ends tab 1--->
     <div class="TabbedPanelsContent">
     <div id="curr_courses">
+    <div class="datagrid">
      <table>
     <thead>
       <tr>
@@ -286,7 +301,7 @@ function MM_validateForm() { //v4.0
     <?php } while ($row_current_courses = mysql_fetch_assoc($current_courses)); ?>
       </tbody>
       </table>
-    
+    </div>
     </div>
     <script>
 var currOptions = {
@@ -300,7 +315,7 @@ var currList = new List('curr_courses', currOptions);
     
     <div class="TabbedPanelsContent">
     <div id="all_courses">
-    
+    <div class="datagrid">
     <table>
     <thead>
       <tr>
@@ -326,6 +341,7 @@ var currList = new List('curr_courses', currOptions);
     <?php } while ($row_all_courses = mysql_fetch_assoc($all_courses)); ?>
       </tbody>
       </table>
+      </div> 
     </div>
 
     <script>

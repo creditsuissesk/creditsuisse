@@ -87,6 +87,7 @@ $totalRows_get_user_details = mysql_num_rows($get_user_details);
 <script src="SpryAssets/SpryTabbedPanels.js" type="text/javascript"></script>
 <link href="SpryAssets/SpryTabbedPanels.css" rel="stylesheet" type="text/css">
 <link href="templatemo_style.css" type="text/css" rel="stylesheet" /> 
+
 <script type="text/javascript" src="js/jquery.min.js"></script> 
 <script type="text/javascript" src="js/jquery.scrollTo-min.js"></script> 
 <script type="text/javascript" src="js/jquery.localscroll-min.js"></script> 
@@ -122,6 +123,7 @@ function clearText(field)
   <div class="TabbedPanelsContentGroup">
     <div class="TabbedPanelsContent">Content 1</div>
     <div class="TabbedPanelsContent">
+        <?php if ($totalRows_incomplete_courses>0) {?>
    		<?php $var=0; ?>
 		<div id="templatemo_main_wrapper">
 			<div id="templatemo_main"> 
@@ -156,9 +158,14 @@ function clearText(field)
                 </div>
 			</div>
 	    </div>
+        <?php }
+		else {
+			echo "You haven't enrolled for any courses yet!";
+		}
+		?>
     </div>
     <div class="TabbedPanelsContent">
-    <?php if ($totalRows_completed_courses>0) {?> 
+    <?php if ($totalRows_completed_courses>0) {?>
     <?php $var=0; ?>
 		<div id="templatemo_main_wrapper">
 			<div id="templatemo_main"> 

@@ -101,6 +101,8 @@ $totalRows_course_students = mysql_num_rows($course_students);
 <script src="list.js"></script><meta charset=utf-8 />
 <link href="SpryAssets/SpryTabbedPanels.css" rel="stylesheet" type="text/css" />
 <script src="jquery.min.js"></script>
+<link href="templatemo_style.css?123" type="text/css" rel="stylesheet" /> 
+<link href="css/table.css" type="text/css" rel="stylesheet" /> 
 </head>
 
 <body>
@@ -124,7 +126,9 @@ table td, table th {
       <p>&nbsp;<?php echo $row_course_details['description']; ?></p>
     </div>
     <div class="TabbedPanelsContent">
+    <?php if($totalRows_course_students>0) {?>
     <div id="users">
+    <div class="datagrid">
   <table>
     <thead>
       <tr>
@@ -152,6 +156,7 @@ table td, table th {
       <?php } while ($row_course_students = mysql_fetch_assoc($course_students)); ?>
       </tbody>
       </table>
+      </div>
   </div>
    <script>
 var options = {
@@ -161,6 +166,11 @@ var options = {
 // Init list
 var userList = new List('users', options);
 </script>
+ <?php }
+		else {
+			echo "No students have enrolled for this course yet!";
+		}
+		?>
 </div>
       <p>&nbsp;</p>
    </div>
