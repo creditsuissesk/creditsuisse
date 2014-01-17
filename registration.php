@@ -183,7 +183,7 @@ script for calendar
   </p>
   <p>
     <input name="submit" type="submit" id="submit" onclick="MM_validateForm('u_name','','RisEmail','pass','','R','f_name','','R','l_name','','R','contact','','RisNum','inst_name','','R','stream','','R');return document.MM_returnValue" value="Submit" />
-    <input type="submit" name="reset" id="reset" value="Reset" />
+    <input type="reset" name="reset" id="reset" value="Reset" />
   </p>
   <input type="hidden" name="MM_insert" value="form" />
 </form>
