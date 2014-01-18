@@ -98,10 +98,10 @@ $totalRows_course_students = mysql_num_rows($course_students);
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title><?php echo $row_course_details['c_name'];?></title>
 <script src="SpryAssets/SpryTabbedPanels.js" type="text/javascript"></script>
-<script src="list.js"></script><meta charset=utf-8 />
+<script src="js/list.js"></script><meta charset=utf-8 />
 <link href="SpryAssets/SpryTabbedPanels.css" rel="stylesheet" type="text/css" />
-<script src="jquery.min.js"></script>
-<link href="templatemo_style.css?123" type="text/css" rel="stylesheet" /> 
+<script src="js/jquery.min.js"></script>
+<link href="css/templatemo_style.css?123" type="text/css" rel="stylesheet" /> 
 <link href="css/table.css" type="text/css" rel="stylesheet" /> 
 </head>
 

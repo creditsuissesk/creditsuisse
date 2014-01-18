@@ -86,7 +86,7 @@ $totalRows_get_user_details = mysql_num_rows($get_user_details);
 <title><?php echo $row_get_user_details['f_name'];?></title>
 <script src="SpryAssets/SpryTabbedPanels.js" type="text/javascript"></script>
 <link href="SpryAssets/SpryTabbedPanels.css" rel="stylesheet" type="text/css">
-<link href="templatemo_style.css" type="text/css" rel="stylesheet" /> 
+<link href="css/templatemo_style.css" type="text/css" rel="stylesheet" /> 
 
 <script type="text/javascript" src="js/jquery.min.js"></script> 
 <script type="text/javascript" src="js/jquery.scrollTo-min.js"></script> 

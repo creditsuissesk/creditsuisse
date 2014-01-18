@@ -92,7 +92,7 @@ if (isset($_POST['username'])) {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Login</title>
-<script src="jquery.min.js"></script>
+<script src="js/jquery.min.js"></script>
 <script>
 		$(function(){
 		  var $form_inputs =   $('form input');

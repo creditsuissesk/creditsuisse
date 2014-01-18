@@ -175,17 +175,17 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "new_course")) {
 <title>Author's Home</title>
 <script src="SpryAssets/SpryTabbedPanels.js" type="text/javascript"></script>
 <link href="SpryAssets/SpryTabbedPanels.css" rel="stylesheet" type="text/css" />
-<link href="templatemo_style.css?12" type="text/css" rel="stylesheet" />
+<link href="css/templatemo_style.css?12" type="text/css" rel="stylesheet" />
 <link href="css/table.css" type="text/css" rel="stylesheet" /> 
 <!---
-script for list.js tables
+script for js/list.js tables
 --->
-<script src="list.js"></script>
-<script src="jquery.min.js"></script>
+<script src="js/list.js"></script>
+<script src="js/jquery.min.js"></script>
 <!--
 script for calendar
 --->
-<link rel="stylesheet" type="text/css" media="all" href="jsDatePick_ltr.min.css" />
+<link rel="stylesheet" type="text/css" media="all" href="css/jsDatePick_ltr.min.css" />
 <link href="SpryAssets/SpryValidationPassword.css" rel="stylesheet" type="text/css" />
 <link href="SpryAssets/SpryValidationConfirm.css" rel="stylesheet" type="text/css" />
 <style type="text/css">
@@ -194,7 +194,7 @@ body,td,th {
 	font-size: 14px;
 }
 </style>
-<script type="text/javascript" src="jsDatePick.min.1.3.js"></script>
+<script type="text/javascript" src="js/jsDatePick.min.1.3.js"></script>
 <script type="text/javascript">
 window.onload = function(){
 		new JsDatePick({
