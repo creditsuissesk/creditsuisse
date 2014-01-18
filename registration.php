@@ -77,7 +77,7 @@
 		  $insertGoTo .= (strpos($insertGoTo, '?')) ? "&" : "?";
 		  $insertGoTo .= $_SERVER['QUERY_STRING'];
 		}
-		header(sprintf("Location: %s", $insertGoTo));
+		 /*header(sprintf("Location: %s", $insertGoTo)); */
 	  }
 	  ?>
 	  <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -146,11 +146,11 @@
 				  <form id="contactform" action="<?php echo $editFormAction; ?>" method="POST" > 
 					  <p class="contact">
 		  <label for="u_name">UserName (Email)*:</label></p> 
-					  <input id="u_name" name="u_name" placeholder="example@domain.com" required=""  type="email" />
+					  <input id="u_name" name="u_name" placeholder="example@domain.com" required  type="email" />
 	   <p class="contact">
 		<label for="pass">Password* : </label></p>
 		  <p><span id="sprypassword1"> 
-		<input type="password" name="pass" id="pass" required=""/>
+		<input type="password" name="pass" id="pass" required/>
 		<span class="passwordRequiredMsg">     A value is required.</span><span class="passwordInvalidStrengthMsg">     The password doesn't meet the specified strength.</span></span></p>
 		<p class="contact">
 		  <label for="confirm_pass">Confirm Password* :</label></p>
@@ -166,7 +166,7 @@
 		  <input type="text" name="l_name" id="l_name" placeholder="Last Name"/>
 	   <p class="contact">
 		  <label for="dob">Date of Birth* : </label></p>
-		  <input name="dob" type="text" id="dob" readonly="readonly" placeholder="Date of Birth"/>
+		  <input name="dob" type="text" id="dob" readonly placeholder="Date of Birth"/>
 				  
 	   <p class="contact">
 		  <label for="contact">Contact No.* : </label></p>
@@ -184,7 +184,7 @@
 				  <option value="author">Author</option>
 				  <option value="cm">Content Manager</option>
 				  </select><br /><br />
-	  </p>  <p ><input class="buttom" name="submit" id="submit" value="Sign me up!" type="submit" onclick="MM_validateForm('u_name','','RisEmail','pass','','R','f_name','','R','l_name','','R','contact','','RisNum','inst_name','','R','stream','','R');return document.MM_returnValue" 
+	  </p>  <p ><input class="buttom" name="submit" id="submit" value="Sign me up!" type="submit" onClick="MM_validateForm('u_name','','RisEmail','pass','','R','f_name','','R','l_name','','R','contact','','RisNum','inst_name','','R','stream','','R');return document.MM_returnValue" 
 		  />
 		  <input class="buttom" type="reset" name="reset" id="reset" value="Reset" />
 		</p>
