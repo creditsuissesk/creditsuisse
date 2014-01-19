@@ -30,7 +30,7 @@ datetime:
 	padding: 10px 0 2px; 
 }
 
-dd { margin: 0; padding: 2px 0 5px; margin-bottom: 5px; border-bottom: 1px dotted #555555; }
+dd {color : #999999;margin: 0; padding: 2px 0 5px; margin-bottom: 5px; border-bottom: 1px dotted #555555; }
 
 dd.last { border-bottom-width: 0; }
 

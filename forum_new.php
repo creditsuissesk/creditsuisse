@@ -41,7 +41,7 @@ $totalRows_categories = mysql_num_rows($categories);
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Untitled Document</title>
+<title>Forums</title>
 <script src="SpryAssets/SpryTabbedPanels.js" type="text/javascript"></script>
 <link href="SpryAssets/SpryTabbedPanels.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" media="screen" href="css/templatemo_style.css" />
@@ -71,6 +71,7 @@ $totalRows_categories = mysql_num_rows($categories);
 
                 <?php if (isset($_GET['discussionid'])) { ?>
                 	<?php $tabToShow=1;?>
+                    <a href="forum_new.php"> Back </a>
 					<!--- viewing a particular discussion--->
                     <?php
 					mysql_select_db($database_conn, $conn);
@@ -89,6 +90,7 @@ $totalRows_categories = mysql_num_rows($categories);
 						</div><!-- .container-->
 
 						<aside class="left-sidebar">
+                        <img src="<?php echo $row_disc['photo'];?>" width="100" height="100" alt="Profile picture"/><br />
 							<dt><?php echo $row_disc['f_name']." ".$row_disc['l_name'];?></dt>
 						</aside><!-- .left-sidebar -->
 
@@ -110,11 +112,12 @@ $totalRows_categories = mysql_num_rows($categories);
                     <div class="middle">
 						<div class="container">
 							<main class="content">
-				                <dd><?php echo $row_comments['comment_body'];?></dd>
+				                <dt><dd><?php echo $row_comments['comment_body'];?></dd></dt>
 							</main><!-- .content -->
 						</div><!-- .container-->
 
 						<aside class="left-sidebar">
+                        	<img src="<?php echo $row_comments['photo'];?>" width="100" height="100" alt="Profile picture"/><br />
 							<dt><?php echo $row_comments['f_name']." ".$row_comments['l_name'];?></dt>
 						</aside><!-- .left-sidebar -->
 
