@@ -99,7 +99,9 @@ body,td,th {
 	font-size: 14px;
 }
 </style>
-<script type="text/JavaScript" src="js/slimbox2.js"></script> 
+<link href="SpryAssets/SpryRating.css" rel="stylesheet" type="text/css">
+<script type="text/JavaScript" src="js/slimbox2.js"></script>
+<script src="SpryAssets/SpryRating.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
 function clearText(field)
 {
@@ -176,6 +178,7 @@ function clearText(field)
 	                <h1><?php echo $row_completed_courses['c_name']?></h1> 
 	                <div class="half left">
 	                	<p><em><?php echo $row_completed_courses['description']?></em></p>
+                        
 	                </div>
 	    			<div class="half right">
 	                	<div class="img_border img_nom"> <a href="#gallery"><img src="images/templatemo_image_01.jpg" alt="image 1" /></a>	

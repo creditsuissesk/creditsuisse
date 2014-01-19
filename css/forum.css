@@ -1,4 +1,33 @@
-forum-h1, forum-h2, forum-h3, forum-h4, forum-h5, forum-h6 { font-weight: normal; margin: 0; padding: 10px 0; color: #779955; }
+html
+{
+	margin: 0;
+	padding: 0;
+	color: #aaaaaa;
+	background-color: #333333;
+	font: normal 12px "Trebuchet MS", "Lucida Grande", Verdana, Georgia, Sans-Serif;
+}
+
+/* Links */
+
+a:link { text-decoration: none; color: #7799bb; }
+
+a:visited { text-decoration: none; color: #557799; }
+
+a:hover, a:active { color: #dd5555; }
+
+/* Html Elements */
+
+h1, h2, h3, h4, h5, h6 { font-weight: normal; margin: 0; padding: 10px 0; color: #779955; }
+
+h1 { font-size: 32px; }
+
+h2 { font-size: 28px; }
+
+h3 { font-size: 24px; }
+
+h4 { font-size: 20px; }
+
+h5, h6 { font-size: 17px; }
 
 ul, ol, dl, blockquote, pre
 {
@@ -8,26 +37,21 @@ ul, ol, dl, blockquote, pre
 	line-height: 1.6em;
 	border: 1px solid #1a1a1a;
 	border-top: 10px solid #151515;
-	background: #404040 url(../images/navigation_hover.gif) top left repeat;
+	background: #404040 url(images/navigation_hover.gif) top left repeat;
 }
+
+p { margin: 0; }
+
+ul { list-style-type: square; } 
 
 dt
 {
 	margin: 0;
 	color: #7799bb;
-	font-size: 12px; 
+	font-size: 10px; 
 	font-weight: bold;
 	padding: 10px 0 2px; 
 	text-transform: uppercase; 
-	display: inline;
-}
-
-datetime:
-{
-	margin: 0;
-	color: #010533;
-	font-size: 12px; 
-	padding: 10px 0 2px; 
 }
 
 dd { margin: 0; padding: 2px 0 5px; margin-bottom: 5px; border-bottom: 1px dotted #555555; }
@@ -56,7 +80,34 @@ blockquote cite { font-style: normal; padding-right: 10px; }
 
 /* Structure */
 
-#forum-wrapper
+body
+{
+	margin: 0;
+	float: left;
+	width: 100%; 
+	background-image:  url(../images/templatemo_body.jpg);
+}
+
+#header
+{
+	float: left; 
+	width: 100%; 
+	clear: both;
+	border-top: 10px solid #111111;
+	background: #222222 url(images/navigation_hover.gif) top left repeat;
+}
+
+#navigation
+{
+	float: left;
+	width: 100%; 
+	clear: both;
+	color: #333333;
+	border-bottom: 5px solid #222222;
+	background: #eeeeee url(images/navigation_bg.gif) top left repeat; 
+}
+
+#wrapper
 {
 	clear: both;
 	float: left;
@@ -65,25 +116,25 @@ blockquote cite { font-style: normal; padding-right: 10px; }
 	background: transparent url(../images/hr_dotted.gif) 60% 0 repeat-y; 
 }
 
-#forum-content-wrapper
+#content-wrapper
 {
 	width: 60%;
 	float: left;
 }
 
-#forum-content
+#content
 {
 	float: left;
 	padding: 0 20px;
 }
 
-#forum-sidebar-wrapper
+#sidebar-wrapper
 {
 	width: 40%;
 	float: left;
 }
 
-#forum-sidebar
+#sidebar
 {
 	float: left;
 	padding: 0 20px;
@@ -130,7 +181,7 @@ blockquote cite { font-style: normal; padding-right: 10px; }
 #navigation a:active
 {
 	color: #7799bb;
-	background: #333333 url(../images/navigation_hover.gif) top left repeat;
+	background: #333333 url(images/navigation_hover.gif) top left repeat;
 }
 
 li#lhome a:hover,
@@ -172,7 +223,7 @@ li#lcontact a:active
 body#babout li#labout a
 {
 	color: #99bbdd;
-	background: #333333 url(../images/navigation_hover.gif) 0 -2px repeat;
+	background: #333333 url(images/navigation_hover.gif) 0 -2px repeat;
 }
 
 /* Sidebar */
@@ -185,7 +236,7 @@ body#babout li#labout a
 	line-height: 1.6em;
 	border: 1px solid #1a1a1a;
 	border-top: 10px solid #151515;
-	background: #404040 url(../images/navigation_hover.gif) top left repeat;
+	background: #404040 url(images/navigation_hover.gif) top left repeat;
 }
 
 /* Footer */
