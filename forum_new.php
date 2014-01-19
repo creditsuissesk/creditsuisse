@@ -67,7 +67,22 @@ $totalRows_categories = mysql_num_rows($categories);
         <div class="forum-wrapper">
 	    	<div class="forum-content-wrapper">
 			    <div class="forum-content">
-                <!--- get each category in while loop--->
+
+                <?php if (isset($_GET['discussionid'])) { ?>
+					<!--- viewing a particular discussion--->
+                    <?php
+					mysql_select_db($database_conn, $conn);
+$query_comments = sprintf("SELECT * FROM `discussion` JOIN `comment` ON discussion.discussion_id = comment.discussion_id JOIN `user` ON comment.insert_uid = user.u_id WHERE discussion.discussion_id =%s",GetSQLValueString($_GET['discussionid'], "int"));
+$comments = mysql_query($query_comments, $conn) or die(mysql_error());
+$row_comments = mysql_fetch_assoc($comments);
+$totalRows_comments = mysql_num_rows($comments);
+					?>
+                    <dl>this is dl
+                	</dl>
+                <?php	
+				} else {
+				?>
+                <!--- discussionid not set, so get each category in while loop--->
                 <?php do { ?>
                 <forum-h4> <?php echo $row_categories['category_name']?></forum-h4>
                 <!--- now get all discussions of that category and show them in a loop--->
@@ -76,7 +91,7 @@ $totalRows_categories = mysql_num_rows($categories);
 $query_discussions = sprintf("SELECT * FROM discussion JOIN user ON discussion.insert_uid=user.u_id WHERE discussion.category_id=%s",GetSQLValueString($row_categories['category_id'], "int"));
 $discussions = mysql_query($query_discussions, $conn) or die(mysql_error());
 $row_discussions = mysql_fetch_assoc($discussions);
-$totalRows_discussions = mysql_num_rows($discussions); 
+$totalRows_discussions = mysql_num_rows($discussions);
 				?>
                 <!--- make list of all the discussions under that category--->
                 <dl>
@@ -92,6 +107,12 @@ $totalRows_discussions = mysql_num_rows($discussions);
                     <?php } while($row_discussions=mysql_fetch_assoc($discussions));?>
                     </dl>
                 <?php }while ($row_categories = mysql_fetch_assoc($categories)); ?>
+                <?php
+						mysql_free_result($categories);
+						mysql_free_result($discussions);
+				?>
+                <?php }?>
+                <!---end of main if --->
 			    </div>
 		    </div>
 	    </div>
@@ -106,9 +127,3 @@ var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1");
 </script>
 </body>
 </html>
-<?php
-mysql_free_result($categories);
-?>
-<?php
-mysql_free_result($discussions);
-?>
