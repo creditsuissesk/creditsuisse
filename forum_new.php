@@ -49,6 +49,7 @@ $totalRows_categories = mysql_num_rows($categories);
 </head>
 
 <body>
+<?php $tabToShow=0;?>
 <h1> Forums</h1>
 <div id="TabbedPanels1" class="TabbedPanels">
   <ul class="TabbedPanelsTabGroup">
@@ -69,16 +70,61 @@ $totalRows_categories = mysql_num_rows($categories);
 			    <div class="forum-content">
 
                 <?php if (isset($_GET['discussionid'])) { ?>
+                	<?php $tabToShow=1;?>
 					<!--- viewing a particular discussion--->
                     <?php
 					mysql_select_db($database_conn, $conn);
-$query_comments = sprintf("SELECT * FROM `discussion` JOIN `comment` ON discussion.discussion_id = comment.discussion_id JOIN `user` ON comment.insert_uid = user.u_id WHERE discussion.discussion_id =%s",GetSQLValueString($_GET['discussionid'], "int"));
-$comments = mysql_query($query_comments, $conn) or die(mysql_error());
-$row_comments = mysql_fetch_assoc($comments);
-$totalRows_comments = mysql_num_rows($comments);
+					$query_disc = sprintf("SELECT * FROM `discussion` JOIN `user` ON insert_uid=u_id WHERE discussion_id =%s",GetSQLValueString($_GET['discussionid'], "int"));
+					$disc = mysql_query($query_disc, $conn) or die(mysql_error());
+					$row_disc = mysql_fetch_assoc($disc);
+					$totalRows_disc = mysql_num_rows($disc);
 					?>
-                    <dl>this is dl
-                	</dl>
+                    <!--- show discussion title block--->
+					 <div class="middle">
+						<div class="container">
+							<main class="content">
+								<dt><?php echo $row_disc['name'];?></dt>
+				                <dd><?php echo $row_disc['disc_body'];?></dd>
+							</main><!-- .content -->
+						</div><!-- .container-->
+
+						<aside class="left-sidebar">
+							<dt><?php echo $row_disc['f_name']." ".$row_disc['l_name'];?></dt>
+						</aside><!-- .left-sidebar -->
+
+						<aside class="right-sidebar">
+							<dt><?php echo $row_disc['date_inserted_d'];?></dt>
+						</aside><!-- .right-sidebar -->
+
+					</div><!-- .middle-->
+
+					<?php
+					mysql_select_db($database_conn, $conn);
+					$query_comments = sprintf("SELECT * FROM `discussion` JOIN `comment` ON discussion.discussion_id = comment.discussion_id JOIN `user` ON comment.insert_uid = user.u_id WHERE discussion.discussion_id =%s ORDER BY date_inserted_c",GetSQLValueString($_GET['discussionid'], "int"));
+					$comments = mysql_query($query_comments, $conn) or die(mysql_error());
+					$row_comments = mysql_fetch_assoc($comments);
+					$totalRows_comments = mysql_num_rows($comments);
+					?>
+                    <!--- viewing comments if there are any --->
+                    <?php if($totalRows_comments>0) {?>
+                    <div class="middle">
+						<div class="container">
+							<main class="content">
+				                <dd><?php echo $row_comments['comment_body'];?></dd>
+							</main><!-- .content -->
+						</div><!-- .container-->
+
+						<aside class="left-sidebar">
+							<dt><?php echo $row_comments['f_name']." ".$row_comments['l_name'];?></dt>
+						</aside><!-- .left-sidebar -->
+
+						<aside class="right-sidebar">
+							<dt><?php echo $row_comments['date_inserted_c'];?></dt>
+						</aside><!-- .right-sidebar -->
+
+					</div><!-- .middle-->
+                   	<?php } ?>
+					<!--- now showing --->                    
                 <?php	
 				} else {
 				?>
@@ -97,11 +143,11 @@ $totalRows_discussions = mysql_num_rows($discussions);
                 <dl>
                 <?php do { ?>
                     <dt>
-					    <?php echo $row_discussions['name'];?>
+					    <a href="forum_new.php?discussionid=<?php echo $row_discussions['discussion_id'];?> "> <?php echo $row_discussions['name'];?> </a>
 				    </dt>
-                    <datetime><?php echo "By ".$row_discussions['f_name']." ".$row_discussions['l_name']." on ".$row_discussions['date_inserted'];?></datetime>
+                    <datetime><?php echo "By ".$row_discussions['f_name']." ".$row_discussions['l_name']." on ".$row_discussions['date_inserted_d'];?></datetime>
                     <dd>
-					    <?php echo $row_discussions['body'];?>
+					    <?php echo $row_discussions['disc_body'];?>
                     </dd>
 				    
                     <?php } while($row_discussions=mysql_fetch_assoc($discussions));?>
@@ -123,7 +169,7 @@ $totalRows_discussions = mysql_num_rows($discussions);
   </div>
 </div>
 <script type="text/javascript">
-var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1");
+var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1",{defaultTab:<?php echo ($tabToShow);?>});
 </script>
 </body>
 </html>
