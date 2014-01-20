@@ -177,11 +177,13 @@ body,td,th {
 <div id="TabbedPanels1" class="TabbedPanels">
   <ul class="TabbedPanelsTabGroup">
     <li class="TabbedPanelsTab" tabindex="0">New Users</li>
-    <li class="TabbedPanelsTab" tabindex="1">Existing Users</li>
+    <li class="TabbedPanelsTab" tabindex="0">Existing Users</li>
   </ul>
-<div class="TabbedPanelsContentGroup">
-    <!--new users start--><div class="TabbedPanelsContent">
-    <div id="curr_courses">
+  <div class="TabbedPanelsContentGroup">
+    <div class="TabbedPanelsContent">
+    <!--- if no new users then skip whole table--->
+    <?php if ($totalRows_update>0 ) { ?>
+        <div id="curr_courses">
     <div class="datagrid">
     <table>
     <thead>
@@ -231,10 +233,17 @@ body,td,th {
     <?php } while ($row_update = mysql_fetch_assoc($update)); ?>
     </table>
     </div></div>
+    <?php } else {
+		echo "No new users";
+	} ?>
+    </div>
+    <div class="TabbedPanelsContent">Content 2</div>
+  </div>
 </div>
-<div class="TabbedPanelsContent">Content 2</div>
-</div>    
-<p>&nbsp;<a href="<?php echo $logoutAction ?>">Log out</a></p>
+<a href="<?php echo $logoutAction ?>">Log out</a>
+<script type="text/javascript">
+var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1");
+</script>
 </body>
 </html>
 <?php
