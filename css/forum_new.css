@@ -171,7 +171,7 @@ aside,main {
 	color: #888888;
 	text-align: center; 
 	background-color: #222222;
-	border-top: 1px solid #000000;
+	/*border-top: 1px solid #000000;*/
 	border-bottom: 10px solid #191919;
 }
 

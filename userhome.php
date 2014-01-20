@@ -87,7 +87,7 @@ $totalRows_get_user_details = mysql_num_rows($get_user_details);
 <script src="SpryAssets/SpryTabbedPanels.js" type="text/javascript"></script>
 <link href="SpryAssets/SpryTabbedPanels.css" rel="stylesheet" type="text/css">
 <link href="css/templatemo_style.css" type="text/css" rel="stylesheet" /> 
-<link rel="stylesheet" type="text/css" media="screen" href="css/header_bar.css" />
+<link rel="stylesheet" type="text/css" media="screen" href="css/nav_bar.css" />
 
 <script type="text/javascript" src="js/jquery.min.js"></script> 
 <script type="text/javascript" src="js/jquery.scrollTo-min.js"></script> 
@@ -127,20 +127,20 @@ else {
 }
 ?>
 
-<!-- freshdesignweb top bar -->
-            <div class="freshdesignweb-top">
-                <!--- any links here will be added to left--->
-                <span class="right">
-                    <a href="userhome.php">
-                        <strong>Home</strong>
-                    </a>
-                    <a href="forum_new.php"> <strong> Forums </strong> </a>
-                    <a href="userhome.php?userTabToDisplay=5"><strong><?php echo $_SESSION['MM_Username'];?> </strong></a>
-                </span>
-                <div class="clr"></div>
-            </div>
-            <br />
-        <!--/ freshdesignweb top bar -->
+<nav id="headerbar">
+	<ul id="headerbar">
+		<li id="headerbar"><a href="userhome.php">Home</a></li>
+		<li id="headerbar"><a href="forum_new.php">Forums</a></li>
+		<li id="headerbar"><a href="#"><?php echo $_SESSION['MM_Username'];?></a>
+			<ul id="headerbar">
+				<li id="headerbar"><a href="userhome.php?userTabToDisplay=5">Profile</a></li>
+				<li id="headerbar"><a href="<?php echo $logoutAction ?>">Log Out</a>
+				</li>
+			</ul>
+		</li>
+	</ul>
+</nav>
+<br/>
             
 <h1><?php echo $row_get_user_details['f_name'];?>'s home </h1>
 <div id="TabbedPanels1" class="TabbedPanels">
@@ -248,7 +248,6 @@ else {
   </div>
 </div>
 <p><br />
-  <a href="<?php echo $logoutAction ?>">Log Out</a></p>
   
 <script type="text/javascript">
 var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1",{defaultTab:<?php echo ($userTabToDisplay);?>});

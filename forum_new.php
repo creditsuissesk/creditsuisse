@@ -91,7 +91,7 @@ $totalRows_categories = mysql_num_rows($categories);
 <link href="SpryAssets/SpryTabbedPanels.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" media="screen" href="css/templatemo_style.css" />
 <link rel="stylesheet" type="text/css" media="screen" href="css/forum_new.css" />
-<link rel="stylesheet" type="text/css" media="screen" href="css/header_bar.css" />
+<link rel="stylesheet" type="text/css" media="screen" href="css/nav_bar.css" />
 </head>
 
 <body >
@@ -104,19 +104,22 @@ $totalRows_categories = mysql_num_rows($categories);
 	$tabToShow=0;
 }
 ?>
-<!-- freshdesignweb top bar -->
-            <div class="freshdesignweb-top">
-                <!--- any links here will be added to left--->
-                <span class="right">
-                    <a href="userhome.php">
-                        <strong>Home</strong>
-                    </a>
-                    <a href="forum_new.php"> <strong> Forums </strong> </a>
-                    <a href="userhome.php?userTabToDisplay=5"><strong><?php echo $_SESSION['MM_Username'];?> </strong></a>
-                </span>
-                <div class="clr"></div>
-            </div><!--/ freshdesignweb top bar -->
-            <br />
+
+<nav id="headerbar">
+	<ul id="headerbar">
+		<li id="headerbar"><a href="userhome.php">Home</a></li>
+		<li id="headerbar"><a href="forum_new.php">Forums</a></li>
+		<li id="headerbar"><a href="#"><?php echo $_SESSION['MM_Username'];?></a>
+			<ul id="headerbar">
+				<li id="headerbar"><a href="userhome.php?userTabToDisplay=5">Profile</a></li>
+				<li id="headerbar"><a href="<?php echo $logoutAction ?>">Log Out</a>
+				</li>
+			</ul>
+		</li>
+	</ul>
+</nav>
+<br/>
+
 <h1> Forums</h1>
 <div id="TabbedPanels1" class="TabbedPanels">
   <ul class="TabbedPanelsTabGroup">
