@@ -55,13 +55,14 @@
 .freshdesignweb-top a{
 	padding: 0px 10px;
 	letter-spacing: 1px;
-	color: #333;
+	color: #FFF;
 	text-shadow: 0px 1px 1px #fff;
 	display: block;
 	float: left;
 }
 .freshdesignweb-top a:hover{
 	background: #fff;
+	color: #666;
 }
 .freshdesignweb-top span.right{
 	float: right;
