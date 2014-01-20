@@ -49,7 +49,15 @@ $totalRows_categories = mysql_num_rows($categories);
 </head>
 
 <body>
-<?php $tabToShow=0;?>
+<!--- decide the tab number to show--->
+<?php if ( isset($_GET['showTab'])) {
+	if($_GET['showTab']=="discussions") {
+		$tabToShow=1;
+	}
+}else {
+	$tabToShow=0;
+}
+?>
 <h1> Forums</h1>
 <div id="TabbedPanels1" class="TabbedPanels">
   <ul class="TabbedPanelsTabGroup">
@@ -71,7 +79,7 @@ $totalRows_categories = mysql_num_rows($categories);
 
                 <?php if (isset($_GET['discussionid'])) { ?>
                 	<?php $tabToShow=1;?>
-                    <a href="forum_new.php"> Back </a>
+                    <a href="forum_new.php?showTab=discussions"> Back to discussions </a><br />
 					<!--- viewing a particular discussion--->
                     <?php
 					mysql_select_db($database_conn, $conn);
@@ -80,11 +88,11 @@ $totalRows_categories = mysql_num_rows($categories);
 					$row_disc = mysql_fetch_assoc($disc);
 					$totalRows_disc = mysql_num_rows($disc);
 					?>
+                    <disc-title><?php echo $row_disc['name'];?> </disc-title>
                     <!--- show discussion title block--->
 					 <div class="middle">
 						<div class="container">
 							<main class="content">
-								<dt><?php echo $row_disc['name'];?></dt>
 				                <dd><?php echo $row_disc['disc_body'];?></dd>
 							</main><!-- .content -->
 						</div><!-- .container-->
@@ -109,6 +117,7 @@ $totalRows_categories = mysql_num_rows($categories);
 					?>
                     <!--- viewing comments if there are any --->
                     <?php if($totalRows_comments>0) {?>
+	                    <?php do { ?>
                     <div class="middle">
 						<div class="container">
 							<main class="content">
@@ -123,11 +132,12 @@ $totalRows_categories = mysql_num_rows($categories);
 
 						<aside class="right-sidebar">
 							<dt><?php echo $row_comments['date_inserted_c'];?></dt>
+                            <!--- vote up-down to be inserted here--->
+                            
 						</aside><!-- .right-sidebar -->
-
 					</div><!-- .middle-->
-                   	<?php } ?>
-					<!--- now showing --->                    
+                    	<?php }while ($row_comments = mysql_fetch_assoc($comments)) ;?>
+                   	<?php } ?>                   
                 <?php	
 				} else {
 				?>

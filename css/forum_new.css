@@ -1,5 +1,12 @@
 forum-h1, forum-h2, forum-h3, forum-h4, forum-h5, forum-h6 { font-weight: normal; margin: 0; padding: 10px 0; color: #779955; }
 
+disc-title { 
+	font-weight:bold;
+	padding: 0px 30px;
+	color: #779955;
+	font-size: 16px;
+}
+
 ul, ol, dl, blockquote, pre
 {
 	color: #999999;
