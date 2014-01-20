@@ -114,6 +114,18 @@ function clearText(field)
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 </head>
 <body>
+<?php 
+if (isset($_GET['userTabToDisplay'])) {
+	if ($_GET['userTabToDisplay']<6) {
+		$userTabToDisplay=$_GET['userTabToDisplay'];
+	}else {
+		$userTabToDisplay=0;
+	}
+}
+else {
+	$userTabToDisplay=0;
+}
+?>
 
 <!-- freshdesignweb top bar -->
             <div class="freshdesignweb-top">
@@ -123,7 +135,7 @@ function clearText(field)
                         <strong>Home</strong>
                     </a>
                     <a href="forum_new.php"> <strong> Forums </strong> </a>
-                    <a href="userhome.php"><strong><?php echo $_SESSION['MM_Username'];?> </strong></a>
+                    <a href="userhome.php?userTabToDisplay=5"><strong><?php echo $_SESSION['MM_Username'];?> </strong></a>
                 </span>
                 <div class="clr"></div>
             </div>
@@ -236,11 +248,10 @@ function clearText(field)
   </div>
 </div>
 <p><br />
-  <a href="forum_new.php">Forums</a></p>
   <a href="<?php echo $logoutAction ?>">Log Out</a></p>
   
 <script type="text/javascript">
-var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1");
+var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1",{defaultTab:<?php echo ($userTabToDisplay);?>});
 </script>
 </body>
 <?php

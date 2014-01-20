@@ -112,7 +112,7 @@ $totalRows_categories = mysql_num_rows($categories);
                         <strong>Home</strong>
                     </a>
                     <a href="forum_new.php"> <strong> Forums </strong> </a>
-                    <a href="userhome.php"><strong><?php echo $_SESSION['MM_Username'];?> </strong></a>
+                    <a href="userhome.php?userTabToDisplay=5"><strong><?php echo $_SESSION['MM_Username'];?> </strong></a>
                 </span>
                 <div class="clr"></div>
             </div><!--/ freshdesignweb top bar -->
