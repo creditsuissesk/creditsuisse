@@ -105,7 +105,6 @@ $totalRows_categories = mysql_num_rows($categories);
 }
 ?>
 <!-- freshdesignweb top bar -->
-		<div class="header-container">
             <div class="freshdesignweb-top">
                 <!--- any links here will be added to left--->
                 <span class="right">
@@ -116,8 +115,7 @@ $totalRows_categories = mysql_num_rows($categories);
                     <a href="userhome.php"><strong><?php echo $_SESSION['MM_Username'];?> </strong></a>
                 </span>
                 <div class="clr"></div>
-            </div>
-        </div><!--/ freshdesignweb top bar -->
+            </div><!--/ freshdesignweb top bar -->
             <br />
 <h1> Forums</h1>
 <div id="TabbedPanels1" class="TabbedPanels">

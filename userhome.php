@@ -116,7 +116,6 @@ function clearText(field)
 <body>
 
 <!-- freshdesignweb top bar -->
-		<div class="header-container">
             <div class="freshdesignweb-top">
                 <!--- any links here will be added to left--->
                 <span class="right">
@@ -128,8 +127,8 @@ function clearText(field)
                 </span>
                 <div class="clr"></div>
             </div>
-        </div><!--/ freshdesignweb top bar -->
             <br />
+        <!--/ freshdesignweb top bar -->
             
 <h1><?php echo $row_get_user_details['f_name'];?>'s home </h1>
 <div id="TabbedPanels1" class="TabbedPanels">
@@ -139,6 +138,7 @@ function clearText(field)
     <li class="TabbedPanelsTab" tabindex="0">Completed Courses</li>
     <li class="TabbedPanelsTab" tabindex="0">Recommended</li>
     <li class="TabbedPanelsTab" tabindex="0">Bookmarks</li>
+    <li class="TabbedPanelsTab" tabindex="0">Profile</li>
   </ul>
   <div class="TabbedPanelsContentGroup">
     <div class="TabbedPanelsContent">Content 1</div>
@@ -232,6 +232,7 @@ function clearText(field)
     </div>
     <div class="TabbedPanelsContent">Content 4</div>
     <div class="TabbedPanelsContent">Content 5</div>
+    <div class="TabbedPanelsContent">Content 6</div>
   </div>
 </div>
 <p><br />
