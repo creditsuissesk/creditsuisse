@@ -6,7 +6,7 @@
 </head>
 
 <body>
-<p><a href="login_new.php">Login</a>
+<p><a href="login.php">Login</a>
 </p>
 <p><a href="registration.php">Register</a></p>
 </body>
