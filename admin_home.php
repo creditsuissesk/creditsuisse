@@ -117,14 +117,13 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   mysql_select_db($database_conn, $conn);
   $Result1 = mysql_query($updateSQL, $conn) or die(mysql_error());
 
-  $updateGoTo = "userhome.php";
+  $updateGoTo = "admin_home.php";
   if (isset($_SERVER['QUERY_STRING'])) {
     $updateGoTo .= (strpos($updateGoTo, '?')) ? "&" : "?";
     $updateGoTo .= $_SERVER['QUERY_STRING'];
   }
   header(sprintf("Location: %s", $updateGoTo));
 }
-
 $colname_update = "-1";
 if (isset($_SERVER['0'])) {
   $colname_update = $_SERVER['0'];
@@ -134,6 +133,44 @@ $query_update = sprintf("SELECT * FROM `user` natural join `approve_user` WHERE 
 $update = mysql_query($query_update, $conn) or die(mysql_error());
 $row_update = mysql_fetch_assoc($update);
 $totalRows_update = mysql_num_rows($update);
+
+ /* Existing users ka query*/
+$editFormAction = $_SERVER['PHP_SELF'];
+if (isset($_SERVER['QUERY_STRING'])) {
+  $editFormAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
+}
+
+if ((isset($_POST["MM_change"])) && ($_POST["MM_change"] == "form2")) {
+
+  $updateSQL = sprintf("UPDATE `user` SET approve_id=%s WHERE u_id=%s",
+                       GetSQLValueString($_POST['approve_id'], "int"),
+                       GetSQLValueString($_POST['change_q'], "int"));
+
+  mysql_select_db($database_conn, $conn);
+  $Result1 = mysql_query($updateSQL, $conn) or die(mysql_error());
+
+  $updateGoTo = "admin_home.php?showTab=1";
+  if (isset($_SERVER['QUERY_STRING'])) {
+    $updateGoTo .= (strpos($updateGoTo, '?')) ? "&" : "?";
+    $updateGoTo .= $_SERVER['QUERY_STRING'];
+  }
+  header(sprintf("Location: %s", $updateGoTo));
+
+}
+mysql_select_db($database_conn, $conn);
+$query_all_users = "SELECT * FROM `user` natural join `approve_user` WHERE approve_id between 1 and 3 ORDER BY u_id ASC ";
+$all_users = mysql_query($query_all_users, $conn) or die(mysql_error());
+$row_all_users = mysql_fetch_assoc($all_users);
+$totalRows_all_users = mysql_num_rows($all_users);
+
+
+
+
+
+
+/*Existing users ka end of query*/
+
+
 ?>
 
 
@@ -170,9 +207,19 @@ body,td,th {
 <link href="SpryAssets/SpryRating.css" rel="stylesheet" type="text/css">
 <link href="css/table.css" rel="stylesheet" type="text/css" />
 <script src="SpryAssets/SpryRating.js" type="text/javascript"></script>
-
+ 
 
 <body>
+<?php 
+if (isset($_GET['showTab'])) {
+	if($_GET['showTab']<2) {
+		$tabToShow=$_GET['showTab'];
+	}
+}
+else {
+	$tabToShow=0;
+}
+?>
 <p>User's home </p>
 <div id="TabbedPanels1" class="TabbedPanels">
   <ul class="TabbedPanelsTabGroup">
@@ -237,15 +284,74 @@ body,td,th {
 		echo "No new users";
 	} ?>
     </div>
-    <div class="TabbedPanelsContent">Content 2</div>
+    <!--start of existing users' tab content--><div class="TabbedPanelsContent">
+    <?php if ($totalRows_all_users>0 ) { ?>
+        <div id="existing_users">
+    <div class="datagrid">
+    <table>
+    <thead>
+  <tr>
+    <td>User Id</td>
+    <td>User Name</td>
+    <td>Password</td>
+    <td>First Name</td>
+    <td>Last Name</td>
+    <td>Contact No</td>
+    <td>Date of Birth</td>
+    <td>Institute</td>
+    <td>Stream</td>
+    <td>Role</td>
+    <td>Current Status</td>
+    <td>Final Status</td>
+    <td>    </td>
+  </tr>
+  </thead>
+  <a href="<?php echo $logoutAction ?>">
+  </a>
+  <?php do { ?>
+    
+  
+    <tr>
+      <td><?php echo $row_all_users['u_id']; ?></td>
+      <td><?php echo $row_all_users['u_name']; ?></td>
+      <td><?php echo $row_all_users['password']; ?></td>
+      <td><?php echo $row_all_users['f_name']; ?></td>
+      <td><?php echo $row_all_users['l_name']; ?></td>
+      <td><?php echo $row_all_users['contact_no']; ?></td>
+      <td><?php echo $row_all_users['dob']; ?></td>
+      <td><?php echo $row_all_users['institute']; ?></td>
+      <td><?php echo $row_all_users['stream']; ?></td>
+      <td><?php echo $row_all_users['role']; ?></td>
+      <td><?php echo $row_all_users['app_stat']; ?></td>
+<form  id="form2" name="form2" method="POST" action="<?php echo $editFormAction; ?>">      <td><select name="approve_id" id="approve_id">
+        <option value="0">  </option>
+        <option value="1">Approved</option>
+        <option value="2">Blocked</option>
+      </select></td>
+      <td> 
+  <input name="change" id="change" value="Change" type="submit" ></input> 
+        <input type="hidden" name="MM_change" value="form2" />
+        <input type="hidden" id="change_q" name="change_q" value="<?php echo $row_all_users['u_id']?>" />
+        </td></form>
+    </tr>
+    <?php } while ($row_all_users = mysql_fetch_assoc($all_users)); ?>
+    </table>
+    </div></div>
+    <?php } else {
+		echo "No Existing users";
+	} ?>
+    
+    </div><!--end of existing users' tab content-->
   </div>
 </div>
 <a href="<?php echo $logoutAction ?>">Log out</a>
 <script type="text/javascript">
-var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1");
+var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1",{defaultTab:<?php echo $tabToShow;?>});
 </script>
 </body>
 </html>
 <?php
+mysql_free_result($all_users);
+
 mysql_free_result($update);
 ?>
