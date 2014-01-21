@@ -302,7 +302,6 @@ else {
     <td>Stream</td>
     <td>Role</td>
     <td>Current Status</td>
-    <td>Final Status</td>
     <td>    </td>
   </tr>
   </thead>
@@ -323,15 +322,12 @@ else {
       <td><?php echo $row_all_users['stream']; ?></td>
       <td><?php echo $row_all_users['role']; ?></td>
       <td><?php echo $row_all_users['app_stat']; ?></td>
-<form  id="form2" name="form2" method="POST" action="<?php echo $editFormAction; ?>">      <td><select name="approve_id" id="approve_id">
-        <option value="0">  </option>
-        <option value="1">Approved</option>
-        <option value="2">Blocked</option>
-      </select></td>
+<form  id="form2" name="form2" method="POST" action="<?php echo $editFormAction; ?>">      
       <td> 
-  <input name="change" id="change" value="Change" type="submit" ></input> 
+  <input name="change" id="change" value="<?php if($row_all_users['approve_id']==1){echo "Block";}else {echo "Approve";}?>" type="submit" ></input> 
         <input type="hidden" name="MM_change" value="form2" />
         <input type="hidden" id="change_q" name="change_q" value="<?php echo $row_all_users['u_id']?>" />
+        <input type="hidden" id="approve_id" name="approve_id" value="<?php if($row_all_users['approve_id']==1){echo "2";}else {echo "1";}?>"/>
         </td></form>
     </tr>
     <?php } while ($row_all_users = mysql_fetch_assoc($all_users)); ?>
