@@ -240,14 +240,14 @@ else {
     <thead>
     
   <tr>
-  	 <th class="sort" data-sort="User_Id">User Id</th>
-    <th class="sort" data-sort="User_Name">User Name</th>
-     <th class="sort" data-sort="Password">Password</th>
-    <th class="sort" data-sort="First_Name">First Name</th>
-    <th class="sort" data-sort="Last_Name">Last Name</th>
-    <th class="sort" data-sort="Contact_No.">Contact No</th>
+  	 <th class="sort" data-sort="user_id">User Id</th>
+    <th class="sort" data-sort="user_name">User Name</th>
+     <th class="sort" data-sort="password">Password</th>
+    <th class="sort" data-sort="first_name">First Name</th>
+    <th class="sort" data-sort="last_name">Last Name</th>
+    <th class="sort" data-sort="contact_no">Contact No</th>
     <th class="sort" data-sort="date_of_birth">Date of Birth</th>
-    <th class="sort" data-sort="Institute">Institute</th>
+    <th class="sort" data-sort="institute">Institute</th>
     <th class="sort" data-sort="stream">Stream</th>
     <th class="sort" data-sort="role">Role</th>
     <th>Final Status</th>
@@ -264,16 +264,16 @@ else {
     
   
     <tr>
-      <td><?php echo $row_update['u_id']; ?></td>
-      <td><?php echo $row_update['u_name']; ?></td>
-      <td><?php echo $row_update['password']; ?></td>
-      <td><?php echo $row_update['f_name']; ?></td>
-      <td><?php echo $row_update['l_name']; ?></td>
-      <td><?php echo $row_update['contact_no']; ?></td>
-      <td><?php echo $row_update['dob']; ?></td>
-      <td><?php echo $row_update['institute']; ?></td>
-      <td><?php echo $row_update['stream']; ?></td>
-      <td><?php echo $row_update['role']; ?></td>
+      <td class="user_id"><?php echo $row_update['u_id']; ?></td>
+      <td class="user_name"><?php echo $row_update['u_name']; ?></td>
+      <td class="password"><?php echo $row_update['password']; ?></td>
+      <td class="first_name"><?php echo $row_update['f_name']; ?></td>
+      <td class="last_name"> <?php echo $row_update['l_name']; ?></td>
+      <td class="contact_no"><?php echo $row_update['contact_no']; ?></td>
+      <td class="date_of_birth"><?php echo $row_update['dob']; ?></td>
+      <td class="institute"><?php echo $row_update['institute']; ?></td>
+      <td class="stream"><?php echo $row_update['stream']; ?></td>
+      <td class="role"><?php echo $row_update['role']; ?></td>
 <form  id="form1" name="form1" method="POST" action="<?php echo $editFormAction; ?>">      <td><select name="app_id" id="app_id">
         <option value="0">  </option>
         <option value="1">Approved</option>
@@ -295,7 +295,7 @@ else {
 	} ?>
     <script>
 var currOptions = {
-  valueNames: [ 'User_Id','User_Name','Password','First_Name','Last_Name','Contact_No.','date_of_birth','Institute','stream','role']
+  valueNames: [ 'user_id','user_name','password','first_name','last_name','contact_no','date_of_birth','institute','stream','role']
 };
 
 // Init list
@@ -310,16 +310,16 @@ var currList = new List('new_users', currOptions);
     <thead>
   <tr>
   
-  	 <th class="sort" data-sort="currentid">User Id</th>
-    <th class="sort" data-sort="name">User Name</th>
-    <th class="sort" data-sort="cuname">First Name</th>
-    <th class="sort" data-sort="curname">Last Name</th>
-    <th class="sort" data-sort="cno">Contact No</th>
-    <th class="sort" data-sort="cdate">Date of Birth</th>
-    <th class="sort" data-sort="cinstitute">Institute</th>
-    <th class="sort" data-sort="cstream">Stream</th>
-    <th class="sort" data-sort="crole">Role</th>
-    <th class="sort" data-sort="cstatus">Current Status</th>
+  	 <th class="sort" data-sort="ex_u_id">User Id</th>
+    <th class="sort" data-sort="ex_u_name">User Name</th>
+    <th class="sort" data-sort="ex_f_name">First Name</th>
+    <th class="sort" data-sort="ex_l_name">Last Name</th>
+    <th class="sort" data-sort="ex_c_no">Contact No</th>
+    <th class="sort" data-sort="ex_dob">Date of Birth</th>
+    <th class="sort" data-sort="ex_insti">Institute</th>
+    <th class="sort" data-sort="ex_stream">Stream</th>
+    <th class="sort" data-sort="ex_role">Role</th>
+    <th class="sort" data-sort="ex_status">Current Status</th>
     <th>    </th>
     <th colspan="2">
           <input type="text" class="search" placeholder="Search Existing User" />
@@ -333,16 +333,16 @@ var currList = new List('new_users', currOptions);
     
   
     <tr>
-      <td><?php echo $row_all_users['u_id']; ?></td>
-      <td><?php echo $row_all_users['u_name']; ?></td>
-      <td><?php echo $row_all_users['f_name']; ?></td>
-      <td><?php echo $row_all_users['l_name']; ?></td>
-      <td><?php echo $row_all_users['contact_no']; ?></td>
-      <td><?php echo $row_all_users['dob']; ?></td>
-      <td><?php echo $row_all_users['institute']; ?></td>
-      <td><?php echo $row_all_users['stream']; ?></td>
-      <td><?php echo $row_all_users['role']; ?></td>
-      <td><?php echo $row_all_users['app_stat']; ?></td>
+      <td class="ex_u_id"><?php echo $row_all_users['u_id']; ?></td>
+      <td class="ex_u_name"><?php echo $row_all_users['u_name']; ?></td>
+      <td class="ex_f_name"><?php echo $row_all_users['f_name']; ?></td>
+      <td class="ex_l_name"><?php echo $row_all_users['l_name']; ?></td>
+      <td class="ex_c_no"><?php echo $row_all_users['contact_no']; ?></td>
+      <td class="ex_dob"><?php echo $row_all_users['dob']; ?></td>
+      <td class="ex_insti"><?php echo $row_all_users['institute']; ?></td>
+      <td class="ex_stream"><?php echo $row_all_users['stream']; ?></td>
+      <td class="ex_role"><?php echo $row_all_users['role']; ?></td>
+      <td class="ex_status"><?php echo $row_all_users['app_stat']; ?></td>
 <form  id="form2" name="form2" method="POST" action="<?php echo $editFormAction; ?>">      
       <td> 
   <input name="change" id="change" value="<?php if($row_all_users['approve_id']==1){echo "Block";}else {echo "Approve";}?>" type="submit" ></input> 
@@ -359,12 +359,12 @@ var currList = new List('new_users', currOptions);
 		echo "No Existing users";
 	} ?>
     <script>
-var cOptions = {
-  valueNames: [ 'currentid','name','cuname','curname','cno','cdate','cinstitute','cstream','crole','cstatus']
+var ex_Options = {
+  valueNames: [ 'ex_u_id','ex_u_name','ex_f_name','ex_l_name','ex_c_no','ex_dob','ex_insti', 'ex_stream','ex_role','ex_status']
 };
 
 // Init list
-var cuList = new List('existing_users', cOptions);
+var ex_List = new List('existing_users', ex_Options);
 </script>
     </div><!--end of existing users' tab content-->
   </div>
