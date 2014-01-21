@@ -139,7 +139,7 @@ $totalRows_categories = mysql_num_rows($categories);
         <div class="forum-wrapper">
 	    	<div class="forum-content-wrapper">
 			    <div class="forum-content">
-<script language="javascript">
+						<script language="javascript">
     						function changeImage() {
 						        if (document.getElementById("voteup0").src == "images/arrow-up.png") {
 						            document.getElementById("voteup0").src = "images/arrow-up-voted.png";
