@@ -223,7 +223,7 @@ else {
 	$tabToShow=0;
 }
 ?>
-<p>User's home </p>
+<p>Welcome <? echo $_SESSION['MM_f_name']; ?> </p>
 <div id="TabbedPanels1" class="TabbedPanels">
   <ul class="TabbedPanelsTabGroup">
     <li class="TabbedPanelsTab" tabindex="0">New Users</li>
