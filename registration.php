@@ -150,13 +150,15 @@
 	   <p class="contact">
 		<label for="pass">Password* : </label></p>
 		  <p><span id="sprypassword1"> 
-		<input type="password" name="pass" id="pass" required/>
+		<input type="password" name="pass" id="pass" required/><br> 
 		<span class="passwordRequiredMsg">     A value is required.</span><span class="passwordInvalidStrengthMsg">     The password doesn't meet the specified strength.</span></span></p>
+        </br>
 		<p class="contact">
 		  <label for="confirm_pass">Confirm Password* :</label></p>
 		 <p><span id="spryconfirm2"> 
 		  <input type="password" name="confirm_pass" id="confirm_pass" />
-	  <span class="confirmRequiredMsg">     A value is required.</span><span class="confirmInvalidMsg">     The values don't match.</span></span></p>
+          <br>
+	  <span class="confirmRequiredMsg">     A value is required.</span><span class="confirmInvalidMsg">     The values don't match.</span></span></p></br>
 		<p class="contact">
 		  <label for="f_name">First Name* : </label></p>
 		  <input type="text" name="f_name" id="f_name" placeholder="First Name"/>
