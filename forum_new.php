@@ -90,7 +90,7 @@ $totalRows_categories = mysql_num_rows($categories);
 <script src="SpryAssets/SpryTabbedPanels.js" type="text/javascript"></script>
 <link href="SpryAssets/SpryTabbedPanels.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" media="screen" href="css/templatemo_style.css" />
-<link rel="stylesheet" type="text/css" media="screen" href="css/forum_new.css" />
+<link rel="stylesheet" type="text/css" media="screen" href="css/forum_new.css?1234" />
 <link rel="stylesheet" type="text/css" media="screen" href="css/nav_bar.css" />
 </head>
 
@@ -120,6 +120,7 @@ $totalRows_categories = mysql_num_rows($categories);
 </nav>
 <br/>
 
+<div>
 <h1> Forums</h1>
 <div id="TabbedPanels1" class="TabbedPanels">
   <ul class="TabbedPanelsTabGroup">
@@ -138,6 +139,15 @@ $totalRows_categories = mysql_num_rows($categories);
         <div class="forum-wrapper">
 	    	<div class="forum-content-wrapper">
 			    <div class="forum-content">
+<script language="javascript">
+    						function changeImage() {
+						        if (document.getElementById("voteup0").src == "images/arrow-up.png") {
+						            document.getElementById("voteup0").src = "images/arrow-up-voted.png";
+						        } else {
+						            document.getElementById("voteup0").src = "images/arrow-up.png";
+						        }
+						    }
+						</script>
 
                 <?php if (isset($_GET['discussionid'])) { ?>
                 	<?php $tabToShow=1;?>
@@ -178,6 +188,7 @@ $totalRows_categories = mysql_num_rows($categories);
 					$totalRows_comments = mysql_num_rows($comments);
 					?>
                     <!--- viewing comments if there are any --->
+                    <?php $commentNumber=0; ?>
                     <?php if($totalRows_comments>0) {?>
 	                    <?php do { ?>
                     <div class="middle">
@@ -194,11 +205,17 @@ $totalRows_categories = mysql_num_rows($categories);
 
 						<aside class="right-sidebar">
 							<dt><?php echo $row_comments['date_inserted_c'];?></dt>
+                            <br />
                             <!--- vote up-down to be inserted here--->
+                            <img id="voteup<?php echo $commentNumber++;?>" src="images/arrow-up.png" width="33" height="33" onclick="changeImage()" />
+                            <br />
+                            <score> 0 </dt> </score> <br />
+                            <img id="votedown" src="images/arrow-down.png" width="33" height="33" />
                             
 						</aside><!-- .right-sidebar -->
 					</div><!-- .middle-->
                     	<?php }while ($row_comments = mysql_fetch_assoc($comments)) ;?>
+                        
                    	<?php } ?>                   
                 <?php	
 				} else {
@@ -246,5 +263,6 @@ $totalRows_discussions = mysql_num_rows($discussions);
 <script type="text/javascript">
 var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1",{defaultTab:<?php echo ($tabToShow);?>});
 </script>
+</div>
 </body>
 </html>

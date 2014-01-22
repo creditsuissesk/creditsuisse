@@ -7,14 +7,22 @@ disc-title {
 	font-size: 16px;
 }
 
+score {
+	font-weight:bold;
+	/*padding: 0px 30px;*/
+	margin:10px;
+	color: #779955;
+	font-size: 16px;
+}
+
 ul, ol, dl, blockquote, pre
 {
 	color: #999999;
 	margin: 10px 35px; 
-	padding: 10px 30px; 
+	/*padding: 10px 30px; */
 	line-height: 1.6em;
-	border: 1px solid #1a1a1a;
-	border-top: 10px solid #151515;
+	/*border: 1px solid #1a1a1a;*/
+	/*border-top: 10px solid #151515;*/
 	background: #404040 url(../images/navigation_hover.gif) top left repeat;
 }
 
@@ -112,8 +120,8 @@ aside,main {
 .middle {
 	/*width: 100%;*/
 	position: relative;
-	border: 1px solid #1a1a1a;
-	border-top: 10px solid #151515;
+	/*border: 1px solid #1a1a1a;*/
+	/*border-top: 10px solid #151515;*/
 	background: #404040 url(../images/navigation_hover.gif) top left repeat;
 	margin: 10px 35px; 
 	padding: 10px 30px; 
@@ -257,8 +265,8 @@ body#babout li#labout a
 	margin: 10px 35px; 
 	padding: 5px 30px; 
 	line-height: 1.6em;
-	border: 1px solid #1a1a1a;
-	border-top: 10px solid #151515;
+	/*border: 1px solid #1a1a1a;*/
+	/*border-top: 10px solid #151515;*/
 	background: #404040 url(../images/navigation_hover.gif) top left repeat;
 }
 
