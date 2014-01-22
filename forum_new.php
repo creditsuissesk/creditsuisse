@@ -139,15 +139,20 @@ $totalRows_categories = mysql_num_rows($categories);
         <div class="forum-wrapper">
 	    	<div class="forum-content-wrapper">
 			    <div class="forum-content">
+<!-- Java Script for Changing Image For Voting-->
 <script language="javascript">
-    						function changeImage() {
-						        if (document.getElementById("voteup0").src == "images/arrow-up.png") {
-						            document.getElementById("voteup0").src = "images/arrow-up-voted.png";
-						        } else {
-						            document.getElementById("voteup0").src = "images/arrow-up.png";
-						        }
-						    }
-						</script>
+   function changeImage(str) {
+	   alert("in method "+ str);
+	   alert("src value :   " + document.getElementById(str).src);
+	   if (document.getElementById(str).src == "localhost/dreamweaver/images/arrow-up.png") {
+		   alert("inside if ");
+	document.getElementById(str).src = "localhost/dreamweaver/images/arrow-up-voted.png";
+	} else {
+		alert("inside else");
+	document.getElementById(str).src = "localhost/dreamweaver/images/arrow-up.png";
+	}
+			 }
+</script>
 
                 <?php if (isset($_GET['discussionid'])) { ?>
                 	<?php $tabToShow=1;?>
@@ -207,7 +212,7 @@ $totalRows_categories = mysql_num_rows($categories);
 							<dt><?php echo $row_comments['date_inserted_c'];?></dt>
                             <br />
                             <!--- vote up-down to be inserted here--->
-                            <img id="voteup<?php echo $commentNumber++;?>" src="images/arrow-up.png" width="33" height="33" onclick="changeImage()" />
+                            <img id="voteup<?php echo $commentNumber++;?>" src="images/arrow-up.png" width="33" height="33"   onclick="changeImage('voteup<?php echo $commentNumber++;?>')" />
                             <br />
                             <score> 0 </dt> </score> <br />
                             <img id="votedown" src="images/arrow-down.png" width="33" height="33" />
