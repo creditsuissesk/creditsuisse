@@ -228,7 +228,7 @@ function MM_validateForm() { //v4.0
 </head>
 
 <body alink="#D6D6D6">
-<h1>Hello, <?php echo $row_get_auth_info['f_name'];?></h1>
+<h1>Hello, <?php echo $_SESSION['MM_f_name'];?></h1>
 <div id="TabbedPanels1" class="TabbedPanels">
   <ul class="TabbedPanelsTabGroup">
     <li class="TabbedPanelsTab" tabindex="0">Create Course</li>
