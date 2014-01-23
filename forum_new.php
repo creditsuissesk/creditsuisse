@@ -92,6 +92,12 @@ $totalRows_categories = mysql_num_rows($categories);
 <link rel="stylesheet" type="text/css" media="screen" href="css/templatemo_style.css" />
 <link rel="stylesheet" type="text/css" media="screen" href="css/forum_new.css?1234" />
 <link rel="stylesheet" type="text/css" media="screen" href="css/nav_bar.css" />
+
+<!--- files for voting--->
+<script src="lib/jQuery.js" type="text/javascript"></script>
+<script src="lib/jquery.upvote.js" type="text/javascript"></script>
+<link href="lib/jquery.upvote.css" rel="stylesheet" type="text/css">
+
 </head>
 
 <body >
@@ -139,32 +145,6 @@ $totalRows_categories = mysql_num_rows($categories);
         <div class="forum-wrapper">
 	    	<div class="forum-content-wrapper">
 			    <div class="forum-content">
-<<<<<<< HEAD
-						<script language="javascript">
-    						function changeImage() {
-						        if (document.getElementById("voteup0").src == "images/arrow-up.png") {
-						            document.getElementById("voteup0").src = "images/arrow-up-voted.png";
-						        } else {
-						            document.getElementById("voteup0").src = "images/arrow-up.png";
-						        }
-						    }
-						</script>
-=======
-<!-- Java Script for Changing Image For Voting-->
-<script language="javascript">
-   function changeImage(str) {
-	   alert("in method "+ str);
-	   alert("src value :   " + document.getElementById(str).src);
-	   if (document.getElementById(str).src == "localhost/dreamweaver/images/arrow-up.png") {
-		   alert("inside if ");
-	document.getElementById(str).src = "localhost/dreamweaver/images/arrow-up-voted.png";
-	} else {
-		alert("inside else");
-	document.getElementById(str).src = "localhost/dreamweaver/images/arrow-up.png";
-	}
-			 }
-</script>
->>>>>>> e7f414cb4bc9ebfef2a5564b0a4a621fa76956f1
 
                 <?php if (isset($_GET['discussionid'])) { ?>
                 	<?php $tabToShow=1;?>
@@ -224,16 +204,38 @@ $totalRows_categories = mysql_num_rows($categories);
 							<dt><?php echo $row_comments['date_inserted_c'];?></dt>
                             <br />
                             <!--- vote up-down to be inserted here--->
-                            <img id="voteup<?php echo $commentNumber++;?>" src="images/arrow-up.png" width="33" height="33"   onclick="changeImage('voteup<?php echo $commentNumber++;?>')" />
-                            <br />
-                            <score> 0 </dt> </score> <br />
-                            <img id="votedown" src="images/arrow-down.png" width="33" height="33" />
-                            
+                            <div id="comment<?php echo $row_comments['comment_id']; ?>" class="upvote">
+							    <a class="upvote"></a>
+							    <span class="count">0</span>
+							    <a class="downvote"></a>
+							    <a class="star"></a>
+						    </div>
+                            <!--- score initialization---> 
+                            <script language="javascript"> </script>
+                                                       
 						</aside><!-- .right-sidebar -->
 					</div><!-- .middle-->
                     	<?php }while ($row_comments = mysql_fetch_assoc($comments)) ;?>
-                        
-                   	<?php } ?>                   
+                        <!--- javascript for all comment voting --->
+                        <script language="javascript">
+							var callback = function(data) {
+							$.ajax({
+						        url: 'voter.php',
+						        type: 'post',
+						        data: { id: data.id, up: data.upvoted, down: data.downvoted, star: data.starred , count: $('#comment'+ data.id).upvote('count')},
+								success : function(response) {
+									alert(response);
+								}
+						    	});	
+							};
+							<?php $comments = mysql_query($query_comments, $conn) or die(mysql_error());?>
+							<?php
+								while ($row_comments = mysql_fetch_assoc($comments)) {?>
+									$('#comment<?php echo $row_comments['comment_id'];?>').upvote({count: <?php echo $row_comments['comment_score'];?>,id: <?php echo $row_comments['comment_id'];?>, callback: callback});
+
+							<?php }?>
+						</script>
+                   	<?php } ?> <!---end of discussion case --->                  
                 <?php	
 				} else {
 				?>

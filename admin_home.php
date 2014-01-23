@@ -162,13 +162,20 @@ $query_all_users = "SELECT * FROM `user` natural join `approve_user` WHERE appro
 $all_users = mysql_query($query_all_users, $conn) or die(mysql_error());
 $row_all_users = mysql_fetch_assoc($all_users);
 $totalRows_all_users = mysql_num_rows($all_users);
-
-
-
-
-
-
 /*Existing users ka end of query*/
+
+mysql_select_db($database_conn, $conn);
+$query_get_admin_info = sprintf("SELECT * FROM user WHERE u_id = %s",GetSQLValueString($_SESSION['MM_UserID'],"int"));
+
+$get_admin_info= mysql_query($query_get_admin_info, $conn) or die(mysql_error());
+$row_get_admin_info = mysql_fetch_assoc($get_admin_info);
+$totalRows_get_admin_info = mysql_num_rows($get_admin_info);
+
+
+
+
+
+
 
 
 ?>
@@ -223,7 +230,7 @@ else {
 	$tabToShow=0;
 }
 ?>
-<p>Welcome <? echo $_SESSION['MM_f_name']; ?> </p>
+<p>Welcome <? echo GetSQLValueString($_SESSION['MM_f_name'],"text") ?> </p>
 <div id="TabbedPanels1" class="TabbedPanels">
   <ul class="TabbedPanelsTabGroup">
     <li class="TabbedPanelsTab" tabindex="0">New Users</li>
