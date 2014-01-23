@@ -179,7 +179,7 @@ $totalRows_categories = mysql_num_rows($categories);
 
 					<?php
 					mysql_select_db($database_conn, $conn);
-					$query_comments = sprintf("SELECT * FROM `discussion` JOIN `comment` ON discussion.discussion_id = comment.discussion_id JOIN `user` ON comment.insert_uid = user.u_id WHERE discussion.discussion_id =%s ORDER BY date_inserted_c",GetSQLValueString($_GET['discussionid'], "int"));
+					$query_comments = sprintf("SELECT * FROM `discussion` JOIN `comment` ON discussion.discussion_id = comment.discussion_id JOIN `user` ON comment.insert_uid = user.u_id JOIN `user_comment` ON comment.comment_id = user_comment.comment_id WHERE discussion.discussion_id =%s ORDER BY date_inserted_c",GetSQLValueString($_GET['discussionid'], "int"));
 					$comments = mysql_query($query_comments, $conn) or die(mysql_error());
 					$row_comments = mysql_fetch_assoc($comments);
 					$totalRows_comments = mysql_num_rows($comments);
@@ -210,11 +210,16 @@ $totalRows_categories = mysql_num_rows($categories);
 							    <a class="downvote"></a>
 							    <a class="star"></a>
 						    </div>
-                            <!--- score initialization---> 
-                            <script language="javascript"> </script>
                                                        
 						</aside><!-- .right-sidebar -->
 					</div><!-- .middle-->
+                    <!--- comment is displayed. now update this info in user_comment --->
+                    <?php 
+					$query_update_comment = sprintf("INSERT INTO user_comment(comment_id,user_id,vote_status,bookmarked) VALUES ('%s','%s','0','0') ON DUPLICATE KEY UPDATE date_last_viewed=now();",GetSQLValueString($row_comments['comment_id'], "int"),GetSQLValueString($_SESSION['MM_UserID'], "int"));
+					$update_comment = mysql_query($query_update_comment, $conn) or die(mysql_error());
+					?>
+                    
+                    
                     	<?php }while ($row_comments = mysql_fetch_assoc($comments)) ;?>
                         <!--- javascript for all comment voting --->
                         <script language="javascript">
@@ -222,7 +227,7 @@ $totalRows_categories = mysql_num_rows($categories);
 							$.ajax({
 						        url: 'voter.php',
 						        type: 'post',
-						        data: { id: data.id, up: data.upvoted, down: data.downvoted, star: data.starred , count: $('#comment'+ data.id).upvote('count')},
+						        data: { id: data.id, up: data.upvoted, down: data.downvoted, star: data.starred , count: $('#comment'+ data.id).upvote('count'),upstatus:$('#comment'+data.id).upvote('upvoted'),downstatus:$('#comment'+data.id).upvote('downvoted')},
 						    	});	
 							};
 							var callback2= function(data) {
@@ -233,10 +238,18 @@ $totalRows_categories = mysql_num_rows($categories);
 							<?php
 								while ($row_comments = mysql_fetch_assoc($comments)) {?>
 									<?php if($row_comments['insert_uid']==$_SESSION['MM_UserID']) {?>
-											$('#comment<?php echo $row_comments['comment_id'];?>').upvote({count: <?php echo $row_comments['comment_score'];?>,id: <?php echo $row_comments['comment_id'];?>, callback: callback2});
+											$('#comment<?php echo $row_comments['comment_id'];?>').upvote({count: <?php echo $row_comments['comment_score'];?>,id: <?php echo $row_comments['comment_id'];?>, callback: callback2
+											});
 									<?php }else {
 									?>
-									$('#comment<?php echo $row_comments['comment_id'];?>').upvote({count: <?php echo $row_comments['comment_score'];?>,id: <?php echo $row_comments['comment_id'];?>, callback: callback});
+									$('#comment<?php echo $row_comments['comment_id'];?>').upvote({count: <?php echo $row_comments['comment_score'];?>,id: <?php echo $row_comments['comment_id'];?>, callback: callback
+									<?php if ($row_comments['vote_status']==1) {
+										echo ",upvoted:1";
+									}else if ($row_comments['vote_status']==-1){
+										echo ",downvoted:1";
+									}
+									?>
+									});
 							<?php } }?>
 						</script>
                    	<?php } ?> <!---end of discussion case --->                  

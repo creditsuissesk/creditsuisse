@@ -78,14 +78,31 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 
 mysql_select_db($database_conn, $conn);
 if (isset($_POST['up']) ||  isset($_POST['down'])){
+		//checking to prevent self-voting
 		$query_check_voter = sprintf("SELECT * FROM comment WHERE comment_id =%s",GetSQLValueString($_POST['id'], "int"));
 		$check_voter = mysql_query($query_check_voter, $conn) or die(mysql_error());
 		$row_check_voter=mysql_fetch_assoc($check_voter);
+		$prev_score=$row_check_voter['comment_score'];
 		if ($row_check_voter['insert_uid']==$_SESSION['MM_UserID']) {
+			//self voting, return 0 as failure
 			echo 0;
 		}else {
+			//fair voting, update the comment score.
 			$query_update_score = sprintf("UPDATE comment SET comment_score=%s WHERE comment_id =%s",GetSQLValueString($_POST['count'], "int"),GetSQLValueString($_POST['id'], "int"));
 			$update_score = mysql_query($query_update_score, $conn) or die(mysql_error());
+			
+			//update user-vote given to comment in user_comment table
+			$new_score=$_POST['count'];
+			$difference=$new_score-$prev_score;
+			if($_POST['upstatus']==true && $difference==1) {
+				$vote_value=1;
+			}else if ($_POST['upstatus']==false && $_POST['downstatus']==false) {
+				$vote_value=0;
+			}else if ($_POST['downstatus']==true && $difference==-1) {
+				$vote_value=-1;
+			}
+			$query_update_usercomment = sprintf("UPDATE user_comment SET vote_status=%s WHERE comment_id=%s AND user_id=%s",GetSQLValueString($vote_value, "int"),GetSQLValueString($_POST['id'], "int"),GetSQLValueString($_SESSION['MM_UserID'], "int"));
+			$update_usercomment=mysql_query($query_update_usercomment, $conn) or die(mysql_error());
 			echo 1;
 		}
 }
