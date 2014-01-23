@@ -78,9 +78,15 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 
 mysql_select_db($database_conn, $conn);
 if (isset($_POST['up']) ||  isset($_POST['down'])){
-		
-		$query_update_score = sprintf("UPDATE comment SET comment_score=%s WHERE comment_id =%s",GetSQLValueString($_POST['count'], "int"),GetSQLValueString($_POST['id'], "int"));
-		$update_score = mysql_query($query_update_score, $conn) or die(mysql_error());
-		echo "Done";
+		$query_check_voter = sprintf("SELECT * FROM comment WHERE comment_id =%s",GetSQLValueString($_POST['id'], "int"));
+		$check_voter = mysql_query($query_check_voter, $conn) or die(mysql_error());
+		$row_check_voter=mysql_fetch_assoc($check_voter);
+		if ($row_check_voter['insert_uid']==$_SESSION['MM_UserID']) {
+			echo 0;
+		}else {
+			$query_update_score = sprintf("UPDATE comment SET comment_score=%s WHERE comment_id =%s",GetSQLValueString($_POST['count'], "int"),GetSQLValueString($_POST['id'], "int"));
+			$update_score = mysql_query($query_update_score, $conn) or die(mysql_error());
+			echo 1;
+		}
 }
 ?>

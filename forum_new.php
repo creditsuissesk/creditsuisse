@@ -223,17 +223,21 @@ $totalRows_categories = mysql_num_rows($categories);
 						        url: 'voter.php',
 						        type: 'post',
 						        data: { id: data.id, up: data.upvoted, down: data.downvoted, star: data.starred , count: $('#comment'+ data.id).upvote('count')},
-								success : function(response) {
-									alert(response);
-								}
 						    	});	
+							};
+							var callback2= function(data) {
+								alert("You can't vote yourself");
+								$('#comment'+data.id).upvote();
 							};
 							<?php $comments = mysql_query($query_comments, $conn) or die(mysql_error());?>
 							<?php
 								while ($row_comments = mysql_fetch_assoc($comments)) {?>
+									<?php if($row_comments['insert_uid']==$_SESSION['MM_UserID']) {?>
+											$('#comment<?php echo $row_comments['comment_id'];?>').upvote({count: <?php echo $row_comments['comment_score'];?>,id: <?php echo $row_comments['comment_id'];?>, callback: callback2});
+									<?php }else {
+									?>
 									$('#comment<?php echo $row_comments['comment_id'];?>').upvote({count: <?php echo $row_comments['comment_score'];?>,id: <?php echo $row_comments['comment_id'];?>, callback: callback});
-
-							<?php }?>
+							<?php } }?>
 						</script>
                    	<?php } ?> <!---end of discussion case --->                  
                 <?php	
