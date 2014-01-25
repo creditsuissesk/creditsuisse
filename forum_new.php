@@ -176,16 +176,20 @@ $totalRows_categories = mysql_num_rows($categories);
 						</aside><!-- .right-sidebar -->
 
 					</div><!-- .middle-->
-
+					
 					<?php
 					mysql_select_db($database_conn, $conn);
-					$query_comments = sprintf("SELECT * FROM `discussion` JOIN `comment` ON discussion.discussion_id = comment.discussion_id JOIN `user` ON comment.insert_uid = user.u_id JOIN `user_comment` ON comment.comment_id = user_comment.comment_id WHERE discussion.discussion_id =%s ORDER BY date_inserted_c",GetSQLValueString($_GET['discussionid'], "int"));
+					$query_comments = sprintf("SELECT * FROM `discussion` JOIN `comment` ON discussion.discussion_id = comment.discussion_id JOIN `user` ON comment.insert_uid = user.u_id LEFT OUTER JOIN `user_comment` ON comment.comment_id = user_comment.user_comment_id AND user_comment.user_id=%s WHERE discussion.discussion_id =%s ORDER BY date_inserted_c",GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($_GET['discussionid'], "int"));
 					$comments = mysql_query($query_comments, $conn) or die(mysql_error());
 					$row_comments = mysql_fetch_assoc($comments);
 					$totalRows_comments = mysql_num_rows($comments);
 					?>
+                    <!---discussion header loaded. Update in user_discussion --->
+                    <?php 
+					$query_update_disc = sprintf("INSERT INTO user_discussion(u_id,discussion_id,count_comments,date_last_viewed,bookmarked) VALUES ('%s','%s','%s',now(),'0') ON DUPLICATE KEY UPDATE date_last_viewed=now(),count_comments=%s;",GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($_GET['discussionid'], "int"),GetSQLValueString($totalRows_comments, "int"),GetSQLValueString($totalRows_comments, "int"));
+					$update_disc = mysql_query($query_update_disc, $conn) or die(mysql_error());
+                    ?>
                     <!--- viewing comments if there are any --->
-                    <?php $commentNumber=0; ?>
                     <?php if($totalRows_comments>0) {?>
 	                    <?php do { ?>
                     <div class="middle">
@@ -215,7 +219,7 @@ $totalRows_categories = mysql_num_rows($categories);
 					</div><!-- .middle-->
                     <!--- comment is displayed. now update this info in user_comment --->
                     <?php 
-					$query_update_comment = sprintf("INSERT INTO user_comment(comment_id,user_id,vote_status,bookmarked) VALUES ('%s','%s','0','0') ON DUPLICATE KEY UPDATE date_last_viewed=now();",GetSQLValueString($row_comments['comment_id'], "int"),GetSQLValueString($_SESSION['MM_UserID'], "int"));
+					$query_update_comment = sprintf("INSERT INTO user_comment(user_comment_id,user_id,vote_status,bookmarked,date_last_viewed) VALUES ('%s','%s','0','0',now()) ON DUPLICATE KEY UPDATE date_last_viewed=now();",GetSQLValueString($row_comments['comment_id'], "int"),GetSQLValueString($_SESSION['MM_UserID'], "int"));
 					$update_comment = mysql_query($query_update_comment, $conn) or die(mysql_error());
 					?>
                     

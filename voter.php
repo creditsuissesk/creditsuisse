@@ -96,12 +96,13 @@ if (isset($_POST['up']) ||  isset($_POST['down'])){
 			$difference=$new_score-$prev_score;
 			if($_POST['upstatus']==true && $difference==1) {
 				$vote_value=1;
-			}else if ($_POST['upstatus']==false && $_POST['downstatus']==false) {
+			//}else if ($_POST['upstatus']==false && $_POST['downstatus']==false) {
+			}else if (empty($_POST['upstatus']) && empty($_POST['downstatus'])) {
 				$vote_value=0;
 			}else if ($_POST['downstatus']==true && $difference==-1) {
 				$vote_value=-1;
 			}
-			$query_update_usercomment = sprintf("UPDATE user_comment SET vote_status=%s WHERE comment_id=%s AND user_id=%s",GetSQLValueString($vote_value, "int"),GetSQLValueString($_POST['id'], "int"),GetSQLValueString($_SESSION['MM_UserID'], "int"));
+			$query_update_usercomment = sprintf("UPDATE user_comment SET vote_status=%s WHERE user_comment_id=%s AND user_id=%s",GetSQLValueString($vote_value, "int"),GetSQLValueString($_POST['id'], "int"),GetSQLValueString($_SESSION['MM_UserID'], "int"));
 			$update_usercomment=mysql_query($query_update_usercomment, $conn) or die(mysql_error());
 			echo 1;
 		}
