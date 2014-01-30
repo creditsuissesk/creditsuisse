@@ -1,0 +1,33 @@
+.forum-button {
+   border-top: 1px solid #f7ef97;
+   background: #4f3943;
+   background: -webkit-gradient(linear, left top, left bottom, from(#4a66cc), to(#4f3943));
+   background: -webkit-linear-gradient(top, #4a66cc, #4f3943);
+   background: -moz-linear-gradient(top, #4a66cc, #4f3943);
+   background: -ms-linear-gradient(top, #4a66cc, #4f3943);
+   background: -o-linear-gradient(top, #4a66cc, #4f3943);
+   float:right;
+   margin-right: 35px;
+   padding: 7px 14px;
+   -webkit-border-radius: 9px;
+   -moz-border-radius: 9px;
+   border-radius: 9px;
+   -webkit-box-shadow: rgba(0,0,0,1) 0 1px 0;
+   -moz-box-shadow: rgba(0,0,0,1) 0 1px 0;
+   box-shadow: rgba(0,0,0,1) 0 1px 0;
+   text-shadow: rgba(0,0,0,.4) 0 1px 0;
+   color: #080808;
+   font-size: 12px;
+   font-family: Georgia, Serif;
+   text-decoration: none;
+   vertical-align: middle;
+   }
+.forum-button:hover {
+   border-top-color: #1b73de;
+   background: #1b73de;
+   color: #2e222e;
+   }
+.forum-button:active {
+   border-top-color: #948cd4;
+   background: #948cd4;
+   }
