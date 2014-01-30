@@ -115,7 +115,7 @@
 					  <h1>Registration Form</h1>
 				  </header>       
 			<div  class="form">
-				  <form id="contactform" action="reg_data.php" method="POST" > 
+				  <form id="contactform" action="reg_data.php" method="POST" enctype="multipart/form-data"> 
 					  <p class="contact">
 		  <label for="u_name">UserName (Email)*:</label></p> 
 					  <input id="u_name" name="u_name" placeholder="example@domain.com" required  type="email" />
@@ -158,7 +158,11 @@
 				  <option value="author">Author</option>
 				  <option value="cm">Content Manager</option>
 				  </select><br /><br />
-	  </p>  <p ><input class="buttom" name="submit" id="submit" value="Sign me up!" type="submit" onClick="MM_validateForm('pass','','R','f_name','','R','l_name','','R','contact','','RisNum','inst_name','','R','stream','','R');return document.MM_returnValue" 
+	  </p>  
+      <p> <label for="file">Filename:</label>
+<input type="file" name="file" id="file">
+		</p>
+      <p ><input class="buttom" name="submit" id="submit" value="Sign me up!" type="submit" onClick="MM_validateForm('pass','','R','f_name','','R','l_name','','R','contact','','RisNum','inst_name','','R','stream','','R');return document.MM_returnValue" 
 	action="reg_data.php"	  />
 		  <input class="buttom" type="reset" name="reset" id="reset" value="Reset" />
 		</p>

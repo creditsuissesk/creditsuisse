@@ -1,5 +1,41 @@
 <?php require_once('Connections/conn.php'); ?>
-	  <?php
+<?php /*php script for uploading pic */?>
+<?php 
+$allowedExts = array("gif", "jpeg", "jpg", "png");
+$temp = explode(".", $_FILES["file"]["name"]);
+$extension = end($temp);
+if ((($_FILES["file"]["type"] == "image/gif")
+|| ($_FILES["file"]["type"] == "image/jpeg")
+|| ($_FILES["file"]["type"] == "image/jpg")
+|| ($_FILES["file"]["type"] == "image/pjpeg")
+|| ($_FILES["file"]["type"] == "image/x-png")
+|| ($_FILES["file"]["type"] == "image/png"))
+&& ($_FILES["file"]["size"] < 20000)
+/*&& in_array($extension, $allowedExts)*/
+)
+  {
+  if ($_FILES["file"]["error"] > 0)
+    {
+    echo "Return Code: " . $_FILES["file"]["error"] . "<br>";
+    }
+  else
+    {
+    echo "Upload: " . $_FILES["file"]["name"] . "<br>";
+    echo "Type: " . $_FILES["file"]["type"] . "<br>";
+    echo "Size: " . ($_FILES["file"]["size"] / 1024) . " kB<br>";
+    echo "Temp file: " . $_FILES["file"]["tmp_name"] . "<br>";
+
+    if (file_exists("images/profiles/" . $_FILES["file"]["name"]))
+      {
+      echo $_FILES["file"]["name"] . " already exists. ";
+      }
+    else
+      {
+      move_uploaded_file($_FILES["file"]["tmp_name"],
+      "images/profiles/" . $_FILES["file"]["name"]);
+	  $upload_add="images/profiles/" . $_FILES["file"]["name"];
+      echo "Stored in: " . $upload_add;
+      
 	  if (!function_exists("GetSQLValueString")) {
 	  function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
 	  {
@@ -29,32 +65,9 @@
 		}
 		return $theValue;
 	  }
-	  }
-// Define a destination
-$targetFolder = 'images/profiles'; // Relative to the root
-
-$verifyToken = md5('unique_salt' . $_POST['timestamp']);
-
-if (!empty($_FILES) && $_POST['token'] == $verifyToken) {
-	$tempFile = $_FILES['Filedata']['tmp_name'];
-	$targetPath = $_SERVER['DOCUMENT_ROOT'] . $targetFolder;
-	$targetFile = rtrim($targetPath,'/') . '/' . $_FILES['Filedata']['name'];
-	
-	// Validate the file type
-	$fileTypes = array('jpg','jpeg','gif','png'); // File extensions
-	$fileParts = pathinfo($_FILES['Filedata']['name']);
-	
-	if (in_array($fileParts['extension'],$fileTypes)) {
-		move_uploaded_file($tempFile,$targetFile);
-		echo '1';
-	} else {
-		echo 'Invalid file type.';
-	}
-}
-	  
-	  
+	  }	  
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form")) {
-		$insertSQL = sprintf("INSERT INTO `user` (u_name, password, f_name, l_name, contact_no, dob, institute, stream,role) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
+		$insertSQL = sprintf("INSERT INTO `user` (u_name, password, f_name, l_name, contact_no, dob, institute, stream,role,photo) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s,%s)",
 							 GetSQLValueString($_POST['u_name'], "text"),
 							 GetSQLValueString($_POST['pass'], "text"),
 							 GetSQLValueString($_POST['f_name'], "text"),
@@ -63,7 +76,8 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form")) {
 							 GetSQLValueString($_POST['dob'], "date"),
 							 GetSQLValueString($_POST['inst_name'], "text"),
 							 GetSQLValueString($_POST['stream'], "text"),
-							 GetSQLValueString($_POST['role'], "text"));
+							 GetSQLValueString($_POST['role'], "text"),
+							 GetSQLValueString( $upload_add,"text"));
 	  
 		mysql_select_db($database_conn, $conn);
 		$Result1 = mysql_query($insertSQL, $conn) or die(mysql_error());
@@ -75,6 +89,14 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form")) {
 		}
 		 /*header(sprintf("Location: %s", $insertGoTo)); */
 	  }
+	  }
+    }
+	    }
+else
+  {
+  echo "Invalid file, rejected in first if";
+  }
+
 ?>
 
 
