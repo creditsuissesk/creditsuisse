@@ -51,34 +51,6 @@
 		  exit;
 		}
 	  }
-	  
-	  $editFormAction = $_SERVER['PHP_SELF'];
-	  if (isset($_SERVER['QUERY_STRING'])) {
-		$editFormAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
-	  }
-	  
-	  if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form")) {
-		$insertSQL = sprintf("INSERT INTO `user` (u_name, password, f_name, l_name, contact_no, dob, institute, stream, `role`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
-							 GetSQLValueString($_POST['u_name'], "text"),
-							 GetSQLValueString($_POST['pass'], "text"),
-							 GetSQLValueString($_POST['f_name'], "text"),
-							 GetSQLValueString($_POST['l_name'], "text"),
-							 GetSQLValueString($_POST['contact'], "int"),
-							 GetSQLValueString($_POST['dob'], "date"),
-							 GetSQLValueString($_POST['inst_name'], "text"),
-							 GetSQLValueString($_POST['stream'], "text"),
-							 GetSQLValueString($_POST['role'], "text"));
-	  
-		mysql_select_db($database_conn, $conn);
-		$Result1 = mysql_query($insertSQL, $conn) or die(mysql_error());
-	  
-		$insertGoTo = "index.php";
-		if (isset($_SERVER['QUERY_STRING'])) {
-		  $insertGoTo .= (strpos($insertGoTo, '?')) ? "&" : "?";
-		  $insertGoTo .= $_SERVER['QUERY_STRING'];
-		}
-		 /*header(sprintf("Location: %s", $insertGoTo)); */
-	  }
 	  ?>
 	  <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 	  <html xmlns="http://www.w3.org/1999/xhtml">
@@ -143,7 +115,7 @@
 					  <h1>Registration Form</h1>
 				  </header>       
 			<div  class="form">
-				  <form id="contactform" action="<?php echo $editFormAction; ?>" method="POST" > 
+				  <form id="contactform" action="reg_data.php" method="POST" > 
 					  <p class="contact">
 		  <label for="u_name">UserName (Email)*:</label></p> 
 					  <input id="u_name" name="u_name" placeholder="example@domain.com" required  type="email" />
@@ -186,8 +158,8 @@
 				  <option value="author">Author</option>
 				  <option value="cm">Content Manager</option>
 				  </select><br /><br />
-	  </p>  <p ><input class="buttom" name="submit" id="submit" value="Sign me up!" type="submit" onClick="MM_validateForm('u_name','','RisEmail','pass','','R','f_name','','R','l_name','','R','contact','','RisNum','inst_name','','R','stream','','R');return document.MM_returnValue" 
-		  />
+	  </p>  <p ><input class="buttom" name="submit" id="submit" value="Sign me up!" type="submit" onClick="MM_validateForm('pass','','R','f_name','','R','l_name','','R','contact','','RisNum','inst_name','','R','stream','','R');return document.MM_returnValue" 
+	action="reg_data.php"	  />
 		  <input class="buttom" type="reset" name="reset" id="reset" value="Reset" />
 		</p>
 		<input type="hidden" name="MM_insert" value="form" />
