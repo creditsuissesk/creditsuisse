@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 29, 2014 at 11:50 AM
+-- Generation Time: Jan 30, 2014 at 12:51 PM
 -- Server version: 5.6.14
 -- PHP Version: 5.5.6
 
@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS `comment` (
   KEY `delete_uid` (`delete_uid`),
   KEY `update_uid` (`update_uid`),
   KEY `discussion_id` (`discussion_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
 
 --
 -- Dumping data for table `comment`
@@ -87,7 +87,9 @@ CREATE TABLE IF NOT EXISTS `comment` (
 
 INSERT INTO `comment` (`comment_id`, `discussion_id`, `insert_uid`, `date_inserted_c`, `delete_uid`, `date_deleted_c`, `update_uid`, `date_updated_c`, `comment_body`, `flag`, `comment_score`) VALUES
 (2, 2, 5, '2014-01-19 06:40:07', NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', 'This is comment body!', 0, 4),
-(3, 2, 3, '2014-01-19 22:30:31', NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', 'new Comment!', 0, 1);
+(3, 2, 3, '2014-01-19 22:30:31', NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', 'new Comment!', 0, 0),
+(5, 4, 5, '2014-01-30 11:31:44', NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', ' lol!', 0, 0),
+(6, 2, 5, '2014-01-30 11:46:53', NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', ' this is posted from forums!', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -150,13 +152,13 @@ INSERT INTO `create_course` (`u_id`, `c_id`) VALUES
 
 CREATE TABLE IF NOT EXISTS `discussion` (
   `discussion_id` int(11) NOT NULL AUTO_INCREMENT,
-  `type` int(11) NOT NULL,
+  `type` int(11) NOT NULL DEFAULT '0',
   `category_id` int(11) NOT NULL,
   `insert_uid` int(11) unsigned NOT NULL,
-  `last_comment_id` int(11) NOT NULL,
+  `last_comment_id` int(11) NOT NULL DEFAULT '0',
   `name` varchar(100) NOT NULL,
   `disc_body` text NOT NULL,
-  `count_comments` int(11) NOT NULL,
+  `count_comments` int(11) NOT NULL DEFAULT '0',
   `date_inserted_d` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_updated_d` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `rating` float NOT NULL DEFAULT '0',
@@ -164,16 +166,17 @@ CREATE TABLE IF NOT EXISTS `discussion` (
   KEY `category_id` (`category_id`),
   KEY `last_comment_id` (`last_comment_id`),
   KEY `insert_uid` (`insert_uid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
 
 --
 -- Dumping data for table `discussion`
 --
 
 INSERT INTO `discussion` (`discussion_id`, `type`, `category_id`, `insert_uid`, `last_comment_id`, `name`, `disc_body`, `count_comments`, `date_inserted_d`, `date_updated_d`, `rating`) VALUES
-(2, 0, 1, 5, 0, 'First discussion', 'First discussion body!', 0, '2014-01-19 04:13:19', '0000-00-00 00:00:00', 0),
+(2, 0, 1, 5, 0, 'First discussion', 'First discussion body!', 1, '2014-01-19 04:13:19', '0000-00-00 00:00:00', 0),
 (3, 0, 1, 8, 0, 'This is by Kunal', 'Kunal''s body! :P', 0, '2014-01-19 04:38:46', '0000-00-00 00:00:00', 0),
-(4, 0, 2, 5, 0, 'Is this forum style okay?', 'We''ll continue this is it looks good..', 0, '2014-01-19 04:42:45', '0000-00-00 00:00:00', 0);
+(4, 0, 2, 5, 0, 'Is this forum style okay?', 'We''ll continue this is it looks good..', 1, '2014-01-19 04:42:45', '0000-00-00 00:00:00', 0),
+(8, 0, 1, 5, 0, 'new disc title', 'new disc body ', 0, '2014-01-30 09:12:29', '0000-00-00 00:00:00', 0);
 
 -- --------------------------------------------------------
 
@@ -361,8 +364,10 @@ CREATE TABLE IF NOT EXISTS `user_comment` (
 INSERT INTO `user_comment` (`user_comment_id`, `user_id`, `vote_status`, `bookmarked`, `date_last_viewed`) VALUES
 (2, 1, 1, 0, '2014-01-24 07:06:52'),
 (3, 1, -1, 0, '2014-01-24 07:06:52'),
-(2, 5, 0, 0, '2014-01-28 02:33:07'),
-(3, 5, 1, 0, '2014-01-28 02:33:07');
+(2, 5, 0, 0, '2014-01-30 11:48:07'),
+(3, 5, 0, 0, '2014-01-30 11:48:07'),
+(5, 5, 0, 0, '2014-01-30 11:47:38'),
+(6, 5, 0, 0, '2014-01-30 11:48:07');
 
 -- --------------------------------------------------------
 
@@ -389,7 +394,9 @@ INSERT INTO `user_discussion` (`u_id`, `discussion_id`, `count_comments`, `date_
 (1, 2, 2, '2014-01-24 07:06:52', 0),
 (1, 3, 0, '2014-01-24 07:27:27', 0),
 (1, 4, 0, '2014-01-24 07:27:39', 0),
-(5, 2, 2, '2014-01-28 02:33:07', 0);
+(5, 2, 3, '2014-01-30 11:48:07', 0),
+(5, 3, 0, '2014-01-30 11:37:26', 0),
+(5, 4, 1, '2014-01-30 11:47:38', 0);
 
 --
 -- Constraints for dumped tables
