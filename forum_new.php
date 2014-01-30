@@ -254,31 +254,8 @@ $totalRows_categories = mysql_num_rows($categories);
 					$update_comment = mysql_query($query_update_comment, $conn) or die(mysql_error());
 					?>
                     	<?php }while ($row_comments = mysql_fetch_assoc($comments)) ;?>
-                        <!---show new comment form--->
-                        <?php
-                        $query_own_comment = sprintf("SELECT * from `user` WHERE u_id=%s;",GetSQLValueString($_SESSION['MM_UserID'], "int"));
-					$own_comment = mysql_query($query_own_comment, $conn) or die(mysql_error());
-					$row_own_comment = mysql_fetch_assoc($own_comment);
-					?>
-                    <div class="middle">
-                        <div class="container">
-                        <main class="content">
-                    <form action="new_comment.php" id="new_comment" name="new_comment" method="POST">
-                    <p><label for="comment_body">Enter your comment :</label><br /></p>
-					<textarea type="comment_body" id="comment_body" name="comment_body" form="new_comment"> </textarea>
-                    <br /><br />
-                    <p>
-                      <input name="submit" id="submit" value="Post Comment" type="submit" class="buttom" onClick="MM_validateForm('comment_body','','R');return document.MM_returnValue" action="new_comment.php"/></p>
-                      <input type="hidden" name="disc_id" value="<?php echo $_GET['discussionid'];?>"/>
-                    </form>
-                    	</main>
-	                    </div>
-                    <aside class="left-sidebar">
-                        	<img src="<?php echo $row_own_comment['photo'];?>" width="100" height="100" alt="Profile picture"/><br />
-							<dt><?php echo $row_own_comment['f_name']." ".$row_own_comment['l_name'];?></dt>
-					</aside><!-- .left-sidebar -->
-                    </div>
                         
+                        <!--- user comment was here--->
                         <!--- javascript for all comment voting --->
                         <script language="javascript">
 							var callback = function(data) {
@@ -308,9 +285,35 @@ $totalRows_categories = mysql_num_rows($categories);
 									}
 									?>
 									});
-							<?php } }?>
+							<?php } 
+							}?>
 						</script>
-                   	<?php } ?> <!---end of discussion case --->                  
+                   	<?php } ?>
+                    <!---show new comment form--->
+                        <?php
+                        $query_own_comment = sprintf("SELECT * from `user` WHERE u_id=%s;",GetSQLValueString($_SESSION['MM_UserID'], "int"));
+					$own_comment = mysql_query($query_own_comment, $conn) or die(mysql_error());
+					$row_own_comment = mysql_fetch_assoc($own_comment);
+					?>
+                    <div class="middle">
+                        <div class="container">
+                        <main class="content">
+                    <form action="new_comment.php" id="new_comment" name="new_comment" method="POST">
+                    <p><label for="comment_body">Enter your comment :</label><br /></p>
+					<textarea type="comment_body" id="comment_body" name="comment_body" form="new_comment"> </textarea>
+                    <br /><br />
+                    <p>
+                      <input name="submit" id="submit" value="Post Comment" type="submit" class="buttom" onClick="MM_validateForm('comment_body','','R');return document.MM_returnValue" action="new_comment.php"/></p>
+                      <input type="hidden" name="disc_id" value="<?php echo $_GET['discussionid'];?>"/>
+                    </form>
+                    	</main>
+	                    </div>
+                    <aside class="left-sidebar">
+                        	<img src="<?php echo $row_own_comment['photo'];?>" width="100" height="100" alt="Profile picture"/><br />
+							<dt><?php echo $row_own_comment['f_name']." ".$row_own_comment['l_name'];?></dt>
+					</aside><!-- .left-sidebar -->
+                    </div> 
+                    <!---end of discussion case --->                  
                 <?php	
 				} else if (isset($_GET['mode']) && $_GET['mode']=="showmain") {
 				?>

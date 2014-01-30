@@ -95,4 +95,5 @@ if(isset($_POST['comment_body']) && isset($_POST['disc_id'])) {
 		  $insertGoTo .= $_SERVER['QUERY_STRING'];		 
 		}
 	}
+	header("Location: forum_new.php?showTab=discussions&mode=disc&discussionid=".$_POST['disc_id']);
 ?>

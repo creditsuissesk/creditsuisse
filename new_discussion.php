@@ -95,4 +95,5 @@ if(isset($_POST['category']) && isset($_POST['disc_name']) && isset($_POST['disc
 		  $insertGoTo .= $_SERVER['QUERY_STRING'];		 
 		}
 	}
+	header("Location: forum_new.php?showTab=discussions&mode=showmain");
 ?>
