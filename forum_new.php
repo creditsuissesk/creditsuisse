@@ -74,8 +74,17 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
   }
   return $theValue;
 }
-}
+}?>
+<!--- new discussion post script starts --->
+<?php
 
+$newDiscAction = $_SERVER['PHP_SELF'];
+	  if (isset($_SERVER['QUERY_STRING'])) {
+		$newDiscAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
+	  }
+	  ?>
+<!---new discussion script ends --->
+<?php
 mysql_select_db($database_conn, $conn);
 $query_categories = "SELECT * FROM discussion_category";
 $categories = mysql_query($query_categories, $conn) or die(mysql_error());
@@ -101,6 +110,25 @@ $totalRows_categories = mysql_num_rows($categories);
 <script src="lib/jquery.upvote.js" type="text/javascript"></script>
 <link href="lib/jquery.upvote.css" rel="stylesheet" type="text/css">
 
+<!--- new discussion form validation--->
+<script type="text/javascript">
+	  function MM_validateForm() { //v4.0
+		if (document.getElementById){
+		  var i,p,q,nm,test,num,min,max,errors='',args=MM_validateForm.arguments;
+		  for (i=0; i<(args.length-2); i+=3) { test=args[i+2]; val=document.getElementById(args[i]);
+			if (val) { nm=val.name; if ((val=val.value)!="") {
+			  if (test.indexOf('isEmail')!=-1) { p=val.indexOf('@');
+				if (p<1 || p==(val.length-1)) errors+='- '+nm+' must contain an e-mail address.\n';
+			  } else if (test!='R') { num = parseFloat(val);
+				if (isNaN(val)) errors+='- '+nm+' must contain a number.\n';
+				if (test.indexOf('inRange') != -1) { p=test.indexOf(':');
+				  min=test.substring(8,p); max=test.substring(p+1);
+				  if (num<min || max<num) errors+='- '+nm+' must contain a number between '+min+' and '+max+'.\n';
+			} } } else if (test.charAt(0) == 'R') errors += '- '+nm+' is required.\n'; }
+		  } if (errors) alert('The following error(s) occurred:\n'+errors);
+		  document.MM_returnValue = (errors == '');
+	  } }
+</script>
 </head>
 
 <body >
@@ -299,13 +327,28 @@ $totalRows_discussions = mysql_num_rows($discussions);
                     <a href="forum_new.php?showTab=discussions&mode=showmain"> Back to discussions </a><br />
                 	<disc-title> New Discussion </disc-title>
                     <div class="form">
-                    <form action="new_discussion.php" method="post">
-                    <p><label for="disc_name">Discussion  Name :</label> 
+                    <form action="new_discussion.php" name="new_disc_form" id="new_disc_form" method="POST">
+                    <p><label for="disc_name">Discussion Name :</label> 
 					  <input type="disc_name" id="disc_name" name="disc_name" placeholder="Discussion title here..." /> </p>
-                    <label for="disc_body">Discussion  Body :</label><br />
-					<textarea type="disc_body" id="disc_body"> </textarea>
-                    <br />
-                      <input name="submit" value="Create Discussion" type="button" class="buttom" />
+                      <p>
+                    <label for="category">Discussion Category :</label>
+		  	 	  <select class="select-style gender" name="category" id="category" placeholder="I am...">
+					<?php
+						mysql_select_db($database_conn, $conn);
+						$query_disc_cat = sprintf("SELECT * FROM discussion_category");
+						$disc_cat = mysql_query($query_disc_cat, $conn) or die(mysql_error());
+						$row_disc_cat = mysql_fetch_assoc($disc_cat);
+						$totalRows_disc_cat = mysql_num_rows($disc_cat);
+						do {?>
+                        <option value="<?php echo $row_disc_cat['category_id'];?>"><?php echo $row_disc_cat['category_name'];?></option>
+						<?php }while($row_disc_cat = mysql_fetch_assoc($disc_cat));?>
+				  </select><br /><br />
+				  </p>
+                    <p><label for="disc_body">Discussion Body :</label><br /></p>
+					<textarea type="disc_body" id="disc_body" name="disc_body" form="new_disc_form"> </textarea>
+                    <br /><br />
+                    <p>
+                      <input name="submit" id="submit" value="Create Discussion" type="submit" class="buttom" onClick="MM_validateForm('disc_name','','R','disc_body','','R');return document.MM_returnValue" action="new_discussion.php"/></p>
                     </form>
                     </div>
                     
