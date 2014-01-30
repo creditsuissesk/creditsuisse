@@ -30,23 +30,20 @@
 ?>
 <?php
 $db = mysql_select_db($database_conn, $conn);
-if($_GLOBALS['r_id']==4)
-$id    = $_GLOBALS['id'];
-else
-$id =3;
+if(isset($_GET['id']))
+{
+$id    = $_GET['id'];
 $query = sprintf("SELECT filename, file_type, file_size, file_content FROM resource WHERE r_id = %s",GetSQLValueString($id, "int"));
 $result = mysql_query($query) or die('Error, query failed');
-$row_result = mysql_fetch_assoc($result);
-$name=$row_result['filename'];
-$size=$row_result['file_size'];
-$type=$row_result['file_type'];
-$content=$row_result['file_content'];
-header("Content-length: $size");
-header("Content-type: $type");
-header("Content-Disposition: attachment; filename=$name");
+list($name, $type, $size, $content) =  mysql_fetch_row($result);
+        header("Content-Disposition: attachment; filename=\"$name\"");
+        header("Content-type: $type");
+        header("Content-length: $size");
+        print $content;
 ob_clean();
 flush();
 echo $content;
 mysql_close();
 exit;
+}
 ?>

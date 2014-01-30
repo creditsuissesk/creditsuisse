@@ -19,13 +19,9 @@ echo "Database is empty <br>";
 } 
 else
 {
-while(list($id, $name) = mysql_fetch_array($result))
-{
-?>
-<a href="http://localhost/dreamweaver/download.php"
-onclick= "<?php $GLOBALS['r_id']=$id;?>"><?php echo $name;?></a> <br>
-<?php 
-}
+	while(list($id, $name) = mysql_fetch_array($result)){
+            echo "<a href=\"download.php?id=$id\">$name</a><br>";
+			}
 }
 mysql_close();
 ?>
