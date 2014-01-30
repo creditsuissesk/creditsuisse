@@ -92,6 +92,9 @@ $totalRows_categories = mysql_num_rows($categories);
 <link rel="stylesheet" type="text/css" media="screen" href="css/templatemo_style.css" />
 <link rel="stylesheet" type="text/css" media="screen" href="css/forum_new.css?1234" />
 <link rel="stylesheet" type="text/css" media="screen" href="css/nav_bar.css" />
+<link rel="stylesheet" type="text/css" media="screen" href="css/forum_buttons.css" />
+<link rel="stylesheet" type="text/css" href="css/forum_disc_form.css" media="all" />
+<!---<link rel="stylesheet" type="text/css" href="css/registration.css" media="all"/> --->
 
 <!--- files for voting--->
 <script src="lib/jQuery.js" type="text/javascript"></script>
@@ -114,7 +117,7 @@ $totalRows_categories = mysql_num_rows($categories);
 <nav id="headerbar">
 	<ul id="headerbar">
 		<li id="headerbar"><a href="userhome.php">Home</a></li>
-		<li id="headerbar"><a href="forum_new.php">Forums</a></li>
+		<li id="headerbar"><a href="forum_new.php?mode=showmain">Forums</a></li>
 		<li id="headerbar"><a href="#"><?php echo $_SESSION['MM_Username'];?></a>
 			<ul id="headerbar">
 				<li id="headerbar"><a href="userhome.php?userTabToDisplay=5">Profile</a></li>
@@ -146,9 +149,9 @@ $totalRows_categories = mysql_num_rows($categories);
 	    	<div class="forum-content-wrapper">
 			    <div class="forum-content">
 
-                <?php if (isset($_GET['discussionid'])) { ?>
+                <?php if (isset($_GET['mode']) && $_GET['mode']=="disc") { ?>
                 	<?php $tabToShow=1;?>
-                    <a href="forum_new.php?showTab=discussions"> Back to discussions </a><br />
+                    <a href="forum_new.php?showTab=discussions&mode=showmain"> Back to discussions </a><br />
 					<!--- viewing a particular discussion--->
                     <?php
 					mysql_select_db($database_conn, $conn);
@@ -258,9 +261,11 @@ $totalRows_categories = mysql_num_rows($categories);
 						</script>
                    	<?php } ?> <!---end of discussion case --->                  
                 <?php	
-				} else {
+				} else if (isset($_GET['mode']) && $_GET['mode']=="showmain") {
 				?>
                 <!--- discussionid not set, so get each category in while loop--->
+                <a href="forum_new.php?showTab=discussions&mode=newDisc"><input name="new_disc" type="button" value="New Discussion" class="forum-button" /></a>
+                <br />
                 <?php do { ?>
                 <forum-h4> <?php echo $row_categories['category_name']?></forum-h4>
                 <!--- now get all discussions of that category and show them in a loop--->
@@ -275,7 +280,7 @@ $totalRows_discussions = mysql_num_rows($discussions);
                 <dl>
                 <?php do { ?>
                     <dt>
-					    <a href="forum_new.php?discussionid=<?php echo $row_discussions['discussion_id'];?> "> <?php echo $row_discussions['name'];?> </a>
+					    <a href="forum_new.php?showTab=discussions&mode=disc&discussionid=<?php echo $row_discussions['discussion_id'];?> "> <?php echo $row_discussions['name'];?> </a>
 				    </dt>
                     <datetime><?php echo "By ".$row_discussions['f_name']." ".$row_discussions['l_name']." on ".$row_discussions['date_inserted_d'];?></datetime>
                     <dd>
@@ -289,8 +294,23 @@ $totalRows_discussions = mysql_num_rows($discussions);
 						mysql_free_result($categories);
 						mysql_free_result($discussions);
 				?>
+                <?php }else if (isset($_GET['mode']) && $_GET['mode']=="newDisc"){?>
+                	<!--- new discussion --->
+                    <a href="forum_new.php?showTab=discussions&mode=showmain"> Back to discussions </a><br />
+                	<disc-title> New Discussion </disc-title>
+                    <div class="form">
+                    <form action="new_discussion.php" method="post">
+                    <p><label for="disc_name">Discussion  Name :</label> 
+					  <input type="disc_name" id="disc_name" name="disc_name" placeholder="Discussion title here..." /> </p>
+                    <label for="disc_body">Discussion  Body :</label><br />
+					<textarea type="disc_body" id="disc_body"> </textarea>
+                    <br />
+                      <input name="submit" value="Create Discussion" type="button" class="buttom" />
+                    </form>
+                    </div>
+                    
                 <?php }?>
-                <!---end of main if --->
+                <!---end of main if --->	
 			    </div>
 		    </div>
 	    </div>
