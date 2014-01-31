@@ -77,7 +77,7 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 }
 
 mysql_select_db($database_conn, $conn);
-if (isset($_POST['up']) ||  isset($_POST['down'])){
+if (isset($_POST['up']) ||  isset($_POST['down']) || isset($_POST['star'])){
 		//checking to prevent self-voting
 		$query_check_voter = sprintf("SELECT * FROM `discussion` WHERE discussion_id =%s",GetSQLValueString($_POST['id'], "int"));
 		$check_voter = mysql_query($query_check_voter, $conn) or die(mysql_error());
@@ -95,15 +95,15 @@ if (isset($_POST['up']) ||  isset($_POST['down'])){
 			$new_score=$_POST['count'];
 			$difference=$new_score-$prev_score;
 			
-						file_put_contents("test.txt",$difference."\n\r".$_POST['upstatus']."\n\r".$_POST['downstatus']);
+						//file_put_contents("test.txt",$difference."\n\r".$_POST['upstatus']."\n\r".$_POST['downstatus']);
 			if($_POST['upstatus']=="true") {
 				$vote_value=1;
-				file_put_contents("test.txt","upvoted",FILE_APPEND);				
+				//file_put_contents("test.txt","upvoted",FILE_APPEND);				
 			}else if ($_POST['downstatus']=="true") {
-				file_put_contents("test.txt","downvoted",FILE_APPEND);
+				//file_put_contents("test.txt","downvoted",FILE_APPEND);
 				$vote_value=-1;	
 			}else if (empty($_POST['upstatus']) and empty($_POST['downstatus'])) {
-				file_put_contents("test.txt","neutral",FILE_APPEND);				
+				//file_put_contents("test.txt","neutral",FILE_APPEND);				
 				$vote_value=0;
 			}
 			$query_update_userdisc = sprintf("UPDATE `user_discussion` SET vote_status=%s WHERE discussion_id=%s AND u_id=%s",GetSQLValueString($vote_value, "int"),GetSQLValueString($_POST['id'], "int"),GetSQLValueString($_SESSION['MM_UserID'], "int"));
@@ -113,8 +113,19 @@ if (isset($_POST['up']) ||  isset($_POST['down'])){
 			$query_update_author = sprintf("UPDATE `discussion` JOIN user ON insert_uid=u_id SET user_score=user_score+%s WHERE discussion_id =%s",GetSQLValueString($difference, "int"),GetSQLValueString($_POST['id'], "int"));
 			$update_author = mysql_query($query_update_author, $conn) or die(mysql_error());
 			
-			unset($_POST);
+
 			echo 1;
 		}
+		//regardless of whoever is user, anyone can bookmark discussion.
+		if(isset($_POST['star'])) {
+			if($_POST['star']=="true"){
+					$bookmarked=1;
+			}else{
+					$bookmarked=0;
+			}
+			$query_update_userbookmark = sprintf("UPDATE `user_discussion` SET bookmarked=%s WHERE discussion_id=%s AND u_id=%s",GetSQLValueString($bookmarked, "int"),GetSQLValueString($_POST['id'], "int"),GetSQLValueString($_SESSION['MM_UserID'], "int"));
+			$update_userbookmark=mysql_query($query_update_userbookmark, $conn) or die(mysql_error());
+		}
+		unset($_POST);
 }
 ?>

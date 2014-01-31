@@ -267,7 +267,7 @@ $totalRows_categories = mysql_num_rows($categories);
 							$.ajax({
 						        url: 'voter.php',
 						        type: 'post',
-						        data: { id: data.id, up: data.upvoted, down: data.downvoted, star: data.starred , count: $('#comment'+ data.id).upvote('count'),upstatus:$('#comment'+data.id).upvote('upvoted'),downstatus:$('#comment'+data.id).upvote('downvoted')},
+						        data: { id: data.id, up: data.upvoted, down: data.downvoted, count: $('#comment'+ data.id).upvote('count'),upstatus:$('#comment'+data.id).upvote('upvoted'),downstatus:$('#comment'+data.id).upvote('downvoted')},
 						    	});	
 							};
 							var callback2= function(data) {
@@ -295,6 +295,9 @@ $totalRows_categories = mysql_num_rows($categories);
 										echo ",upvoted:1";
 									}else if ($row_disc['vote_status']==-1){
 										echo ",downvoted:1";
+									}
+									if ($row_disc['bookmarked']==1) {
+										echo ",starred:1";
 									}
 									?>
 									});
