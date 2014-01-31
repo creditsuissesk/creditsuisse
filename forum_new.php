@@ -242,7 +242,7 @@ $totalRows_categories = mysql_num_rows($categories);
 							    <a class="upvote"></a>
 							    <span class="count">0</span>
 							    <a class="downvote"></a>
-							    <a class="star"></a>
+							    <!---<a class="star"></a> --->
 						    </div>
                                                        
 						</aside><!-- .right-sidebar -->
