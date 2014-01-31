@@ -90,20 +90,30 @@ if (isset($_POST['up']) ||  isset($_POST['down'])){
 			//fair voting, update the comment score.
 			$query_update_score = sprintf("UPDATE comment SET comment_score=%s WHERE comment_id =%s",GetSQLValueString($_POST['count'], "int"),GetSQLValueString($_POST['id'], "int"));
 			$update_score = mysql_query($query_update_score, $conn) or die(mysql_error());
-			
+
 			//update user-vote given to comment in user_comment table
 			$new_score=$_POST['count'];
 			$difference=$new_score-$prev_score;
-			if($_POST['upstatus']==true && $difference==1) {
+			
+						file_put_contents("test.txt",$difference."\n\r".$_POST['upstatus']."\n\r".$_POST['downstatus']);
+			if($_POST['upstatus']=="true") {
 				$vote_value=1;
-			//}else if ($_POST['upstatus']==false && $_POST['downstatus']==false) {
-			}else if (empty($_POST['upstatus']) && empty($_POST['downstatus'])) {
+				file_put_contents("test.txt","upvoted",FILE_APPEND);				
+			}else if ($_POST['downstatus']=="true") {
+				file_put_contents("test.txt","downvoted",FILE_APPEND);
+				$vote_value=-1;	
+			}else if (empty($_POST['upstatus']) and empty($_POST['downstatus'])) {
+				file_put_contents("test.txt","neutral",FILE_APPEND);				
 				$vote_value=0;
-			}else if ($_POST['downstatus']==true && $difference==-1) {
-				$vote_value=-1;
 			}
 			$query_update_usercomment = sprintf("UPDATE user_comment SET vote_status=%s WHERE user_comment_id=%s AND user_id=%s",GetSQLValueString($vote_value, "int"),GetSQLValueString($_POST['id'], "int"),GetSQLValueString($_SESSION['MM_UserID'], "int"));
 			$update_usercomment=mysql_query($query_update_usercomment, $conn) or die(mysql_error());
+			
+			//update the score of user to whom vote was given
+			$query_update_author = sprintf("UPDATE comment JOIN user ON insert_uid=u_id SET user_score=user_score+%s WHERE comment_id =%s",GetSQLValueString($difference, "int"),GetSQLValueString($_POST['id'], "int"));
+			$update_author = mysql_query($query_update_author, $conn) or die(mysql_error());
+			
+			unset($_POST);
 			echo 1;
 		}
 }
