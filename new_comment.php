@@ -79,6 +79,7 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 mysql_select_db($database_conn, $conn);
 if(isset($_POST['comment_body']) && isset($_POST['disc_id'])) {
 		echo "all POST set";
+		//insert new comment into comment table
 		$create_comment = sprintf("INSERT INTO `comment` (discussion_id, insert_uid, comment_body) VALUES (%s, %s, %s)",
 							 GetSQLValueString($_POST['disc_id'], "int"),
 							 GetSQLValueString($_SESSION['MM_UserID'], "int"),
@@ -86,9 +87,14 @@ if(isset($_POST['comment_body']) && isset($_POST['disc_id'])) {
 	  
 		$Result1 = mysql_query($create_comment, $conn) or die(mysql_error());
 		
+		//update discussion's comment count
 		$update_comment_count =sprintf("UPDATE `discussion` SET count_comments=count_comments+1 WHERE discussion_id=%s",GetSQLValueString($_POST['disc_id'], "int"));
 		$Result2 = mysql_query($update_comment_count, $conn) or die(mysql_error());
 	  
+	  	//update user's comment count
+		$update_creator_count =sprintf("UPDATE user SET count_comments=count_comments+1 WHERE u_id=%s",							 GetSQLValueString($_SESSION['MM_UserID'], "text"));
+		$Result3 = mysql_query($update_creator_count, $conn) or die(mysql_error());
+		
 		$insertGoTo = "index.php";
 		if (isset($_SERVER['QUERY_STRING'])) {
 		  $insertGoTo .= (strpos($insertGoTo, '?')) ? "&" : "?";

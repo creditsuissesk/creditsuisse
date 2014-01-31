@@ -79,7 +79,8 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 mysql_select_db($database_conn, $conn);
 echo $_POST['category']."   ".$_POST['disc_name']."    ".$_POST['disc_body']. " by ".$_SESSION['MM_UserID'];
 if(isset($_POST['category']) && isset($_POST['disc_name']) && isset($_POST['disc_body'])) {
-		echo "all POST set";
+		//echo "all POST set";
+		//insert new discussion int discussion table
 		$create_disc = sprintf("INSERT INTO `discussion` (category_id, insert_uid, name, disc_body) VALUES (%s, %s, %s, %s)",
 							 GetSQLValueString($_POST['category'], "text"),
 							 GetSQLValueString($_SESSION['MM_UserID'], "text"),
@@ -88,6 +89,10 @@ if(isset($_POST['category']) && isset($_POST['disc_name']) && isset($_POST['disc
 	  
 		mysql_select_db($database_conn, $conn);
 		$Result1 = mysql_query($create_disc, $conn) or die(mysql_error());
+		
+		//update user's count_discussions
+		$update_creator=sprintf("UPDATE user SET count_discussions=count_discussions+1 WHERE u_id=%s",							 GetSQLValueString($_SESSION['MM_UserID'], "text"));
+		$Result2=mysql_query($update_creator, $conn) or die(mysql_error());
 	  
 		$insertGoTo = "index.php";
 		if (isset($_SERVER['QUERY_STRING'])) {

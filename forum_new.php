@@ -101,7 +101,6 @@ $totalRows_categories = mysql_num_rows($categories);
 <link rel="stylesheet" type="text/css" media="screen" href="css/templatemo_style.css" />
 <link rel="stylesheet" type="text/css" media="screen" href="css/forum_new.css?1234" />
 <link rel="stylesheet" type="text/css" media="screen" href="css/nav_bar.css" />
-<link rel="stylesheet" type="text/css" media="screen" href="css/forum_buttons.css" />
 <link rel="stylesheet" type="text/css" href="css/forum_disc_form.css" media="all" />
 <!---<link rel="stylesheet" type="text/css" href="css/registration.css" media="all"/> --->
 
@@ -318,7 +317,7 @@ $totalRows_categories = mysql_num_rows($categories);
 				} else if (isset($_GET['mode']) && $_GET['mode']=="showmain") {
 				?>
                 <!--- discussionid not set, so get each category in while loop--->
-                <a href="forum_new.php?showTab=discussions&mode=newDisc"><input name="new_disc" type="button" value="New Discussion" class="forum-button" /></a>
+                <a href="forum_new.php?showTab=discussions&mode=newDisc"><input name="new_disc" type="button" value="New Discussion" style="float:right;margin-right: 35px;" class="buttom" /></a>
                 <br />
                 <?php do { ?>
                 <forum-h4> <?php echo $row_categories['category_name']?></forum-h4>
