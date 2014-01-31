@@ -182,7 +182,7 @@ $totalRows_categories = mysql_num_rows($categories);
 					<!--- viewing a particular discussion--->
                     <?php
 					mysql_select_db($database_conn, $conn);
-					$query_disc = sprintf("SELECT * FROM `discussion` JOIN `user` ON insert_uid=u_id WHERE discussion_id =%s",GetSQLValueString($_GET['discussionid'], "int"));
+					$query_disc = sprintf("SELECT * FROM `discussion` JOIN `user` ON insert_uid=u_id LEFT OUTER JOIN user_discussion ON discussion.discussion_id=user_discussion.discussion_id AND user_discussion.u_id=%s WHERE discussion.discussion_id =%s",GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($_GET['discussionid'], "int"));
 					$disc = mysql_query($query_disc, $conn) or die(mysql_error());
 					$row_disc = mysql_fetch_assoc($disc);
 					$totalRows_disc = mysql_num_rows($disc);
@@ -203,6 +203,12 @@ $totalRows_categories = mysql_num_rows($categories);
 
 						<aside class="right-sidebar">
 							<dt><?php echo $row_disc['date_inserted_d'];?></dt>
+                            <div id="disc<?php echo $row_disc['discussion_id']; ?>" class="upvote">
+							    <a class="upvote"></a>
+							    <span class="count">0</span>
+							    <a class="downvote"></a>
+							    <a class="star"></a>
+						    </div>
 						</aside><!-- .right-sidebar -->
 
 					</div><!-- .middle-->
@@ -255,7 +261,7 @@ $totalRows_categories = mysql_num_rows($categories);
                     	<?php }while ($row_comments = mysql_fetch_assoc($comments)) ;?>
                         
                         <!--- user comment was here--->
-                        <!--- javascript for all comment voting --->
+                        <!--- javascript for all voting --->
                         <script language="javascript">
 							var callback = function(data) {
 							$.ajax({
@@ -268,14 +274,39 @@ $totalRows_categories = mysql_num_rows($categories);
 								alert("You can't vote yourself");
 								$('#comment'+data.id).upvote();
 							};
+							
+							var disc_callback = function(data) {
+							$.ajax({
+						        url: 'voter_disc.php',
+						        type: 'post',
+						        data: { id: data.id, up: data.upvoted, down: data.downvoted, star: data.starred , count: $('#disc'+ data.id).upvote('count'),upstatus:$('#disc'+data.id).upvote('upvoted'),downstatus:$('#disc'+data.id).upvote('downvoted')},
+						    	});	
+							};
+							var disc_callback2= function(data) {
+								alert("You can't vote yourself");
+								$('#disc'+data.id).upvote();
+							};
+							<!--- script for discussion vote widget --->
+							<?php if($row_disc['insert_uid']==$_SESSION['MM_UserID']){?>
+								$('#disc<?php echo $row_disc['discussion_id'];?>').upvote({count: <?php echo $row_disc['rating'];?>,id: <?php echo $row_disc['discussion_id'];?>, callback: disc_callback2});
+							<?php } else { ?>
+									$('#disc<?php echo $row_disc['discussion_id'];?>').upvote({count: <?php echo$row_disc['rating'];?>,id: <?php echo $row_disc['discussion_id'];?>, callback: disc_callback
+									<?php if ($row_disc['vote_status']==1) {
+										echo ",upvoted:1";
+									}else if ($row_disc['vote_status']==-1){
+										echo ",downvoted:1";
+									}
+									?>
+									});
+							<?php }?>
+							
+							<!--- script for comment vote widgets --->
 							<?php $comments = mysql_query($query_comments, $conn) or die(mysql_error());?>
 							<?php
 								while ($row_comments = mysql_fetch_assoc($comments)) {?>
 									<?php if($row_comments['insert_uid']==$_SESSION['MM_UserID']) {?>
-											$('#comment<?php echo $row_comments['comment_id'];?>').upvote({count: <?php echo $row_comments['comment_score'];?>,id: <?php echo $row_comments['comment_id'];?>, callback: callback2
-											});
-									<?php }else {
-									?>
+											$('#comment<?php echo $row_comments['comment_id'];?>').upvote({count: <?php echo $row_comments['comment_score'];?>,id: <?php echo $row_comments['comment_id'];?>, callback: callback2});
+									<?php }else {?>
 									$('#comment<?php echo $row_comments['comment_id'];?>').upvote({count: <?php echo $row_comments['comment_score'];?>,id: <?php echo $row_comments['comment_id'];?>, callback: callback
 									<?php if ($row_comments['vote_status']==1) {
 										echo ",upvoted:1";

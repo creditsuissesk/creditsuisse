@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 30, 2014 at 12:51 PM
+-- Generation Time: Jan 31, 2014 at 12:28 PM
 -- Server version: 5.6.14
 -- PHP Version: 5.5.6
 
@@ -79,17 +79,20 @@ CREATE TABLE IF NOT EXISTS `comment` (
   KEY `delete_uid` (`delete_uid`),
   KEY `update_uid` (`update_uid`),
   KEY `discussion_id` (`discussion_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
 
 --
 -- Dumping data for table `comment`
 --
 
 INSERT INTO `comment` (`comment_id`, `discussion_id`, `insert_uid`, `date_inserted_c`, `delete_uid`, `date_deleted_c`, `update_uid`, `date_updated_c`, `comment_body`, `flag`, `comment_score`) VALUES
-(2, 2, 5, '2014-01-19 06:40:07', NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', 'This is comment body!', 0, 4),
-(3, 2, 3, '2014-01-19 22:30:31', NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', 'new Comment!', 0, 0),
+(2, 2, 5, '2014-01-19 06:40:07', NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', 'This is comment body!', 0, 3),
+(3, 2, 3, '2014-01-19 22:30:31', NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', 'new Comment!', 0, -1),
 (5, 4, 5, '2014-01-30 11:31:44', NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', ' lol!', 0, 0),
-(6, 2, 5, '2014-01-30 11:46:53', NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', ' this is posted from forums!', 0, 0);
+(6, 2, 5, '2014-01-30 11:46:53', NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', ' this is posted from forums!', 0, 0),
+(7, 8, 5, '2014-01-30 12:02:25', NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', ' temp comment to test redirection!', 0, 0),
+(8, 2, 12, '2014-01-30 12:51:49', NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', ' comment by photouser!', 0, 0),
+(9, 10, 12, '2014-01-31 08:55:16', NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', ' hmmm...looks like it is being updated. now testing if the comment count is being updated or not...', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -166,17 +169,19 @@ CREATE TABLE IF NOT EXISTS `discussion` (
   KEY `category_id` (`category_id`),
   KEY `last_comment_id` (`last_comment_id`),
   KEY `insert_uid` (`insert_uid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
 
 --
 -- Dumping data for table `discussion`
 --
 
 INSERT INTO `discussion` (`discussion_id`, `type`, `category_id`, `insert_uid`, `last_comment_id`, `name`, `disc_body`, `count_comments`, `date_inserted_d`, `date_updated_d`, `rating`) VALUES
-(2, 0, 1, 5, 0, 'First discussion', 'First discussion body!', 1, '2014-01-19 04:13:19', '0000-00-00 00:00:00', 0),
+(2, 0, 1, 5, 0, 'First discussion', 'First discussion body!', 2, '2014-01-19 04:13:19', '0000-00-00 00:00:00', 5),
 (3, 0, 1, 8, 0, 'This is by Kunal', 'Kunal''s body! :P', 0, '2014-01-19 04:38:46', '0000-00-00 00:00:00', 0),
 (4, 0, 2, 5, 0, 'Is this forum style okay?', 'We''ll continue this is it looks good..', 1, '2014-01-19 04:42:45', '0000-00-00 00:00:00', 0),
-(8, 0, 1, 5, 0, 'new disc title', 'new disc body ', 0, '2014-01-30 09:12:29', '0000-00-00 00:00:00', 0);
+(8, 0, 1, 5, 0, 'new disc title', 'new disc body ', 1, '2014-01-30 09:12:29', '0000-00-00 00:00:00', 0),
+(9, 0, 1, 5, 0, 'testing new discussion', 'discussion body ', 0, '2014-01-30 11:58:56', '0000-00-00 00:00:00', 0),
+(10, 0, 1, 12, 0, 'testing update count', ' This discussion is being opened to test if the user''s discussion count is being updated or not.', 1, '2014-01-31 08:54:19', '0000-00-00 00:00:00', 0);
 
 -- --------------------------------------------------------
 
@@ -321,7 +326,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `count_comments` int(11) NOT NULL DEFAULT '0',
   `count_discussions` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`u_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
 
 --
 -- Dumping data for table `user`
@@ -332,13 +337,14 @@ INSERT INTO `user` (`u_id`, `u_name`, `password`, `f_name`, `l_name`, `contact_n
 (2, 'abc@tech.org', 'qwerty', 'aaa', 'bbb', 4321, '1997-04-02', 'vj', 'it', 'author', 1, 'images/profiles/02.jpg', '', 0, 0, 0, 0, 0, 0),
 (3, 'dalvishaarad@gmail.c', 'password', 'Shaarad', 'Dalvi', 2147483647, '2012-04-01', 'vjti', 'comps', 'student', 1, 'images/profiles/03.jpg', '', 0, 0, 0, 0, 0, 0),
 (4, 'shaaraddalvi@outlook.com', 'password', 'Shaarad', 'Dalvi', 25406266, '1993-11-01', 'vjti', 'comps', 'student', 1, 'images/profiles/04.jpg', '', 0, 0, 0, 0, 0, 0),
-(5, 'sh@yahoo.co.in', 'password', 'shaarad', 'dalvi', 25406266, '2014-11-01', 'vjti', 'comp', 'student', 1, 'images/profiles/05.jpg', '', 0, 0, 1, 0, 0, 0),
+(5, 'sh@yahoo.co.in', 'password', 'shaarad', 'dalvi', 25406266, '2014-11-01', 'vjti', 'comp', 'student', 1, 'images/profiles/05.jpg', '', 0, 0, 3, 0, 0, 0),
 (6, 'root', 'rootpass', 'root', 'root', 12345678, '2014-01-01', 'root', 'root', 'admin', 1, 'images/profiles/06.jpg', '', 0, 0, 0, 0, 0, 0),
 (7, 'cm', 'qwerty', 'cm', 'cm', 1234567890, '2014-01-05', 'vjti', 'comp', 'cm', 1, 'images/profiles/07.jpg', '', 0, 0, 0, 0, 0, 0),
 (8, 'kunalshah', 'pass1234', 'Kunal', 'Shah', 876543321, '2014-01-03', 'veermata JTI', 'computers', 'student', 1, 'images/profiles/08.jpg', '', 0, 0, 0, 0, 0, 0),
 (9, 'new1@gmail.com', 'password', 'new1name', 'new1surname', 982680350, '2014-01-01', 'vjti', 'comp', 'student', 2, '', '', 0, 0, 0, 0, 0, 0),
 (10, 'new2@gmail.com', 'password', 'new2', 'new2surname', 2147483647, '2014-01-02', 'vjti', 'comp', 'student', 0, '', '', 0, 0, 0, 0, 0, 0),
-(11, 'new3', 'password', 'new3fname', 'new3lname', 1234567890, '2013-12-04', 'vjti', 'comp', 'student', 0, '', '', 0, 0, 0, 0, 0, 0);
+(11, 'new3', 'password', 'new3fname', 'new3lname', 1234567890, '2013-12-04', 'vjti', 'comp', 'student', 0, '', '', 0, 0, 0, 0, 0, 0),
+(12, 'photouser@gmail.com', 'password', 'photof', 'photol', 987654321, '2014-01-06', 'insti', 'comp', 'student', 1, 'images/profiles/lamborghini-cars-logo-emblem.jpg', '', 0, 0, 0, 0, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -364,10 +370,17 @@ CREATE TABLE IF NOT EXISTS `user_comment` (
 INSERT INTO `user_comment` (`user_comment_id`, `user_id`, `vote_status`, `bookmarked`, `date_last_viewed`) VALUES
 (2, 1, 1, 0, '2014-01-24 07:06:52'),
 (3, 1, -1, 0, '2014-01-24 07:06:52'),
-(2, 5, 0, 0, '2014-01-30 11:48:07'),
-(3, 5, 0, 0, '2014-01-30 11:48:07'),
+(2, 5, 0, 0, '2014-01-31 10:58:41'),
+(3, 5, 0, 0, '2014-01-31 10:58:41'),
 (5, 5, 0, 0, '2014-01-30 11:47:38'),
-(6, 5, 0, 0, '2014-01-30 11:48:07');
+(6, 5, 0, 0, '2014-01-31 10:58:41'),
+(7, 5, 0, 0, '2014-01-30 12:02:25'),
+(8, 5, 0, 0, '2014-01-31 10:58:41'),
+(2, 12, 0, 0, '2014-01-31 11:27:34'),
+(3, 12, -1, 0, '2014-01-31 11:27:34'),
+(6, 12, 0, 0, '2014-01-31 11:27:34'),
+(8, 12, 0, 0, '2014-01-31 11:27:34'),
+(9, 12, 0, 0, '2014-01-31 08:55:17');
 
 -- --------------------------------------------------------
 
@@ -381,6 +394,7 @@ CREATE TABLE IF NOT EXISTS `user_discussion` (
   `count_comments` int(11) NOT NULL,
   `date_last_viewed` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `bookmarked` tinyint(4) NOT NULL DEFAULT '0',
+  `vote_status` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`u_id`,`discussion_id`),
   KEY `u_id` (`u_id`),
   KEY `discussion_id` (`discussion_id`)
@@ -390,13 +404,17 @@ CREATE TABLE IF NOT EXISTS `user_discussion` (
 -- Dumping data for table `user_discussion`
 --
 
-INSERT INTO `user_discussion` (`u_id`, `discussion_id`, `count_comments`, `date_last_viewed`, `bookmarked`) VALUES
-(1, 2, 2, '2014-01-24 07:06:52', 0),
-(1, 3, 0, '2014-01-24 07:27:27', 0),
-(1, 4, 0, '2014-01-24 07:27:39', 0),
-(5, 2, 3, '2014-01-30 11:48:07', 0),
-(5, 3, 0, '2014-01-30 11:37:26', 0),
-(5, 4, 1, '2014-01-30 11:47:38', 0);
+INSERT INTO `user_discussion` (`u_id`, `discussion_id`, `count_comments`, `date_last_viewed`, `bookmarked`, `vote_status`) VALUES
+(1, 2, 2, '2014-01-24 07:06:52', 0, 0),
+(1, 3, 0, '2014-01-24 07:27:27', 0, 0),
+(1, 4, 0, '2014-01-24 07:27:39', 0, 0),
+(5, 2, 4, '2014-01-31 10:58:41', 0, 0),
+(5, 3, 0, '2014-01-30 11:37:26', 0, 0),
+(5, 4, 1, '2014-01-30 11:47:38', 0, 0),
+(5, 8, 1, '2014-01-30 12:02:25', 0, 0),
+(5, 9, 0, '2014-01-30 11:59:18', 0, 0),
+(12, 2, 4, '2014-01-31 11:27:34', 0, 1),
+(12, 10, 1, '2014-01-31 08:55:17', 0, 0);
 
 --
 -- Constraints for dumped tables
