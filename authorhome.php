@@ -133,6 +133,18 @@ $all_courses = mysql_query($query_all_courses, $conn) or die(mysql_error());
 $row_all_courses = mysql_fetch_assoc($all_courses);
 $totalRows_all_courses = mysql_num_rows($all_courses);
 
+$new_resource = mysql_query($query_all_courses, $conn) or die(mysql_error());
+$row_new_resource = mysql_fetch_assoc($new_resource);
+$totalRows_new_resource = mysql_num_rows($new_resource);
+
+
+
+$query_resource_type = sprintf("SELECT * FROM resource_type");
+$resource_type = mysql_query($query_resource_type, $conn) or die(mysql_error());
+$row_resource_type = mysql_fetch_assoc($resource_type);
+$totalRows_resource_type = mysql_num_rows($resource_type);
+
+
 mysql_select_db($database_conn, $conn);
 $query_current_courses = sprintf("SELECT c_id,c_name,c_stream,start_date,end_date,avg_rating FROM course NATURAL JOIN create_course WHERE u_id=%s AND start_date<=DATE(NOW()) AND end_date>=DATE(NOW()) ORDER BY start_date ASC",GetSQLValueString($_SESSION['MM_UserID'], "int"));
 $current_courses = mysql_query($query_current_courses, $conn) or die(mysql_error());
@@ -234,6 +246,7 @@ function MM_validateForm() { //v4.0
     <li class="TabbedPanelsTab" tabindex="0">Create Course</li>
     <li class="TabbedPanelsTab" tabindex="0">Current Courses</li>
     <li class="TabbedPanelsTab" tabindex="0">All Courses</li>
+    <li class="TabbedPanelsTab" tabindex="0">Upload Resource</li>
   </ul>
   <div class="TabbedPanelsContentGroup">
     <div class="TabbedPanelsContent">
@@ -353,7 +366,46 @@ var allOptions = {
 var allList = new List('all_courses', allOptions);
 </script>
     </div>
-	</div>
+    <div class="TabbedPanelsContent">
+     <!--start of tab upload resource-->
+     <div id="New Resource">
+      <p>Please enter the Resource details : </p>
+      <form id="new_resource" method="POST" action="upload_res.php" enctype="multipart/form-data">
+       <p>
+          <label for="co_name">Course Name* :</label>
+          <select id= "co_name" name="co_name">
+<?php 
+		 do { 
+		
+				echo '<option value="'.$row_new_resource['c_id'].'"';
+            echo '>'. $row_new_resource['c_name'] . '</option>'."\n";
+		} while ($row_new_resource= mysql_fetch_assoc( $new_resource));
+?></select>
+       </p>
+       <p>
+          <label for="r_name">Resource Name* :</label>
+          <input type="text" name="r_name" id="r_name" />
+       </p> 
+       <p>
+          <label for="r_type">Resource Type* :</label>
+          <select id= "r_type" name="r_type">
+<?php 
+		 do { 
+		
+				echo '<option value="'.$row_resource_type['type_id'].'"';
+            echo '>'. $row_resource_type['r_type'] . '</option>'."\n";
+		} while ($row_resource_type= mysql_fetch_assoc( $resource_type));
+?></select>
+       </p> 
+       <p> <label for="file">File* :</label>
+<input type="file" name="file" id="file">
+		</p>  
+      	   <input name="submit" type="submit" id="submit" onclick="MM_validateForm('co_name','','R','r_name','','R','r_type','','R');return document.MM_returnValue" value="Upload" action="upload_res.php"/>
+      <input type="hidden" name="MM_insert" value="form" />
+      </form>
+      	</div><!--end of tab upload resource-->
+      </div>
+      </div>
     </div>
 <br />
 <a href="<?php echo $logoutAction ?>">Log out</a>
@@ -364,8 +416,8 @@ var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1");
 </html>
 <?php
 mysql_free_result($all_courses);
-
 mysql_free_result($current_courses);
-
+mysql_free_result($new_resource);
+mysql_free_result($resource_type);
 mysql_free_result($get_cid);
 ?>
