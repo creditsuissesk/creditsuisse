@@ -10,7 +10,7 @@ if ((($_FILES["file"]["type"] == "image/gif")
 || ($_FILES["file"]["type"] == "image/pjpeg")
 || ($_FILES["file"]["type"] == "image/x-png")
 || ($_FILES["file"]["type"] == "image/png"))
-&& ($_FILES["file"]["size"] < 20000)
+&& ($_FILES["file"]["size"] < 50000)
 /*&& in_array($extension, $allowedExts)*/
 )
   {

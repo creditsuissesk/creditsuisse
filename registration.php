@@ -151,9 +151,9 @@
 		<p class="contact">
 		  <label for="stream">Stream* : </label></p>
 		  <input type="text" name="stream" id="stream" placeholder="Stream Name"/>
-		  <p>
+		  <p><label for="role">I am...* : </label></p>
+          <p>
 		   <select class="select-style gender" name="role" id="role">
-				  <option value="select">I am..</option>
 				  <option value="student">Student</option>
 				  <option value="author">Author</option>
 				  <option value="cm">Content Manager</option>
