@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 03, 2014 at 01:32 PM
+-- Generation Time: Feb 03, 2014 at 03:37 PM
 -- Server version: 5.6.14
 -- PHP Version: 5.5.6
 
@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS `comment` (
   KEY `delete_uid` (`delete_uid`),
   KEY `update_uid` (`update_uid`),
   KEY `discussion_id` (`discussion_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
 
 --
 -- Dumping data for table `comment`
@@ -92,7 +92,9 @@ INSERT INTO `comment` (`comment_id`, `discussion_id`, `insert_uid`, `date_insert
 (6, 2, 5, '2014-01-30 11:46:53', NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', ' this is posted from forums!', 0, 0),
 (7, 8, 5, '2014-01-30 12:02:25', NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', ' temp comment to test redirection!', 0, 0),
 (8, 2, 12, '2014-01-30 12:51:49', NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', ' comment by photouser!', 0, 0),
-(9, 10, 12, '2014-01-31 08:55:16', NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', ' hmmm...looks like it is being updated. now testing if the comment count is being updated or not...', 0, 0);
+(9, 10, 12, '2014-01-31 08:55:16', NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', ' hmmm...looks like it is being updated. now testing if the comment count is being updated or not...', 0, 0),
+(10, 3, 12, '2014-02-03 12:58:39', NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', ' some comment added newly!', 0, 0),
+(11, 2, 5, '2014-02-03 14:25:10', NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', 'new comment to test whether user gets new comment notifications or not!', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -176,9 +178,9 @@ CREATE TABLE IF NOT EXISTS `discussion` (
 --
 
 INSERT INTO `discussion` (`discussion_id`, `type`, `category_id`, `insert_uid`, `last_comment_id`, `name`, `disc_body`, `count_comments`, `date_inserted_d`, `date_updated_d`, `rating`) VALUES
-(2, 0, 1, 5, 0, 'First discussion', 'First discussion body!', 2, '2014-01-19 04:13:19', '0000-00-00 00:00:00', 7),
-(3, 0, 1, 8, 0, 'This is by Kunal', 'Kunal''s body! :P', 0, '2014-01-19 04:38:46', '0000-00-00 00:00:00', 1),
-(4, 0, 2, 5, 0, 'Is this forum style okay?', 'We''ll continue this is it looks good..', 1, '2014-01-19 04:42:45', '0000-00-00 00:00:00', -1),
+(2, 0, 1, 5, 0, 'First discussion', 'First discussion body!', 5, '2014-01-19 04:13:19', '0000-00-00 00:00:00', 7),
+(3, 0, 1, 8, 0, 'This is by Kunal', 'Kunal''s body! :P', 1, '2014-01-19 04:38:46', '0000-00-00 00:00:00', 2),
+(4, 0, 2, 5, 0, 'Is this forum style okay?', 'We''ll continue this is it looks good..\r\nRuhollah Musavi Khomeini, whose name means "inspired of God" was born on 22 or 24 September 1902 in Khomeyn, Markazi Province. He was raised by his mother Hajieh Agha Khanum and aunt Sahebeth following the murder of his father Seyed Mostafa Hindi 5 months after his birth in 1903.[26]\r\n\r\nRuhollah began to study the Qur''an and elementary Persian at the age of six.[27] The following year, he began to attend a local school, where he learned religion, "noheh khani" and other traditional subjects.[24] Throughout his childhood, he would continue his religious education with the assistance of his relatives, including his mother''s cousin, Ja''far,[24] and his elder brother, Morteza Pasandideh.', 1, '2014-01-19 04:42:45', '0000-00-00 00:00:00', 0),
 (8, 0, 1, 5, 0, 'new disc title', 'new disc body ', 1, '2014-01-30 09:12:29', '0000-00-00 00:00:00', 0),
 (9, 0, 1, 5, 0, 'testing new discussion', 'discussion body ', 0, '2014-01-30 11:58:56', '0000-00-00 00:00:00', 0),
 (10, 0, 1, 12, 0, 'testing update count', ' This discussion is being opened to test if the user''s discussion count is being updated or not.', 1, '2014-01-31 08:54:19', '0000-00-00 00:00:00', 0);
@@ -328,14 +330,14 @@ INSERT INTO `user` (`u_id`, `u_name`, `password`, `f_name`, `l_name`, `contact_n
 (2, 'abc@tech.org', 'qwerty', 'aaa', 'bbb', 4321, '1997-04-02', 'vj', 'it', 'author', 1, 'images/profiles/02.jpg', '', 0, 0, 0, 0, 0, 0),
 (3, 'dalvishaarad@gmail.c', 'password', 'Shaarad', 'Dalvi', 2147483647, '2012-04-01', 'vjti', 'comps', 'student', 1, 'images/profiles/03.jpg', '', 0, 0, 0, 0, 0, 0),
 (4, 'shaaraddalvi@outlook.com', 'password', 'Shaarad', 'Dalvi', 25406266, '1993-11-01', 'vjti', 'comps', 'student', 1, 'images/profiles/04.jpg', '', 0, 0, 0, 0, 0, 0),
-(5, 'sh@yahoo.co.in', 'password', 'shaarad', 'dalvi', 25406266, '2014-11-01', 'vjti', 'comp', 'student', 1, 'images/profiles/05.jpg', '', 0, 0, 4, 0, 0, 0),
+(5, 'sh@yahoo.co.in', 'password', 'shaarad', 'dalvi', 25406266, '2014-11-01', 'vjti', 'comp', 'student', 1, 'images/profiles/05.jpg', '', 0, 0, 4, 0, 1, 0),
 (6, 'root', 'rootpass', 'root', 'root', 12345678, '2014-01-01', 'root', 'root', 'admin', 1, 'images/profiles/06.jpg', '', 0, 0, 0, 0, 0, 0),
 (7, 'cm', 'qwerty', 'cm', 'cm', 1234567890, '2014-01-05', 'vjti', 'comp', 'cm', 1, 'images/profiles/07.jpg', '', 0, 0, 0, 0, 0, 0),
-(8, 'kunalshah', 'pass1234', 'Kunal', 'Shah', 876543321, '2014-01-03', 'veermata JTI', 'computers', 'student', 1, 'images/profiles/08.jpg', '', 0, 0, 0, 0, 0, 0),
+(8, 'kunalshah', 'pass1234', 'Kunal', 'Shah', 876543321, '2014-01-03', 'veermata JTI', 'computers', 'student', 1, 'images/profiles/08.jpg', '', 0, 0, 1, 0, 0, 0),
 (9, 'new1@gmail.com', 'password', 'new1name', 'new1surname', 982680350, '2014-01-01', 'vjti', 'comp', 'student', 2, '', '', 0, 0, 0, 0, 0, 0),
 (10, 'new2@gmail.com', 'password', 'new2', 'new2surname', 2147483647, '2014-01-02', 'vjti', 'comp', 'student', 0, '', '', 0, 0, 0, 0, 0, 0),
 (11, 'new3', 'password', 'new3fname', 'new3lname', 1234567890, '2013-12-04', 'vjti', 'comp', 'student', 0, '', '', 0, 0, 0, 0, 0, 0),
-(12, 'photouser@gmail.com', 'password', 'photof', 'photol', 987654321, '2014-01-06', 'insti', 'comp', 'student', 1, 'images/profiles/lamborghini-cars-logo-emblem.jpg', '', 0, 0, 0, 0, 1, 1);
+(12, 'photouser@gmail.com', 'password', 'photof', 'photol', 987654321, '2014-01-06', 'insti', 'comp', 'student', 1, 'images/profiles/lamborghini-cars-logo-emblem.jpg', '', 0, 0, 0, 0, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -361,19 +363,23 @@ CREATE TABLE IF NOT EXISTS `user_comment` (
 INSERT INTO `user_comment` (`user_comment_id`, `user_id`, `vote_status`, `bookmarked`, `date_last_viewed`) VALUES
 (2, 1, 1, 0, '2014-01-24 07:06:52'),
 (3, 1, -1, 0, '2014-01-24 07:06:52'),
-(2, 5, 0, 0, '2014-01-31 10:58:41'),
-(3, 5, 0, 0, '2014-01-31 10:58:41'),
+(2, 5, 0, 0, '2014-02-03 14:25:12'),
+(3, 5, 0, 0, '2014-02-03 14:25:12'),
 (5, 5, 0, 0, '2014-01-30 11:47:38'),
-(6, 5, 0, 0, '2014-01-31 10:58:41'),
+(6, 5, 0, 0, '2014-02-03 14:25:12'),
 (7, 5, 0, 0, '2014-01-30 12:02:25'),
-(8, 5, 0, 0, '2014-01-31 10:58:41'),
-(2, 12, 0, 0, '2014-02-03 11:38:18'),
-(3, 12, -1, 0, '2014-02-03 11:38:18'),
+(8, 5, 0, 0, '2014-02-03 14:25:12'),
+(10, 5, 0, 0, '2014-02-03 14:25:20'),
+(11, 5, 0, 0, '2014-02-03 14:25:12'),
+(2, 12, 0, 0, '2014-02-03 14:30:26'),
+(3, 12, -1, 0, '2014-02-03 14:30:26'),
 (5, 12, 0, 0, '2014-02-03 11:53:00'),
-(6, 12, 0, 0, '2014-02-03 11:38:18'),
+(6, 12, 0, 0, '2014-02-03 14:30:26'),
 (7, 12, 0, 0, '2014-02-03 09:56:01'),
-(8, 12, 0, 0, '2014-02-03 11:38:18'),
-(9, 12, 0, 0, '2014-01-31 08:55:17');
+(8, 12, 0, 0, '2014-02-03 14:30:26'),
+(9, 12, 0, 0, '2014-01-31 08:55:17'),
+(10, 12, 0, 0, '2014-02-03 13:40:27'),
+(11, 12, 0, 0, '2014-02-03 14:30:26');
 
 -- --------------------------------------------------------
 
@@ -401,13 +407,13 @@ INSERT INTO `user_discussion` (`u_id`, `user_discussion_id`, `seen_comments`, `d
 (1, 2, 2, '2014-01-24 07:06:52', 0, 0),
 (1, 3, 0, '2014-01-24 07:27:27', 0, 0),
 (1, 4, 0, '2014-01-24 07:27:39', 0, 0),
-(5, 2, 4, '2014-01-31 10:58:41', 0, 0),
-(5, 3, 0, '2014-01-30 11:37:26', 0, 0),
+(5, 2, 5, '2014-02-03 14:25:11', 0, 0),
+(5, 3, 1, '2014-02-03 14:25:20', 0, 0),
 (5, 4, 1, '2014-01-30 11:47:38', 0, 0),
 (5, 8, 1, '2014-01-30 12:02:25', 0, 0),
 (5, 9, 0, '2014-01-30 11:59:18', 0, 0),
-(12, 2, 4, '2014-02-03 11:38:18', 1, 0),
-(12, 4, 1, '2014-02-03 11:53:00', 0, 0),
+(12, 2, 5, '2014-02-03 14:30:26', 0, 0),
+(12, 3, 1, '2014-02-03 13:40:30', 1, 1),
 (12, 8, 1, '2014-02-03 09:56:01', 0, 0),
 (12, 9, 0, '2014-02-03 09:46:22', 0, 0),
 (12, 10, 1, '2014-01-31 08:55:17', 0, 0);
