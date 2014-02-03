@@ -404,9 +404,19 @@ $totalRows_discussions = mysql_num_rows($discussions);
                         <th><dd>Comments </dd> </th>
                         </tr>
                         <tr>
-                        <td><dd><?php echo $row_discussions['count_comments']; ?> </dd></td>
+                        <td><dd><?php echo $row_discussions['count_comments']; ?> </dd>
+                        </td>
                         </tr>
                         </table>
+                        <new_comments><?php 
+						if (!is_null($row_discussions['seen_comments'])){
+						if ($row_discussions['count_comments']-$row_discussions['seen_comments']>1) {
+							echo $row_discussions['count_comments']-$row_discussions['seen_comments']." new comments!";
+						}else if ($row_discussions['count_comments']-$row_discussions['seen_comments']==1) {
+							echo "1 new comment!";
+						}
+						}?>
+                        </new_comments>
                         </aside>
                         <aside class="right-sidebar">
                         	<div id="disc<?php echo $row_discussions['discussion_id']; ?>" class="upvote">

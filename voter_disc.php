@@ -130,7 +130,7 @@ if(isset($_POST['star'])) {
 			}
 			//$query_update_userbookmark = sprintf("UPDATE `user_discussion` SET bookmarked=%s WHERE user_discussion_id=%s AND u_id=%s",GetSQLValueString($bookmarked, "int"),GetSQLValueString($_POST['id'], "int"),GetSQLValueString($_SESSION['MM_UserID'], "int"));
 			$query_update_userbookmark=sprintf("INSERT INTO `user_discussion` (u_id,user_discussion_id,seen_comments,date_last_viewed,bookmarked,vote_status) VALUES ('%s','%s','0',now(),'%s','0') ON DUPLICATE KEY UPDATE date_last_viewed=now(),bookmarked=%s;",GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($_POST['id'], "int"),GetSQLValueString($bookmarked, "int"),GetSQLValueString($bookmarked, "int"));
-			file_put_contents("test.txt",$query_update_userbookmark);
+			//file_put_contents("test.txt",$query_update_userbookmark);
 			$update_userbookmark=mysql_query($query_update_userbookmark, $conn) or die(mysql_error());
 			
 			unset($_POST);
