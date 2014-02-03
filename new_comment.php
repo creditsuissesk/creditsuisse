@@ -92,7 +92,7 @@ if(isset($_POST['comment_body']) && isset($_POST['disc_id'])) {
 		$Result2 = mysql_query($update_comment_count, $conn) or die(mysql_error());
 	  
 	  	//update user's comment count
-		$update_creator_count =sprintf("UPDATE user SET count_comments=count_comments+1 WHERE u_id=%s",							 GetSQLValueString($_SESSION['MM_UserID'], "text"));
+		$update_creator_count =sprintf("UPDATE user SET created_comments=created_comments+1 WHERE u_id=%s",							 GetSQLValueString($_SESSION['MM_UserID'], "text"));
 		$Result3 = mysql_query($update_creator_count, $conn) or die(mysql_error());
 		
 		$insertGoTo = "index.php";

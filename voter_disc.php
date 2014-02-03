@@ -77,7 +77,7 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 }
 
 mysql_select_db($database_conn, $conn);
-if (isset($_POST['up']) ||  isset($_POST['down']) || isset($_POST['star'])){
+if (isset($_POST['up']) ||  isset($_POST['down'])){
 		//checking to prevent self-voting
 		$query_check_voter = sprintf("SELECT * FROM `discussion` WHERE discussion_id =%s",GetSQLValueString($_POST['id'], "int"));
 		$check_voter = mysql_query($query_check_voter, $conn) or die(mysql_error());
@@ -96,10 +96,10 @@ if (isset($_POST['up']) ||  isset($_POST['down']) || isset($_POST['star'])){
 			$difference=$new_score-$prev_score;
 			
 						//file_put_contents("test.txt",$difference."\n\r".$_POST['upstatus']."\n\r".$_POST['downstatus']);
-			if($_POST['upstatus']=="true") {
+			if($_POST['upstatus']=="true" || $_POST['upstatus']=="1") {
 				$vote_value=1;
 				//file_put_contents("test.txt","upvoted",FILE_APPEND);				
-			}else if ($_POST['downstatus']=="true") {
+			}else if ($_POST['downstatus']=="true" || $_POST['downstatus']=="1") {
 				//file_put_contents("test.txt","downvoted",FILE_APPEND);
 				$vote_value=-1;	
 			}else if (empty($_POST['upstatus']) and empty($_POST['downstatus'])) {
@@ -117,15 +117,19 @@ if (isset($_POST['up']) ||  isset($_POST['down']) || isset($_POST['star'])){
 			echo 1;
 		}
 		//regardless of whoever is user, anyone can bookmark discussion.
-		if(isset($_POST['star'])) {
-			if($_POST['star']=="true"){
+		
+		//unset($_POST);
+}
+if(isset($_POST['star'])) {
+			if($_POST['star']=="true" || $_POST['star']=='1'){
+			//if(empty($_POST['star'])){
 					$bookmarked=1;
-			}else{
+			}else if ($_POST['star']!='0'){
 					$bookmarked=0;
 			}
 			$query_update_userbookmark = sprintf("UPDATE `user_discussion` SET bookmarked=%s WHERE discussion_id=%s AND u_id=%s",GetSQLValueString($bookmarked, "int"),GetSQLValueString($_POST['id'], "int"),GetSQLValueString($_SESSION['MM_UserID'], "int"));
 			$update_userbookmark=mysql_query($query_update_userbookmark, $conn) or die(mysql_error());
+			
+			unset($_POST);
 		}
-		unset($_POST);
-}
 ?>
