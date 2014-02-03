@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 02, 2014 at 07:53 PM
+-- Generation Time: Feb 03, 2014 at 03:52 PM
 -- Server version: 5.6.14
 -- PHP Version: 5.5.6
 
@@ -263,7 +263,7 @@ CREATE TABLE IF NOT EXISTS `resource` (
   UNIQUE KEY `uploaded_by` (`uploaded_by`),
   KEY `c_id` (`c_id`),
   KEY `type_id` (`type_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -407,6 +407,20 @@ INSERT INTO `user_discussion` (`u_id`, `discussion_id`, `count_comments`, `date_
 (12, 2, 4, '2014-01-31 11:27:34', 0, 1),
 (12, 10, 1, '2014-01-31 08:55:17', 0, 0);
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_resource`
+--
+
+CREATE TABLE IF NOT EXISTS `user_resource` (
+  `u_id` int(11) unsigned NOT NULL,
+  `r_id` int(11) unsigned NOT NULL,
+  `download_status` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`u_id`,`r_id`),
+  KEY `r_id` (`r_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 --
 -- Constraints for dumped tables
 --
@@ -474,6 +488,13 @@ ALTER TABLE `user_comment`
 ALTER TABLE `user_discussion`
   ADD CONSTRAINT `user_discussion_ibfk_1` FOREIGN KEY (`u_id`) REFERENCES `user` (`u_id`),
   ADD CONSTRAINT `user_discussion_ibfk_2` FOREIGN KEY (`discussion_id`) REFERENCES `discussion` (`discussion_id`);
+
+--
+-- Constraints for table `user_resource`
+--
+ALTER TABLE `user_resource`
+  ADD CONSTRAINT `user_resource_ibfk_2` FOREIGN KEY (`r_id`) REFERENCES `resource` (`r_id`),
+  ADD CONSTRAINT `user_resource_ibfk_1` FOREIGN KEY (`u_id`) REFERENCES `user` (`u_id`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
