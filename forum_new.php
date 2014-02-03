@@ -386,17 +386,25 @@ $totalRows_discussions = mysql_num_rows($discussions);
                     	<div class="container">
                     	<main class="content">
                         <dt>
-                        <a href="forum_new.php?showTab=discussions&mode=disc&discussionid=<?php echo $row_discussions['discussion_id'];?> "> <?php echo $row_discussions['name'];?> </a> <br /></dt>
-                        <datetime><?php echo "By ".$row_discussions['f_name']." ".$row_discussions['l_name']." on ".$row_discussions['date_inserted_d'];?></datetime>
+                        <a href="forum_new.php?showTab=discussions&mode=disc&discussionid=<?php echo $row_discussions['discussion_id'];?> "> <?php echo $row_discussions['name'];?> </a> </dt>
+                        <datetime><?php echo "By ".$row_discussions['f_name']." ".$row_discussions['l_name']." on ".$row_discussions['date_inserted_d'];?></datetime> <br />
+                        <dd>
+                        <?php if (strlen($row_discussions['disc_body'])>400) {
+							echo substr($row_discussions['disc_body'],0,400)."....";
+							}else {
+								echo $row_discussions['disc_body'];
+							}
+						?>
+                        </dd>
                         </main>
                     	</div>
                         <aside class="left-sidebar">
-                        <table>
+                        <table border="0">
                         <tr>
-                        <th> Comments </th>
+                        <th><dd>Comments </dd> </th>
                         </tr>
                         <tr>
-                        <td><?php echo $row_discussions['count_comments']; ?></td>
+                        <td><dd><?php echo $row_discussions['count_comments']; ?> </dd></td>
                         </tr>
                         </table>
                         </aside>
