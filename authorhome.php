@@ -397,7 +397,16 @@ var allList = new List('all_courses', allOptions);
 		} while ($row_resource_type= mysql_fetch_assoc( $resource_type));
 ?></select>
        </p> 
-       <p> <label for="file">File* :</label>
+       <p>
+       <label for="download">Download Status* :</label>
+       <select id= "download" name="download">
+       <option value="1">Allow Download</option>
+       <option value="0">Deny Download</option>
+       </select>
+       </p>
+       <br/>
+       <p> 
+       <label for="file">File* :</label>
 <input type="file" name="file" id="file">
 		</p>  
       	   <input name="submit" type="submit" id="submit" onclick="MM_validateForm('co_name','','R','r_name','','R','r_type','','R');return document.MM_returnValue" value="Upload" action="upload_res.php"/>

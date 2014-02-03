@@ -91,6 +91,15 @@ $query_course_students = sprintf("SELECT * FROM `user` NATURAL JOIN `enroll_cour
 $course_students = mysql_query($query_course_students, $conn) or die(mysql_error());
 $row_course_students = mysql_fetch_assoc($course_students);
 $totalRows_course_students = mysql_num_rows($course_students);
+
+
+mysql_select_db($database_conn, $conn);
+$query_resource = sprintf("SELECT r_id,c_id,uploaded_date,file_size,r_type,type_id,file_type,filename,download_status FROM `resource`NATURAL JOIN `resource_type` WHERE c_id=%s ",GetSQLValueString($_GET['c_id'], "int"));
+$resource = mysql_query($query_resource, $conn) or die(mysql_error());
+$row_resource = mysql_fetch_assoc($resource);
+$totalRows_resource = mysql_num_rows($resource);
+
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -172,7 +181,62 @@ var userList = new List('users', options);
 		}
 		?>
 </div>
-      <p>&nbsp;</p>
+		 <!--start of file tab-->
+         <div class="TabbedPanelsContent">
+         <?php if($totalRows_course_students>0) {?>
+      	<div id="resource">
+    <div class="datagrid">
+  <table>
+   <thead>
+    <tr>
+     <th class="sort" data-sort="name">Resource Name</th>
+     <th class="sort" data-sort="size">Resource Size</th>
+     <th class="sort" data-sort="type">Resource Type</th>
+     <th class="sort" data-sort="date">Resource Uploaded Date</th>
+     <th class="sort" data-sort="f_type">File Type</th>
+     <th></th>
+    </tr>
+   </thead> 
+    <tbody class="list">
+    <?php do { ?>
+      <tr>
+        <td class="name"><?php echo $row_resource['filename'];?></td>
+        <td class="size"><?php echo $row_resource['file_size'];?></td>
+        <td class="type"><?php echo $row_resource['r_type'];?></td>
+        <td class="date"><?php echo $row_resource['uploaded_date'];?></td>
+        <td class="f_type"><?php echo $row_resource['file_type'];?></td>
+<?php if($row_resource['download_status']==1){?>
+        <form  id="form1" name="form1" method="POST" action="download_res.php">    
+        
+        <td> 
+        <input name="change" id="change" value="Download" type="submit" >        
+        </input>
+        <input type="hidden" name="id" id="id" value="<?php echo $row_resource['r_id'];?>"  />
+        
+        <input type="hidden" name="MM_change" value="form1" />
+        </td>
+        </form>
+        <?php }else echo "";?>
+       </tr> 
+    </tbody>
+    <?php } while ($row_resource = mysql_fetch_assoc($resource)); ?>
+   </table>
+        </div>
+        </div>
+        <?php }
+		else {
+			echo "No resources have been uploaded for this course yet!";
+		}
+		?>
+         <script>
+var resOptions = {
+  valueNames: ['name','size','type','date','f_type' ]
+};
+
+// Init list
+var resList = new List('resource', resOptions);
+</script>
+        </div><!--end of file tab-->
    </div>
 </div>
 <p><a href="authorhome.php">Back to Home</a></p>
@@ -185,4 +249,5 @@ var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1");
 mysql_free_result($course_details);
 
 mysql_free_result($course_students);
+mysql_free_result($resource);
 ?>

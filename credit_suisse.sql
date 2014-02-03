@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 03, 2014 at 01:32 PM
+-- Generation Time: Feb 03, 2014 at 09:19 PM
 -- Server version: 5.6.14
 -- PHP Version: 5.5.6
 
@@ -257,13 +257,13 @@ CREATE TABLE IF NOT EXISTS `resource` (
   `file_location` varchar(255) NOT NULL,
   `uploaded_by` int(10) unsigned NOT NULL,
   `uploaded_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `download_status` tinyint(1) NOT NULL DEFAULT '0',
   `avg_rating` double unsigned NOT NULL DEFAULT '0',
   `flag_status` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`r_id`),
-  UNIQUE KEY `uploaded_by` (`uploaded_by`),
   KEY `c_id` (`c_id`),
   KEY `type_id` (`type_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 -- --------------------------------------------------------
 
@@ -412,20 +412,6 @@ INSERT INTO `user_discussion` (`u_id`, `user_discussion_id`, `seen_comments`, `d
 (12, 9, 0, '2014-02-03 09:46:22', 0, 0),
 (12, 10, 1, '2014-01-31 08:55:17', 0, 0);
 
--- --------------------------------------------------------
-
---
--- Table structure for table `user_resource`
---
-
-CREATE TABLE IF NOT EXISTS `user_resource` (
-  `u_id` int(11) unsigned NOT NULL,
-  `r_id` int(11) unsigned NOT NULL,
-  `download_status` tinyint(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`u_id`,`r_id`),
-  KEY `r_id` (`r_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
 --
 -- Constraints for dumped tables
 --
@@ -477,8 +463,7 @@ ALTER TABLE `rate_resource`
 --
 ALTER TABLE `resource`
   ADD CONSTRAINT `resource_ibfk_1` FOREIGN KEY (`c_id`) REFERENCES `course` (`c_id`),
-  ADD CONSTRAINT `resource_ibfk_2` FOREIGN KEY (`type_id`) REFERENCES `resource_type` (`type_id`),
-  ADD CONSTRAINT `resource_ibfk_3` FOREIGN KEY (`uploaded_by`) REFERENCES `user` (`u_id`);
+  ADD CONSTRAINT `resource_ibfk_2` FOREIGN KEY (`type_id`) REFERENCES `resource_type` (`type_id`);
 
 --
 -- Constraints for table `user_comment`
@@ -493,13 +478,6 @@ ALTER TABLE `user_comment`
 ALTER TABLE `user_discussion`
   ADD CONSTRAINT `user_discussion_ibfk_1` FOREIGN KEY (`u_id`) REFERENCES `user` (`u_id`),
   ADD CONSTRAINT `user_discussion_ibfk_2` FOREIGN KEY (`user_discussion_id`) REFERENCES `discussion` (`discussion_id`);
-
---
--- Constraints for table `user_resource`
---
-ALTER TABLE `user_resource`
-  ADD CONSTRAINT `user_resource_ibfk_2` FOREIGN KEY (`r_id`) REFERENCES `resource` (`r_id`),
-  ADD CONSTRAINT `user_resource_ibfk_1` FOREIGN KEY (`u_id`) REFERENCES `user` (`u_id`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

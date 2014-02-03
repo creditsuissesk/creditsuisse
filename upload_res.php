@@ -55,8 +55,9 @@ if ((($_FILES["file"]["type"] == "image/gif")
 || ($_FILES["file"]["type"] == "image/jpg")
 || ($_FILES["file"]["type"] == "image/pjpeg")
 || ($_FILES["file"]["type"] == "image/x-png")
-|| ($_FILES["file"]["type"] == "image/png"))
-&& ($_FILES["file"]["size"] < 50000)
+|| ($_FILES["file"]["type"] == "image/png")
+|| ($_FILES["file"]["type"] == "application/pdf"))
+&& ($_FILES["file"]["size"] < 500000)
 /*&& in_array($extension, $allowedExts)*/
 )
   {
@@ -113,15 +114,16 @@ if ((($_FILES["file"]["type"] == "image/gif")
 	  }
 	  }	  
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form")){
-		$insertSQL = sprintf("INSERT INTO resource (c_id,type_id,filename, file_type,file_size, file_location,uploaded_by ) ".
-           "VALUES (%s,%s,%s,%s,%s,%s,%s)",
+		$insertSQL = sprintf("INSERT INTO resource (c_id,type_id,filename, file_type,file_size, file_location,uploaded_by,download_status ) ".
+           "VALUES (%s,%s,%s,%s,%s,%s,%s,%s)",
 							 GetSQLValueString($_POST["co_name"], "int"),
 							 GetSQLValueString($_POST["r_type"], "int"),
 							 GetSQLValueString($filename, "text"),
 							 GetSQLValueString($_FILES["file"]["type"], "text"),
 							 GetSQLValueString($_FILES["file"]["size"], "double"),
 							 GetSQLValueString($upload_add, "text"),
-							 GetSQLValueString($_SESSION['MM_UserID'], "int")
+							 GetSQLValueString($_SESSION['MM_UserID'], "int"),
+							 GetSQLValueString($_POST["download"], "int")
 							 );
 	  
 		mysql_select_db($database_conn, $conn);
