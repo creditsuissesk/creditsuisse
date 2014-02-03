@@ -106,7 +106,7 @@ if (isset($_POST['up']) ||  isset($_POST['down'])){
 				//file_put_contents("test.txt","neutral",FILE_APPEND);				
 				$vote_value=0;
 			}
-			$query_update_userdisc = sprintf("UPDATE `user_discussion` SET vote_status=%s WHERE discussion_id=%s AND u_id=%s",GetSQLValueString($vote_value, "int"),GetSQLValueString($_POST['id'], "int"),GetSQLValueString($_SESSION['MM_UserID'], "int"));
+			$query_update_userdisc = sprintf("UPDATE `user_discussion` SET vote_status=%s WHERE user_discussion_id=%s AND u_id=%s",GetSQLValueString($vote_value, "int"),GetSQLValueString($_POST['id'], "int"),GetSQLValueString($_SESSION['MM_UserID'], "int"));
 			$update_userdisc=mysql_query($query_update_userdisc, $conn) or die(mysql_error());
 			
 			//update the score of user to whom vote was given
@@ -127,7 +127,7 @@ if(isset($_POST['star'])) {
 			}else if ($_POST['star']!='0'){
 					$bookmarked=0;
 			}
-			$query_update_userbookmark = sprintf("UPDATE `user_discussion` SET bookmarked=%s WHERE discussion_id=%s AND u_id=%s",GetSQLValueString($bookmarked, "int"),GetSQLValueString($_POST['id'], "int"),GetSQLValueString($_SESSION['MM_UserID'], "int"));
+			$query_update_userbookmark = sprintf("UPDATE `user_discussion` SET bookmarked=%s WHERE user_discussion_id=%s AND u_id=%s",GetSQLValueString($bookmarked, "int"),GetSQLValueString($_POST['id'], "int"),GetSQLValueString($_SESSION['MM_UserID'], "int"));
 			$update_userbookmark=mysql_query($query_update_userbookmark, $conn) or die(mysql_error());
 			
 			unset($_POST);
