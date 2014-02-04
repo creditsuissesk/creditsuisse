@@ -182,7 +182,7 @@ $totalRows_categories = mysql_num_rows($categories);
 					<!--- viewing a particular discussion--->
                     <?php
 					mysql_select_db($database_conn, $conn);
-					$query_disc = sprintf("SELECT * FROM `discussion` JOIN `user` ON insert_uid=u_id LEFT OUTER JOIN user_discussion ON discussion.discussion_id=user_discussion.discussion_id AND user_discussion.u_id=%s WHERE discussion.discussion_id =%s",GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($_GET['discussionid'], "int"));
+					$query_disc = sprintf("SELECT * FROM `discussion` JOIN `user` ON insert_uid=u_id LEFT OUTER JOIN user_discussion ON discussion.discussion_id=user_discussion.user_discussion_id AND user_discussion.u_id=%s WHERE discussion.discussion_id =%s",GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($_GET['discussionid'], "int"));
 					$disc = mysql_query($query_disc, $conn) or die(mysql_error());
 					$row_disc = mysql_fetch_assoc($disc);
 					$totalRows_disc = mysql_num_rows($disc);
@@ -222,7 +222,7 @@ $totalRows_categories = mysql_num_rows($categories);
 					?>
                     <!---discussion header loaded. Update in user_discussion --->
                     <?php 
-					$query_update_disc = sprintf("INSERT INTO user_discussion(u_id,discussion_id,seen_comments,date_last_viewed,bookmarked) VALUES ('%s','%s','%s',now(),'0') ON DUPLICATE KEY UPDATE date_last_viewed=now(),seen_comments=%s;",GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($_GET['discussionid'], "int"),GetSQLValueString($totalRows_comments, "int"),GetSQLValueString($totalRows_comments, "int"));
+					$query_update_disc = sprintf("INSERT INTO user_discussion(u_id,user_discussion_id,seen_comments,date_last_viewed,bookmarked) VALUES ('%s','%s','%s',now(),'0') ON DUPLICATE KEY UPDATE date_last_viewed=now(),seen_comments=%s;",GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($_GET['discussionid'], "int"),GetSQLValueString($totalRows_comments, "int"),GetSQLValueString($totalRows_comments, "int"));
 					$update_disc = mysql_query($query_update_disc, $conn) or die(mysql_error());
                     ?>
                     <!--- viewing comments if there are any --->
@@ -353,18 +353,6 @@ $totalRows_categories = mysql_num_rows($categories);
                 <!--- discussionid not set, so get each category in while loop--->
                 <a href="forum_new.php?showTab=discussions&mode=newDisc"><input name="new_disc" type="button" value="New Discussion" style="float:right;margin-right: 35px;" class="buttom" /></a>
                 <br />
-                <?php do { ?>
-                <forum-h4> <?php echo $row_categories['category_name']?></forum-h4>
-                <!--- now get all discussions of that category and show them in a loop--->
-                <?php
-				mysql_select_db($database_conn, $conn);
-$query_discussions = sprintf("SELECT * FROM discussion JOIN user ON discussion.insert_uid=user.u_id LEFT OUTER JOIN `user_discussion` ON discussion.discussion_id=user_discussion.discussion_id AND user_discussion.u_id=%s WHERE discussion.category_id=%s",GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($row_categories['category_id'], "int"));
-$discussions = mysql_query($query_discussions, $conn) or die(mysql_error());
-$row_discussions = mysql_fetch_assoc($discussions);
-$totalRows_discussions = mysql_num_rows($discussions);
-				?>
-                <!--- make list of all the discussions under that category--->
-                <!---<dl> --->
                 <!--- script and php for discussion voting in list view--->
                 <script>
                 var disc_callback = function(data) {
@@ -381,23 +369,54 @@ $totalRows_discussions = mysql_num_rows($discussions);
 				</script>   
                 <!--- end of script and php for discussion voting in list view --->
                 <?php do { ?>
+                <forum-h4> <?php echo $row_categories['category_name']?></forum-h4>
+                <!--- now get all discussions of that category and show them in a loop--->
+                <?php
+				mysql_select_db($database_conn, $conn);
+$query_discussions = sprintf("SELECT * FROM discussion JOIN user ON discussion.insert_uid=user.u_id LEFT OUTER JOIN `user_discussion` ON discussion.discussion_id=user_discussion.user_discussion_id AND user_discussion.u_id=%s WHERE discussion.category_id=%s",GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($row_categories['category_id'], "int"));
+$discussions = mysql_query($query_discussions, $conn) or die(mysql_error());
+$row_discussions = mysql_fetch_assoc($discussions);
+$totalRows_discussions = mysql_num_rows($discussions);
+				?>
+                <!--- make list of all the discussions under that category--->
+                <!---<dl> --->
+                
+                <?php do { ?>
                 	<div class="middle">
                     	<div class="container">
                     	<main class="content">
                         <dt>
-                        <a href="forum_new.php?showTab=discussions&mode=disc&discussionid=<?php echo $row_discussions['discussion_id'];?> "> <?php echo $row_discussions['name'];?> </a> <br /></dt>
-                        <datetime><?php echo "By ".$row_discussions['f_name']." ".$row_discussions['l_name']." on ".$row_discussions['date_inserted_d'];?></datetime>
+                        <a href="forum_new.php?showTab=discussions&mode=disc&discussionid=<?php echo $row_discussions['discussion_id'];?> "> <?php echo $row_discussions['name'];?> </a> </dt>
+                        <datetime><?php echo "By ".$row_discussions['f_name']." ".$row_discussions['l_name']." on ".$row_discussions['date_inserted_d'];?></datetime> <br />
+                        <dd>
+                        <?php if (strlen($row_discussions['disc_body'])>400) {
+							echo substr($row_discussions['disc_body'],0,400)."....";
+							}else {
+								echo $row_discussions['disc_body'];
+							}
+						?>
+                        </dd>
                         </main>
                     	</div>
                         <aside class="left-sidebar">
-                        <table>
+                        <table border="0">
                         <tr>
-                        <th> Comments </th>
+                        <th><dd>Comments </dd> </th>
                         </tr>
                         <tr>
-                        <td><?php echo $row_discussions['count_comments']; ?></td>
+                        <td><dd><?php echo $row_discussions['count_comments']; ?> </dd>
+                        </td>
                         </tr>
                         </table>
+                        <new_comments><?php 
+						if (!is_null($row_discussions['seen_comments'])){
+						if ($row_discussions['count_comments']-$row_discussions['seen_comments']>1) {
+							echo $row_discussions['count_comments']-$row_discussions['seen_comments']." new comments!";
+						}else if ($row_discussions['count_comments']-$row_discussions['seen_comments']==1) {
+							echo "1 new comment!";
+						}
+						}?>
+                        </new_comments>
                         </aside>
                         <aside class="right-sidebar">
                         	<div id="disc<?php echo $row_discussions['discussion_id']; ?>" class="upvote">
