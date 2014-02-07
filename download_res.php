@@ -36,10 +36,11 @@ if(isset($_POST['id']))
 	$query = sprintf("SELECT filename, file_type,file_size, file_location FROM resource WHERE r_id = %s",GetSQLValueString($id, "int"));
 	$result = mysql_query($query) or die('Error, query failed'); 
 	list($name, $type, $size, $location) =  mysql_fetch_row($result);
-	$extract = fopen($location, 'r');
+/*	$extract = fopen($location, 'r');
 	$content = fread($extract, $size);
 	$content = addslashes($content);
-	fclose($extract);
+	fclose($extract);*/
+	$content = file_get_contents($location);
 	 header("Content-Disposition: attachment; filename=\"$name\"");
         header("Content-type: $type");
         header("Content-length: $size");
