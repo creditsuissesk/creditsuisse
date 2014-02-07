@@ -195,6 +195,9 @@ var userList = new List('users', options);
      <th class="sort" data-sort="date">Resource Uploaded Date</th>
      <th class="sort" data-sort="f_type">File Type</th>
      <th></th>
+      <th colspan="2">
+          <input type="text" class="search" placeholder="Search Resource" />
+        </th>
     </tr>
    </thead> 
     <tbody class="list">
@@ -216,26 +219,26 @@ var userList = new List('users', options);
         <input type="hidden" name="MM_change" value="form1" />
         </td>
         </form>
-        <?php }else echo "";?>
+        <?php }else echo "<td> </td>";?>
        </tr> 
     </tbody>
     <?php } while ($row_resource = mysql_fetch_assoc($resource)); ?>
    </table>
         </div>
         </div>
-        <?php }
+       
+<script>
+var resOptions = {
+  valueNames: ['name','size','type','date','f_type' ]
+};
+// Init list
+var resList = new List('resource', resOptions);
+</script>
+    <?php }
 		else {
 			echo "No resources have been uploaded for this course yet!";
 		}
 		?>
-         <script>
-var resOptions = {
-  valueNames: ['name','size','type','date','f_type' ]
-};
-
-// Init list
-var resList = new List('resource', resOptions);
-</script>
         </div><!--end of file tab-->
    </div>
 </div>
