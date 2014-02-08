@@ -1,6 +1,36 @@
 <?php require_once('Connections/conn.php'); ?>
 <?php /*php script for uploading pic */?>
 <?php
+if (!function_exists("GetSQLValueString")) {
+	  function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
+	  {
+		if (PHP_VERSION < 6) {
+		  $theValue = get_magic_quotes_gpc() ? stripslashes($theValue) : $theValue;
+		}
+	  
+		$theValue = function_exists("mysql_real_escape_string") ? mysql_real_escape_string($theValue) : mysql_escape_string($theValue);
+	  
+		switch ($theType) {
+		  case "text":
+			$theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
+			  break;    
+		  case "long":
+		  case "int":
+			$theValue = ($theValue != "") ? intval($theValue) : "NULL";
+			break;
+		  case "double":
+			$theValue = ($theValue != "") ? doubleval($theValue) : "NULL";
+			break;
+		  case "date":
+			$theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
+			break;
+		  case "defined":
+			$theValue = ($theValue != "") ? $theDefinedValue : $theNotDefinedValue;
+			break;
+		}
+		return $theValue;
+	  }
+	  }
 if (!isset($_SESSION)) {
   session_start();
 }
@@ -49,6 +79,8 @@ if (!((isset($_SESSION['MM_Username'])) && (isAuthorized("",$MM_authorizedUsers,
 $allowedExts = array("gif", "jpeg", "jpg", "png");
 $temp = explode(".", $_FILES["file"]["name"]);
 $extension = end($temp);
+$max_size=500000000;
+$max_size_mb=(500000000/1024)/1024;
 $filename=$_POST['r_name'] . "." . $extension;
 if ((($_FILES["file"]["type"] == "image/gif")
 || ($_FILES["file"]["type"] == "image/jpeg")
@@ -57,20 +89,20 @@ if ((($_FILES["file"]["type"] == "image/gif")
 || ($_FILES["file"]["type"] == "image/x-png")
 || ($_FILES["file"]["type"] == "image/png")
 || ($_FILES["file"]["type"] == "application/pdf"))
-&& ($_FILES["file"]["size"] < 500000)
+&& ($_FILES["file"]["size"] < $max_size)
 /*&& in_array($extension, $allowedExts)*/
 )
   {
   if ($_FILES["file"]["error"] > 0)
     {
-    echo "Return Code: " . $_FILES["file"]["error"] . "<br>";
+    echo '<script type="text/javascript">alert("File Error: '. $_FILES["file"]["error"] . ' ");window.location="http://localhost/dreamweaver/authorhome.php";</script>';
     }
   else
     {
-    echo "Upload: " . $_POST['r_name'] . "." . $extension . "<br>";
+    /*echo "Upload: " . $_POST['r_name'] . "." . $extension . "<br>";
     echo "Type: " . $_FILES["file"]["type"] . "<br>";
     echo "Size: " . ($_FILES["file"]["size"] / 1024) . " kB<br>";
-    echo "Temp file: " . $_FILES["file"]["tmp_name"] . "<br>";
+    echo "Temp file: " . $_FILES["file"]["tmp_name"] . "<br>";*/
 	$upload_add="resource/".$_POST["co_name"]."/" . $filename;
 	$path = "resource/".$_POST["co_name"];
 
@@ -79,44 +111,13 @@ if ( ! is_dir($path)) {
 }
     if (file_exists($upload_add))
       {
-      echo  $filename. " already exists. ";
+      echo  '<script type="text/javascript">alert("'. $filename . '  already exists. "); window.location="http://localhost/dreamweaver/authorhome.php";</script>';
       }
     else
       {
       move_uploaded_file($_FILES["file"]["tmp_name"],
       $upload_add);
-	  echo "Stored in: " .  $upload_add;
-      
-	  if (!function_exists("GetSQLValueString")) {
-	  function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
-	  {
-		if (PHP_VERSION < 6) {
-		  $theValue = get_magic_quotes_gpc() ? stripslashes($theValue) : $theValue;
-		}
-	  
-		$theValue = function_exists("mysql_real_escape_string") ? mysql_real_escape_string($theValue) : mysql_escape_string($theValue);
-	  
-		switch ($theType) {
-		  case "text":
-			$theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
-			  break;    
-		  case "long":
-		  case "int":
-			$theValue = ($theValue != "") ? intval($theValue) : "NULL";
-			break;
-		  case "double":
-			$theValue = ($theValue != "") ? doubleval($theValue) : "NULL";
-			break;
-		  case "date":
-			$theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
-			break;
-		  case "defined":
-			$theValue = ($theValue != "") ? $theDefinedValue : $theNotDefinedValue;
-			break;
-		}
-		return $theValue;
-	  }
-	  }	  
+	  $filesize=$_FILES["file"]["size"]/1024/1024;	  
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form")){
 		$insertSQL = sprintf("INSERT INTO resource (c_id,type_id,filename, file_type,file_size, file_location,uploaded_by,download_status ) ".
            "VALUES (%s,%s,%s,%s,%s,%s,%s,%s)",
@@ -124,7 +125,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form")){
 							 GetSQLValueString($_POST["r_type"], "int"),
 							 GetSQLValueString($filename, "text"),
 							 GetSQLValueString($_FILES["file"]["type"], "text"),
-							 GetSQLValueString($_FILES["file"]["size"], "double"),
+							 GetSQLValueString($filesize, "double"),
 							 GetSQLValueString($upload_add, "text"),
 							 GetSQLValueString($_SESSION['MM_UserID'], "int"),
 							 GetSQLValueString($_POST["download"], "int")
@@ -132,32 +133,41 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form")){
 	  
 		mysql_select_db($database_conn, $conn);
 		$Result1 = mysql_query($insertSQL, $conn) or die(mysql_error());
-	  
-		$insertGoTo = "index.php";
-		if (isset($_SERVER['QUERY_STRING'])) {
-		  $insertGoTo .= (strpos($insertGoTo, '?')) ? "&" : "?";
-		  $insertGoTo .= $_SERVER['QUERY_STRING'];
-		}
-		 /*header(sprintf("Location: %s", $insertGoTo)); */
 	  }
 	  }
+	  echo '<script type="text/javascript">alert("File Succesfully Uploaded"); window.location="http://localhost/dreamweaver/authorhome.php"; </script>';
     }
 	    }
 else
   {
-  echo "Invalid file, rejected in first if";
+	  if ((($_FILES["file"]["type"] == "image/gif")
+			|| ($_FILES["file"]["type"] == "image/jpeg")
+			|| ($_FILES["file"]["type"] == "image/jpg")
+			|| ($_FILES["file"]["type"] == "image/pjpeg")
+			|| ($_FILES["file"]["type"] == "image/x-png")
+			|| ($_FILES["file"]["type"] == "image/png")
+			|| ($_FILES["file"]["type"] == 				"application/pdf")))
+  echo '<script type="text/javascript">alert("Invalid File Type");  window.location="http://localhost/dreamweaver/authorhome.php";</script>';
+  else 
+  if(($_FILES["file"]["size"] < $max_size))
+  echo '<script type="text/javascript">alert("File Size is '.$_FILES["file"]["size"].'which GREATER than the allowed size. Allowed Size is '.$max_size_mb.' mb.");
+  window.location="http://localhost/dreamweaver/authorhome.php";</script>';
+  
   }
 
+		/*$insertGoTo = "authorhome.php";
+		if (isset($_SERVER['QUERY_STRING'])) {
+		  $insertGoTo .= (strpos($insertGoTo, '?')) ? "&" : "?";
+		  $insertGoTo .= $_SERVER['QUERY_STRING'];
+		}
+		 header(sprintf("Location: %s", $insertGoTo));*/
 ?>
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Upload Resource</title>
+<link href="css/templatemo_style.css?12" type="text/css" rel="stylesheet" />
 </head>
-
 <body>
 </body>
 </html>

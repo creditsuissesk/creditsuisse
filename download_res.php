@@ -52,7 +52,7 @@ if(isset($_POST['id']))
 		exit;
 }
 else
-echo "Id not set";
+echo '<script type="text/javascript">alert("Id not set");window.location="http://localhost/dreamweaver/authorhome.php";</script>';
 
 ?>
 
