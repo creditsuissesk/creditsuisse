@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 08, 2014 at 08:10 AM
+-- Generation Time: Feb 08, 2014 at 07:01 PM
 -- Server version: 5.6.14
 -- PHP Version: 5.5.6
 
@@ -117,11 +117,11 @@ CREATE TABLE IF NOT EXISTS `course` (
 --
 
 INSERT INTO `course` (`c_id`, `c_name`, `c_stream`, `start_date`, `end_date`, `avg_rating`, `description`) VALUES
-(18, 'cs50', 'CS', '2014-01-01', '2014-03-01', 0, 'This is CS50!'),
-(19, 'NewNet', 'IT', '2014-05-01', '0000-00-00', 0, ''),
-(20, 'Crypto', 'CS', '2014-01-22', '2014-07-17', 0, 'this is crypto'),
-(21, 'new', 'new', '2014-01-03', '2014-01-17', 0, ''),
-(22, 'newcourse', 'cs', '2014-01-16', '2014-01-18', 0, 'Description!');
+(18, 'Cryptography-Basic', 'Computer Science', '2014-01-12', '2016-01-11', 0, 'This is course on cryptography. In this course we will introduce you to basic ciphers and the basics of cryptography.'),
+(19, 'Networking Protocols', 'Networking', '2014-05-01', '2014-10-31', 0, ''),
+(20, 'Cryptography-Advanced', 'Computer Science', '2014-01-22', '2014-07-17', 0, 'this is crypto'),
+(21, 'Web Designing', 'Computer Science', '2014-01-03', '2014-07-17', 0, ''),
+(22, 'Database Management', 'Computer Science', '2014-01-16', '2014-08-18', 0, 'Description!');
 
 -- --------------------------------------------------------
 
@@ -325,18 +325,16 @@ CREATE TABLE IF NOT EXISTS `user` (
 --
 
 INSERT INTO `user` (`u_id`, `u_name`, `password`, `f_name`, `l_name`, `contact_no`, `dob`, `institute`, `stream`, `role`, `approve_id`, `photo`, `about`, `show_email`, `gender`, `user_score`, `count_bookmarks`, `created_comments`, `count_discussions`) VALUES
-(1, 'xyz@gmail.com', 'qwerty', 'a', 'b', 123, '2009-01-13', 'vb', 'cs', 'student', 1, 'images/profiles/01.jpg', '', 0, 0, 0, 0, 1, 0),
-(2, 'abc@tech.org', 'qwerty', 'aaa', 'bbb', 4321, '1997-04-02', 'vj', 'it', 'author', 1, 'images/profiles/02.jpg', '', 0, 0, 0, 0, 0, 0),
-(3, 'dalvishaarad@gmail.c', 'password', 'Shaarad', 'Dalvi', 2147483647, '2012-04-01', 'vjti', 'comps', 'student', 1, 'images/profiles/03.jpg', '', 0, 0, 2, 0, 0, 0),
-(4, 'shaaraddalvi@outlook.com', 'password', 'Shaarad', 'Dalvi', 25406266, '1993-11-01', 'vjti', 'comps', 'student', 1, 'images/profiles/04.jpg', '', 0, 0, 0, 0, 0, 0),
-(5, 'sh@yahoo.co.in', 'password', 'shaarad', 'dalvi', 25406266, '2014-11-01', 'vjti', 'comp', 'student', 1, 'images/profiles/05.jpg', '', 0, 0, 1, 0, 0, 0),
-(6, 'root', 'rootpass', 'root', 'root', 12345678, '2014-01-01', 'root', 'root', 'admin', 1, 'images/profiles/06.jpg', '', 0, 0, 0, 0, 0, 0),
-(7, 'cm', 'qwerty', 'cm', 'cm', 1234567890, '2014-01-05', 'vjti', 'comp', 'cm', 1, 'images/profiles/07.jpg', '', 0, 0, 0, 0, 0, 0),
-(8, 'kunalshah', 'pass1234', 'Kunal', 'Shah', 876543321, '2014-01-03', 'veermata JTI', 'computers', 'student', 1, 'images/profiles/08.jpg', '', 0, 0, 0, 0, 0, 0),
-(9, 'new1@gmail.com', 'password', 'new1name', 'new1surname', 982680350, '2014-01-01', 'vjti', 'comp', 'student', 2, '', '', 0, 0, 0, 0, 0, 0),
-(10, 'new2@gmail.com', 'password', 'new2', 'new2surname', 2147483647, '2014-01-02', 'vjti', 'comp', 'student', 0, '', '', 0, 0, 0, 0, 0, 0),
-(11, 'new3', 'password', 'new3fname', 'new3lname', 1234567890, '2013-12-04', 'vjti', 'comp', 'student', 0, '', '', 0, 0, 0, 0, 0, 0),
-(12, 'photouser@gmail.com', 'password', 'photof', 'photol', 987654321, '2014-01-06', 'insti', 'comp', 'student', 1, 'images/profiles/lamborghini-cars-logo-emblem.jpg', '', 0, 0, -1, 0, 1, 1);
+(1, 'xyz@gmail.com', 'qwerty', 'Abdul', 'Shaikh', 2147483647, '1993-03-01', 'SPIT', 'Computers', 'student', 1, 'images/profiles/01.jpg', '', 0, 0, 0, 0, 1, 0),
+(2, 'abc@tech.org', 'qwerty', 'Abhishek', 'Chaturvedi', 26845172, '1979-04-02', 'VJTI', 'Information Technolo', 'author', 1, 'images/profiles/02.jpg', '', 0, 0, 0, 0, 0, 0),
+(3, 'dalvishaarad@gmail.c', 'password', 'Shaarad', 'Dalvi', 2147483647, '1992-04-01', 'vjti', 'comps', 'student', 1, 'images/profiles/03.jpg', '', 0, 0, 2, 0, 0, 0),
+(4, 'shaaraddalvi@outlook.com', 'password', 'Shaarad', 'Inamdar', 25406266, '1993-11-01', 'TSEC', 'Electronics', 'student', 1, 'images/profiles/04.jpg', '', 0, 0, 0, 0, 0, 0),
+(5, 'sh@yahoo.co.in', 'password', 'sahil', 'shah', 25406858, '1994-01-18', 'vjti', 'comp', 'student', 1, 'images/profiles/05.jpg', '', 0, 0, 1, 0, 0, 0),
+(6, 'root', 'rootpass', 'root', 'root', 12345678, '0000-00-00', 'root', 'root', 'admin', 1, 'images/profiles/06.jpg', '', 0, 0, 0, 0, 0, 0),
+(8, 'kunalshah@gmail.com', 'pass1234', 'Kunal', 'Shah', 2147483647, '0000-00-00', 'VJTI', 'computers', 'student', 1, 'images/profiles/08.jpg', '', 0, 0, 0, 0, 0, 0),
+(9, 'nw@gmail.com', 'password', 'Nachiket', 'wagle', 982680350, '1993-04-07', 'vjti', 'Civil', 'student', 2, '', '', 0, 0, 0, 0, 0, 0),
+(10, 'new@gmail.com', 'password', 'Niket', 'wagle', 21474836, '1991-12-09', 'vjti', 'mechanical', 'student', 0, '', '', 0, 0, 0, 0, 0, 0),
+(12, 'photouser@gmail.com', 'password', 'Palak', 'Kulkarni', 987654321, '1995-01-06', 'SPCE', 'Civil', 'student', 1, 'images/profiles/lamborghini-cars-logo-emblem.jpg', '', 0, 0, -1, 0, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -460,6 +458,7 @@ ALTER TABLE `enroll_course`
 -- Constraints for table `rate_resource`
 --
 ALTER TABLE `rate_resource`
+  ADD CONSTRAINT `rate_resource_ibfk_3` FOREIGN KEY (`r_id`) REFERENCES `resource` (`r_id`),
   ADD CONSTRAINT `rate_resource_ibfk_2` FOREIGN KEY (`u_id`) REFERENCES `user` (`u_id`);
 
 --
