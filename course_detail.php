@@ -183,7 +183,7 @@ var userList = new List('users', options);
 </div>
 		 <!--start of file tab-->
          <div class="TabbedPanelsContent">
-         <?php if($totalRows_course_students>0) {?>
+         <?php if($totalRows_resource>0) {?>
       	<div id="resource">
     <div class="datagrid">
   <table>
@@ -226,7 +226,11 @@ var userList = new List('users', options);
    </table>
         </div>
         </div>
-       
+        <?php }
+		else {
+			echo "No resources have been uploaded for this course yet!";
+		}
+		?>
 <script>
 var resOptions = {
   valueNames: ['name','size','type','date','f_type' ]
@@ -234,11 +238,6 @@ var resOptions = {
 // Init list
 var resList = new List('resource', resOptions);
 </script>
-    <?php }
-		else {
-			echo "No resources have been uploaded for this course yet!";
-		}
-		?>
         </div><!--end of file tab-->
    </div>
 </div>

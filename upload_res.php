@@ -71,16 +71,20 @@ if ((($_FILES["file"]["type"] == "image/gif")
     echo "Type: " . $_FILES["file"]["type"] . "<br>";
     echo "Size: " . ($_FILES["file"]["size"] / 1024) . " kB<br>";
     echo "Temp file: " . $_FILES["file"]["tmp_name"] . "<br>";
+	$upload_add="resource/".$_POST["co_name"]."/" . $filename;
+	$path = "resource/".$_POST["co_name"];
 
-    if (file_exists("images/res/" . $filename))
+if ( ! is_dir($path)) {
+    mkdir($path,0777);
+}
+    if (file_exists($upload_add))
       {
       echo  $filename. " already exists. ";
       }
     else
       {
       move_uploaded_file($_FILES["file"]["tmp_name"],
-      "images/res/" .  $filename);
-      $upload_add="images/res/" .  $filename;
+      $upload_add);
 	  echo "Stored in: " .  $upload_add;
       
 	  if (!function_exists("GetSQLValueString")) {
