@@ -159,7 +159,7 @@
 				  <option value="cm">Content Manager</option>
 				  </select><br /><br />
 	  </p>  
-      <p> <label for="file">Filename:</label>
+      <p> <label for="file">Profile Pciture:</label>
 <input type="file" name="file" id="file">
 		</p>
       <p ><input class="buttom" name="submit" id="submit" value="Sign me up!" type="submit" onClick="MM_validateForm('pass','','R','f_name','','R','l_name','','R','contact','','RisNum','inst_name','','R','stream','','R');return document.MM_returnValue" 

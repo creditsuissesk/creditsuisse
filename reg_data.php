@@ -16,25 +16,23 @@ if ((($_FILES["file"]["type"] == "image/gif")
   {
   if ($_FILES["file"]["error"] > 0)
     {
-    echo "Return Code: " . $_FILES["file"]["error"] . "<br>";
+     echo '<script type="text/javascript">alert("File Error: '. $_FILES["file"]["error"] . ' ");window.location="http://localhost/dreamweaver/registration.php";</script>';
     }
   else
     {
-    echo "Upload: " . $_FILES["file"]["name"] . "<br>";
+   /* echo "Upload: " . $_FILES["file"]["name"] . "<br>";
     echo "Type: " . $_FILES["file"]["type"] . "<br>";
     echo "Size: " . ($_FILES["file"]["size"] / 1024) . " kB<br>";
     echo "Temp file: " . $_FILES["file"]["tmp_name"] . "<br>";
-
-    if (file_exists("images/profiles/" . $_FILES["file"]["name"]))
+	*/
+	$filename=$_POST['u_name'];
+	$upload_add="images/profiles/" . $filename;
+    if (file_exists("images/profiles/" . $filename))
       {
-      echo $_FILES["file"]["name"] . " already exists. ";
+      echo  '<script type="text/javascript">alert("'. $filename . '  already exists. "); window.location="http://localhost/dreamweaver/login.php";</script>';
       }
     else
       {
-      move_uploaded_file($_FILES["file"]["tmp_name"],
-      "images/profiles/" . $_FILES["file"]["name"]);
-	  $upload_add="images/profiles/" . $_FILES["file"]["name"];
-      echo "Stored in: " . $upload_add;
       
 	  if (!function_exists("GetSQLValueString")) {
 	  function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
@@ -81,20 +79,17 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form")) {
 	  
 		mysql_select_db($database_conn, $conn);
 		$Result1 = mysql_query($insertSQL, $conn) or die(mysql_error());
-	  
-		$insertGoTo = "index.php";
-		if (isset($_SERVER['QUERY_STRING'])) {
-		  $insertGoTo .= (strpos($insertGoTo, '?')) ? "&" : "?";
-		  $insertGoTo .= $_SERVER['QUERY_STRING'];
-		}
-		 /*header(sprintf("Location: %s", $insertGoTo)); */
+		 move_uploaded_file($_FILES["file"]["tmp_name"],
+      $upload_add);
+	   	echo '<script type="text/javascript">alert("File Succesfully Uploaded"); window.location="http://localhost/dreamweaver/login.php"; </script>';
 	  }
 	  }
     }
 	    }
 else
   {
-  echo "Invalid file, rejected in first if";
+  echo '<script type="text/javascript">alert("Invalid File. Please Register again");window.location="http://localhost/dreamweaver/registration.php";</script>';
+
   }
 
 ?>
@@ -118,7 +113,7 @@ else
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Untitled Document</title>
+<title></title>
 </head>
 
 <body>

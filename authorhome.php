@@ -104,28 +104,6 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 }
 }
 
-$editFormAction = $_SERVER['PHP_SELF'];
-if (isset($_SERVER['QUERY_STRING'])) {
-  $editFormAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
-}
-
-if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "new_course")) {
-  $insertSQL = sprintf("INSERT INTO course (c_name, c_stream, start_date, end_date,description) VALUES (%s, %s, %s, %s,%s)",
-                       GetSQLValueString($_POST['c_name'], "text"),
-                       GetSQLValueString($_POST['c_stream'], "text"),
-                       GetSQLValueString($_POST['start_date'], "date"),
-                       GetSQLValueString($_POST['end_date'], "date"),GetSQLValueString($_POST['desc'], "text"));
-
-  mysql_select_db($database_conn, $conn);
-  $Result1 = mysql_query($insertSQL, $conn) or die(mysql_error());
-
-  $insertGoTo = "authorhome.php";
-  if (isset($_SERVER['QUERY_STRING'])) {
-    $insertGoTo .= (strpos($insertGoTo, '?')) ? "&" : "?";
-    $insertGoTo .= $_SERVER['QUERY_STRING'];
-  }
-  header(sprintf("Location: %s", $insertGoTo));
-}
 
 mysql_select_db($database_conn, $conn);
 $query_all_courses = sprintf("SELECT c_id,c_name,c_stream,start_date,end_date,avg_rating FROM course NATURAL JOIN create_course WHERE u_id=%s",GetSQLValueString($_SESSION['MM_UserID'], "int"));
@@ -150,33 +128,6 @@ $query_current_courses = sprintf("SELECT c_id,c_name,c_stream,start_date,end_dat
 $current_courses = mysql_query($query_current_courses, $conn) or die(mysql_error());
 $row_current_courses = mysql_fetch_assoc($current_courses);
 $totalRows_current_courses = mysql_num_rows($current_courses);
-
-$colname_get_cid = "c_name";
-if (isset($_POST['c_name'])) {
-  $colname_get_cid = $_POST['c_name'];
-}
-mysql_select_db($database_conn, $conn);
-$query_get_cid = sprintf("SELECT c_id FROM course WHERE c_name = %s", GetSQLValueString($colname_get_cid, "text"));
-
-$get_cid = mysql_query($query_get_cid, $conn) or die(mysql_error());
-$row_get_cid = mysql_fetch_assoc($get_cid);
-$totalRows_get_cid = mysql_num_rows($get_cid);
-
-mysql_select_db($database_conn, $conn);
-$query_get_auth_info = sprintf("SELECT * FROM user WHERE u_id = %s",GetSQLValueString($_SESSION['MM_UserID'],"int"));
-
-$get_auth_info= mysql_query($query_get_auth_info, $conn) or die(mysql_error());
-$row_get_auth_info = mysql_fetch_assoc($get_auth_info);
-$totalRows_get_auth_info = mysql_num_rows($get_auth_info);
-
-if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "new_course")) {
-  $insertSQL2 = sprintf("INSERT INTO create_course (u_id,c_id) VALUES (%s,%s)",GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($row_get_cid['c_id'], "int")
-                       );
-
-  mysql_select_db($database_conn, $conn);
-  $Result1 = mysql_query($insertSQL2, $conn) or die(mysql_error());
-}
-
 
 
 ?>
@@ -251,7 +202,7 @@ function MM_validateForm() { //v4.0
   <div class="TabbedPanelsContentGroup">
     <div class="TabbedPanelsContent">
       <p>Please enter the course details : </p>
-      <form id="form1" name="new_course" method="POST" action="<?php echo $editFormAction; ?>">
+      <form id="form1" name="new_course" method="POST" enctype="multipart/form-data" action="author_home_data.php">
         <p>
           <label for="c_name">Course Name* :</label>
           <input type="text" name="c_name" id="c_name" />
@@ -268,6 +219,9 @@ function MM_validateForm() { //v4.0
           <label for="desc">Course Description* :</label>
           <textarea name="desc" id="desc" cols="45" rows="5"></textarea>
         </p>
+        <p> <label for="file">Course Picture:</label>
+<input type="file" name="file" id="file">
+		</p>
         <p>
           <input name="submit" type="submit" id="submit" onclick="MM_validateForm('c_name','','R','start_date','','R','c_stream','','R','end_date','','R','desc','','R');return document.MM_returnValue" value="Submit" />
           <input type="reset" name="reset" id="reset" value="Reset" />
@@ -428,5 +382,4 @@ mysql_free_result($all_courses);
 mysql_free_result($current_courses);
 mysql_free_result($new_resource);
 mysql_free_result($resource_type);
-mysql_free_result($get_cid);
 ?>
