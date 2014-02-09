@@ -283,12 +283,21 @@ $totalRows_categories = mysql_num_rows($categories);
 						    	});	
 							};
 							var disc_callback2= function(data) {
-								alert("You can't vote yourself");
-								$('#disc'+data.id).upvote();
-							};
-							<!--- script for discussion vote widget --->
+								if($('#disc'+data.id).upvote('upvoted')==true || $('#disc'+data.id).upvote('downvoted')==true) {
+									alert("You can't vote yourself");
+								}
+								$.ajax({
+									url: 'voter_disc.php',
+									type: 'post',
+									data: {id: data.id, star:data.starred}
+								});
+								//$('#disc'+data.id).upvote();
+							};							<!--- script for discussion vote widget --->
 							<?php if($row_disc['insert_uid']==$_SESSION['MM_UserID']){?>
-								$('#disc<?php echo $row_disc['discussion_id'];?>').upvote({count: <?php echo $row_disc['rating'];?>,id: <?php echo $row_disc['discussion_id'];?>, callback: disc_callback2});
+								$('#disc<?php echo $row_disc['discussion_id'];?>').upvote({count: <?php echo $row_disc['rating'];?>,id: <?php echo $row_disc['discussion_id'];?>, callback: disc_callback2
+								<?php if ($row_discussions['bookmarked']==1) {
+										echo ",starred:1";
+									} ?>});
 							<?php } else { ?>
 									$('#disc<?php echo $row_disc['discussion_id'];?>').upvote({count: <?php echo$row_disc['rating'];?>,id: <?php echo $row_disc['discussion_id'];?>, callback: disc_callback
 									<?php if ($row_disc['vote_status']==1) {
@@ -363,8 +372,15 @@ $totalRows_categories = mysql_num_rows($categories);
 						    	});	
 							};
 							var disc_callback2= function(data) {
-								alert("You can't vote yourself");
-								$('#disc'+data.id).upvote();
+								if($('#disc'+data.id).upvote('upvoted')==true || $('#disc'+data.id).upvote('downvoted')==true) {
+									alert("You can't vote yourself");
+								}
+								$.ajax({
+									url: 'voter_disc.php',
+									type: 'post',
+									data: {id: data.id, star:data.starred}
+								});
+								//$('#disc'+data.id).upvote();
 							};
 				</script>   
                 <!--- end of script and php for discussion voting in list view --->
@@ -431,7 +447,11 @@ $totalRows_categories = mysql_num_rows($categories);
                     <!--- script for discussion vote widget --->
                     <script>
 							<?php if($row_discussions['insert_uid']==$_SESSION['MM_UserID']){?>
-								$('#disc<?php echo $row_discussions['discussion_id'];?>').upvote({count: <?php echo $row_discussions['rating'];?>,id: <?php echo $row_discussions['discussion_id'];?>, callback: disc_callback2});
+								$('#disc<?php echo $row_discussions['discussion_id'];?>').upvote({count: <?php echo $row_discussions['rating'];?>,id: <?php echo $row_discussions['discussion_id'];?>, callback: disc_callback2
+								<?php if ($row_discussions['bookmarked']==1) {
+										echo ",starred:1";
+									} ?>
+									});
 							<?php } else { ?>
 									$('#disc<?php echo $row_discussions['discussion_id'];?>').upvote({count: <?php echo $row_discussions['rating'];?>,id: <?php echo $row_discussions['discussion_id'];?>, callback: disc_callback
 									<?php if ($row_discussions['vote_status']==1) {
@@ -504,8 +524,15 @@ $totalRows_categories = mysql_num_rows($categories);
 						    	});	
 							};
 							var disc_callback2= function(data) {
-								alert("You can't vote yourself");
-								$('#disc'+data.id).upvote();
+								if($('#disc'+data.id).upvote('upvoted')==true || $('#disc'+data.id).upvote('downvoted')==true) {
+									alert("You can't vote yourself");
+								}
+								$.ajax({
+									url: 'voter_disc.php',
+									type: 'post',
+									data: {id: data.id, star:data.starred}
+								});
+								//$('#disc'+data.id).upvote();
 							};
 				</script>   
                 <!--- end of script and php for discussion voting in list view --->
@@ -588,7 +615,11 @@ $totalRows_categories = mysql_num_rows($categories);
                     <!--- script for discussion vote widget --->
                     <script>
 							<?php if($row_discussions['insert_uid']==$_SESSION['MM_UserID']){?>
-								$('#disc<?php echo $row_discussions['discussion_id'];?>').upvote({count: <?php echo $row_discussions['rating'];?>,id: <?php echo $row_discussions['discussion_id'];?>, callback: disc_callback2});
+								$('#disc<?php echo $row_discussions['discussion_id'];?>').upvote({count: <?php echo $row_discussions['rating'];?>,id: <?php echo $row_discussions['discussion_id'];?>,callback: disc_callback2
+								<?php if ($row_discussions['bookmarked']==1) {
+										echo ",starred:1";
+									} ?>
+								});
 							<?php } else { ?>
 									$('#disc<?php echo $row_discussions['discussion_id'];?>').upvote({count: <?php echo $row_discussions['rating'];?>,id: <?php echo $row_discussions['discussion_id'];?>, callback: disc_callback
 									<?php if ($row_discussions['vote_status']==1) {
