@@ -99,7 +99,7 @@ $totalRows_categories = mysql_num_rows($categories);
 <script src="SpryAssets/SpryTabbedPanels.js" type="text/javascript"></script>
 <link href="SpryAssets/SpryTabbedPanels.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" media="screen" href="css/templatemo_style.css" />
-<link rel="stylesheet" type="text/css" media="screen" href="css/forum_new.css?1234" />
+<link rel="stylesheet" type="text/css" media="screen" href="css/forum_new.css?14" />
 <link rel="stylesheet" type="text/css" media="screen" href="css/nav_bar.css" />
 <link rel="stylesheet" type="text/css" href="css/forum_disc_form.css" media="all" />
 <!---<link rel="stylesheet" type="text/css" href="css/registration.css" media="all"/> --->
@@ -373,10 +373,11 @@ $totalRows_categories = mysql_num_rows($categories);
                 <!--- now get all discussions of that category and show them in a loop--->
                 <?php
 				mysql_select_db($database_conn, $conn);
-$query_discussions = sprintf("SELECT * FROM discussion JOIN user ON discussion.insert_uid=user.u_id LEFT OUTER JOIN `user_discussion` ON discussion.discussion_id=user_discussion.user_discussion_id AND user_discussion.u_id=%s WHERE discussion.category_id=%s",GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($row_categories['category_id'], "int"));
-$discussions = mysql_query($query_discussions, $conn) or die(mysql_error());
-$row_discussions = mysql_fetch_assoc($discussions);
-$totalRows_discussions = mysql_num_rows($discussions);
+				$query_discussions = sprintf("SELECT * FROM discussion JOIN user ON discussion.insert_uid=user.u_id LEFT OUTER JOIN `user_discussion` ON discussion.discussion_id=user_discussion.user_discussion_id AND user_discussion.u_id=%s WHERE discussion.category_id=%s",GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($row_categories['category_id'], "int"));
+				$discussions = mysql_query($query_discussions, $conn) or die(mysql_error());
+				$row_discussions = mysql_fetch_assoc($discussions);
+				$totalRows_discussions = mysql_num_rows($discussions);
+				//if more than 7 discussions there then show paginated discussions.
 				?>
                 <!--- make list of all the discussions under that category--->
                 <!---<dl> --->
@@ -447,6 +448,14 @@ $totalRows_discussions = mysql_num_rows($discussions);
                 </script>
                     
                     <?php } while($row_discussions=mysql_fetch_assoc($discussions));?>
+                    <?php //if more than 7 discussions are there in this category then show previous and next links	
+					if($totalRows_discussions>4) {
+						//echo "<div class='prev'> <a href='prevlink'>Previous</a> </div>";
+						echo "<div class='next'> <a href='forum_new.php?showTab=discussions&mode=showcategory&categoryid=".$row_categories['category_id']."'>More Discussions...</a> </div>";
+					}
+					echo "<br />";
+					?>
+                    
                 <?php }while ($row_categories = mysql_fetch_assoc($categories)); ?>
                 <?php
 						mysql_free_result($categories);
@@ -482,7 +491,136 @@ $totalRows_discussions = mysql_num_rows($discussions);
                       <input name="submit" id="submit" value="Create Discussion" type="submit" class="buttom" onClick="MM_validateForm('disc_name','','R','disc_body','','R');return document.MM_returnValue" action="new_discussion.php"/></p>
                     </form>
                     </div>
+                 <!--- end of new discussion --->   
+                <?php }else if (isset($_GET['mode']) && $_GET['mode']=="showcategory") { ?>
+                <!--- script and php for discussion voting in list view--->
+                <a href="forum_new.php?showTab=discussions&mode=showmain"> Back to discussions </a><br />
+                <script>
+                var disc_callback = function(data) {
+							$.ajax({
+						        url: 'voter_disc.php',
+						        type: 'post',
+						        data: { id: data.id, up: data.upvoted, down: data.downvoted, star: data.starred , count: $('#disc'+ data.id).upvote('count'),upstatus:$('#disc'+data.id).upvote('upvoted'),downstatus:$('#disc'+data.id).upvote('downvoted')},
+						    	});	
+							};
+							var disc_callback2= function(data) {
+								alert("You can't vote yourself");
+								$('#disc'+data.id).upvote();
+							};
+				</script>   
+                <!--- end of script and php for discussion voting in list view --->
+                
+                <?php
+				$lower_limit=0;
+				$higher_limit=10;
+				if(isset($_GET['showfrom'])) {
+					$lower_limit=$_GET['showfrom'];
+					$higher_limit=$lower_limit+10;
+				}
+				mysql_select_db($database_conn, $conn);
+				$query_count = sprintf("SELECT * FROM discussion WHERE discussion.category_id=%s",GetSQLValueString($_GET['categoryid'], "int"));
+				$disc_count = mysql_query($query_count, $conn) or die(mysql_error());
+				$row_disc_count = mysql_fetch_assoc($disc_count);
+				$totalRows_disc_count = mysql_num_rows($disc_count);
+				
+				
+				mysql_select_db($database_conn, $conn);
+				$query_discussions = sprintf("SELECT * FROM discussion JOIN user ON discussion.insert_uid=user.u_id LEFT OUTER JOIN `user_discussion` ON discussion.discussion_id=user_discussion.user_discussion_id AND user_discussion.u_id=%s WHERE discussion.category_id=%s ORDER BY date_updated_d LIMIT %s,%s",GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($_GET['categoryid'], "int"),GetSQLValueString($lower_limit, "int"),GetSQLValueString($higher_limit, "int"));
+				$discussions = mysql_query($query_discussions, $conn) or die(mysql_error());
+				$row_discussions = mysql_fetch_assoc($discussions);
+				$totalRows_discussions = mysql_num_rows($discussions);
+				
+				mysql_select_db($database_conn, $conn);
+				$query_disc_cat = sprintf("SELECT * FROM discussion_category where category_id=%s",GetSQLValueString($_GET['categoryid'], "int"));
+				$disc_cat = mysql_query($query_disc_cat, $conn) or die(mysql_error());
+				$row_disc_cat = mysql_fetch_assoc($disc_cat);
+				?>
+                <forum-h4> <?php echo $row_disc_cat['category_name']?></forum-h4>
+                <a href="forum_new.php?showTab=discussions&mode=newDisc"><input name="new_disc" type="button" value="New Discussion" style="float:right;margin-right: 35px;" class="buttom" /></a>
+                <br />
+                <!--- now get all discussions of that category and show them in a loop--->
+                <?php do { ?>
+                	<div class="middle">
+                    	<div class="container">
+                    	<main class="content">
+                        <dt>
+                        <a href="forum_new.php?showTab=discussions&mode=disc&discussionid=<?php echo $row_discussions['discussion_id'];?> "> <?php echo $row_discussions['name'];?> </a> </dt>
+                        <datetime><?php echo "By ".$row_discussions['f_name']." ".$row_discussions['l_name']." on ".$row_discussions['date_inserted_d'];?></datetime> <br />
+                        <dd>
+                        <?php if (strlen($row_discussions['disc_body'])>400) {
+							echo substr($row_discussions['disc_body'],0,400)."....";
+							}else {
+								echo $row_discussions['disc_body'];
+							}
+						?>
+                        </dd>
+                        </main>
+                    	</div>
+                        <aside class="left-sidebar">
+                        <table border="0">
+                        <tr>
+                        <th><dd>Comments </dd> </th>
+                        </tr>
+                        <tr>
+                        <td><dd><?php echo $row_discussions['count_comments']; ?> </dd>
+                        </td>
+                        </tr>
+                        </table>
+                        <new_comments><?php 
+						if (!is_null($row_discussions['seen_comments'])){
+						if ($row_discussions['count_comments']-$row_discussions['seen_comments']>1) {
+							echo $row_discussions['count_comments']-$row_discussions['seen_comments']." new comments!";
+						}else if ($row_discussions['count_comments']-$row_discussions['seen_comments']==1) {
+							echo "1 new comment!";
+						}
+						}?>
+                        </new_comments>
+                        </aside>
+                        <aside class="right-sidebar">
+                        	<div id="disc<?php echo $row_discussions['discussion_id']; ?>" class="upvote">
+							    <a class="upvote"></a>
+							    <span class="count">0</span>
+							    <a class="downvote"></a>
+							    <a class="star"></a>
+						    </div>
+                        </aside>
+                    </div>
+                    <!--- script for discussion vote widget --->
+                    <script>
+							<?php if($row_discussions['insert_uid']==$_SESSION['MM_UserID']){?>
+								$('#disc<?php echo $row_discussions['discussion_id'];?>').upvote({count: <?php echo $row_discussions['rating'];?>,id: <?php echo $row_discussions['discussion_id'];?>, callback: disc_callback2});
+							<?php } else { ?>
+									$('#disc<?php echo $row_discussions['discussion_id'];?>').upvote({count: <?php echo $row_discussions['rating'];?>,id: <?php echo $row_discussions['discussion_id'];?>, callback: disc_callback
+									<?php if ($row_discussions['vote_status']==1) {
+										echo ",upvoted:1";
+									}else if ($row_discussions['vote_status']==-1){
+										echo ",downvoted:1";
+									}
+									if ($row_discussions['bookmarked']==1) {
+										echo ",starred:1";
+									}
+									?>
+									});
+							<?php }?>
+                </script>
                     
+                    <?php } while($row_discussions=mysql_fetch_assoc($discussions));?>
+                    <?php //if more than 7 discussions are there in this category then show previous and next links	
+						if($lower_limit>0) {
+							if($lower_limit>10) {
+								$prev_limit_value=$lower_limit-10;
+							}else {
+								$prev_limit_value=0;
+							}
+							echo "<div class='prev'> <a href='forum_new.php?showTab=discussions&mode=showcategory&categoryid=".$_GET['categoryid']."&showfrom=".$prev_limit_value."'>Previous</a> </div>";
+						}
+						if($higher_limit<$totalRows_disc_count) {
+							$next_limit_value=$higher_limit;
+							echo "<div class='next'> <a href='forum_new.php?showTab=discussions&mode=showcategory&categoryid=".$_GET['categoryid']."&showfrom=".$next_limit_value."'>Next</a> </div>";							
+						}
+
+					echo "<br />";
+					?>
                 <?php }?>
                 <!---end of main if --->	
 			    </div>

@@ -15,6 +15,16 @@ score {
 	font-size: 16px;
 }
 
+.prev {
+	float:left;
+	margin-left:35px;
+}
+
+.next {
+	float:right;
+	margin-right:35px;
+}
+
 ul, ol, dl, blockquote, pre
 {
 	color: #999999;
@@ -40,9 +50,11 @@ dt
 datetime:
 {
 	margin: 0;
-	color: #010533;
+	/* color: #010533;*/
+	color:#999999;
 	font-size: 12px; 
 	padding: 10px 0 2px; 
+	
 }
 
 /*dd {color : #999999;margin: 0; padding: 2px 0 5px; margin-bottom: 5px; border-bottom: 1px dotted #555555; }*/
