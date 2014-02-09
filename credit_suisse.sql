@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 08, 2014 at 07:01 PM
+-- Generation Time: Feb 09, 2014 at 07:03 AM
 -- Server version: 5.6.14
 -- PHP Version: 5.5.6
 
@@ -86,14 +86,11 @@ CREATE TABLE IF NOT EXISTS `comment` (
 --
 
 INSERT INTO `comment` (`comment_id`, `discussion_id`, `insert_uid`, `date_inserted_c`, `delete_uid`, `date_deleted_c`, `update_uid`, `date_updated_c`, `comment_body`, `flag`, `comment_score`) VALUES
-(2, 2, 5, '2014-01-19 06:40:07', NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', 'This is comment body!', 0, 1),
-(3, 2, 3, '2014-01-19 22:30:31', NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', 'new Comment!', 0, 1),
+(2, 2, 8, '2014-01-19 06:40:07', NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', 'You should try the official GitHub for windows or git bash.', 0, 2),
 (5, 4, 5, '2014-01-30 11:31:44', NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', ' lol!', 0, 0),
-(6, 2, 5, '2014-01-30 11:46:53', NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', ' this is posted from forums!', 0, 0),
 (7, 8, 5, '2014-01-30 12:02:25', NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', ' temp comment to test redirection!', 0, 0),
-(8, 2, 12, '2014-01-30 12:51:49', NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', ' comment by photouser!', 0, -1),
 (9, 10, 12, '2014-01-31 08:55:16', NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', ' hmmm...looks like it is being updated. now testing if the comment count is being updated or not...', 0, 0),
-(10, 2, 1, '2014-02-08 05:04:57', NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', ' this is worst discussion i had', 0, 0);
+(10, 3, 5, '2014-02-09 06:02:50', NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', ' this comment is to check whether adding comment updates the discussion update time or not..', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -117,11 +114,11 @@ CREATE TABLE IF NOT EXISTS `course` (
 --
 
 INSERT INTO `course` (`c_id`, `c_name`, `c_stream`, `start_date`, `end_date`, `avg_rating`, `description`) VALUES
-(18, 'Cryptography-Basic', 'Computer Science', '2014-01-12', '2016-01-11', 0, 'This is course on cryptography. In this course we will introduce you to basic ciphers and the basics of cryptography.'),
-(19, 'Networking Protocols', 'Networking', '2014-05-01', '2014-10-31', 0, ''),
-(20, 'Cryptography-Advanced', 'Computer Science', '2014-01-22', '2014-07-17', 0, 'this is crypto'),
-(21, 'Web Designing', 'Computer Science', '2014-01-03', '2014-07-17', 0, ''),
-(22, 'Database Management', 'Computer Science', '2014-01-16', '2014-08-18', 0, 'Description!');
+(18, 'cs50', 'CS', '2014-01-01', '2014-03-01', 0, 'This is CS50!'),
+(19, 'NewNet', 'IT', '2014-05-01', '0000-00-00', 0, ''),
+(20, 'Crypto', 'CS', '2014-01-22', '2014-07-17', 0, 'this is crypto'),
+(21, 'new', 'new', '2014-01-03', '2014-01-17', 0, ''),
+(22, 'newcourse', 'cs', '2014-01-16', '2014-01-18', 0, 'Description!');
 
 -- --------------------------------------------------------
 
@@ -164,25 +161,31 @@ CREATE TABLE IF NOT EXISTS `discussion` (
   `disc_body` text NOT NULL,
   `count_comments` int(11) NOT NULL DEFAULT '0',
   `date_inserted_d` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `date_updated_d` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `date_updated_d` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `rating` float NOT NULL DEFAULT '0',
   PRIMARY KEY (`discussion_id`),
   KEY `category_id` (`category_id`),
   KEY `last_comment_id` (`last_comment_id`),
   KEY `insert_uid` (`insert_uid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=17 ;
 
 --
 -- Dumping data for table `discussion`
 --
 
 INSERT INTO `discussion` (`discussion_id`, `type`, `category_id`, `insert_uid`, `last_comment_id`, `name`, `disc_body`, `count_comments`, `date_inserted_d`, `date_updated_d`, `rating`) VALUES
-(2, 0, 1, 5, 0, 'First discussion', 'First discussion body!', 3, '2014-01-19 04:13:19', '0000-00-00 00:00:00', 6),
-(3, 0, 1, 8, 0, 'This is by Kunal', 'Kunal''s body! :P', 0, '2014-01-19 04:38:46', '0000-00-00 00:00:00', 1),
-(4, 0, 2, 5, 0, 'Is this forum style okay?', 'We''ll continue this is it looks good..', 1, '2014-01-19 04:42:45', '0000-00-00 00:00:00', -1),
-(8, 0, 1, 5, 0, 'new disc title', 'new disc body ', 1, '2014-01-30 09:12:29', '0000-00-00 00:00:00', 0),
-(9, 0, 1, 5, 0, 'testing new discussion', 'discussion body ', 0, '2014-01-30 11:58:56', '0000-00-00 00:00:00', 0),
-(10, 0, 1, 12, 0, 'testing update count', ' This discussion is being opened to test if the user''s discussion count is being updated or not.', 1, '2014-01-31 08:54:19', '0000-00-00 00:00:00', 0);
+(2, 0, 1, 5, 0, 'Github installation fails on windows', 'I tried installing git hub about 3 months ago, and then again today. It''s the same error i get while installation saying git hub setup corrupt. Here is the link i try to download from. And it fails at 30.00 MB download ( out of total 47 MB). ', 1, '2014-01-19 04:13:19', '0000-00-00 00:00:00', 6),
+(3, 0, 1, 8, 0, 'how to prevent from reloading a new page in MVC 4', 'I keep looking around to find a solution but it seems impossible to find the one. Well I am a newbie to MVC 4.\r\n\r\nI make textboxes invisible via css in @Html.BeginForm(....) and then I wrote jquery to show textbox when selecting a one from the dropdownlist. It is working fine. When input value in this textbox then click the submit button and the value will pass to a parameter of a method which is working BUT the textbox is invisible again after clicking. I bet it is reloading a new page so the textbox is gone and you must select it on dropdownlist again to make the textbox visible. I dont want this. I want the textbox to remain after clicking. How to solve this problem?\r\n\r\nI am not sure what causes problem. Is that because of reloading new page? Or my code in jquery is not right? I am lost. Please help!! Your code tip is much appreciated. ', 1, '2014-01-19 04:38:46', '2014-02-09 06:02:50', 2),
+(4, 0, 2, 5, 0, 'Executing Async tasks in fragments', 'I am attempting to execute an async task in a fragment after converting my activities into fragments. When I call my async task from the activity I have to pass ''this'' with it in order to allow the async task to change text and things after it receives the information. I am a bit confused on how to do this all with fragments. Here is what I got so far:\r\n\r\nI execute the asynck task with:\r\nMy problem is that I can not pass ''this'' from a fragment...\r\n\r\nBonus Question:\r\n\r\nAlso as you can see I am not done converting my code for the fragments. I need to change this to load a fragment instead of change activity:', 1, '2014-01-19 04:42:45', '0000-00-00 00:00:00', -1),
+(8, 0, 1, 5, 0, 'Creating multiple dynamic drop down using databases in php', 'hey guys i was developing a small project for my college and this consists of a table that a prizeid, prizename from a table called prizemaster and names of candidates that can be nominated by staffs from a table called studentmaster. \r\nthe table was successfully created but there seems to a problem. in my first record the drop down is fine but in all other records the drop down is empty. how to i solve this? can anyone explain clearly with code as am new to php.', 1, '2014-01-30 09:12:29', '0000-00-00 00:00:00', 0),
+(9, 0, 1, 5, 0, 'Hot swap Node.js files while debugging in Webstorm 7.0.3', 'I''m getting starting with Node.js and Webstorm 7.0.3. I have created a simple Node.js app with express and I run it locally. I want to edit and save a .js file, refresh the broswer, and see the changes. As I understand it, this should pretty much work out-of-the box.\r\n\r\nHere is what does work:\r\n\r\n    I start the Node.js server\r\n    I navigate to an express path with Chrome\r\n    The page renders correctly.\r\n\r\nHere is what doesn''t work:\r\n\r\n    I change the JavaScript function that renders the page\r\n    I save the file\r\n    I refresh the browser\r\n    The Web page does not reflect the changes to the JavaScript function\r\n\r\nHere are the directions I followed from the JetBrains help site:\r\n\r\n    Create a Node.js run/debug configuration called "app.js"\r\n        Check the "After launch" and "with Javascript debugger" options\r\n    Create a JavaScript Debug configuration called "app.js.JavaScript\r\n    Select "Debug" for the "app.js" configuration.\r\n    The Node.js server starts\r\n    Select "Debug" for the "app.js.JavaScript.\r\n    I can now hit breakpoints in the application.\r\n\r\nHowever, if I change the JS function that renders the page, save the file, and refresh the browser, the changes do not appear.', 0, '2014-01-30 11:58:56', '0000-00-00 00:00:00', 0),
+(10, 0, 1, 12, 0, 'I''m getting starting with Node.js and Webstorm 7.0.3', 'I am trying to create a sort of parallax effect, I what the section after "ABOUT" containing two different div with image to scroll faster than the rest of the page. I want that whole div to scroll faster so that it looks like the first drawn picture is being wiped up but the similar picture.\r\n\r\nTest site: http://www.onepixelroom.com/AQUODI/ (the section just after "ABOUT")\r\n\r\nExample, scroll down (a lot, yes, it''s annoying :) this site to see the footballer guys change color, I want to do this with both my images: http://www.tridentpp.com/', 1, '2014-01-31 08:54:19', '0000-00-00 00:00:00', 0),
+(11, 0, 1, 5, 0, 'this is sixth discussion', ' This is to see whether paginations happens or not', 0, '2014-02-09 05:11:40', '0000-00-00 00:00:00', 0),
+(12, 0, 1, 5, 0, 'This is seventh discussion', 'Again the same purpose ', 0, '2014-02-09 05:12:00', '0000-00-00 00:00:00', 0),
+(13, 0, 1, 5, 0, 'Eighth now!', '2 more remaining or maybe 3 ', 0, '2014-02-09 05:12:21', '0000-00-00 00:00:00', 0),
+(14, 0, 1, 5, 0, 'ninth discussion', 'discussion body for namesake ', 0, '2014-02-09 05:25:27', '0000-00-00 00:00:00', 0),
+(15, 0, 1, 5, 0, 'tenth discussion', 'this should be the last of the page ', 0, '2014-02-09 05:26:01', '0000-00-00 00:00:00', 0),
+(16, 0, 1, 5, 0, 'eleventh', 'this should be on second page ', 0, '2014-02-09 05:26:24', '0000-00-00 00:00:00', 0);
 
 -- --------------------------------------------------------
 
@@ -264,7 +267,14 @@ CREATE TABLE IF NOT EXISTS `resource` (
   PRIMARY KEY (`r_id`),
   KEY `c_id` (`c_id`),
   KEY `type_id` (`type_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `resource`
+--
+
+INSERT INTO `resource` (`r_id`, `c_id`, `type_id`, `filename`, `file_type`, `file_size`, `file_location`, `uploaded_by`, `uploaded_date`, `download_status`, `avg_rating`, `flag_status`) VALUES
+(1, 18, 1, 'abstract.pdf.pdf', 'application/pdf', 45081, 'resource/18/abstract.pdf.pdf', 2, '2014-02-08 07:23:13', 1, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -325,16 +335,18 @@ CREATE TABLE IF NOT EXISTS `user` (
 --
 
 INSERT INTO `user` (`u_id`, `u_name`, `password`, `f_name`, `l_name`, `contact_no`, `dob`, `institute`, `stream`, `role`, `approve_id`, `photo`, `about`, `show_email`, `gender`, `user_score`, `count_bookmarks`, `created_comments`, `count_discussions`) VALUES
-(1, 'xyz@gmail.com', 'qwerty', 'Abdul', 'Shaikh', 2147483647, '1993-03-01', 'SPIT', 'Computers', 'student', 1, 'images/profiles/01.jpg', '', 0, 0, 0, 0, 1, 0),
-(2, 'abc@tech.org', 'qwerty', 'Abhishek', 'Chaturvedi', 26845172, '1979-04-02', 'VJTI', 'Information Technolo', 'author', 1, 'images/profiles/02.jpg', '', 0, 0, 0, 0, 0, 0),
-(3, 'dalvishaarad@gmail.c', 'password', 'Shaarad', 'Dalvi', 2147483647, '1992-04-01', 'vjti', 'comps', 'student', 1, 'images/profiles/03.jpg', '', 0, 0, 2, 0, 0, 0),
-(4, 'shaaraddalvi@outlook.com', 'password', 'Shaarad', 'Inamdar', 25406266, '1993-11-01', 'TSEC', 'Electronics', 'student', 1, 'images/profiles/04.jpg', '', 0, 0, 0, 0, 0, 0),
-(5, 'sh@yahoo.co.in', 'password', 'sahil', 'shah', 25406858, '1994-01-18', 'vjti', 'comp', 'student', 1, 'images/profiles/05.jpg', '', 0, 0, 1, 0, 0, 0),
-(6, 'root', 'rootpass', 'root', 'root', 12345678, '0000-00-00', 'root', 'root', 'admin', 1, 'images/profiles/06.jpg', '', 0, 0, 0, 0, 0, 0),
-(8, 'kunalshah@gmail.com', 'pass1234', 'Kunal', 'Shah', 2147483647, '0000-00-00', 'VJTI', 'computers', 'student', 1, 'images/profiles/08.jpg', '', 0, 0, 0, 0, 0, 0),
-(9, 'nw@gmail.com', 'password', 'Nachiket', 'wagle', 982680350, '1993-04-07', 'vjti', 'Civil', 'student', 2, '', '', 0, 0, 0, 0, 0, 0),
-(10, 'new@gmail.com', 'password', 'Niket', 'wagle', 21474836, '1991-12-09', 'vjti', 'mechanical', 'student', 0, '', '', 0, 0, 0, 0, 0, 0),
-(12, 'photouser@gmail.com', 'password', 'Palak', 'Kulkarni', 987654321, '1995-01-06', 'SPCE', 'Civil', 'student', 1, 'images/profiles/lamborghini-cars-logo-emblem.jpg', '', 0, 0, -1, 0, 1, 1);
+(1, 'xyz@gmail.com', 'qwerty', 'a', 'b', 123, '2009-01-13', 'vb', 'cs', 'student', 1, 'images/profiles/01.jpg', '', 0, 0, 0, 0, 1, 0),
+(2, 'abc@tech.org', 'qwerty', 'aaa', 'bbb', 4321, '1997-04-02', 'vj', 'it', 'author', 1, 'images/profiles/02.jpg', '', 0, 0, 0, 0, 0, 0),
+(3, 'dalvishaarad@gmail.c', 'password', 'Shaarad', 'Dalvi', 2147483647, '2012-04-01', 'vjti', 'comps', 'student', 1, 'images/profiles/03.jpg', '', 0, 0, 2, 0, 0, 0),
+(4, 'shaaraddalvi@outlook.com', 'password', 'Shaarad', 'Dalvi', 25406266, '1993-11-01', 'vjti', 'comps', 'student', 1, 'images/profiles/04.jpg', '', 0, 0, 0, 0, 0, 0),
+(5, 'sh@yahoo.co.in', 'password', 'shaarad', 'dalvi', 25406266, '2014-11-01', 'vjti', 'comp', 'student', 1, 'images/profiles/05.jpg', '', 0, 0, 1, 0, 1, 6),
+(6, 'root', 'rootpass', 'root', 'root', 12345678, '2014-01-01', 'root', 'root', 'admin', 1, 'images/profiles/06.jpg', '', 0, 0, 0, 0, 0, 0),
+(7, 'cm', 'qwerty', 'cm', 'cm', 1234567890, '2014-01-05', 'vjti', 'comp', 'cm', 1, 'images/profiles/07.jpg', '', 0, 0, 0, 0, 0, 0),
+(8, 'kunalshah', 'pass1234', 'Kunal', 'Shah', 876543321, '2014-01-03', 'veermata JTI', 'computers', 'student', 1, 'images/profiles/08.jpg', '', 0, 0, 2, 0, 0, 0),
+(9, 'new1@gmail.com', 'password', 'new1name', 'new1surname', 982680350, '2014-01-01', 'vjti', 'comp', 'student', 2, '', '', 0, 0, 0, 0, 0, 0),
+(10, 'new2@gmail.com', 'password', 'new2', 'new2surname', 2147483647, '2014-01-02', 'vjti', 'comp', 'student', 0, '', '', 0, 0, 0, 0, 0, 0),
+(11, 'new3', 'password', 'new3fname', 'new3lname', 1234567890, '2013-12-04', 'vjti', 'comp', 'student', 0, '', '', 0, 0, 0, 0, 0, 0),
+(12, 'photouser@gmail.com', 'password', 'photof', 'photol', 987654321, '2014-01-06', 'insti', 'comp', 'student', 1, 'images/profiles/lamborghini-cars-logo-emblem.jpg', '', 0, 0, -1, 0, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -359,22 +371,14 @@ CREATE TABLE IF NOT EXISTS `user_comment` (
 
 INSERT INTO `user_comment` (`user_comment_id`, `user_id`, `vote_status`, `bookmarked`, `date_last_viewed`) VALUES
 (2, 1, -1, 0, '2014-02-08 05:04:58'),
-(3, 1, 1, 0, '2014-02-08 05:04:58'),
-(6, 1, 0, 0, '2014-02-08 05:04:58'),
-(8, 1, -1, 0, '2014-02-08 05:04:58'),
-(10, 1, 0, 0, '2014-02-08 05:04:58'),
-(2, 5, 0, 0, '2014-01-31 10:58:41'),
-(3, 5, 0, 0, '2014-01-31 10:58:41'),
-(5, 5, 0, 0, '2014-01-30 11:47:38'),
-(6, 5, 0, 0, '2014-01-31 10:58:41'),
-(7, 5, 0, 0, '2014-01-30 12:02:25'),
-(8, 5, 0, 0, '2014-01-31 10:58:41'),
+(2, 5, 1, 0, '2014-02-09 02:15:42'),
+(5, 5, 0, 0, '2014-02-08 12:51:49'),
+(7, 5, 0, 0, '2014-02-09 01:20:33'),
+(9, 5, 0, 0, '2014-02-08 12:51:41'),
+(10, 5, 0, 0, '2014-02-09 06:02:50'),
 (2, 12, 0, 0, '2014-02-03 11:38:18'),
-(3, 12, -1, 0, '2014-02-03 11:38:18'),
 (5, 12, 0, 0, '2014-02-03 11:53:00'),
-(6, 12, 0, 0, '2014-02-03 11:38:18'),
 (7, 12, 0, 0, '2014-02-03 09:56:01'),
-(8, 12, 0, 0, '2014-02-03 11:38:18'),
 (9, 12, 0, 0, '2014-01-31 08:55:17');
 
 -- --------------------------------------------------------
@@ -403,11 +407,12 @@ INSERT INTO `user_discussion` (`u_id`, `user_discussion_id`, `seen_comments`, `d
 (1, 2, 5, '2014-02-08 05:05:24', 0, -1),
 (1, 3, 0, '2014-01-24 07:27:27', 0, 0),
 (1, 4, 0, '2014-01-24 07:27:39', 0, 0),
-(5, 2, 4, '2014-01-31 10:58:41', 0, 0),
-(5, 3, 0, '2014-01-30 11:37:26', 0, 0),
-(5, 4, 1, '2014-01-30 11:47:38', 0, 0),
-(5, 8, 1, '2014-01-30 12:02:25', 0, 0),
+(5, 2, 1, '2014-02-09 05:52:10', 1, 0),
+(5, 3, 1, '2014-02-09 06:02:50', 1, 1),
+(5, 4, 1, '2014-02-08 12:51:49', 0, 0),
+(5, 8, 1, '2014-02-09 01:20:33', 0, 0),
 (5, 9, 0, '2014-01-30 11:59:18', 0, 0),
+(5, 10, 1, '2014-02-08 12:51:40', 0, 0),
 (12, 2, 4, '2014-02-03 11:38:18', 1, 0),
 (12, 4, 1, '2014-02-03 11:53:00', 0, 0),
 (12, 8, 1, '2014-02-03 09:56:01', 0, 0),
@@ -458,8 +463,8 @@ ALTER TABLE `enroll_course`
 -- Constraints for table `rate_resource`
 --
 ALTER TABLE `rate_resource`
-  ADD CONSTRAINT `rate_resource_ibfk_3` FOREIGN KEY (`r_id`) REFERENCES `resource` (`r_id`),
-  ADD CONSTRAINT `rate_resource_ibfk_2` FOREIGN KEY (`u_id`) REFERENCES `user` (`u_id`);
+  ADD CONSTRAINT `rate_resource_ibfk_2` FOREIGN KEY (`u_id`) REFERENCES `user` (`u_id`),
+  ADD CONSTRAINT `rate_resource_ibfk_3` FOREIGN KEY (`r_id`) REFERENCES `resource` (`r_id`);
 
 --
 -- Constraints for table `resource`

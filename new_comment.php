@@ -87,8 +87,8 @@ if(isset($_POST['comment_body']) && isset($_POST['disc_id'])) {
 	  
 		$Result1 = mysql_query($create_comment, $conn) or die(mysql_error());
 		
-		//update discussion's comment count
-		$update_comment_count =sprintf("UPDATE `discussion` SET count_comments=count_comments+1 WHERE discussion_id=%s",GetSQLValueString($_POST['disc_id'], "int"));
+		//update discussion's comment count and last updated time
+		$update_comment_count =sprintf("UPDATE `discussion` SET count_comments=count_comments+1, date_updated_d=now() WHERE discussion_id=%s",GetSQLValueString($_POST['disc_id'], "int"));
 		$Result2 = mysql_query($update_comment_count, $conn) or die(mysql_error());
 	  
 	  	//update user's comment count
