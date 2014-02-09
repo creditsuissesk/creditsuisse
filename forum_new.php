@@ -127,6 +127,34 @@ $totalRows_categories = mysql_num_rows($categories);
 		  } if (errors) alert('The following error(s) occurred:\n'+errors);
 		  document.MM_returnValue = (errors == '');
 	  } }
+	  
+	  //function to POST to any page using javascript
+	  function post_to_url(path, params, method) {
+    method = method || "post"; // Set method to post by default if not specified.
+    // The rest of this code assumes you are not using a library.
+    // It can be made less wordy if you use one.
+    var form = document.createElement("form");
+    form.setAttribute("method", method);
+    form.setAttribute("action", path);
+
+    //for(var key in params) {
+        //if(params.hasOwnProperty(key)) {
+            var hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", "sortvalue");
+            hiddenField.setAttribute("value", params);
+			var hiddenFieldMode = document.createElement("input");
+			hiddenFieldMode.setAttribute("type", "hidden");
+            hiddenFieldMode.setAttribute("name", "mode");
+            hiddenFieldMode.setAttribute("value", "showmain");
+            form.appendChild(hiddenField);
+			form.appendChild(hiddenFieldMode);
+         //}
+    //}
+
+    document.body.appendChild(form);
+    form.submit();
+	}
 </script>
 </head>
 
@@ -167,24 +195,26 @@ $totalRows_categories = mysql_num_rows($categories);
   <div class="TabbedPanelsContentGroup">
     <div class="TabbedPanelsContent">
     <!--- Recent Activity--->
-    <form id="sortform" action="forum_new.php" method="POST" style="float:right;margin:10px 35px;">
-	<p><label for="sorttype">Sort by : </label>
-		   <select class="select-style gender" name="sorttype" id="sorttype" >
-				  <option value="latest">Latest</option>
-				  <option value="most_popular">Most popular</option>
-				  </select></p>
-    </form>
-    <br />
      <div class="forum-wrapper">
 	    	<div class="forum-content-wrapper">
 			    <div class="forum-content">
                 <?php
 					//determine the sorting parameter
-					if(!isset($_GET['sortvalue'])) {
+					if(!isset($_POST['sortvalue'])) {
 						$sortvalue="latest";
 					}else {
-						$sortvalue=$_GET['sortvalue'];
+						$sortvalue=$_POST['sortvalue'];
 					}
+					?>
+    <form id="sortform" style="float:right;margin:10px 35px;">
+	<p><label for="sorttype">Sort by : </label>
+		   <select class="select-style gender" name="sorttype" id="sorttype" onchange="post_to_url('forum_new.php',this.value,'post')">
+				  <option value="latest" <?php if($sortvalue=="latest") echo "selected='selected'";?>>Latest</option>
+				  <option value="most_popular" <?php if($sortvalue=="most_popular") echo "selected='selected'";?>>Most popular</option>
+				  </select></p>
+    </form>
+    <br />
+                    <?php
 					mysql_select_db($database_conn, $conn);
 					if($sortvalue=="latest") {
 						$query_sort_disc = sprintf("SELECT * FROM discussion JOIN user ON discussion.insert_uid=user.u_id JOIN discussion_category ON discussion.category_id=discussion_category.category_id LEFT OUTER JOIN `user_discussion` ON discussion.discussion_id=user_discussion.user_discussion_id AND user_discussion.u_id=%s ORDER BY date_updated_d DESC LIMIT 0,5",GetSQLValueString($_SESSION['MM_UserID'], "int"));
@@ -226,7 +256,7 @@ $totalRows_categories = mysql_num_rows($categories);
                     <?php } while($row_sort_disc=mysql_fetch_assoc($sort_disc));?>
                     
                     <?php //now showing comments ?>
-                     <forum-h4> Discussions</forum-h4>
+                     <forum-h4> Comments</forum-h4>
                      <?php do { ?>
                 	<div class="middle">
                     	<div class="container">
@@ -443,7 +473,7 @@ $totalRows_categories = mysql_num_rows($categories);
                     </div> 
                     <!---end of discussion case --->                  
                 <?php	
-				} else if (isset($_GET['mode']) && $_GET['mode']=="showmain") {
+				} else if ((isset($_GET['mode']) && $_GET['mode']=="showmain") || (isset($_POST['mode']) && $_POST['mode']=="showmain")) {
 				?>
                 <!--- discussionid not set, so get each category in while loop--->
                 <a href="forum_new.php?showTab=discussions&mode=newDisc"><input name="new_disc" type="button" value="New Discussion" style="float:right;margin-right: 35px;" class="buttom" /></a>
