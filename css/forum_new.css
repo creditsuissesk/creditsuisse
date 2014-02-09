@@ -60,6 +60,8 @@ datetime:
 /*dd {color : #999999;margin: 0; padding: 2px 0 5px; margin-bottom: 5px; border-bottom: 1px dotted #555555; }*/
 dd {color : #999999;margin: 0; padding: 2px 0 5px; margin-bottom: 5px;}
 
+slimline {border-bottom: 1px dotted #555555;}
+
 new_comments {color:#FC0; padding: 2px 0 5px;}
 
 dd.last { border-bottom-width: 0; }

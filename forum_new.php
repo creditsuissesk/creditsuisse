@@ -167,7 +167,93 @@ $totalRows_categories = mysql_num_rows($categories);
   <div class="TabbedPanelsContentGroup">
     <div class="TabbedPanelsContent">
     <!--- Recent Activity--->
-    Content1
+    <form id="sortform" action="forum_new.php" method="POST" style="float:right;margin:10px 35px;">
+	<p><label for="sorttype">Sort by : </label>
+		   <select class="select-style gender" name="sorttype" id="sorttype" >
+				  <option value="latest">Latest</option>
+				  <option value="most_popular">Most popular</option>
+				  </select></p>
+    </form>
+    <br />
+     <div class="forum-wrapper">
+	    	<div class="forum-content-wrapper">
+			    <div class="forum-content">
+                <?php
+					//determine the sorting parameter
+					if(!isset($_GET['sortvalue'])) {
+						$sortvalue="latest";
+					}else {
+						$sortvalue=$_GET['sortvalue'];
+					}
+					mysql_select_db($database_conn, $conn);
+					if($sortvalue=="latest") {
+						$query_sort_disc = sprintf("SELECT * FROM discussion JOIN user ON discussion.insert_uid=user.u_id JOIN discussion_category ON discussion.category_id=discussion_category.category_id LEFT OUTER JOIN `user_discussion` ON discussion.discussion_id=user_discussion.user_discussion_id AND user_discussion.u_id=%s ORDER BY date_updated_d DESC LIMIT 0,5",GetSQLValueString($_SESSION['MM_UserID'], "int"));
+						$query_sort_comments = sprintf("SELECT * FROM `discussion` JOIN `comment` ON discussion.discussion_id = comment.discussion_id JOIN `user` ON comment.insert_uid = user.u_id LEFT OUTER JOIN `user_comment` ON comment.comment_id = user_comment.user_comment_id AND user_comment.user_id=%s ORDER BY date_inserted_c DESC LIMIT 0,5",GetSQLValueString($_SESSION['MM_UserID'], "int"));
+					}else if ($sortvalue=="most_popular") {
+						$query_sort_disc = sprintf("SELECT * FROM discussion JOIN user ON discussion.insert_uid=user.u_id JOIN discussion_category ON discussion.category_id=discussion_category.category_id LEFT OUTER JOIN `user_discussion` ON discussion.discussion_id=user_discussion.user_discussion_id AND user_discussion.u_id=%s ORDER BY discussion.rating DESC LIMIT 0,5",GetSQLValueString($_SESSION['MM_UserID'], "int"));
+						$query_sort_comments = sprintf("SELECT * FROM `discussion` JOIN `comment` ON discussion.discussion_id = comment.discussion_id JOIN `user` ON comment.insert_uid = user.u_id LEFT OUTER JOIN `user_comment` ON comment.comment_id = user_comment.user_comment_id AND user_comment.user_id=%s ORDER BY comment.comment_score DESC LIMIT 0,5",GetSQLValueString($_SESSION['MM_UserID'], "int"));
+					}
+					$sort_disc = mysql_query($query_sort_disc, $conn) or die(mysql_error());
+					$row_sort_disc = mysql_fetch_assoc($sort_disc);
+					$totalRows_sort_disc = mysql_num_rows($sort_disc);
+					$sort_comments = mysql_query($query_sort_comments, $conn) or die(mysql_error());
+					$row_sort_comments = mysql_fetch_assoc($sort_comments);
+					$totalRows_sort_comments = mysql_num_rows($sort_comments);
+					?>
+                    <forum-h4> Discussions</forum-h4>
+                    <?php do { ?>
+                	<div class="middle">
+                    	<div class="container">
+                    	<main class="content" style="width:80%">
+                        <slimline>
+                        <datetime><?php echo $row_sort_disc['f_name']." ".$row_sort_disc['l_name']." started new discussion "; ?> </datetime>
+                        <dt>
+                        <a href="forum_new.php?showTab=discussions&mode=disc&discussionid=<?php echo $row_sort_disc['discussion_id'];?> "> <?php echo $row_sort_disc['name'];?> </a> </dt>
+                        </slimline>
+                        </main>
+                    	</div>
+                        <aside class="left-sidebar" style="width:20%">
+                                <div id="discsort<?php echo $row_sort_disc['discussion_id']; ?>" class="upvote">
+							    <span class="count">0</span>
+						    	</div>
+						</aside>
+                    </div>
+                    <!--- script for discussion vote widget --->
+                    <script>
+					$('#discsort<?php echo $row_sort_disc['discussion_id'];?>').upvote({count: <?php echo $row_sort_disc['rating'];?>,id: <?php echo $row_sort_disc['discussion_id'];?>});
+                	</script>
+                    
+                    <?php } while($row_sort_disc=mysql_fetch_assoc($sort_disc));?>
+                    
+                    <?php //now showing comments ?>
+                     <forum-h4> Discussions</forum-h4>
+                     <?php do { ?>
+                	<div class="middle">
+                    	<div class="container">
+                    	<main class="content" style="width:80%">
+                        <slimline>
+                        <?php echo $row_sort_comments['f_name']." ".$row_sort_comments['l_name']." commented on topic";?>
+                        <dt>
+                        <a href="forum_new.php?showTab=discussions&mode=disc&discussionid=<?php echo $row_sort_comments['discussion_id'];?> "> <?php echo $row_sort_comments['name'];?> </a> </dt>
+                        </slimline>
+                        </main>
+                    	</div>
+                        <aside class="left-sidebar" style="width:20%">
+                                <div id="commentsort<?php echo $row_sort_comments['comment_id']; ?>" class="upvote">
+							    <span class="count">0</span>
+						    	</div>
+						</aside>
+                    </div>
+                    <!--- script for discussion vote widget --->
+                    <script>
+					$('#commentsort<?php echo $row_sort_comments['comment_id'];?>').upvote({count: <?php echo $row_sort_comments['comment_score'];?>,id: <?php echo $row_sort_comments['comment_id'];?>});
+                	</script>
+                    
+                    <?php } while($row_sort_comments=mysql_fetch_assoc($sort_comments));?>
+                     
+				</div>
+            </div>
+     </div>
     
     </div>
     <div class="TabbedPanelsContent">
@@ -294,9 +380,9 @@ $totalRows_categories = mysql_num_rows($categories);
 								//$('#disc'+data.id).upvote();
 							};							<!--- script for discussion vote widget --->
 							<?php if($row_disc['insert_uid']==$_SESSION['MM_UserID']){?>
-								$('#disc<?php echo $row_disc['discussion_id'];?>').upvote({count: <?php echo $row_disc['rating'];?>,id: <?php echo $row_disc['discussion_id'];?>, callback: disc_callback2
-								<?php if ($row_discussions['bookmarked']==1) {
-										echo ",starred:1";
+								$('#disc<?php echo $row_disc['discussion_id'];?>').upvote({count: <?php echo $row_disc['rating'];?>,id: <?php echo $row_disc['discussion_id'];?>, callback: disc_callback2,
+								<?php if ($row_disc['bookmarked']==1) {
+										echo "starred:1";
 									} ?>});
 							<?php } else { ?>
 									$('#disc<?php echo $row_disc['discussion_id'];?>').upvote({count: <?php echo$row_disc['rating'];?>,id: <?php echo $row_disc['discussion_id'];?>, callback: disc_callback
@@ -389,11 +475,10 @@ $totalRows_categories = mysql_num_rows($categories);
                 <!--- now get all discussions of that category and show them in a loop--->
                 <?php
 				mysql_select_db($database_conn, $conn);
-				$query_discussions = sprintf("SELECT * FROM discussion JOIN user ON discussion.insert_uid=user.u_id LEFT OUTER JOIN `user_discussion` ON discussion.discussion_id=user_discussion.user_discussion_id AND user_discussion.u_id=%s WHERE discussion.category_id=%s",GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($row_categories['category_id'], "int"));
+				$query_discussions = sprintf("SELECT * FROM discussion JOIN user ON discussion.insert_uid=user.u_id LEFT OUTER JOIN `user_discussion` ON discussion.discussion_id=user_discussion.user_discussion_id AND user_discussion.u_id=%s WHERE discussion.category_id=%s ORDER BY date_updated_d DESC LIMIT 0,8",GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($row_categories['category_id'], "int"));
 				$discussions = mysql_query($query_discussions, $conn) or die(mysql_error());
 				$row_discussions = mysql_fetch_assoc($discussions);
 				$totalRows_discussions = mysql_num_rows($discussions);
-				//if more than 7 discussions there then show paginated discussions.
 				?>
                 <!--- make list of all the discussions under that category--->
                 <!---<dl> --->
@@ -468,9 +553,9 @@ $totalRows_categories = mysql_num_rows($categories);
                 </script>
                     
                     <?php } while($row_discussions=mysql_fetch_assoc($discussions));?>
-                    <?php //if more than 7 discussions are there in this category then show previous and next links	
+                    <?php 
 					if($totalRows_discussions>4) {
-						//echo "<div class='prev'> <a href='prevlink'>Previous</a> </div>";
+
 						echo "<div class='next'> <a href='forum_new.php?showTab=discussions&mode=showcategory&categoryid=".$row_categories['category_id']."'>More Discussions...</a> </div>";
 					}
 					echo "<br />";
@@ -552,7 +637,7 @@ $totalRows_categories = mysql_num_rows($categories);
 				
 				
 				mysql_select_db($database_conn, $conn);
-				$query_discussions = sprintf("SELECT * FROM discussion JOIN user ON discussion.insert_uid=user.u_id LEFT OUTER JOIN `user_discussion` ON discussion.discussion_id=user_discussion.user_discussion_id AND user_discussion.u_id=%s WHERE discussion.category_id=%s ORDER BY date_updated_d LIMIT %s,%s",GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($_GET['categoryid'], "int"),GetSQLValueString($lower_limit, "int"),GetSQLValueString($higher_limit, "int"));
+				$query_discussions = sprintf("SELECT * FROM discussion JOIN user ON discussion.insert_uid=user.u_id LEFT OUTER JOIN `user_discussion` ON discussion.discussion_id=user_discussion.user_discussion_id AND user_discussion.u_id=%s WHERE discussion.category_id=%s ORDER BY date_updated_d DESC LIMIT %s,%s",GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($_GET['categoryid'], "int"),GetSQLValueString($lower_limit, "int"),GetSQLValueString($higher_limit, "int"));
 				$discussions = mysql_query($query_discussions, $conn) or die(mysql_error());
 				$row_discussions = mysql_fetch_assoc($discussions);
 				$totalRows_discussions = mysql_num_rows($discussions);
