@@ -129,31 +129,53 @@ $totalRows_categories = mysql_num_rows($categories);
 	  } }
 	  
 	  //function to POST to any page using javascript
-	  function post_to_url(path, params, method) {
-    method = method || "post"; // Set method to post by default if not specified.
+	function post_to_url(path, params, method) {
+    	method = method || "post"; // Set method to post by default if not specified.
     // The rest of this code assumes you are not using a library.
     // It can be made less wordy if you use one.
-    var form = document.createElement("form");
-    form.setAttribute("method", method);
-    form.setAttribute("action", path);
-
-    //for(var key in params) {
-        //if(params.hasOwnProperty(key)) {
-            var hiddenField = document.createElement("input");
-            hiddenField.setAttribute("type", "hidden");
-            hiddenField.setAttribute("name", "sortvalue");
-            hiddenField.setAttribute("value", params);
-			var hiddenFieldMode = document.createElement("input");
-			hiddenFieldMode.setAttribute("type", "hidden");
-            hiddenFieldMode.setAttribute("name", "mode");
-            hiddenFieldMode.setAttribute("value", "showmain");
-            form.appendChild(hiddenField);
-			form.appendChild(hiddenFieldMode);
-         //}
-    //}
-
-    document.body.appendChild(form);
-    form.submit();
+	    var form = document.createElement("form");
+	    form.setAttribute("method", method);
+	    form.setAttribute("action", path);
+        var hiddenField = document.createElement("input");
+        hiddenField.setAttribute("type", "hidden");
+        hiddenField.setAttribute("name", "sortvalue");
+        hiddenField.setAttribute("value", params);
+		var hiddenFieldMode = document.createElement("input");
+		hiddenFieldMode.setAttribute("type", "hidden");
+        hiddenFieldMode.setAttribute("name", "mode");
+        hiddenFieldMode.setAttribute("value", "showmain");
+        form.appendChild(hiddenField);
+		form.appendChild(hiddenFieldMode);
+	    document.body.appendChild(form);
+	    form.submit();
+	}
+	
+	//function to delete comment
+	function delete_comment(element,redirect_id) {
+		//alert(element.id);
+		var r=confirm("Are you sure you want to delete this comment?");
+		if (r==true){
+		  //x="You pressed OK!";
+		  	
+		  	var form = document.createElement("form");
+		  	form.setAttribute("method", "post");
+	   		form.setAttribute("action", "delete_comment.php");
+	        var hiddenField = document.createElement("input");
+	        hiddenField.setAttribute("type", "hidden");
+	        hiddenField.setAttribute("name", "comment_id");
+	        hiddenField.setAttribute("value", element.id);
+			var hiddenField2 = document.createElement("input");
+	        hiddenField2.setAttribute("type", "hidden");
+	        hiddenField2.setAttribute("name", "redirect_disc_id");
+	        hiddenField2.setAttribute("value", redirect_id);
+			form.appendChild(hiddenField);
+			form.appendChild(hiddenField2);
+		    document.body.appendChild(form);
+		    form.submit();
+		}else{
+		  //x="You pressed Cancel!";
+  		} 
+		 
 	}
 </script>
 </head>
@@ -360,13 +382,18 @@ $totalRows_categories = mysql_num_rows($categories);
 							<dt><?php echo $row_comments['date_inserted_c'];?></dt>
                             <br />
                             <!--- vote up-down to be inserted here--->
+                            <table><tr><td>
                             <div id="comment<?php echo $row_comments['comment_id']; ?>" class="upvote">
 							    <a class="upvote"></a>
 							    <span class="count">0</span>
 							    <a class="downvote"></a>
 							    <!---<a class="star"></a> --->
 						    </div>
-                                                       
+                            </td>
+                            <td><?php if ($row_comments['insert_uid']==$_SESSION['MM_UserID']) {
+							echo "<img id='".$row_comments['comment_id']."' src='images/trash.png' width='30' height='30' onclick='delete_comment(this,".$row_comments['discussion_id'].")'/>";
+							}?>
+                            </td></tr></table>                           
 						</aside><!-- .right-sidebar -->
 					</div><!-- .middle-->
                     <!--- comment is displayed. now update this info in user_comment --->
@@ -551,12 +578,24 @@ $totalRows_categories = mysql_num_rows($categories);
                         </new_comments>
                         </aside>
                         <aside class="right-sidebar">
+                        <table>
+                        <tr>
+                        <td>
                         	<div id="disc<?php echo $row_discussions['discussion_id']; ?>" class="upvote">
 							    <a class="upvote"></a>
 							    <span class="count">0</span>
 							    <a class="downvote"></a>
 							    <a class="star"></a>
 						    </div>
+                            </td>
+                            <td>
+                            <?php if($_SESSION['MM_UserID']==$row_discussions['insert_uid']) {
+                            echo "<img src='images/trash.png' width='30' height='30' />";
+							}
+							?>
+                            </td>
+                            </tr>
+                            </table>
                         </aside>
                     </div>
                     <!--- script for discussion vote widget --->
