@@ -773,8 +773,55 @@ $totalRows_categories = mysql_num_rows($categories);
 		    </div>
 	    </div>
     </div>
-    <div class="TabbedPanelsContent">Content 3
-    <!--- Bookmarks--->
+    <div class="TabbedPanelsContent">
+    <!--- Bookmarks---><?php
+    mysql_select_db($database_conn, $conn);
+				$query_disc_bookmarked = sprintf("SELECT * FROM discussion JOIN user ON discussion.insert_uid=user.u_id LEFT OUTER JOIN `user_discussion` ON discussion.discussion_id=user_discussion.user_discussion_id AND user_discussion.u_id=%s WHERE user_discussion.bookmarked=1 ORDER BY date_last_viewed DESC",GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($row_categories['category_id'], "int"));
+				$bookmarks = mysql_query($query_disc_bookmarked, $conn) or die(mysql_error());
+				$row_bookmarks = mysql_fetch_assoc($bookmarks);
+				$totalRows_bookmarks = mysql_num_rows($bookmarks);
+				?>
+                <div class="forum-wrapper">
+	    			<div class="forum-content-wrapper">
+			    		<div class="forum-content">
+                        <forum-h4> Your bookmarks</forum-h4>
+                    <?php do { ?>
+                	<div class="middle">
+                    	<div class="container">
+                    	<main class="content" style="width:80%">
+                        <slimline>
+                        <dt>
+                        <a href="forum_new.php?showTab=discussions&mode=disc&discussionid=<?php echo $row_bookmarks['discussion_id'];?> "> <?php echo $row_bookmarks['name'];?> </a> </dt>
+                        </slimline>
+                        </main>
+                    	</div>
+                        <aside class="left-sidebar" style="width:20%">
+                                <div id="discsort<?php echo $row_bookmarks['discussion_id']; ?>" class="upvote">
+							    <span class="count">0</span>
+						    	</div>
+						</aside>
+                        <aside class="right-sidebar" stype="width:20%">
+                        <new_comments><?php 
+						if (!is_null($row_bookmarks['seen_comments'])){
+						if ($row_bookmarks['count_comments']-$row_bookmarks['seen_comments']>1) {
+							echo $row_bookmarks['count_comments']-$row_bookmarks['seen_comments']." new comments!";
+						}else if ($row_bookmarks['count_comments']-$row_bookmarks['seen_comments']==1) {
+							echo "1 new comment!";
+						}
+						}?>
+                        </new_comments>
+                        </aside>
+                    </div>
+                    <!--- script for discussion vote widget --->
+                    <script>
+					$('#discsort<?php echo $row_bookmarks['discussion_id'];?>').upvote({count: <?php echo $row_bookmarks['rating'];?>,id: <?php echo $row_bookmarks['discussion_id'];?>});
+                	</script>
+                    
+                    <?php } while($row_bookmarks=mysql_fetch_assoc($bookmarks));?>
+                		</div>
+            		</div>
+     			</div>
+     <!--- end of forum divs --->
     </div>
   </div>
 </div>

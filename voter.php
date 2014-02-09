@@ -95,15 +95,15 @@ if (isset($_POST['up']) ||  isset($_POST['down'])){
 			$new_score=$_POST['count'];
 			$difference=$new_score-$prev_score;
 			
-						file_put_contents("test.txt",$difference."\n\r".$_POST['upstatus']."\n\r".$_POST['downstatus']);
+						//file_put_contents("test.txt",$difference."\n\r".$_POST['upstatus']."\n\r".$_POST['downstatus']);
 			if($_POST['upstatus']=="true") {
 				$vote_value=1;
-				file_put_contents("test.txt","upvoted",FILE_APPEND);				
+				//file_put_contents("test.txt","upvoted",FILE_APPEND);				
 			}else if ($_POST['downstatus']=="true") {
-				file_put_contents("test.txt","downvoted",FILE_APPEND);
+				//file_put_contents("test.txt","downvoted",FILE_APPEND);
 				$vote_value=-1;	
 			}else if (empty($_POST['upstatus']) and empty($_POST['downstatus'])) {
-				file_put_contents("test.txt","neutral",FILE_APPEND);				
+				//file_put_contents("test.txt","neutral",FILE_APPEND);				
 				$vote_value=0;
 			}
 			$query_update_usercomment = sprintf("UPDATE user_comment SET vote_status=%s WHERE user_comment_id=%s AND user_id=%s",GetSQLValueString($vote_value, "int"),GetSQLValueString($_POST['id'], "int"),GetSQLValueString($_SESSION['MM_UserID'], "int"));
