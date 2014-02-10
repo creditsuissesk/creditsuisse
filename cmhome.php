@@ -131,8 +131,28 @@ $row_approved_courses = mysql_fetch_assoc($approved_courses);
 $totalRows_approved_courses = mysql_num_rows($approved_courses);
 
 
+mysql_select_db($database_conn, $conn);
+$query_pending_resources = sprintf("SELECT l_name,f_name,r_id,filename,file_type,file_size,uploaded_date,c_name,r.approve_status as r_status
+FROM resource AS r
+JOIN course AS c ON r.c_id = c.c_id JOIN user as u on r.uploaded_by = u.u_id
+WHERE (r.approve_status =0 or r.flag_status=1) and c.approve_status=1 ");
+$pending_resources = mysql_query($query_pending_resources, $conn) or die(mysql_error());
+$row_pending_resources = mysql_fetch_assoc($pending_resources);
+$totalRows_pending_resources = mysql_num_rows($pending_resources);
+
+
+$query_approved_resources = sprintf("SELECT l_name,f_name,r_id,filename,file_type,file_size,uploaded_date,c_name,r.avg_rating as r_avg_rating
+FROM resource AS r
+JOIN course AS c ON r.c_id = c.c_id JOIN user as u on r.uploaded_by = u.u_id
+WHERE (r.approve_status =1 and r.flag_status=0) and c.approve_status=1 ");
+$approved_resources = mysql_query($query_approved_resources, $conn) or die(mysql_error());
+$row_approved_resources = mysql_fetch_assoc($approved_resources);
+$totalRows_approved_resources = mysql_num_rows($approved_resources);
+
+
 ?>
 <?php 
+//php code to update status of course
 $editFormAction = $_SERVER['PHP_SELF'];
 if (isset($_SERVER['QUERY_STRING'])) {
   $editFormAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
@@ -153,6 +173,25 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   }
   header(sprintf("Location: %s", $updateGoTo));
 }
+?>
+<?php 
+//php code to update resource status
+if ((isset($_POST["MM_update_r"])) && ($_POST["MM_update_r"] == "form2")) {
+  $updateSQL_r = sprintf("UPDATE `resource` SET approve_status =%s WHERE r_id=%s",
+                       GetSQLValueString($_POST['r_stat'], "int"),
+                       GetSQLValueString($_POST['rid'], "int"));
+
+  mysql_select_db($database_conn, $conn);
+  $Result2 = mysql_query($updateSQL_r, $conn) or die(mysql_error());
+
+  $updateGoTo = "cmhome.php";
+  if (isset($_SERVER['QUERY_STRING'])) {
+    $updateGoTo .= (strpos($updateGoTo, '?')) ? "&" : "?";
+    $updateGoTo .= $_SERVER['QUERY_STRING'];
+  }
+  header(sprintf("Location: %s", $updateGoTo));
+}
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -222,6 +261,8 @@ function MM_validateForm() { //v4.0
     <li class="TabbedPanelsTab" tabindex="0">Approved Courses</li>
     <li class="TabbedPanelsTab" tabindex="0">Pending Courses</li>
     <li class="TabbedPanelsTab" tabindex="0">Upload Resource</li>
+     <li class="TabbedPanelsTab" tabindex="0">Approved Resource</li>
+      <li class="TabbedPanelsTab" tabindex="0">Pending Resource</li>
   </ul>
 <div class="TabbedPanelsContentGroup">
     <div class="TabbedPanelsContent">
@@ -267,6 +308,7 @@ function MM_validateForm() { //v4.0
         <div class="TabbedPanelsContent">
     <div id="curr_courses">
     <div class="datagrid">
+    <?php if($totalRows_approved_courses>0){?>
      <table>
     <thead>
       <tr>
@@ -288,10 +330,11 @@ function MM_validateForm() { //v4.0
       <td class="currentstart"><?php echo $row_approved_courses['start_date']; ?></td>
       <td class="currentend"><?php echo $row_approved_courses['end_date']; ?></td>
       <td class="currentrating"><?php echo $row_approved_courses['avg_rating']; ?></td>
-        </tr>
-    <?php } while ($row_approved_courses = mysql_fetch_assoc($approved_courses)); ?>
+    <?php } while ($row_approved_courses = mysql_fetch_assoc($approved_courses));?>
+      </tr>
       </tbody>
       </table>
+      <?php }else echo"NO Approved Courses"; ?>
     </div>
     </div>
     <script>
@@ -306,6 +349,7 @@ var currList = new List('curr_courses', currOptions);
 <div class="TabbedPanelsContent">
     <div id="pending_courses">
     <div class="datagrid">
+     <?php if($totalRows_pending_courses>0){?>
     <table>
     <thead>
       <tr>
@@ -341,6 +385,7 @@ var currList = new List('curr_courses', currOptions);
     <?php } while ($row_pending_courses = mysql_fetch_assoc($pending_courses)); ?>
       </tbody>
       </table>
+      <?php }else echo"No Pending Courses"; ?>
       </div> 
     </div>
 
@@ -401,6 +446,111 @@ var allList = new List('pending_courses', allOptions);
       </form>
       	</div><!--end of tab upload resource-->
       </div>
+      <!-- start of approved resource tab-->
+      <div class="TabbedPanelsContent">
+    <div id="approved_res">
+    <div class="datagrid">
+    <?php if($totalRows_approved_resources>0){?>
+     <table>
+    <thead>
+      <tr>
+        <th class="sort" data-sort="r_name">Resource Name</th>
+        <th class="sort" data-sort="c_name">Course Name</th>
+        <th class="sort" data-sort="r_size">Size in Mb</th>
+        <th class="sort" data-sort="r_type">Type</th>
+        <th class="sort" data-sort="author">Uploaded By</th>
+        <th class="sort" data-sort="date">Uploaded Date </th>
+        <th class="sort" data-sort="rate">Average rating</th>
+        <th colspan="2">
+          <input type="text" class="search" placeholder="Search Resource" />
+        </th>
+      </tr>
+    </thead>
+    <tbody class="list">
+    <?php do { ?>
+    <tr>
+      <td class="r_name"><?php echo $row_approved_resources['filename']; ?></a></td>
+      <td class="c_name"><?php echo $row_approved_resources['c_name']; ?></td>
+      <td class="r_size"><?php echo $row_approved_resources['file_size']; ?></td>
+      <td class="r_type"><?php echo $row_approved_resources['file_type']; ?></td>
+      <td class="author"><?php echo $row_approved_resources['f_name']." ".$row_approved_resources['l_name']; ?></td>
+            <td class="date"><?php echo $row_approved_resources['uploaded_date']; ?></td>
+                  <td class="rate"><?php echo $row_approved_resources['r_avg_rating']; ?></td>
+    <?php } while ($row_approved_resources = mysql_fetch_assoc($approved_resources));?>
+      </tr>
+      </tbody>
+      </table>
+      <?php }else echo"NO Approved Courses"; ?>
+    </div>
+    </div>
+    <script>
+var arOptions = {
+  valueNames: [ 'r_name', 'c_name','r_size','r_type','author','date','rate']
+};
+
+// Init list
+var arList = new List('approved_res', arOptions);
+</script>
+    </div> <!---end of fifth tab--->
+    
+    <div class="TabbedPanelsContent">
+    <div id="pending_resources">
+    <div class="datagrid">
+     <?php if($totalRows_pending_resources>0){?>
+    <table>
+    <thead>
+      <tr>
+        <th class="sort" data-sort="pr_name">Resource Name</th>
+        <th class="sort" data-sort="pc_name">Course Name</th>
+        <th class="sort" data-sort="pr_size">Size in Mb</th>
+        <th class="sort" data-sort="pr_type">Type</th>
+        <th class="sort" data-sort="pauthor">Uploaded By</th>
+        <th class="sort" data-sort="pdate">Uploaded Date </th>
+        <th></th>
+        <th></th>
+        <th colspan="2">
+          <input type="text" class="search" placeholder="Search course" />
+        </th>
+      </tr>
+    </thead>
+    <tbody class="list">
+     <?php do { ?>
+              <tr>
+      <td class="pr_name"><?php echo $row_pending_resources['filename']; ?></a></td>
+      <td class="pc_name"><?php echo $row_pending_resources['c_name']; ?></td>
+      <td class="pr_size"><?php echo $row_pending_resources['file_size']; ?></td>
+      <td class="pr_type"><?php echo $row_pending_resources['file_type']; ?></td>
+      <td class="pauthor"><?php echo $row_pending_resources['f_name']." ".$row_pending_resources['l_name']; ?></td>
+            <td class="pdate"><?php echo $row_pending_resources['uploaded_date']; ?></td>
+
+      <form  id="form2" name="form2" method="POST" action="<?php echo $editFormAction; ?>">      <td><select name="r_stat" id="r_stat">
+        <option value="0">  </option>
+        <option value="1">Approved</option>
+        <option value="2">Rejected</option>
+      </select></td>
+      <td> 
+      <input name="update" id="update" value="update" type="submit" ></input> 
+        <input type="hidden" name="MM_update_r" value="form2" />
+        <input type="hidden" id="" name="rid" value="<?php echo $row_pending_resources['r_id']?>" />
+        </td></form>
+          </tr>
+    <?php } while ($row_pending_resources = mysql_fetch_assoc($pending_resources)); ?>
+      </tbody>
+      </table>
+      <?php }else echo"No Pending Resources"; ?>
+      </div> 
+    </div>
+
+   <script>
+var prOptions = {
+  valueNames: [ 'pr_name', 'pc_name','pr_size','pr_type','pauthor','pdate','prate']
+};
+
+// Init list
+var prList = new List('pending_resources', prOptions);
+</script>
+    </div><!--- end of pending resource tab-->
+    
       </div>
     </div>
 <br />
