@@ -78,28 +78,25 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 
 mysql_select_db($database_conn, $conn);
 if(isset($_POST['actiontype']) && $_POST['actiontype']=="delete") {
-	if(isset($_POST['comment_id']) && isset($_POST['redirect_disc_id']) ) {
+	if(isset($_POST['disc_id']) && isset($_POST['redirect_url']) ) {
 		echo "all POST set";
 		
-		//get comment's details for score etc
-		$query_comment = sprintf("SELECT * FROM `comment` WHERE comment_id=%s",GetSQLValueString($_POST['comment_id'], "int"));
-		$comment = mysql_query($query_comment, $conn) or die(mysql_error());
-		$row_comment = mysql_fetch_assoc($comment);
-		$totalRows_comment = mysql_num_rows($comment);
+		//get discussion's details for score etc
+		$query_disc = sprintf("SELECT * FROM `discussion` WHERE discussion_id=%s",GetSQLValueString($_POST['disc_id'], "int"));
+		$disc = mysql_query($query_disc, $conn) or die(mysql_error());
+		$row_disc = mysql_fetch_assoc($disc);
+		$totalRows_disc = mysql_num_rows($disc);
 		
-		//if user is actually comment poster then only proceed
-		if($_SESSION['MM_UserID']==$row_comment['insert_uid']) {
-			//delete comment
-			$delete_comment = sprintf("DELETE FROM `comment` WHERE comment_id=%s",GetSQLValueString($_POST['comment_id'], "int"));
-			$comment_delete = mysql_query($delete_comment, $conn) or die(mysql_error());
+		//if user is actually discussion poster then only proceed
+		if($_SESSION['MM_UserID']==$row_disc['insert_uid']) {
+			//delete discussion
+			$delete_disc = sprintf("DELETE FROM `discussion` WHERE discussion_id=%s",GetSQLValueString($_POST['disc_id'], "int"));
+			$disc_delete = mysql_query($delete_disc, $conn) or die(mysql_error());
 			
-				//comment deleted successfully now decrement poster's comment count and score
-				$update_user = sprintf("UPDATE `user` SET created_comments=created_comments-1, user_score=user_score-%s WHERE u_id=%s",GetSQLValueString($row_comment['comment_score'], "int"),GetSQLValueString($_SESSION['MM_UserID'], "int"));
+				//discussion deleted successfully now decrement poster's discussion count and score
+				$update_user = sprintf("UPDATE `user` SET count_discussions=count_discussions-1, user_score=user_score-%s WHERE u_id=%s",GetSQLValueString($row_disc['rating'], "int"),GetSQLValueString($_SESSION['MM_UserID'], "int"));
 				$result_update_user = mysql_query($update_user, $conn) or die(mysql_error());
 				
-				//now decrement discussion's comment count
-				$update_disc = sprintf("UPDATE `discussion` SET count_comments=count_comments-1 WHERE discussion_id=%s",GetSQLValueString($row_comment['discussion_id'], "int"));
-				$result_update_user = mysql_query($update_disc, $conn) or die(mysql_error());
 		}
 		$insertGoTo = "index.php";
 		if (isset($_SERVER['QUERY_STRING'])) {
@@ -109,9 +106,9 @@ if(isset($_POST['actiontype']) && $_POST['actiontype']=="delete") {
 		}//end of two post variables if case
 	}
 	else if (isset($_POST['actiontype']) && $_POST['actiontype']=="flag") {
-		//flag comment
-				$flag_comment = sprintf("UPDATE `comment` SET flag=1 WHERE comment_id=%s",GetSQLValueString($_POST['comment_id'], "int"));
-				$result_flag_comment = mysql_query($flag_comment, $conn) or die(mysql_error());
+		//flag discussion
+				$flag_disc = sprintf("UPDATE `discussion` SET flag=1 WHERE discussion_id=%s",GetSQLValueString($_POST['disc_id'], "int"));
+				$result_flag_disc= mysql_query($flag_disc, $conn) or die(mysql_error());
 	}
-	header("Location: forum_new.php?showTab=discussions&mode=disc&discussionid=".$_POST['redirect_disc_id']);
+	header($_POST['redirect_url']);
 ?>

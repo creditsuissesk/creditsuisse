@@ -150,33 +150,112 @@ $totalRows_categories = mysql_num_rows($categories);
 	    form.submit();
 	}
 	
-	//function to delete comment
-	function delete_comment(element,redirect_id) {
-		//alert(element.id);
-		var r=confirm("Are you sure you want to delete this comment?");
-		if (r==true){
-		  //x="You pressed OK!";
-		  	
-		  	var form = document.createElement("form");
-		  	form.setAttribute("method", "post");
-	   		form.setAttribute("action", "delete_comment.php");
-	        var hiddenField = document.createElement("input");
-	        hiddenField.setAttribute("type", "hidden");
-	        hiddenField.setAttribute("name", "comment_id");
-	        hiddenField.setAttribute("value", element.id);
-			var hiddenField2 = document.createElement("input");
-	        hiddenField2.setAttribute("type", "hidden");
-	        hiddenField2.setAttribute("name", "redirect_disc_id");
-	        hiddenField2.setAttribute("value", redirect_id);
-			form.appendChild(hiddenField);
-			form.appendChild(hiddenField2);
-		    document.body.appendChild(form);
-		    form.submit();
-		}else{
-		  //x="You pressed Cancel!";
-  		} 
-		 
+	//function to delete and rate comment
+	function edit_comment(element,redirect_id,action) {
+		if(action==0) {
+			var r=confirm("Are you sure you want to delete this comment?");
+			if (r==true){
+			  	var form = document.createElement("form");
+			  	form.setAttribute("method", "post");
+		   		form.setAttribute("action", "edit_comment.php");
+		        var hiddenField = document.createElement("input");
+		        hiddenField.setAttribute("type", "hidden");
+		        hiddenField.setAttribute("name", "comment_id");
+		        hiddenField.setAttribute("value", element.id);
+				var hiddenField2 = document.createElement("input");
+		        hiddenField2.setAttribute("type", "hidden");
+		        hiddenField2.setAttribute("name", "redirect_disc_id");
+		        hiddenField2.setAttribute("value", redirect_id);
+				var hiddenField3 = document.createElement("input");
+		        hiddenField3.setAttribute("type", "hidden");
+		        hiddenField3.setAttribute("name", "actiontype");
+		        hiddenField3.setAttribute("value", "delete");
+				form.appendChild(hiddenField);
+				form.appendChild(hiddenField2);
+				form.appendChild(hiddenField3);
+			    document.body.appendChild(form);
+			    form.submit();
+	  		} 
+		}else if (action==1) {
+			var r=confirm("Are you sure you want to flag this comment?");
+			if (r==true){
+			  	var form = document.createElement("form");
+			  	form.setAttribute("method", "post");
+		   		form.setAttribute("action", "edit_comment.php");
+		        var hiddenField = document.createElement("input");
+		        hiddenField.setAttribute("type", "hidden");
+		        hiddenField.setAttribute("name", "comment_id");
+		        hiddenField.setAttribute("value", element.id);
+				var hiddenField2 = document.createElement("input");
+		        hiddenField2.setAttribute("type", "hidden");
+		        hiddenField2.setAttribute("name", "redirect_disc_id");
+		        hiddenField2.setAttribute("value", redirect_id);
+				var hiddenField3 = document.createElement("input");
+		        hiddenField3.setAttribute("type", "hidden");
+		        hiddenField3.setAttribute("name", "actiontype");
+		        hiddenField3.setAttribute("value", "flag");
+				form.appendChild(hiddenField);
+				form.appendChild(hiddenField2);
+				form.appendChild(hiddenField3);
+			    document.body.appendChild(form);
+			    form.submit();
+	  		} 
+		}
 	}
+	
+	//function to delete and rate discussion
+	function edit_discussion(element,redirect_id,action) {
+		if(action==0) {
+			var r=confirm("Are you sure you want to delete this discussion?");
+			if (r==true){
+			  	var form = document.createElement("form");
+			  	form.setAttribute("method", "post");
+		   		form.setAttribute("action", "edit_discussion.php");
+		        var hiddenField = document.createElement("input");
+		        hiddenField.setAttribute("type", "hidden");
+		        hiddenField.setAttribute("name", "disc_id");
+		        hiddenField.setAttribute("value", element.id);
+				var hiddenField2 = document.createElement("input");
+		        hiddenField2.setAttribute("type", "hidden");
+		        hiddenField2.setAttribute("name", "redirect_url");
+		        hiddenField2.setAttribute("value", redirect_id);
+				var hiddenField3 = document.createElement("input");
+		        hiddenField3.setAttribute("type", "hidden");
+		        hiddenField3.setAttribute("name", "actiontype");
+		        hiddenField3.setAttribute("value", "delete");
+				form.appendChild(hiddenField);
+				form.appendChild(hiddenField2);
+				form.appendChild(hiddenField3);
+			    document.body.appendChild(form);
+			    form.submit();
+	  		} 
+		}else if (action==1) {
+			var r=confirm("Are you sure you want to flag this discussion?");
+			if (r==true){
+			  	var form = document.createElement("form");
+			  	form.setAttribute("method", "post");
+		   		form.setAttribute("action", "edit_discussion.php");
+		        var hiddenField = document.createElement("input");
+		        hiddenField.setAttribute("type", "hidden");
+		        hiddenField.setAttribute("name", "disc_id");
+		        hiddenField.setAttribute("value", element.id);
+				var hiddenField2 = document.createElement("input");
+		        hiddenField2.setAttribute("type", "hidden");
+		        hiddenField2.setAttribute("name", "redirect_url");
+		        hiddenField2.setAttribute("value", redirect_id);
+				var hiddenField3 = document.createElement("input");
+		        hiddenField3.setAttribute("type", "hidden");
+		        hiddenField3.setAttribute("name", "actiontype");
+		        hiddenField3.setAttribute("value", "flag");
+				form.appendChild(hiddenField);
+				form.appendChild(hiddenField2);
+				form.appendChild(hiddenField3);
+			    document.body.appendChild(form);
+			    form.submit();
+	  		} 
+		}
+	}
+
 </script>
 </head>
 
@@ -258,7 +337,7 @@ $totalRows_categories = mysql_num_rows($categories);
                     	<div class="container">
                     	<main class="content" style="width:80%">
                         <slimline>
-                        <datetime><?php echo $row_sort_disc['f_name']." ".$row_sort_disc['l_name']." started new discussion "; ?> </datetime>
+                        <datetime style="color:#999999;"><?php echo $row_sort_disc['f_name']." ".$row_sort_disc['l_name']." started new discussion "; ?> </datetime>
                         <dt>
                         <a href="forum_new.php?showTab=discussions&mode=disc&discussionid=<?php echo $row_sort_disc['discussion_id'];?> "> <?php echo $row_sort_disc['name'];?> </a> </dt>
                         </slimline>
@@ -284,7 +363,7 @@ $totalRows_categories = mysql_num_rows($categories);
                     	<div class="container">
                     	<main class="content" style="width:80%">
                         <slimline>
-                        <?php echo $row_sort_comments['f_name']." ".$row_sort_comments['l_name']." commented on topic";?>
+                        <datetime style="color:#999999;"><?php echo $row_sort_comments['f_name']." ".$row_sort_comments['l_name']." commented on topic";?></datetime>
                         <dt>
                         <a href="forum_new.php?showTab=discussions&mode=disc&discussionid=<?php echo $row_sort_comments['discussion_id'];?> "> <?php echo $row_sort_comments['name'];?> </a> </dt>
                         </slimline>
@@ -341,12 +420,30 @@ $totalRows_categories = mysql_num_rows($categories);
 
 						<aside class="right-sidebar">
 							<dt><?php echo $row_disc['date_inserted_d'];?></dt>
+                            <table><tr><td>
                             <div id="disc<?php echo $row_disc['discussion_id']; ?>" class="upvote">
 							    <a class="upvote"></a>
 							    <span class="count">0</span>
 							    <a class="downvote"></a>
 							    <a class="star"></a>
 						    </div>
+                            </td>
+                            <td>
+                            <?php if($_SESSION['MM_UserID']==$row_disc['insert_uid']) {
+								echo '<script> var path="http://'. $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'].'";</script> ';
+                            echo '<img src="images/trash.png" width="30" height="30" onclick="edit_discussion(this,path,0)"/>';
+									$padding=1;
+							}else {
+									$padding=0;
+							}
+							if($row_disc['flag']==0) {
+							echo "<img id='".$row_disc['discussion_id']."' src='images/flag.png' width='30' height='30' onclick='edit_discussion(this,".$row_disc['discussion_id'].",1)' ";if($padding==0) {echo "style='padding-left:30px;'";} echo " />";
+							} else {
+							echo "<img id='".$row_disc['comment_id']."' src='images/red_flag.png' width='30' height='30' ";if($padding==0) {echo "style='padding-left:30px;'";} echo"/>";
+							}
+							?>
+                            </td>
+                            </tr></table>
 						</aside><!-- .right-sidebar -->
 
 					</div><!-- .middle-->
@@ -369,7 +466,7 @@ $totalRows_categories = mysql_num_rows($categories);
                     <div class="middle">
 						<div class="container">
 							<main class="content">
-				                <dt><dd><?php echo $row_comments['comment_body'];?></dd></dt>
+				                <dt><dd <?php if($row_comments['flag']==1) {echo "style='color:#ff0000;'";}?>><?php echo $row_comments['comment_body'];?></dd></dt>
 							</main><!-- .content -->
 						</div><!-- .container-->
 
@@ -391,8 +488,15 @@ $totalRows_categories = mysql_num_rows($categories);
 						    </div>
                             </td>
                             <td><?php if ($row_comments['insert_uid']==$_SESSION['MM_UserID']) {
-							echo "<img id='".$row_comments['comment_id']."' src='images/trash.png' width='30' height='30' onclick='delete_comment(this,".$row_comments['discussion_id'].")'/>";
-							}?>
+							echo "<img id='".$row_comments['comment_id']."' src='images/trash.png' width='30' height='30' onclick='edit_comment(this,".$row_comments['discussion_id'].",0)'/>";
+								$padding=0;
+							}else {$padding=1;}?>
+                            <?php if($row_comments['flag']==0) {
+							echo "<img id='".$row_comments['comment_id']."' src='images/flag.png' width='30' height='30'onclick='edit_comment(this,".$row_comments['discussion_id'].",1)'";if($padding==1) {echo "style='padding-left:30px;'";} echo " />";
+							} else {
+							echo "<img id='".$row_comments['comment_id']."' src='images/red_flag.png' width='30' height='30'";if($padding==0) {echo "style='padding-left:30px;'";} echo " />";
+							}
+							?>
                             </td></tr></table>                           
 						</aside><!-- .right-sidebar -->
 					</div><!-- .middle-->
@@ -546,7 +650,7 @@ $totalRows_categories = mysql_num_rows($categories);
                     	<main class="content">
                         <dt>
                         <a href="forum_new.php?showTab=discussions&mode=disc&discussionid=<?php echo $row_discussions['discussion_id'];?> "> <?php echo $row_discussions['name'];?> </a> </dt>
-                        <datetime><?php echo "By ".$row_discussions['f_name']." ".$row_discussions['l_name']." on ".$row_discussions['date_inserted_d'];?></datetime> <br />
+                        <datetime style="color:#999999;"><?php echo "By ".$row_discussions['f_name']." ".$row_discussions['l_name']." on ".$row_discussions['date_inserted_d'];?></datetime> <br />
                         <dd>
                         <?php if (strlen($row_discussions['disc_body'])>400) {
 							echo substr($row_discussions['disc_body'],0,400)."....";
@@ -590,7 +694,16 @@ $totalRows_categories = mysql_num_rows($categories);
                             </td>
                             <td>
                             <?php if($_SESSION['MM_UserID']==$row_discussions['insert_uid']) {
-                            echo "<img src='images/trash.png' width='30' height='30' />";
+								echo '<script> var path="http://'. $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'].'";</script> ';
+                            echo '<img src="images/trash.png" width="30" height="30" onclick="edit_discussion(this,path,0)"/>';
+									$padding=1;
+							}else {
+									$padding=0;
+							}
+							if($row_discussions['flag']==0) {
+							echo "<img id='".$row_discussions['discussion_id']."' src='images/flag.png' width='30' height='30' onclick='edit_discussion(this,".$row_discussions['discussion_id'].",1)' ";if($padding==0) {echo "style='padding-left:30px;'";} echo " />";
+							} else {
+							echo "<img id='".$row_discussions['discussion_id']."' src='images/red_flag.png' width='30' height='30' ";if($padding==0) {echo "style='padding-left:30px;'";} echo"/>";
 							}
 							?>
                             </td>
