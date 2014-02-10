@@ -106,7 +106,7 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 
 
 mysql_select_db($database_conn, $conn);
-$query_all_courses = sprintf("SELECT c_id,c_name,c_stream,start_date,end_date,avg_rating FROM course NATURAL JOIN create_course WHERE u_id=%s",GetSQLValueString($_SESSION['MM_UserID'], "int"));
+$query_all_courses = sprintf("SELECT c_id,c_name,c_stream,start_date,end_date,avg_rating FROM course WHERE u_id=%s ",GetSQLValueString($_SESSION['MM_UserID'], "int"));
 $all_courses = mysql_query($query_all_courses, $conn) or die(mysql_error());
 $row_all_courses = mysql_fetch_assoc($all_courses);
 $totalRows_all_courses = mysql_num_rows($all_courses);
@@ -124,7 +124,7 @@ $totalRows_resource_type = mysql_num_rows($resource_type);
 
 
 mysql_select_db($database_conn, $conn);
-$query_current_courses = sprintf("SELECT c_id,c_name,c_stream,start_date,end_date,avg_rating FROM course NATURAL JOIN create_course WHERE u_id=%s AND start_date<=DATE(NOW()) AND end_date>=DATE(NOW()) ORDER BY start_date ASC",GetSQLValueString($_SESSION['MM_UserID'], "int"));
+$query_current_courses = sprintf("SELECT c_id,c_name,c_stream,start_date,end_date,avg_rating FROM course WHERE u_id=%s AND start_date<=DATE(NOW()) AND end_date>=DATE(NOW()) AND approve_status=1 ORDER BY start_date ASC",GetSQLValueString($_SESSION['MM_UserID'], "int"));
 $current_courses = mysql_query($query_current_courses, $conn) or die(mysql_error());
 $row_current_courses = mysql_fetch_assoc($current_courses);
 $totalRows_current_courses = mysql_num_rows($current_courses);
@@ -195,7 +195,7 @@ function MM_validateForm() { //v4.0
 <div id="TabbedPanels1" class="TabbedPanels">
   <ul class="TabbedPanelsTabGroup">
     <li class="TabbedPanelsTab" tabindex="0">Create Course</li>
-    <li class="TabbedPanelsTab" tabindex="0">Current Courses</li>
+    <li class="TabbedPanelsTab" tabindex="0">Current Approved Courses</li>
     <li class="TabbedPanelsTab" tabindex="0">All Courses</li>
     <li class="TabbedPanelsTab" tabindex="0">Upload Resource</li>
   </ul>

@@ -1,3 +1,36 @@
+<?php require_once('Connections/conn.php'); ?>
+<?php
+if (!function_exists("GetSQLValueString")) {
+function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
+{
+  if (PHP_VERSION < 6) {
+    $theValue = get_magic_quotes_gpc() ? stripslashes($theValue) : $theValue;
+  }
+
+  $theValue = function_exists("mysql_real_escape_string") ? mysql_real_escape_string($theValue) : mysql_escape_string($theValue);
+
+  switch ($theType) {
+    case "text":
+      $theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
+      break;    
+    case "long":
+    case "int":
+      $theValue = ($theValue != "") ? intval($theValue) : "NULL";
+      break;
+    case "double":
+      $theValue = ($theValue != "") ? doubleval($theValue) : "NULL";
+      break;
+    case "date":
+      $theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
+      break;
+    case "defined":
+      $theValue = ($theValue != "") ? $theDefinedValue : $theNotDefinedValue;
+      break;
+  }
+  return $theValue;
+}
+}
+?>
 <?php
 //initialize the session
 if (!isset($_SESSION)) {
@@ -71,14 +104,309 @@ if (!((isset($_SESSION['MM_Username'])) && (isAuthorized("",$MM_authorizedUsers,
   exit;
 }
 ?>
+<?php 
+
+mysql_select_db($database_conn, $conn);
+$query_pending_courses = sprintf("SELECT c_id,c_name,c_stream,start_date,end_date FROM course where approve_status=0");
+$pending_courses = mysql_query($query_pending_courses, $conn) or die(mysql_error());
+$row_pending_courses = mysql_fetch_assoc($pending_courses);
+$totalRows_pending_courses = mysql_num_rows($pending_courses);
+
+$query_resource = sprintf("SELECT c_id,c_name,c_stream,start_date,end_date,avg_rating FROM course ");
+$new_resource = mysql_query($query_resource, $conn) or die(mysql_error());
+$row_new_resource = mysql_fetch_assoc($new_resource);
+$totalRows_new_resource = mysql_num_rows($new_resource);
+
+
+
+$query_resource_type = sprintf("SELECT * FROM resource_type");
+$resource_type = mysql_query($query_resource_type, $conn) or die(mysql_error());
+$row_resource_type = mysql_fetch_assoc($resource_type);
+$totalRows_resource_type = mysql_num_rows($resource_type);
+
+mysql_select_db($database_conn, $conn);
+$query_approved_courses = sprintf("SELECT c_id,c_name,c_stream,start_date,end_date,avg_rating FROM course WHERE approve_status=1");
+$approved_courses = mysql_query($query_approved_courses, $conn) or die(mysql_error());
+$row_approved_courses = mysql_fetch_assoc($approved_courses);
+$totalRows_approved_courses = mysql_num_rows($approved_courses);
+
+
+?>
+<?php 
+$editFormAction = $_SERVER['PHP_SELF'];
+if (isset($_SERVER['QUERY_STRING'])) {
+  $editFormAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
+}
+
+if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
+  $updateSQL = sprintf("UPDATE `course` SET approve_status =%s WHERE c_id=%s",
+                       GetSQLValueString($_POST['app_id'], "int"),
+                       GetSQLValueString($_POST['update_q'], "int"));
+
+  mysql_select_db($database_conn, $conn);
+  $Result1 = mysql_query($updateSQL, $conn) or die(mysql_error());
+
+  $updateGoTo = "cmhome.php";
+  if (isset($_SERVER['QUERY_STRING'])) {
+    $updateGoTo .= (strpos($updateGoTo, '?')) ? "&" : "?";
+    $updateGoTo .= $_SERVER['QUERY_STRING'];
+  }
+  header(sprintf("Location: %s", $updateGoTo));
+}
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Content Manager Home</title>
+<script src="SpryAssets/SpryTabbedPanels.js" type="text/javascript"></script>
+<link href="SpryAssets/SpryTabbedPanels.css" rel="stylesheet" type="text/css" />
+<link href="css/templatemo_style.css?12" type="text/css" rel="stylesheet" />
+<link href="css/table.css" type="text/css" rel="stylesheet" /> 
+<!---
+script for js/list.js tables
+--->
+<script src="js/list.js"></script>
+<script src="js/jquery.min.js"></script>
+<!--
+script for calendar
+--->
+<link rel="stylesheet" type="text/css" media="all" href="css/jsDatePick_ltr.min.css" />
+<link href="SpryAssets/SpryValidationPassword.css" rel="stylesheet" type="text/css" />
+<link href="SpryAssets/SpryValidationConfirm.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+body,td,th {
+	color: #000000;
+	font-size: 14px;
+}
+</style>
+<script type="text/javascript" src="js/jsDatePick.min.1.3.js"></script>
+<script type="text/javascript">
+window.onload = function(){
+		new JsDatePick({
+			useMode:2,
+			target:"start_date",
+			dateFormat:"%Y-%m-%d"
+		});
+		new JsDatePick({
+			useMode:2,
+			target:"end_date",
+			dateFormat:"%Y-%m-%d"
+		});
+	};
+function MM_validateForm() { //v4.0
+  if (document.getElementById){
+    var i,p,q,nm,test,num,min,max,errors='',args=MM_validateForm.arguments;
+    for (i=0; i<(args.length-2); i+=3) { test=args[i+2]; val=document.getElementById(args[i]);
+      if (val) { nm=val.name; if ((val=val.value)!="") {
+        if (test.indexOf('isEmail')!=-1) { p=val.indexOf('@');
+          if (p<1 || p==(val.length-1)) errors+='- '+nm+' must contain an e-mail address.\n';
+        } else if (test!='R') { num = parseFloat(val);
+          if (isNaN(val)) errors+='- '+nm+' must contain a number.\n';
+          if (test.indexOf('inRange') != -1) { p=test.indexOf(':');
+            min=test.substring(8,p); max=test.substring(p+1);
+            if (num<min || max<num) errors+='- '+nm+' must contain a number between '+min+' and '+max+'.\n';
+      } } } else if (test.charAt(0) == 'R') errors += '- '+nm+' is required.\n'; }
+    } if (errors) alert('The following error(s) occurred:\n'+errors);
+    document.MM_returnValue = (errors == '');
+} }
+</script>
 </head>
 
 <body>
+<body alink="#D6D6D6">
+<h1>Hello, <?php echo $_SESSION['MM_f_name'];?></h1>
+<div id="TabbedPanels1" class="TabbedPanels">
+  <ul class="TabbedPanelsTabGroup">
+    <li class="TabbedPanelsTab" tabindex="0">Create Course</li>
+    <li class="TabbedPanelsTab" tabindex="0">Approved Courses</li>
+    <li class="TabbedPanelsTab" tabindex="0">Pending Courses</li>
+    <li class="TabbedPanelsTab" tabindex="0">Upload Resource</li>
+  </ul>
+<div class="TabbedPanelsContentGroup">
+    <div class="TabbedPanelsContent">
+      <p>Please enter the course details : </p>
+      <form id="form1" name="new_course" method="POST" enctype="multipart/form-data" action="author_home_data.php">
+        <p>
+          <label for="c_name">Course Name* :</label>
+          <input type="text" name="c_name" id="c_name" />
+          <label for="start_date">Start Date* : </label>
+          <input name="start_date" type="text" id="start_date" readonly="readonly" />
+        </p>
+        <p>
+          <label for="c_stream">Course Stream* : </label>
+          <input type="text" name="c_stream" id="c_stream" />
+          <label for="end_date">End Date* : </label>
+          <input name="end_date" type="text" id="end_date" readonly="readonly" />
+        </p>
+        <p>
+          <label for="desc">Course Description* :</label>
+          <textarea name="desc" id="desc" cols="45" rows="5"></textarea>
+        </p>
+        <p> <label for="file">Course Picture:</label>
+<input type="file" name="file" id="file">
+		</p>
+        <p>
+          <input name="submit" type="submit" id="submit" onclick="MM_validateForm('c_name','','R','start_date','','R','c_stream','','R','end_date','','R','desc','','R');return document.MM_returnValue" value="Submit" />
+          <input type="reset" name="reset" id="reset" value="Reset" />
+          <?php require_once('Connections/conn.php'); ?>
+
+        </p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>
+          <label for="uid"></label>
+        </p>
+        <p>&nbsp;</p>
+        <p>
+          <input type="hidden" name="MM_insert" value="new_course" />
+        </p>
+      </form>
+    </div>	<!---ends tab 1--->
+        <div class="TabbedPanelsContent">
+    <div id="curr_courses">
+    <div class="datagrid">
+     <table>
+    <thead>
+      <tr>
+        <th class="sort" data-sort="currentname">Course Name</th>
+        <th class="sort" data-sort="currentstream">Stream</th>
+        <th class="sort" data-sort="currentstart">Start Date</th>
+        <th class="sort" data-sort="currentend">End Date</th>
+        <th class="sort" data-sort="currentrating">Average Rating</th>
+        <th colspan="2">
+          <input type="text" class="search" placeholder="Search course" />
+        </th>
+      </tr>
+    </thead>
+    <tbody class="list">
+    <?php do { ?>
+    <tr>
+      <td class="currentname"><a href="course_detail.php?c_id=<?php echo $row_approved_courses['c_id']; ?>"><?php echo $row_approved_courses['c_name']; ?></a></td>
+      <td class="currentstream"><?php echo $row_approved_courses['c_stream']; ?></td>
+      <td class="currentstart"><?php echo $row_approved_courses['start_date']; ?></td>
+      <td class="currentend"><?php echo $row_approved_courses['end_date']; ?></td>
+      <td class="currentrating"><?php echo $row_approved_courses['avg_rating']; ?></td>
+        </tr>
+    <?php } while ($row_approved_courses = mysql_fetch_assoc($approved_courses)); ?>
+      </tbody>
+      </table>
+    </div>
+    </div>
+    <script>
+var currOptions = {
+  valueNames: [ 'currentname', 'currentstream','currentstart','currentend','currentrating']
+};
+
+// Init list
+var currList = new List('curr_courses', currOptions);
+</script>
+    </div> <!---end of second tab--->
+<div class="TabbedPanelsContent">
+    <div id="pending_courses">
+    <div class="datagrid">
+    <table>
+    <thead>
+      <tr>
+        <th class="sort" data-sort="allname">Course Name</th>
+        <th class="sort" data-sort="allstream">Stream</th>
+        <th class="sort" data-sort="allstart">Start Date</th>
+        <th class="sort" data-sort="allend">End Date</th>
+        <th></th>
+        <th></th>
+        <th colspan="2">
+          <input type="text" class="search" placeholder="Search course" />
+        </th>
+      </tr>
+    </thead>
+    <tbody class="list">
+     <?php do { ?>
+              <tr>
+      <td class="allname"><a href="course_detail.php?c_id=<?php echo $row_pending_courses['c_id']; ?>"><?php echo $row_pending_courses['c_name']; ?></a></td>
+      <td class="allstream"><?php echo $row_pending_courses['c_stream']; ?></td>
+      <td class="allstart"><?php echo $row_pending_courses['start_date']; ?></td>
+      <td class="allend"><?php echo $row_pending_courses['end_date']; ?></td>
+      <form  id="form1" name="form1" method="POST" action="<?php echo $editFormAction; ?>">      <td><select name="app_id" id="app_id">
+        <option value="0">  </option>
+        <option value="1">Approved</option>
+        <option value="2">Rejected</option>
+      </select></td>
+      <td> 
+      <input name="update" id="update" value="update" type="submit" ></input> 
+        <input type="hidden" name="MM_update" value="form1" />
+        <input type="hidden" id="update_q" name="update_q" value="<?php echo $row_pending_courses['c_id']?>" />
+        </td></form>
+          </tr>
+    <?php } while ($row_pending_courses = mysql_fetch_assoc($pending_courses)); ?>
+      </tbody>
+      </table>
+      </div> 
+    </div>
+
+    <script>
+var allOptions = {
+  valueNames: [ 'allname', 'allstream','allstart','allend','allrating' ]
+};
+
+// Init list
+var allList = new List('pending_courses', allOptions);
+</script>
+    </div>
+    <div class="TabbedPanelsContent">
+     <!--start of tab upload resource-->
+     <div id="New Resource">
+      <p>Please enter the Resource details : </p>
+      <form id="new_resource" method="POST" action="upload_res.php" enctype="multipart/form-data">
+       <p>
+          <label for="co_name">Course Name* :</label>
+          <select id= "co_name" name="co_name">
+<?php 
+		 do { 
+		
+				echo '<option value="'.$row_new_resource['c_id'].'"';
+            echo '>'. $row_new_resource['c_name'] . '</option>'."\n";
+		} while ($row_new_resource= mysql_fetch_assoc( $new_resource));
+?></select>
+       </p>
+       <p>
+          <label for="r_name">Resource Name* :</label>
+          <input type="text" name="r_name" id="r_name" />
+       </p> 
+       <p>
+          <label for="r_type">Resource Type* :</label>
+          <select id= "r_type" name="r_type">
+<?php 
+		 do { 
+		
+				echo '<option value="'.$row_resource_type['type_id'].'"';
+            echo '>'. $row_resource_type['r_type'] . '</option>'."\n";
+		} while ($row_resource_type= mysql_fetch_assoc( $resource_type));
+?></select>
+       </p> 
+       <p>
+       <label for="download">Download Status* :</label>
+       <select id= "download" name="download">
+       <option value="1">Allow Download</option>
+       <option value="0">Deny Download</option>
+       </select>
+       </p>
+       <br/>
+       <p> 
+       <label for="file">File* :</label>
+<input type="file" name="file" id="file">
+		</p>  
+      	   <input name="submit" type="submit" id="submit" onclick="MM_validateForm('co_name','','R','r_name','','R','r_type','','R');return document.MM_returnValue" value="Upload" action="upload_res.php"/>
+      <input type="hidden" name="MM_insert" value="form" />
+      </form>
+      	</div><!--end of tab upload resource-->
+      </div>
+      </div>
+    </div>
+<br />
 <a href="<?php echo $logoutAction ?>">Log out</a>
+<script type="text/javascript">
+var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1");
+</script>
 </body>
 </html>

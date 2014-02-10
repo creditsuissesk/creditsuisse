@@ -220,6 +220,7 @@ var userList = new List('users', options);
         <input type="hidden" name="MM_change" value="form1" />
         </td>
         </form>
+        <?php }else echo "<td> </td>";?>
          <form  id="form2" name="form2" method="POST" action="remove_res.php">    
         
         <td> 
@@ -230,7 +231,7 @@ var userList = new List('users', options);
         <input type="hidden" name="MM_change" value="form2" />
         </td>
         </form>
-        <?php }else echo "<td> </td><td></td>";?>
+        
        </tr> 
     </tbody>
     <?php } while ($row_resource = mysql_fetch_assoc($resource)); ?>

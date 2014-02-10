@@ -64,6 +64,16 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
   return $theValue;
 }
 }
+if($_SESSION['MM_UserGroup']=='cm')
+{
+$redirect_id="http://localhost/dreamweaver/cmhome.php";
+$ap_stat=1;
+}
+else if($_SESSION['MM_UserGroup']=='author')
+{
+	$redirect_id="http://localhost/dreamweaver/authorhome.php";
+    $ap_stat=1;
+}
 $temp = explode(".", $_FILES["file"]["name"]);
 $extension = end($temp);
 if ((($_FILES["file"]["type"] == "image/gif")
@@ -76,70 +86,37 @@ if ((($_FILES["file"]["type"] == "image/gif")
 {
  if ($_FILES["file"]["error"] > 0)
     {
-     echo '<script type="text/javascript">alert("File Error: '. $_FILES["file"]["error"] . ' ");window.location="http://localhost/dreamweaver/authorhome.php";</script>';
+     echo '<script type="text/javascript">alert("File Error: '. $_FILES["file"]["error"] . ' ");window.location="'.$redirect_id.'";</script>';
     }
   else
     {
-   /* echo "Upload: " . $_FILES["file"]["name"] . "<br>";
-    echo "Type: " . $_FILES["file"]["type"] . "<br>";
-    echo "Size: " . ($_FILES["file"]["size"] / 1024) . " kB<br>";
-    echo "Temp file: " . $_FILES["file"]["tmp_name"] . "<br>";
-	*/
 	$filename=$_POST['c_name'].'.'.$extension;
 	$upload_add="images/course_picture/" . $filename;
     if (file_exists("images/course_picture/" . $filename))
       {
-      echo  '<script type="text/javascript">alert("'. $filename . '  already exists. "); window.location="http://localhost/dreamweaver/authorhome.php";</script>';
+      echo  '<script type="text/javascript">alert("'. $filename . '  already exists. "); window.location="'.$redirect_id.'";</script>';
       }
     else
       {
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "new_course")) {
-  $insertSQL = sprintf("INSERT INTO course (c_name, c_stream, start_date, end_date,course_image,description) VALUES (%s, %s, %s, %s,%s,%s)",
+  $insertSQL = sprintf("INSERT INTO course (c_name, c_stream, start_date, end_date,course_image,description,approve_status,u_id) VALUES (%s, %s, %s, %s,%s,%s,%s,%s)",
                        GetSQLValueString($_POST['c_name'], "text"),
                        GetSQLValueString($_POST['c_stream'], "text"),
                        GetSQLValueString($_POST['start_date'], "date"),
                        GetSQLValueString($_POST['end_date'], "date"),
 					   GetSQLValueString($upload_add, "text"),
-					   GetSQLValueString($_POST['desc'], "text"));
+					   GetSQLValueString($_POST['desc'], "text"),   GetSQLValueString($ap_stat, "int"),GetSQLValueString($_SESSION['MM_UserID'], "int"));
 
   mysql_select_db($database_conn, $conn);
   $Result1 = mysql_query($insertSQL, $conn) or die(mysql_error());
-}
-$colname_get_cid = "c_name";
-if (isset($_POST['c_name'])) {
-  $colname_get_cid = $_POST['c_name'];
-}
-mysql_select_db($database_conn, $conn);
-$query_get_cid = sprintf("SELECT c_id FROM course WHERE c_name = %s", GetSQLValueString($colname_get_cid, "text"));
-
-$get_cid = mysql_query($query_get_cid, $conn) or die(mysql_error());
-$row_get_cid = mysql_fetch_assoc($get_cid);
-$totalRows_get_cid = mysql_num_rows($get_cid);
-
-mysql_select_db($database_conn, $conn);
-$query_get_auth_info = sprintf("SELECT * FROM user WHERE u_id = %s",GetSQLValueString($_SESSION['MM_UserID'],"int"));
-
-/*$get_auth_info= mysql_query($query_get_auth_info, $conn) or die(mysql_error());
-$row_get_auth_info = mysql_fetch_assoc($get_auth_info);
-$totalRows_get_auth_info = mysql_num_rows($get_auth_info);*/
-
-if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "new_course")) {
-  $insertSQL2 = sprintf("INSERT INTO create_course (u_id,c_id) VALUES (%s,%s)",GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($row_get_cid['c_id'], "int")
-                       );
-
-  mysql_select_db($database_conn, $conn);
-  $Result1 = mysql_query($insertSQL2, $conn) or die(mysql_error());
-}
 	   move_uploaded_file($_FILES["file"]["tmp_name"],
       $upload_add);
-	   	echo '<script type="text/javascript">alert("File Succesfully Uploaded"); window.location="http://localhost/dreamweaver/authorhome.php"; </script>';
-	  }
-	}}
+	   	echo '<script type="text/javascript">alert("File Succesfully Uploaded"); window.location="'.$redirect_id.'"; </script>';
+	}}}}
 else
   {
-  echo '<script type="text/javascript">alert("Invalid File. Please Create Course again");window.location="http://localhost/dreamweaver/authorhome.php";</script>';
+  echo '<script type="text/javascript">alert("Invalid File. Please Create Course again");window.location="'.$redirect_id.'";</script>';
   }
- mysql_free_result($get_cid);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
