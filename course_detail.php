@@ -195,6 +195,7 @@ var userList = new List('users', options);
      <th class="sort" data-sort="date">Resource Uploaded Date</th>
      <th class="sort" data-sort="f_type">File Type</th>
      <th></th>
+     <th></th>
       <th colspan="2">
           <input type="text" class="search" placeholder="Search Resource" />
         </th>
@@ -219,7 +220,17 @@ var userList = new List('users', options);
         <input type="hidden" name="MM_change" value="form1" />
         </td>
         </form>
-        <?php }else echo "<td> </td>";?>
+         <form  id="form2" name="form2" method="POST" action="remove_res.php">    
+        
+        <td> 
+        <input name="change" id="change" value="Remove" type="submit" >        
+        </input>
+        <input type="hidden" name="id" id="id" value="<?php echo $row_resource['r_id'];?>"  />
+        
+        <input type="hidden" name="MM_change" value="form2" />
+        </td>
+        </form>
+        <?php }else echo "<td> </td><td></td>";?>
        </tr> 
     </tbody>
     <?php } while ($row_resource = mysql_fetch_assoc($resource)); ?>

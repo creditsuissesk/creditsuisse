@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 09, 2014 at 01:13 PM
+-- Generation Time: Feb 09, 2014 at 07:40 PM
 -- Server version: 5.6.14
 -- PHP Version: 5.5.6
 
@@ -19,20 +19,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `credit_suisse`
 --
-
--- --------------------------------------------------------
-
---
--- Table structure for table `approved_status`
---
-
-CREATE TABLE IF NOT EXISTS `approved_status` (
-  `r_id` int(10) unsigned NOT NULL,
-  `app_status` tinyint(1) NOT NULL,
-  `u_id` int(10) unsigned NOT NULL,
-  KEY `r_id` (`r_id`),
-  KEY `u_id` (`u_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -105,53 +91,28 @@ CREATE TABLE IF NOT EXISTS `course` (
   `c_stream` varchar(20) NOT NULL,
   `start_date` date NOT NULL,
   `end_date` date NOT NULL,
+  `u_id` int(11) unsigned NOT NULL,
+  `approve_status` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `course_image` varchar(75) NOT NULL DEFAULT 'images/gallery/09-I',
   `avg_rating` double NOT NULL,
   `description` text NOT NULL,
-  PRIMARY KEY (`c_id`)
+  PRIMARY KEY (`c_id`),
+  KEY `u_id` (`u_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=29 ;
 
 --
 -- Dumping data for table `course`
 --
 
-INSERT INTO `course` (`c_id`, `c_name`, `c_stream`, `start_date`, `end_date`, `course_image`, `avg_rating`, `description`) VALUES
-(18, 'Cryptography-Basic', 'Computer Science', '2014-01-12', '2016-01-11', 'images/gallery/09-I', 0, 'This is course on cryptography. In this course we will introduce you to basic ciphers and the basics of cryptography.'),
-(19, 'Networking Protocols', 'Networking', '2014-05-01', '2014-10-31', 'images/gallery/09-I', 0, ''),
-(20, 'Cryptography-Advanced', 'Computer Science', '2014-01-22', '2014-07-17', 'images/gallery/09-I', 0, 'this is crypto'),
-(21, 'Web Designing', 'Computer Science', '2014-01-03', '2014-07-17', 'images/gallery/09-I', 0, ''),
-(22, 'Database Management', 'Computer Science', '2014-01-16', '2014-08-18', 'images/gallery/09-I', 0, 'Description!'),
-(23, 'Database-Advanced', 'Computer Science', '2014-03-06', '2014-08-05', 'images/gallery/09-I', 0, 'This course is based n advance techniques of using database'),
-(27, 'PHP', 'Computer Science', '2014-02-20', '2017-02-20', 'images/course_picture/PHPjpg', 0, 'this is basic course'),
-(28, 'Java Scripts', 'Computer Science', '2015-02-12', '2015-02-27', 'images/course_picture/Java Scripts.jpg', 0, 'Basics of Java Scripting');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `create_course`
---
-
-CREATE TABLE IF NOT EXISTS `create_course` (
-  `u_id` int(11) unsigned NOT NULL,
-  `c_id` int(11) unsigned NOT NULL,
-  PRIMARY KEY (`c_id`),
-  UNIQUE KEY `c_id` (`c_id`),
-  KEY `u_id_2` (`u_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `create_course`
---
-
-INSERT INTO `create_course` (`u_id`, `c_id`) VALUES
-(2, 18),
-(2, 19),
-(2, 20),
-(2, 21),
-(2, 22),
-(2, 23),
-(2, 27),
-(2, 28);
+INSERT INTO `course` (`c_id`, `c_name`, `c_stream`, `start_date`, `end_date`, `u_id`, `approve_status`, `course_image`, `avg_rating`, `description`) VALUES
+(18, 'Cryptography-Basic', 'Computer Science', '2014-01-12', '2016-01-11', 2, 0, 'images/gallery/09-I', 0, 'This is course on cryptography. In this course we will introduce you to basic ciphers and the basics of cryptography.'),
+(19, 'Networking Protocols', 'Networking', '2014-05-01', '2014-10-31', 2, 0, 'images/gallery/09-I', 0, ''),
+(20, 'Cryptography-Advanced', 'Computer Science', '2014-01-22', '2014-07-17', 2, 0, 'images/gallery/09-I', 0, 'this is crypto'),
+(21, 'Web Designing', 'Computer Science', '2014-01-03', '2014-07-17', 2, 0, 'images/gallery/09-I', 0, ''),
+(22, 'Database Management', 'Computer Science', '2014-01-16', '2014-08-18', 2, 0, 'images/gallery/09-I', 0, 'Description!'),
+(23, 'Database-Advanced', 'Computer Science', '2014-03-06', '2014-08-05', 2, 0, 'images/gallery/09-I', 0, 'This course is based n advance techniques of using database'),
+(27, 'PHP', 'Computer Science', '2014-02-20', '2017-02-20', 2, 0, 'images/course_picture/PHPjpg', 0, 'this is basic course'),
+(28, 'Java Scripts', 'Computer Science', '2015-02-12', '2015-02-27', 2, 0, 'images/course_picture/Java Scripts.jpg', 0, 'Basics of Java Scripting');
 
 -- --------------------------------------------------------
 
@@ -265,6 +226,7 @@ CREATE TABLE IF NOT EXISTS `resource` (
   `uploaded_by` int(10) unsigned NOT NULL,
   `uploaded_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `download_status` tinyint(1) NOT NULL DEFAULT '0',
+  `approve_status` tinyint(1) NOT NULL DEFAULT '0',
   `avg_rating` double unsigned NOT NULL DEFAULT '0',
   `flag_status` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`r_id`),
@@ -276,9 +238,9 @@ CREATE TABLE IF NOT EXISTS `resource` (
 -- Dumping data for table `resource`
 --
 
-INSERT INTO `resource` (`r_id`, `c_id`, `type_id`, `filename`, `file_type`, `file_size`, `file_location`, `uploaded_by`, `uploaded_date`, `download_status`, `avg_rating`, `flag_status`) VALUES
-(1, 18, 1, 'Reference.pdf', 'application/pdf', 5.3696355819702, 'resource/18/Reference.pdf', 2, '2014-02-09 00:15:49', 1, 0, 0),
-(2, 18, 7, 'Example.jpg', 'image/jpeg', 0.13896942138672, 'resource/18/Example.jpg', 2, '2014-02-09 00:17:09', 0, 0, 0);
+INSERT INTO `resource` (`r_id`, `c_id`, `type_id`, `filename`, `file_type`, `file_size`, `file_location`, `uploaded_by`, `uploaded_date`, `download_status`, `approve_status`, `avg_rating`, `flag_status`) VALUES
+(1, 18, 1, 'Reference.pdf', 'application/pdf', 5.3696355819702, 'resource/18/Reference.pdf', 2, '2014-02-09 00:15:49', 1, 0, 0, 0),
+(2, 18, 7, 'Example.jpg', 'image/jpeg', 0.13896942138672, 'resource/18/Example.jpg', 2, '2014-02-09 00:17:09', 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -439,13 +401,6 @@ INSERT INTO `user_discussion` (`u_id`, `user_discussion_id`, `seen_comments`, `d
 --
 
 --
--- Constraints for table `approved_status`
---
-ALTER TABLE `approved_status`
-  ADD CONSTRAINT `approved_status_ibfk_2` FOREIGN KEY (`u_id`) REFERENCES `user` (`u_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `approved_status_ibfk_1` FOREIGN KEY (`r_id`) REFERENCES `resource` (`r_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
 -- Constraints for table `comment`
 --
 ALTER TABLE `comment`
@@ -454,11 +409,10 @@ ALTER TABLE `comment`
   ADD CONSTRAINT `comment_ibfk_4` FOREIGN KEY (`discussion_id`) REFERENCES `discussion` (`discussion_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `create_course`
+-- Constraints for table `course`
 --
-ALTER TABLE `create_course`
-  ADD CONSTRAINT `c_id_key` FOREIGN KEY (`c_id`) REFERENCES `course` (`c_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `create_course_ibfk_1` FOREIGN KEY (`u_id`) REFERENCES `user` (`u_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `course`
+  ADD CONSTRAINT `course_ibfk_1` FOREIGN KEY (`u_id`) REFERENCES `user` (`u_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `discussion`
@@ -485,8 +439,8 @@ ALTER TABLE `rate_resource`
 -- Constraints for table `resource`
 --
 ALTER TABLE `resource`
-  ADD CONSTRAINT `resource_ibfk_2` FOREIGN KEY (`type_id`) REFERENCES `resource_type` (`type_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `resource_ibfk_1` FOREIGN KEY (`c_id`) REFERENCES `course` (`c_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `resource_ibfk_1` FOREIGN KEY (`c_id`) REFERENCES `course` (`c_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `resource_ibfk_2` FOREIGN KEY (`type_id`) REFERENCES `resource_type` (`type_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `user_comment`
