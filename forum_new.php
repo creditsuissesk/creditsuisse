@@ -409,7 +409,7 @@ $totalRows_categories = mysql_num_rows($categories);
 					 <div class="middle">
 						<div class="container">
 							<main class="content">
-				                <dd><?php echo $row_disc['disc_body'];?></dd>
+				                <dd <?php if($row_disc['flag']==1) {echo "style='color:#ff0000;'";}?>><?php echo $row_disc['disc_body'];?></dd>
 							</main><!-- .content -->
 						</div><!-- .container-->
 
@@ -422,10 +422,10 @@ $totalRows_categories = mysql_num_rows($categories);
 							<dt><?php echo $row_disc['date_inserted_d'];?></dt>
                             <table><tr><td>
                             <div id="disc<?php echo $row_disc['discussion_id']; ?>" class="upvote">
-							    <a class="upvote"></a>
+							    <?php if ($row_disc['flag']==0) {echo '<a class="upvote"></a>'; }?>
 							    <span class="count">0</span>
-							    <a class="downvote"></a>
-							    <a class="star"></a>
+							    <?php if ($row_disc['flag']==0) {echo '<a class="downvote"></a>'; }?>
+							    <?php if ($row_disc['flag']==0) {echo '<a class="star"></a>'; }?>
 						    </div>
                             </td>
                             <td>
@@ -513,9 +513,9 @@ $totalRows_categories = mysql_num_rows($categories);
                             <!--- vote up-down to be inserted here--->
                             <table><tr><td>
                             <div id="comment<?php echo $row_comments['comment_id']; ?>" class="upvote">
-							    <a class="upvote"></a>
+							    <?php if ($row_disc['flag']==0) {echo '<a class="upvote"></a> '; }?>
 							    <span class="count">0</span>
-							    <a class="downvote"></a>
+							    <?php if ($row_disc['flag']==0) {echo '<a class="downvote"></a> '; }?>
 							    <!---<a class="star"></a> --->
 						    </div>
                             </td>
@@ -523,6 +523,7 @@ $totalRows_categories = mysql_num_rows($categories);
 							echo "<img id='".$row_comments['comment_id']."' src='images/trash.png' width='30' height='30' onclick='edit_comment(this,".$row_comments['discussion_id'].",0)'/>";
 								$padding=0;
 							}else {$padding=1;}?>
+                            <?php if ($row_comments['flag']==1) {$padding=0;} ?>
                             <?php if($row_comments['flag']==0) {
 							echo "<img id='".$row_comments['comment_id']."' src='images/flag.png' width='30' height='30'onclick='edit_comment(this,".$row_comments['discussion_id'].",1)'";if($padding==1) {echo "style='padding-left:30px;'";} echo " />";
 							} else {
@@ -582,7 +583,8 @@ $totalRows_categories = mysql_num_rows($categories);
 									});
 							<?php }?>
 					</script>		
-                    <!---show new comment form--->
+                    <!---show new comment form if discussion is not flagged--->
+                    <?php if ($row_disc['flag']==0) { ?>
                         <?php
                         $query_own_comment = sprintf("SELECT * from `user` WHERE u_id=%s;",GetSQLValueString($_SESSION['MM_UserID'], "int"));
 					$own_comment = mysql_query($query_own_comment, $conn) or die(mysql_error());
@@ -606,6 +608,9 @@ $totalRows_categories = mysql_num_rows($categories);
 							<dt><?php echo $row_own_comment['f_name']." ".$row_own_comment['l_name'];?></dt>
 					</aside><!-- .left-sidebar -->
                     </div> 
+                    <?php }else {
+						echo '<div class="middle"><div class="container"><main class="content"><dd>This discussion has been flagged. Users can\'t comment on flagged discussions</dd></main></div></div>';
+					}//end of comment form if not flagged if?>
                     <!---end of discussion case --->                  
                 <?php	
 				} else if ((isset($_GET['mode']) && $_GET['mode']=="showmain") || (isset($_POST['mode']) && $_POST['mode']=="showmain")) {
@@ -655,7 +660,7 @@ $totalRows_categories = mysql_num_rows($categories);
                         <dt>
                         <a href="forum_new.php?showTab=discussions&mode=disc&discussionid=<?php echo $row_discussions['discussion_id'];?> "> <?php echo $row_discussions['name'];?> </a> </dt>
                         <datetime style="color:#999999;"><?php echo "By ".$row_discussions['f_name']." ".$row_discussions['l_name']." on ".$row_discussions['date_inserted_d'];?></datetime> <br />
-                        <dd>
+                        <dd <?php if($row_discussions['flag']==1) {echo "style='color:#ff0000;'";}?> >
                         <?php if (strlen($row_discussions['disc_body'])>400) {
 							echo substr($row_discussions['disc_body'],0,400)."....";
 							}else {
@@ -690,10 +695,10 @@ $totalRows_categories = mysql_num_rows($categories);
                         <tr>
                         <td>
                         	<div id="disc<?php echo $row_discussions['discussion_id']; ?>" class="upvote">
-							    <a class="upvote"></a>
+							    <?php if($row_discussions['flag']==0) {echo '<a class="upvote"></a>'; } ?>
 							    <span class="count">0</span>
-							    <a class="downvote"></a>
-							    <a class="star"></a>
+							    <?php if($row_discussions['flag']==0) {echo '<a class="downvote"></a>'; } ?>
+							    <?php if($row_discussions['flag']==0) {echo '<a class="star"></a>'; } ?>
 						    </div>
                             </td>
                             <td>
