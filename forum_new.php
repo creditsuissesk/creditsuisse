@@ -429,17 +429,17 @@ $totalRows_categories = mysql_num_rows($categories);
 						    </div>
                             </td>
                             <td>
+                            <?php echo '<script> var path="forum_new.php?mode=showmain" </script> ';?>
                             <?php if($_SESSION['MM_UserID']==$row_disc['insert_uid']) {
-								echo '<script> var path="http://'. $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'].'";</script> ';
-                            echo '<img src="images/trash.png" width="30" height="30" onclick="edit_discussion(this,path,0)"/>';
+                            echo '<img id="'.$row_disc['discussion_id'].'" src="images/trash.png" width="30" height="30" onclick="edit_discussion(this,path,0)"/>';
 									$padding=1;
 							}else {
 									$padding=0;
 							}
 							if($row_disc['flag']==0) {
-							echo "<img id='".$row_disc['discussion_id']."' src='images/flag.png' width='30' height='30' onclick='edit_discussion(this,".$row_disc['discussion_id'].",1)' ";if($padding==0) {echo "style='padding-left:30px;'";} echo " />";
+							echo "<img id='".$row_disc['discussion_id']."' src='images/flag.png' width='30' height='30' onclick='edit_discussion(this,path,1)' ";if($padding==0) {echo "style='padding-left:30px;'";} echo " />";
 							} else {
-							echo "<img id='".$row_disc['comment_id']."' src='images/red_flag.png' width='30' height='30' ";if($padding==0) {echo "style='padding-left:30px;'";} echo"/>";
+							echo "<img id='".$row_disc['discussion_id']."' src='images/red_flag.png' width='30' height='30' ";if($padding==0) {echo "style='padding-left:30px;'";} echo"/>";
 							}
 							?>
                             </td>
@@ -460,6 +460,38 @@ $totalRows_categories = mysql_num_rows($categories);
 					$query_update_disc = sprintf("INSERT INTO user_discussion(u_id,user_discussion_id,seen_comments,date_last_viewed,bookmarked) VALUES ('%s','%s','%s',now(),'0') ON DUPLICATE KEY UPDATE date_last_viewed=now(),seen_comments=%s;",GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($_GET['discussionid'], "int"),GetSQLValueString($totalRows_comments, "int"),GetSQLValueString($totalRows_comments, "int"));
 					$update_disc = mysql_query($query_update_disc, $conn) or die(mysql_error());
                     ?>
+                    <script language="javascript">
+							var callback = function(data) {
+							$.ajax({
+						        url: 'voter.php',
+						        type: 'post',
+						        data: { id: data.id, up: data.upvoted, down: data.downvoted, count: $('#comment'+ data.id).upvote('count'),upstatus:$('#comment'+data.id).upvote('upvoted'),downstatus:$('#comment'+data.id).upvote('downvoted')},
+						    	});	
+							};
+							var callback2= function(data) {
+								alert("You can't vote yourself");
+								$('#comment'+data.id).upvote();
+							};
+							
+							var disc_callback = function(data) {
+							$.ajax({
+						        url: 'voter_disc.php',
+						        type: 'post',
+						        data: { id: data.id, up: data.upvoted, down: data.downvoted, star: data.starred , count: $('#disc'+ data.id).upvote('count'),upstatus:$('#disc'+data.id).upvote('upvoted'),downstatus:$('#disc'+data.id).upvote('downvoted')},
+						    	});	
+							};
+							var disc_callback2= function(data) {
+								if($('#disc'+data.id).upvote('upvoted')==true || $('#disc'+data.id).upvote('downvoted')==true) {
+									alert("You can't vote yourself");
+								}
+								$.ajax({
+									url: 'voter_disc.php',
+									type: 'post',
+									data: {id: data.id, star:data.starred}
+								});
+								//$('#disc'+data.id).upvote();
+							};							
+					</script>
                     <!--- viewing comments if there are any --->
                     <?php if($totalRows_comments>0) {?>
 	                    <?php do { ?>
@@ -510,55 +542,6 @@ $totalRows_categories = mysql_num_rows($categories);
                         <!--- user comment was here--->
                         <!--- javascript for all voting --->
                         <script language="javascript">
-							var callback = function(data) {
-							$.ajax({
-						        url: 'voter.php',
-						        type: 'post',
-						        data: { id: data.id, up: data.upvoted, down: data.downvoted, count: $('#comment'+ data.id).upvote('count'),upstatus:$('#comment'+data.id).upvote('upvoted'),downstatus:$('#comment'+data.id).upvote('downvoted')},
-						    	});	
-							};
-							var callback2= function(data) {
-								alert("You can't vote yourself");
-								$('#comment'+data.id).upvote();
-							};
-							
-							var disc_callback = function(data) {
-							$.ajax({
-						        url: 'voter_disc.php',
-						        type: 'post',
-						        data: { id: data.id, up: data.upvoted, down: data.downvoted, star: data.starred , count: $('#disc'+ data.id).upvote('count'),upstatus:$('#disc'+data.id).upvote('upvoted'),downstatus:$('#disc'+data.id).upvote('downvoted')},
-						    	});	
-							};
-							var disc_callback2= function(data) {
-								if($('#disc'+data.id).upvote('upvoted')==true || $('#disc'+data.id).upvote('downvoted')==true) {
-									alert("You can't vote yourself");
-								}
-								$.ajax({
-									url: 'voter_disc.php',
-									type: 'post',
-									data: {id: data.id, star:data.starred}
-								});
-								//$('#disc'+data.id).upvote();
-							};							<!--- script for discussion vote widget --->
-							<?php if($row_disc['insert_uid']==$_SESSION['MM_UserID']){?>
-								$('#disc<?php echo $row_disc['discussion_id'];?>').upvote({count: <?php echo $row_disc['rating'];?>,id: <?php echo $row_disc['discussion_id'];?>, callback: disc_callback2,
-								<?php if ($row_disc['bookmarked']==1) {
-										echo "starred:1";
-									} ?>});
-							<?php } else { ?>
-									$('#disc<?php echo $row_disc['discussion_id'];?>').upvote({count: <?php echo$row_disc['rating'];?>,id: <?php echo $row_disc['discussion_id'];?>, callback: disc_callback
-									<?php if ($row_disc['vote_status']==1) {
-										echo ",upvoted:1";
-									}else if ($row_disc['vote_status']==-1){
-										echo ",downvoted:1";
-									}
-									if ($row_disc['bookmarked']==1) {
-										echo ",starred:1";
-									}
-									?>
-									});
-							<?php }?>
-							
 							<!--- script for comment vote widgets --->
 							<?php $comments = mysql_query($query_comments, $conn) or die(mysql_error());?>
 							<?php
@@ -578,6 +561,27 @@ $totalRows_categories = mysql_num_rows($categories);
 							}?>
 						</script>
                    	<?php } ?>
+                    <!--- script for discussion vote widget --->
+                    <script language="javascript">
+							<?php if($row_disc['insert_uid']==$_SESSION['MM_UserID']){?>
+								$('#disc<?php echo $row_disc['discussion_id'];?>').upvote({count: <?php echo $row_disc['rating'];?>,id: <?php echo $row_disc['discussion_id'];?>, callback: disc_callback2,
+								<?php if ($row_disc['bookmarked']==1) {
+										echo "starred:1";
+									} ?>});
+							<?php } else { ?>
+									$('#disc<?php echo $row_disc['discussion_id'];?>').upvote({count: <?php echo$row_disc['rating'];?>,id: <?php echo $row_disc['discussion_id'];?>, callback: disc_callback
+									<?php if ($row_disc['vote_status']==1) {
+										echo ",upvoted:1";
+									}else if ($row_disc['vote_status']==-1){
+										echo ",downvoted:1";
+									}
+									if ($row_disc['bookmarked']==1) {
+										echo ",starred:1";
+									}
+									?>
+									});
+							<?php }?>
+					</script>		
                     <!---show new comment form--->
                         <?php
                         $query_own_comment = sprintf("SELECT * from `user` WHERE u_id=%s;",GetSQLValueString($_SESSION['MM_UserID'], "int"));
@@ -693,15 +697,16 @@ $totalRows_categories = mysql_num_rows($categories);
 						    </div>
                             </td>
                             <td>
+                            <?php echo '<script> var path="http://'. $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'].'";</script> ';?>
                             <?php if($_SESSION['MM_UserID']==$row_discussions['insert_uid']) {
-								echo '<script> var path="http://'. $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'].'";</script> ';
-                            echo '<img src="images/trash.png" width="30" height="30" onclick="edit_discussion(this,path,0)"/>';
+								
+                            echo '<img id="'.$row_discussions['discussion_id'].'" src="images/trash.png" width="30" height="30" onclick="edit_discussion(this,path,0)"/>';
 									$padding=1;
 							}else {
 									$padding=0;
 							}
 							if($row_discussions['flag']==0) {
-							echo "<img id='".$row_discussions['discussion_id']."' src='images/flag.png' width='30' height='30' onclick='edit_discussion(this,".$row_discussions['discussion_id'].",1)' ";if($padding==0) {echo "style='padding-left:30px;'";} echo " />";
+							echo "<img id='".$row_discussions['discussion_id']."' src='images/flag.png' width='30' height='30' onclick='edit_discussion(this,path,1)' ";if($padding==0) {echo "style='padding-left:30px;'";} echo " />";
 							} else {
 							echo "<img id='".$row_discussions['discussion_id']."' src='images/red_flag.png' width='30' height='30' ";if($padding==0) {echo "style='padding-left:30px;'";} echo"/>";
 							}

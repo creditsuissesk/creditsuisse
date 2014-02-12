@@ -44,6 +44,7 @@ if (!((isset($_SESSION['MM_Username'])) && (isAuthorized("",$MM_authorizedUsers,
 }
 ?>
 <?php require_once('Connections/conn.php'); ?>
+<?php require_once('delete_comment.php'); ?>
 <?php
 	if (!function_exists("GetSQLValueString")) {
 function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
@@ -89,6 +90,18 @@ if(isset($_POST['actiontype']) && $_POST['actiontype']=="delete") {
 		
 		//if user is actually discussion poster then only proceed
 		if($_SESSION['MM_UserID']==$row_disc['insert_uid']) {
+			//first, delete all comments in that discussion
+				$get_comments=sprintf("SELECT comment_id,insert_uid FROM `comment` WHERE discussion_id=%s",GetSQLValueString($_POST['disc_id'], "int"));
+				$comment=mysql_query($get_comments,$conn);
+				//$row_comment_id=mysql_fetch_assoc($comment);
+				
+				/*do{
+					deleteComment($row_comment_id['comment_id'],$row_comment_id['insert_uid']);
+				}while($row_comment_id=mysql_fetch_assoc($comment));*/
+				while($row_comment_id=mysql_fetch_assoc($comment)) {
+					deleteComment($row_comment_id['comment_id'],$row_comment_id['insert_uid']);
+				}
+			
 			//delete discussion
 			$delete_disc = sprintf("DELETE FROM `discussion` WHERE discussion_id=%s",GetSQLValueString($_POST['disc_id'], "int"));
 			$disc_delete = mysql_query($delete_disc, $conn) or die(mysql_error());
@@ -96,6 +109,8 @@ if(isset($_POST['actiontype']) && $_POST['actiontype']=="delete") {
 				//discussion deleted successfully now decrement poster's discussion count and score
 				$update_user = sprintf("UPDATE `user` SET count_discussions=count_discussions-1, user_score=user_score-%s WHERE u_id=%s",GetSQLValueString($row_disc['rating'], "int"),GetSQLValueString($_SESSION['MM_UserID'], "int"));
 				$result_update_user = mysql_query($update_user, $conn) or die(mysql_error());
+				
+				
 				
 		}
 		$insertGoTo = "index.php";
@@ -110,5 +125,5 @@ if(isset($_POST['actiontype']) && $_POST['actiontype']=="delete") {
 				$flag_disc = sprintf("UPDATE `discussion` SET flag=1 WHERE discussion_id=%s",GetSQLValueString($_POST['disc_id'], "int"));
 				$result_flag_disc= mysql_query($flag_disc, $conn) or die(mysql_error());
 	}
-	header($_POST['redirect_url']);
+	header("Location: ".$_POST['redirect_url']);
 ?>

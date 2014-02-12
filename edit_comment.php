@@ -44,6 +44,7 @@ if (!((isset($_SESSION['MM_Username'])) && (isAuthorized("",$MM_authorizedUsers,
 }
 ?>
 <?php require_once('Connections/conn.php'); ?>
+<?php require_once('delete_comment.php'); ?>
 <?php
 	if (!function_exists("GetSQLValueString")) {
 function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
@@ -80,31 +81,12 @@ mysql_select_db($database_conn, $conn);
 if(isset($_POST['actiontype']) && $_POST['actiontype']=="delete") {
 	if(isset($_POST['comment_id']) && isset($_POST['redirect_disc_id']) ) {
 		echo "all POST set";
-		
-		//get comment's details for score etc
 		$query_comment = sprintf("SELECT * FROM `comment` WHERE comment_id=%s",GetSQLValueString($_POST['comment_id'], "int"));
-		$comment = mysql_query($query_comment, $conn) or die(mysql_error());
+		$comment = mysql_query($query_comment, $GLOBALS['conn']) or die(mysql_error());
 		$row_comment = mysql_fetch_assoc($comment);
 		$totalRows_comment = mysql_num_rows($comment);
-		
-		//if user is actually comment poster then only proceed
 		if($_SESSION['MM_UserID']==$row_comment['insert_uid']) {
-			//delete comment
-			$delete_comment = sprintf("DELETE FROM `comment` WHERE comment_id=%s",GetSQLValueString($_POST['comment_id'], "int"));
-			$comment_delete = mysql_query($delete_comment, $conn) or die(mysql_error());
-			
-				//comment deleted successfully now decrement poster's comment count and score
-				$update_user = sprintf("UPDATE `user` SET created_comments=created_comments-1, user_score=user_score-%s WHERE u_id=%s",GetSQLValueString($row_comment['comment_score'], "int"),GetSQLValueString($_SESSION['MM_UserID'], "int"));
-				$result_update_user = mysql_query($update_user, $conn) or die(mysql_error());
-				
-				//now decrement discussion's comment count
-				$update_disc = sprintf("UPDATE `discussion` SET count_comments=count_comments-1 WHERE discussion_id=%s",GetSQLValueString($row_comment['discussion_id'], "int"));
-				$result_update_user = mysql_query($update_disc, $conn) or die(mysql_error());
-		}
-		$insertGoTo = "index.php";
-		if (isset($_SERVER['QUERY_STRING'])) {
-		  $insertGoTo .= (strpos($insertGoTo, '?')) ? "&" : "?";
-		  $insertGoTo .= $_SERVER['QUERY_STRING'];		 
+			deleteComment($_POST['comment_id'],$_SESSION['MM_UserID']);
 		}
 		}//end of two post variables if case
 	}
