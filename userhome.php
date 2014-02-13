@@ -88,6 +88,7 @@ $totalRows_get_user_details = mysql_num_rows($get_user_details);
 <link href="SpryAssets/SpryTabbedPanels.css" rel="stylesheet" type="text/css">
 <link href="css/templatemo_style.css" type="text/css" rel="stylesheet" /> 
 <link rel="stylesheet" type="text/css" media="screen" href="css/nav_bar.css" />
+<link rel="stylesheet" type="text/css" media="screen" href="css/course_list.css" />
 
 <script type="text/javascript" src="js/jquery.min.js"></script> 
 <script type="text/javascript" src="js/jquery.scrollTo-min.js"></script> 
@@ -146,14 +147,54 @@ else {
 <div id="TabbedPanels1" class="TabbedPanels">
   <ul class="TabbedPanelsTabGroup">
     <li class="TabbedPanelsTab" tabindex="0">Recent Activity</li>
+        <li class="TabbedPanelsTab" tabindex="0">Browse Courses</li>
     <li class="TabbedPanelsTab" tabindex="0">Your Courses</li>
     <li class="TabbedPanelsTab" tabindex="0">Completed Courses</li>
     <li class="TabbedPanelsTab" tabindex="0">Recommended</li>
-    <li class="TabbedPanelsTab" tabindex="0">Bookmarks</li>
+    <li class="TabbedPanelsTab" tabindex="0">Enrollmarks</li>
     <li class="TabbedPanelsTab" tabindex="0">Profile</li>
   </ul>
   <div class="TabbedPanelsContentGroup">
     <div class="TabbedPanelsContent">Content 1</div>
+	<div class="TabbedPanelsContent">
+    <!--- browse course tab --->
+    <div id="course">
+			<div>
+				<div class="first">
+					<h2>Hot Deals</h2>
+					<ul>
+						<li>
+							<a href="index.php"><img src="images/gallery/01.jpg" alt=""/></a>
+							<span><a href="index.php">Donec Nisl Justo</a></span>
+							<p>7 Days &amp; 3 Days at Aliquam iaculis velit</p>
+							<a href="index.php" class="details">See Details</a>
+							<a href="index.php" class="Enroll">Enroll Now!</a>
+						</li>
+						<li>
+							<a href="index.php"><img src="images/gallery/05.jpg" alt=""/></a>
+							<span><a href="index.php">Pellentesque</a></span>
+							<p>Maecenas gravida lacus mauris, at interdum ligula</p>
+							<a href="index.php" class="details">See Details</a>							
+							<a href="index.php" class="Enroll">Enroll Now!</a>
+						</li>
+						<li>
+							<a href="index.php"><img src="images/gallery/04.jpg" alt=""/></a>
+							<span><a href="index.php">QUISQUE</a></span>
+							<p>Pellentesque molestie arcu vitae lectus</p>
+							<a href="index.php" class="details">See Details</a>							
+							<a href="index.php" class="Enroll">Enroll Now!</a>
+						</li>
+						<li>
+							<a href="index.php"><img src="images/gallery/03.jpg" alt=""/></a>
+							<span><a href="index.php">ODIOLOREM</a></span>
+							<p>Nullam viverra nisi et elit pretium venenatis</p>
+							<a href="index.php" class="details">See Details</a>							
+							<a href="index.php" class="Enroll">Enroll Now!</a>
+						</li>
+					</ul>
+					<a href="index.php">View all</a>
+				</div></div></div>
+    </div> <!--- this div ends browse courses tab --->
     <div class="TabbedPanelsContent">
         <?php if ($totalRows_incomplete_courses>0) {?>
    		<?php $var=0; ?>

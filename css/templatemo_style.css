@@ -340,3 +340,46 @@ img { margin: 0; padding: 0; border: none }
 	padding: 5px 10px; 
 	margin: 0px;
 }
+
+
+
+.clear:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+#course-container {
+    width: 100%;
+}
+
+#course-menu {
+    width:15%;
+    float:left;
+    border-right:1px dotted #333333;
+}
+
+#content-courses {
+    float:left;
+    padding-left:20px;
+    width:85%;
+}
+
+.course {
+    background:#333;
+    border:1px dotted #000000;
+    color:#FFF;
+    width:inherit;
+    margin:10px 10px;
+    padding:10px 10px;
+}
+
+.course-image {
+	padding:10px 10px;
+}
+
+course-title {
+	color:#FFF;
+	font-size:18px;
+	font:Verdana, Geneva, sans-serif bold;
+	display:inline;
+}
