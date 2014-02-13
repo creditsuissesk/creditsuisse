@@ -62,14 +62,14 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 }
 
 mysql_select_db($database_conn, $conn);
-$query_incomplete_courses = sprintf("SELECT * FROM course NATURAL JOIN enroll_course where u_id=%s AND completion_stat=0 AND DATE(NOW()) BETWEEN start_date AND end_date",GetSQLValueString($_SESSION['MM_UserID'], "int"));
+$query_incomplete_courses = sprintf("SELECT * FROM course JOIN enroll_course  ON course.c_id=enroll_course.c_id where enroll_course.u_id=%s AND completion_stat=0 AND DATE(NOW()) BETWEEN start_date AND end_date",GetSQLValueString($_SESSION['MM_UserID'], "int"));
 $incomplete_courses = mysql_query($query_incomplete_courses, $conn) or die(mysql_error());
 $row_incomplete_courses = mysql_fetch_assoc($incomplete_courses);
 $totalRows_incomplete_courses = mysql_num_rows($incomplete_courses);
 
 
 mysql_select_db($database_conn, $conn);
-$query_completed_courses = sprintf("SELECT * FROM course NATURAL JOIN enroll_course where u_id=%s AND completion_stat=0 AND DATE(NOW())> end_date",GetSQLValueString($_SESSION['MM_UserID'], "int"));
+$query_completed_courses = sprintf("SELECT * FROM course JOIN enroll_course ON course.c_id=enroll_course.c_id WHERE enroll_course.u_id=%s AND completion_stat=0 AND DATE(NOW())> end_date",GetSQLValueString($_SESSION['MM_UserID'], "int"));
 $completed_courses = mysql_query($query_completed_courses, $conn) or die(mysql_error());
 $row_completed_courses = mysql_fetch_assoc($completed_courses);
 $totalRows_completed_courses = mysql_num_rows($completed_courses);
@@ -163,11 +163,36 @@ else {
 				    <?php do { ?>
 	          		<?php echo  "<div class='section section_with_padding' id='a".$var."'>";?>
 	                <h1><?php echo $row_incomplete_courses['c_name']?></h1> 
-	                <div class="half left">
-	                	<p><em><?php echo $row_incomplete_courses['description']?></em></p>
-	                </div>
-	    			<div class="half right">
-	                	<div class="img_border img_nom"> <a href="#gallery"><img src="images/templatemo_image_01.jpg" alt="image 1" /></a>	
+	                <div class="half right">
+                    <div class="img_border img_temp"> <img src="<?php echo $row_incomplete_courses['course_image']; ?>" alt="image 1" /></div>
+	                	<p><em><?php echo $row_incomplete_courses['description']?></em></p>            
+                    <?php //list all resources of that course    
+					$query_resources = sprintf("SELECT * FROM `resource` WHERE c_id=%s AND approve_status=1",GetSQLValueString($row_incomplete_courses['c_id'], "int"));
+		$resource = mysql_query($query_resources, $GLOBALS['conn']) or die(mysql_error());
+		$row_resource = mysql_fetch_assoc($resource);
+					?>
+                    </div>
+	    			<div class="half left">
+					<?php 
+						echo "<table>";
+						do {
+							
+							echo "<tr><td><a href='view_resource.php'>".$row_resource['filename']."</a></td>";
+							
+							if($row_resource['download_status']==1){?>
+                            <td>
+        <form  id="form1" name="form1" method="POST" action="download_res.php">    
+        
+        <input name="change" id="change" value="Download" type="submit" >        
+        </input>
+        <input type="hidden" name="id" id="id" value="<?php echo $row_resource['r_id'];?>"  />
+        
+        <input type="hidden" name="MM_change" value="form1" />
+        </form> </td>
+        <?php }else echo "";
+							echo "</tr>";
+						}while ($row_resource= mysql_fetch_assoc($resource));
+					?></table>
 	                    </div>
                      
     		            <?php 
@@ -183,7 +208,7 @@ else {
 								echo "<a href='#a".$temp."' class='page_nav_btn next'>Next</a> ";
 							}
 		                ?>
-        	       	</div> <!---END of  half right --->
+        	       	<!---</div> ---> <!---END of  half right --->
 	            <?php echo "</div>"; ?> <!-- END of Services -->
     	        <?php $var=$var+1; ?>
 			    <?php } while ($row_incomplete_courses = mysql_fetch_assoc($incomplete_courses)); ?>     

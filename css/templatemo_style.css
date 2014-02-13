@@ -68,6 +68,7 @@ img { margin: 0; padding: 0; border: none }
 .img_nom { display: block; margin-bottom: 15px }
 .img_fl { float: left; margin: 3px 15px 5px 0 }
 .img_fr { float: left; margin: 3px 0 5px 15px }
+.img_temp {}
 
 .left { float: left }
 .right { float: right }
@@ -281,15 +282,16 @@ img { margin: 0; padding: 0; border: none }
 }
 
 #gallery {
-
+	width:auto;
+	height:auto;
 }
 
 #gallery li {
 	width: auto;
 	height: auto;
 	float: left;
-	width: 200px;
-	height: 120px;
+	/*width: 200px;
+	height: 120px;*/
 	padding: 0;
 	background: none;
 }
