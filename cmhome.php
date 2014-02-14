@@ -132,7 +132,7 @@ $totalRows_approved_courses = mysql_num_rows($approved_courses);
 
 
 mysql_select_db($database_conn, $conn);
-$query_pending_resources = sprintf("SELECT l_name,f_name,r_id,filename,file_type,file_size,uploaded_date,c_name,r.approve_status as r_status
+$query_pending_resources = sprintf("SELECT l_name,f_name,r_id,filename,file_type,file_size,uploaded_date,c_name,r.approve_status as r_status,file_location
 FROM resource AS r
 JOIN course AS c ON r.c_id = c.c_id JOIN user as u on r.uploaded_by = u.u_id
 WHERE (r.approve_status =0 or r.flag_status=1) and c.approve_status=1 ");
@@ -141,7 +141,7 @@ $row_pending_resources = mysql_fetch_assoc($pending_resources);
 $totalRows_pending_resources = mysql_num_rows($pending_resources);
 
 
-$query_approved_resources = sprintf("SELECT l_name,f_name,r_id,filename,file_type,file_size,uploaded_date,c_name,r.avg_rating as r_avg_rating
+$query_approved_resources = sprintf("SELECT l_name,f_name,r_id,filename,file_type,file_size,uploaded_date,c_name,r.avg_rating as r_avg_rating, r.download_status,file_location
 FROM resource AS r
 JOIN course AS c ON r.c_id = c.c_id JOIN user as u on r.uploaded_by = u.u_id
 WHERE (r.approve_status =1 and r.flag_status=0) and c.approve_status=1 ");
@@ -448,9 +448,10 @@ var allList = new List('pending_courses', allOptions);
       </div>
       <!-- start of approved resource tab-->
       <div class="TabbedPanelsContent">
+    <?php if($totalRows_approved_resources>0){?>
     <div id="approved_res">
     <div class="datagrid">
-    <?php if($totalRows_approved_resources>0){?>
+   
      <table>
     <thead>
       <tr>
@@ -461,6 +462,7 @@ var allList = new List('pending_courses', allOptions);
         <th class="sort" data-sort="author">Uploaded By</th>
         <th class="sort" data-sort="date">Uploaded Date </th>
         <th class="sort" data-sort="rate">Average rating</th>
+        <th></th>
         <th colspan="2">
           <input type="text" class="search" placeholder="Search Resource" />
         </th>
@@ -469,20 +471,33 @@ var allList = new List('pending_courses', allOptions);
     <tbody class="list">
     <?php do { ?>
     <tr>
-      <td class="r_name"><?php echo $row_approved_resources['filename']; ?></a></td>
+      <td class="r_name"><a href='<?php echo $row_approved_resources["file_location"]?>'><?php echo $row_approved_resources['filename']; ?></a></td>
       <td class="c_name"><?php echo $row_approved_resources['c_name']; ?></td>
       <td class="r_size"><?php echo $row_approved_resources['file_size']; ?></td>
       <td class="r_type"><?php echo $row_approved_resources['file_type']; ?></td>
       <td class="author"><?php echo $row_approved_resources['f_name']." ".$row_approved_resources['l_name']; ?></td>
             <td class="date"><?php echo $row_approved_resources['uploaded_date']; ?></td>
                   <td class="rate"><?php echo $row_approved_resources['r_avg_rating']; ?></td>
+                  <?php if($row_approved_resources['download_status']==1){?>
+        <form  id="form1" name="form1" method="POST" action="download_res.php">    
+        
+        <td> 
+        <input name="change" id="change" value="Download" type="submit" >        
+        </input>
+        <input type="hidden" name="id" id="id" value="<?php echo $row_approved_resources['r_id'];?>"  />
+        
+        <input type="hidden" name="MM_change" value="form1" />
+        </td>
+        </form>
+        <?php }else echo "<td> </td>";?>
     <?php } while ($row_approved_resources = mysql_fetch_assoc($approved_resources));?>
       </tr>
       </tbody>
       </table>
-      <?php }else echo"NO Approved Courses"; ?>
+      
     </div>
     </div>
+    <?php }else echo"NO Approved Courses"; ?>
     <script>
 var arOptions = {
   valueNames: [ 'r_name', 'c_name','r_size','r_type','author','date','rate']
@@ -494,9 +509,10 @@ var arList = new List('approved_res', arOptions);
     </div> <!---end of fifth tab--->
     
     <div class="TabbedPanelsContent">
+    <?php if($totalRows_pending_resources>0){?>
     <div id="pending_resources">
     <div class="datagrid">
-     <?php if($totalRows_pending_resources>0){?>
+     
     <table>
     <thead>
       <tr>
@@ -516,7 +532,7 @@ var arList = new List('approved_res', arOptions);
     <tbody class="list">
      <?php do { ?>
               <tr>
-      <td class="pr_name"><?php echo $row_pending_resources['filename']; ?></a></td>
+      <td class="pr_name"><?php echo $row_pending_resources['filename']; ?></td>
       <td class="pc_name"><?php echo $row_pending_resources['c_name']; ?></td>
       <td class="pr_size"><?php echo $row_pending_resources['file_size']; ?></td>
       <td class="pr_type"><?php echo $row_pending_resources['file_type']; ?></td>
@@ -537,10 +553,10 @@ var arList = new List('approved_res', arOptions);
     <?php } while ($row_pending_resources = mysql_fetch_assoc($pending_resources)); ?>
       </tbody>
       </table>
-      <?php }else echo"No Pending Resources"; ?>
+      
       </div> 
     </div>
-
+<?php }else echo"No Pending Resources"; ?>
    <script>
 var prOptions = {
   valueNames: [ 'pr_name', 'pc_name','pr_size','pr_type','pauthor','pdate','prate']

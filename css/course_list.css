@@ -9,10 +9,8 @@
 	margin: 0 auto;
 	overflow: hidden;
 }
+
 #course div div.first{   
-	margin: 0;
-}
-#course div div{   
 	float: right;
 	width: 85%;
 	margin: 0 0 0 30px;
@@ -69,9 +67,9 @@
 }
 #course div ul li p{
 	clear: none;
-    float: right;
+    /*float: right;*/
     text-align: justify;
-    width: 158px;
+    /*width: 158px;*/
 	color: #393D42;
 	font-family: arial;
 	font-size: 14px;

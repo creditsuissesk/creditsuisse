@@ -159,13 +159,16 @@ else {
 	<div class="TabbedPanelsContent">
     <!--- browse course tab --->
     <div id="course">
-			<div>
+    		<div class="xyz">
+                sort by and this is some long message to test the width
+                </div>
+			<div>	
 				<div class="first">
-					<h2>Hot Deals</h2>
+					<h2>Courses</h2>
 					<ul>
 						<li>
 							<a href="index.php"><img src="images/gallery/01.jpg" alt=""/></a>
-							<span><a href="index.php">Donec Nisl Justo</a></span>
+							<span><a href="index.php">Donec Nisl Justo</a></span><br>
 							<p>7 Days &amp; 3 Days at Aliquam iaculis velit</p>
 							<a href="index.php" class="details">See Details</a>
 							<a href="index.php" class="Enroll">Enroll Now!</a>

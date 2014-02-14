@@ -106,12 +106,13 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 
 
 mysql_select_db($database_conn, $conn);
-$query_all_courses = sprintf("SELECT c_id,c_name,c_stream,start_date,end_date,avg_rating FROM course WHERE u_id=%s ",GetSQLValueString($_SESSION['MM_UserID'], "int"));
+$query_all_courses = sprintf("SELECT c_id,c_name,c_stream,start_date,end_date,avg_rating,approve_status FROM course WHERE u_id=%s ",GetSQLValueString($_SESSION['MM_UserID'], "int"));
 $all_courses = mysql_query($query_all_courses, $conn) or die(mysql_error());
 $row_all_courses = mysql_fetch_assoc($all_courses);
 $totalRows_all_courses = mysql_num_rows($all_courses);
 
-$new_resource = mysql_query($query_all_courses, $conn) or die(mysql_error());
+$query_resource = sprintf("SELECT c_id,c_name,c_stream,start_date,end_date,avg_rating FROM course where approve_status=1 and u_id=%s",GetSQLValueString($_SESSION['MM_UserID'], "int"));
+$new_resource = mysql_query($query_resource, $conn) or die(mysql_error());
 $row_new_resource = mysql_fetch_assoc($new_resource);
 $totalRows_new_resource = mysql_num_rows($new_resource);
 
@@ -291,6 +292,7 @@ var currList = new List('curr_courses', currOptions);
         <th class="sort" data-sort="allstart">Start Date</th>
         <th class="sort" data-sort="allend">End Date</th>
         <th class="sort" data-sort="allrating">Average Rating</th>
+        <th class="sort" data-sort="app_status">Approved Status</th>
         <th colspan="2">
           <input type="text" class="search" placeholder="Search course" />
         </th>
@@ -304,6 +306,7 @@ var currList = new List('curr_courses', currOptions);
       <td class="allstart"><?php echo $row_all_courses['start_date']; ?></td>
       <td class="allend"><?php echo $row_all_courses['end_date']; ?></td>
       <td class="allrating"><?php echo $row_all_courses['avg_rating']; ?></td>
+      <td class="app_status"><?php if ($row_all_courses['approve_status']==0) echo "Course waiting for approval"; else if ($row_all_courses['approve_status']==1) echo "Course Approved"; else if ($row_all_courses['approve_status']==2) echo "Course is rejected by the Administrator"; ?>
           </tr>
     <?php } while ($row_all_courses = mysql_fetch_assoc($all_courses)); ?>
       </tbody>
@@ -313,7 +316,7 @@ var currList = new List('curr_courses', currOptions);
 
     <script>
 var allOptions = {
-  valueNames: [ 'allname', 'allstream','allstart','allend','allrating' ]
+  valueNames: [ 'allname', 'allstream','allstart','allend','allrating','app_status' ]
 };
 
 // Init list
