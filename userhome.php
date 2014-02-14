@@ -158,10 +158,13 @@ else {
     <div class="TabbedPanelsContent">Content 1</div>
 	<div class="TabbedPanelsContent">
     <!--- browse course tab --->
-    <div id="course">
-    		<div class="xyz">
-                sort by and this is some long message to test the width
-                </div>
+    <div class="course-wrapper">
+	    	<div class="course-content-wrapper">
+			    <div class="course-content">
+				<div class="middle">
+						<div class="container">
+							<main class="content">
+                            <div id="course">
 			<div>	
 				<div class="first">
 					<h2>Courses</h2>
@@ -197,6 +200,15 @@ else {
 					</ul>
 					<a href="index.php">View all</a>
 				</div></div></div>
+							</main><!-- .content -->
+						</div><!-- .container-->
+
+						<aside class="left-sidebar">
+                        sort by and this is some long message to test the width
+						</aside><!-- .left-sidebar -->
+                </div>
+    </div></div></div> <!--- course divs closing --->
+    
     </div> <!--- this div ends browse courses tab --->
     <div class="TabbedPanelsContent">
         <?php if ($totalRows_incomplete_courses>0) {?>

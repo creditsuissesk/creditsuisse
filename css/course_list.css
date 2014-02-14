@@ -1,3 +1,96 @@
+#course-wrapper
+{
+	clear: both;
+	float: left;
+	width: 100%;
+	margin: 10px 0; 
+	/*background: transparent url(../images/hr_dotted.gif) 60% 0 repeat-y; */
+}
+
+#course-content-wrapper
+{
+	width: 60%;
+	float: left;
+}
+
+#course-content
+{
+	float: left;
+	padding: 0 20px;
+}
+
+#course-left-sidebar-wrapper
+{
+	width: 15%;
+	float: left;
+}
+
+#course-right-sidebar-wrapper
+{
+	width: 15%;
+	float: right;
+}
+
+/*start*/
+aside,main {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+	display:block;
+}
+
+/* Middle
+-----------------------------------------------------------------------------*/
+.middle {
+	/*width: 100%;*/
+	position: relative;
+	/*border: 1px solid #1a1a1a;*/
+	/*border-top: 10px solid #151515;*/
+	/*background: #404040 url(../images/navigation_hover.gif) top left repeat;*/
+	margin: 10px 35px; 
+	padding: 10px 30px; 
+	line-height: 1.6em;
+}
+.middle:after {
+	display: table;
+	clear: both;
+	content: '';
+}
+.container {
+	width: 100%;
+	float: left;
+	overflow: hidden;
+}
+.content {
+	padding: 0 270px 0 270px;
+}
+
+
+/* Left Sidebar
+-----------------------------------------------------------------------------*/
+.left-sidebar {
+	float: left;
+	width: 250px;
+	margin-left: -100%;
+	position: relative;
+	/*background: #B5E3FF;*/
+}
+
+
+/* Right Sidebar
+-----------------------------------------------------------------------------*/
+.right-sidebar {
+	float: left;
+	width: 250px;
+	margin-left: -250px;
+	position: relative;
+	/*background: #FFACAA;*/
+}
+
+
 #course{
 	width: 100%;
 	/*background-color: #09154F;*/
@@ -80,7 +173,7 @@
 	color: #674900;
 	text-decoration: none;
 	font-family: arial;
-	background: url(./images/icons.gif) no-repeat 0 -155px;
+	background: url(../images/icons.gif) no-repeat 0 -155px;
 	width: 74px;
 	height: 18px;
 	text-align: center;
@@ -93,7 +186,7 @@
 	color: #d4ffff;
 	text-decoration: none;
 	font-family: arial;
-	background: url(./images/interface.gif) no-repeat;
+	background: url(../images/interface.gif) no-repeat;
 	width: 70px;
 	height: 18px;
 	text-align: center;
@@ -110,7 +203,7 @@
 	position: absolute;
 	top: 480px;
 	right: 15px;
-	background: url(./images/arrow1.gif) no-repeat right center;
+	background: url(../images/arrow1.gif) no-repeat right center;
 	padding: 0 10px 0 0;
 }
 #course div a:hover{
