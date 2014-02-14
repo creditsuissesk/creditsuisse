@@ -9,7 +9,7 @@
 
 #course-content-wrapper
 {
-	width: 60%;
+	width: 100%;
 	float: left;
 }
 
@@ -45,13 +45,13 @@ aside,main {
 /* Middle
 -----------------------------------------------------------------------------*/
 .middle {
-	/*width: 100%;*/
+	width: 100%;
 	position: relative;
 	/*border: 1px solid #1a1a1a;*/
 	/*border-top: 10px solid #151515;*/
 	/*background: #404040 url(../images/navigation_hover.gif) top left repeat;*/
-	margin: 10px 35px; 
-	padding: 10px 30px; 
+	margin: 10px 10px; 
+	padding: 10px 10px; 
 	line-height: 1.6em;
 }
 .middle:after {
@@ -65,7 +65,7 @@ aside,main {
 	overflow: hidden;
 }
 .content {
-	padding: 0 270px 0 270px;
+	padding: 0 50px 0 50px;
 }
 
 
@@ -73,7 +73,7 @@ aside,main {
 -----------------------------------------------------------------------------*/
 .left-sidebar {
 	float: left;
-	width: 250px;
+	width: 15%;
 	margin-left: -100%;
 	position: relative;
 	/*background: #B5E3FF;*/
@@ -84,7 +84,7 @@ aside,main {
 -----------------------------------------------------------------------------*/
 .right-sidebar {
 	float: left;
-	width: 250px;
+	width: 15%;
 	margin-left: -250px;
 	position: relative;
 	/*background: #FFACAA;*/
@@ -200,7 +200,7 @@ aside,main {
 	font-size: 14px;
 	color: #4d4d4d;
 	text-decoration: none;
-	position: absolute;
+
 	top: 480px;
 	right: 15px;
 	background: url(../images/arrow1.gif) no-repeat right center;

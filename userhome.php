@@ -112,6 +112,34 @@ function clearText(field)
 }
 </script>
 
+<script>
+function sortCourses(str)
+{
+if (str=="")
+  {
+  document.getElementById("txtHint").innerHTML="";
+  return;
+  }
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    document.getElementById("courselist").innerHTML=xmlhttp.responseText;
+    }
+  }
+xmlhttp.open("GET","show_courses.php?sortType="+str,true);
+xmlhttp.send();
+}
+</script>
+
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 </head>
 <body>
@@ -147,7 +175,7 @@ else {
 <div id="TabbedPanels1" class="TabbedPanels">
   <ul class="TabbedPanelsTabGroup">
     <li class="TabbedPanelsTab" tabindex="0">Recent Activity</li>
-        <li class="TabbedPanelsTab" tabindex="0">Browse Courses</li>
+    <li class="TabbedPanelsTab" tabindex="0">Browse Courses</li>
     <li class="TabbedPanelsTab" tabindex="0">Your Courses</li>
     <li class="TabbedPanelsTab" tabindex="0">Completed Courses</li>
     <li class="TabbedPanelsTab" tabindex="0">Recommended</li>
@@ -165,38 +193,11 @@ else {
 						<div class="container">
 							<main class="content">
                             <div id="course">
-			<div>	
+				<div>	
 				<div class="first">
 					<h2>Courses</h2>
-					<ul>
-						<li>
-							<a href="index.php"><img src="images/gallery/01.jpg" alt=""/></a>
-							<span><a href="index.php">Donec Nisl Justo</a></span><br>
-							<p>7 Days &amp; 3 Days at Aliquam iaculis velit</p>
-							<a href="index.php" class="details">See Details</a>
-							<a href="index.php" class="Enroll">Enroll Now!</a>
-						</li>
-						<li>
-							<a href="index.php"><img src="images/gallery/05.jpg" alt=""/></a>
-							<span><a href="index.php">Pellentesque</a></span>
-							<p>Maecenas gravida lacus mauris, at interdum ligula</p>
-							<a href="index.php" class="details">See Details</a>							
-							<a href="index.php" class="Enroll">Enroll Now!</a>
-						</li>
-						<li>
-							<a href="index.php"><img src="images/gallery/04.jpg" alt=""/></a>
-							<span><a href="index.php">QUISQUE</a></span>
-							<p>Pellentesque molestie arcu vitae lectus</p>
-							<a href="index.php" class="details">See Details</a>							
-							<a href="index.php" class="Enroll">Enroll Now!</a>
-						</li>
-						<li>
-							<a href="index.php"><img src="images/gallery/03.jpg" alt=""/></a>
-							<span><a href="index.php">ODIOLOREM</a></span>
-							<p>Nullam viverra nisi et elit pretium venenatis</p>
-							<a href="index.php" class="details">See Details</a>							
-							<a href="index.php" class="Enroll">Enroll Now!</a>
-						</li>
+					<ul id="courselist">
+					<!--- courses appear here dynamically --->	
 					</ul>
 					<a href="index.php">View all</a>
 				</div></div></div>
@@ -204,7 +205,14 @@ else {
 						</div><!-- .container-->
 
 						<aside class="left-sidebar">
-                        sort by and this is some long message to test the width
+                        Sort by:
+                        <form action=""> 
+						<select name="users" onchange="sortCourses(this.value)">
+						<option value="">Select a criterion:</option>
+						<option value="1">Most Popular</option>
+						<option value="2">Latest</option>
+						</select>
+						</form>
 						</aside><!-- .left-sidebar -->
                 </div>
     </div></div></div> <!--- course divs closing --->
@@ -245,7 +253,7 @@ else {
         
         <input type="hidden" name="MM_change" value="form1" />
         </form> </td>
-        <?php }else echo "";
+        <?php }else {echo "";}
 							echo "</tr>";
 						}while ($row_resource= mysql_fetch_assoc($resource));
 					?></table>
@@ -264,8 +272,8 @@ else {
 								echo "<a href='#a".$temp."' class='page_nav_btn next'>Next</a> ";
 							}
 		                ?>
-        	       	<!---</div> ---> <!---END of  half right --->
-	            <?php echo "</div>"; ?> <!-- END of Services -->
+        	       	</div><!---END of  half right --->
+	            <?php //echo "</div>"; ?> <!-- END of Services -->
     	        <?php $var=$var+1; ?>
 			    <?php } while ($row_incomplete_courses = mysql_fetch_assoc($incomplete_courses)); ?>     
                 </div>
