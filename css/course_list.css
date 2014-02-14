@@ -182,7 +182,7 @@ aside,main {
 	position: static;
 	padding: 0;
 }
-#course div ul li a.book{
+#course div ul li a.enroll{
 	color: #d4ffff;
 	text-decoration: none;
 	font-family: arial;
@@ -192,6 +192,30 @@ aside,main {
 	text-align: center;
 	line-height: 18px;
 	font-size: 12px;
+	position: static;
+	padding: 0;
+}
+#course div ul li p.enrolled{
+	color: #F00;
+	text-decoration: none;
+	font-family: arial;
+	/*background: url(../images/interface.gif) no-repeat;*/
+	/*text-align: center;*/
+	line-height: 18px;
+	font-size: 12px;
+	position: static;
+	padding: 0;
+}
+#course div ul li p.dates{
+	font-size: 12px;
+	color: #009;
+	text-decoration: none;
+	font-family: arial;
+	/*background: url(../images/icons.gif) no-repeat 0 -155px;*/
+	
+	/*text-align: center;*/
+	line-height: 18px;
+	margin: 0 5px 0 0;
 	position: static;
 	padding: 0;
 }

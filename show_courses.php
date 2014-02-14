@@ -80,10 +80,14 @@ mysql_select_db($database_conn, $conn);
 if(isset($_GET['sortType'])) {
 	if($_GET['sortType']==1) {
 		//sort by most popular
-		$query_sort_courses = sprintf("SELECT * FROM `course` ORDER BY avg_rating");
+		$query_sort_courses = sprintf("SELECT * FROM `course` LEFT OUTER JOIN (SELECT * FROM `enroll_course` WHERE u_id =%s ) AS `temp` ON course.c_id = temp.c_id WHERE approve_status =1 ORDER BY avg_rating",GetSQLValueString($_SESSION['MM_UserID'], "int"));
 	}else if($_GET['sortType']==2) {
 		//sort by latest
-		$query_sort_courses = sprintf("SELECT * FROM `course` ORDER BY start_date");
+		$query_sort_courses = sprintf("SELECT * FROM `course` LEFT OUTER JOIN (SELECT * FROM `enroll_course` WHERE u_id=%s) AS `temp` ON course.c_id = temp.c_id WHERE approve_status=1 ORDER BY inserted_on DESC",GetSQLValueString($_SESSION['MM_UserID'], "int"));
+
+	}else if($_GET['sortType']==3) {
+		//sort by starting soon
+		$query_sort_courses = sprintf("SELECT * FROM `course` LEFT OUTER JOIN (SELECT * FROM `enroll_course` WHERE u_id=%s) AS `temp` ON course.c_id = temp.c_id WHERE approve_status=1 AND start_date>=now() ORDER BY start_date ASC",GetSQLValueString($_SESSION['MM_UserID'], "int"));
 
 	}
 
@@ -96,8 +100,15 @@ if(isset($_GET['sortType'])) {
 		echo '<a href="index.php"><img src="'.$row_sort['course_image'].'" alt=""/></a>';
 		echo '<span><a href="index.php">'.$row_sort['c_name'].'</a></span><br>';
 		echo '<p>'.$row_sort['description'].'</p>';
+		echo '<p class="dates">Duration : '.$row_sort['start_date'].' - '.$row_sort['end_date'].'</p>';
 		echo '<a href="index.php" class="details">See Details</a>';
-		echo '<a href="index.php" class="Enroll">Enroll Now!</a>';
+		if (!empty($row_sort['u_id'])) {
+			//enrolled for course already
+			echo '<p class="enrolled">Already enrolled!</p>';
+		}else {
+			//not yet enrolled for course
+			echo '<a href="index.php" class="enroll">Enroll Now!</a>';
+		}
 		echo "</li>";
 	}while($row_sort = mysql_fetch_assoc($sort));
 }

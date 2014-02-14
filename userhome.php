@@ -183,6 +183,13 @@ xmlhttp.onreadystatechange=function()
 xmlhttp.open("GET","show_courses.php?sortType="+str,true);
 xmlhttp.send();
 }
+
+function enrollCourse(ele) {
+	var r=confirm("Are you sure you want to enroll for this course?");
+	if (r==true) {
+		
+	}
+}
 </script>
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -256,6 +263,7 @@ else {
 						<option value="">Select a criterion:</option>
 						<option value="1">Most Popular</option>
 						<option value="2">Latest</option>
+                        <option value="3">Starting Soon</option>
 						</select>
 						</form>
 						</aside><!-- .left-sidebar -->

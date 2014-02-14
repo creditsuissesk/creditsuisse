@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 09, 2014 at 07:40 PM
+-- Generation Time: Feb 14, 2014 at 05:19 PM
 -- Server version: 5.6.14
 -- PHP Version: 5.5.6
 
@@ -89,6 +89,7 @@ CREATE TABLE IF NOT EXISTS `course` (
   `c_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `c_name` varchar(50) NOT NULL,
   `c_stream` varchar(20) NOT NULL,
+  `inserted_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `start_date` date NOT NULL,
   `end_date` date NOT NULL,
   `u_id` int(11) unsigned NOT NULL,
@@ -98,21 +99,23 @@ CREATE TABLE IF NOT EXISTS `course` (
   `description` text NOT NULL,
   PRIMARY KEY (`c_id`),
   KEY `u_id` (`u_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=29 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=31 ;
 
 --
 -- Dumping data for table `course`
 --
 
-INSERT INTO `course` (`c_id`, `c_name`, `c_stream`, `start_date`, `end_date`, `u_id`, `approve_status`, `course_image`, `avg_rating`, `description`) VALUES
-(18, 'Cryptography-Basic', 'Computer Science', '2014-01-12', '2016-01-11', 2, 0, 'images/gallery/09-I', 0, 'This is course on cryptography. In this course we will introduce you to basic ciphers and the basics of cryptography.'),
-(19, 'Networking Protocols', 'Networking', '2014-05-01', '2014-10-31', 2, 0, 'images/gallery/09-I', 0, ''),
-(20, 'Cryptography-Advanced', 'Computer Science', '2014-01-22', '2014-07-17', 2, 0, 'images/gallery/09-I', 0, 'this is crypto'),
-(21, 'Web Designing', 'Computer Science', '2014-01-03', '2014-07-17', 2, 0, 'images/gallery/09-I', 0, ''),
-(22, 'Database Management', 'Computer Science', '2014-01-16', '2014-08-18', 2, 0, 'images/gallery/09-I', 0, 'Description!'),
-(23, 'Database-Advanced', 'Computer Science', '2014-03-06', '2014-08-05', 2, 0, 'images/gallery/09-I', 0, 'This course is based n advance techniques of using database'),
-(27, 'PHP', 'Computer Science', '2014-02-20', '2017-02-20', 2, 0, 'images/course_picture/PHPjpg', 0, 'this is basic course'),
-(28, 'Java Scripts', 'Computer Science', '2015-02-12', '2015-02-27', 2, 0, 'images/course_picture/Java Scripts.jpg', 0, 'Basics of Java Scripting');
+INSERT INTO `course` (`c_id`, `c_name`, `c_stream`, `inserted_on`, `start_date`, `end_date`, `u_id`, `approve_status`, `course_image`, `avg_rating`, `description`) VALUES
+(18, 'Cryptography-Basic', 'Computer Science', '2014-01-03 16:12:36', '2014-01-12', '2016-01-11', 2, 1, 'images/gallery/09.jpg', 0, 'This is course on cryptography. In this course we will introduce you to basic ciphers and the basics of cryptography.'),
+(19, 'Networking Protocols', 'Networking', '2014-02-27 16:12:36', '2014-05-01', '2014-10-31', 2, 0, 'images/gallery/07.jpg', 0, ''),
+(20, 'Cryptography-Advanced', 'Computer Science', '2014-01-15 16:12:36', '2014-01-22', '2014-07-17', 2, 1, 'images/gallery/05.jpg', 0, 'this is crypto'),
+(21, 'Web Designing', 'Computer Science', '2014-02-14 16:12:36', '2014-01-03', '2014-07-17', 2, 2, 'images/gallery/03.jpg', 0, ''),
+(22, 'Database Management', 'Computer Science', '2014-02-14 16:12:36', '2014-01-16', '2014-08-18', 2, 0, 'images/gallery/03.jpg', 0, 'Description!'),
+(23, 'Database-Advanced', 'Computer Science', '2014-02-14 16:12:36', '2014-03-06', '2014-08-05', 2, 0, 'images/gallery/04.jpg', 0, 'This course is based n advance techniques of using database'),
+(27, 'PHP', 'Computer Science', '2014-02-14 16:12:36', '2014-02-20', '2017-02-20', 2, 0, 'images/course_picture/PHPjpg', 0, 'this is basic course'),
+(28, 'Java Scripts', 'Computer Science', '2014-02-14 16:12:36', '2015-02-12', '2015-02-27', 2, 0, 'images/course_picture/Java Scripts.jpg', 0, 'Basics of Java Scripting'),
+(29, 'Data Struct', 'Computer', '2014-02-08 16:12:36', '2014-02-14', '2014-02-21', 13, 1, 'images/course_picture/Data Struct.jpg', 0, 'ahjd'),
+(30, 'temp_course', 'cs', '2014-02-12 16:12:36', '2014-03-06', '2014-02-22', 2, 1, 'images/course_picture/temp_course.jpg', 0, 'temp');
 
 -- --------------------------------------------------------
 
@@ -223,7 +226,7 @@ CREATE TABLE IF NOT EXISTS `resource` (
   `file_type` varchar(30) NOT NULL,
   `file_size` double NOT NULL,
   `file_location` varchar(255) NOT NULL,
-  `uploaded_by` int(10) unsigned NOT NULL,
+  `uploaded_by` int(11) unsigned NOT NULL,
   `uploaded_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `download_status` tinyint(1) NOT NULL DEFAULT '0',
   `approve_status` tinyint(1) NOT NULL DEFAULT '0',
@@ -231,16 +234,18 @@ CREATE TABLE IF NOT EXISTS `resource` (
   `flag_status` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`r_id`),
   KEY `c_id` (`c_id`),
-  KEY `type_id` (`type_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+  KEY `type_id` (`type_id`),
+  KEY `uploaded_by` (`uploaded_by`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `resource`
 --
 
 INSERT INTO `resource` (`r_id`, `c_id`, `type_id`, `filename`, `file_type`, `file_size`, `file_location`, `uploaded_by`, `uploaded_date`, `download_status`, `approve_status`, `avg_rating`, `flag_status`) VALUES
-(1, 18, 1, 'Reference.pdf', 'application/pdf', 5.3696355819702, 'resource/18/Reference.pdf', 2, '2014-02-09 00:15:49', 1, 0, 0, 0),
-(2, 18, 7, 'Example.jpg', 'image/jpeg', 0.13896942138672, 'resource/18/Example.jpg', 2, '2014-02-09 00:17:09', 0, 0, 0, 0);
+(1, 18, 1, 'Reference.pdf', 'application/pdf', 5.3696355819702, 'resource/18/Reference.pdf', 2, '2014-02-09 00:15:49', 1, 1, 0, 0),
+(2, 18, 7, 'Example.jpg', 'image/jpeg', 0.13896942138672, 'resource/18/Example.jpg', 2, '2014-02-09 00:17:09', 0, 1, 0, 0),
+(3, 20, 1, 'reference.pdf', 'application/pdf', 102.67518806458, 'resource/20/reference.pdf', 2, '2014-02-12 17:17:39', 1, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -294,7 +299,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `created_comments` int(11) NOT NULL DEFAULT '0',
   `count_discussions` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`u_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
 
 --
 -- Dumping data for table `user`
@@ -310,7 +315,8 @@ INSERT INTO `user` (`u_id`, `u_name`, `password`, `f_name`, `l_name`, `contact_n
 (8, 'kunalshah@gmail.com', 'pass1234', 'Kunal', 'Shah', 2147483647, '1993-07-17', 'VJTI', 'computers', 'student', 1, 'images/profiles/08.jpg', '', 0, 0, 0, 0, 0, 0),
 (9, 'nw@gmail.com', 'password', 'Nachiket', 'wagle', 982680350, '1993-04-07', 'vjti', 'Civil', 'student', 2, '', '', 0, 0, 0, 0, 0, 0),
 (10, 'new@gmail.com', 'password', 'Niket', 'wagle', 21474836, '1991-12-09', 'vjti', 'mechanical', 'student', 0, '', '', 0, 0, 0, 0, 0, 0),
-(12, 'photouser@gmail.com', 'password', 'Palak', 'Kulkarni', 987654321, '1995-01-06', 'SPCE', 'Civil', 'student', 1, 'images/profiles/lamborghini-cars-logo-emblem.jpg', '', 0, 0, -1, 0, 1, 1);
+(12, 'photouser@gmail.com', 'password', 'Palak', 'Kulkarni', 987654321, '1995-01-06', 'SPCE', 'Civil', 'student', 1, 'images/profiles/lamborghini-cars-logo-emblem.jpg', '', 0, 0, -1, 0, 1, 1),
+(13, 'cm@gmail.com', 'qwerty', 'Chandresh', 'Mehta', 28964512, '1989-02-02', 'IIT-B', 'Computer Science', 'cm', 1, 'images/profiles/cm@gmail.com', '', 0, 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -404,8 +410,8 @@ INSERT INTO `user_discussion` (`u_id`, `user_discussion_id`, `seen_comments`, `d
 -- Constraints for table `comment`
 --
 ALTER TABLE `comment`
-  ADD CONSTRAINT `comment_ibfk_3` FOREIGN KEY (`update_uid`) REFERENCES `user` (`u_id`) ON DELETE NO ACTION ON UPDATE CASCADE,
   ADD CONSTRAINT `comment_ibfk_1` FOREIGN KEY (`insert_uid`) REFERENCES `user` (`u_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `comment_ibfk_3` FOREIGN KEY (`update_uid`) REFERENCES `user` (`u_id`) ON DELETE NO ACTION ON UPDATE CASCADE,
   ADD CONSTRAINT `comment_ibfk_4` FOREIGN KEY (`discussion_id`) REFERENCES `discussion` (`discussion_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
@@ -432,29 +438,30 @@ ALTER TABLE `enroll_course`
 -- Constraints for table `rate_resource`
 --
 ALTER TABLE `rate_resource`
-  ADD CONSTRAINT `rate_resource_ibfk_3` FOREIGN KEY (`r_id`) REFERENCES `resource` (`r_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `rate_resource_ibfk_2` FOREIGN KEY (`u_id`) REFERENCES `user` (`u_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `rate_resource_ibfk_2` FOREIGN KEY (`u_id`) REFERENCES `user` (`u_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `rate_resource_ibfk_3` FOREIGN KEY (`r_id`) REFERENCES `resource` (`r_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `resource`
 --
 ALTER TABLE `resource`
   ADD CONSTRAINT `resource_ibfk_1` FOREIGN KEY (`c_id`) REFERENCES `course` (`c_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `resource_ibfk_2` FOREIGN KEY (`type_id`) REFERENCES `resource_type` (`type_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `resource_ibfk_2` FOREIGN KEY (`type_id`) REFERENCES `resource_type` (`type_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `resource_ibfk_3` FOREIGN KEY (`uploaded_by`) REFERENCES `user` (`u_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `user_comment`
 --
 ALTER TABLE `user_comment`
-  ADD CONSTRAINT `user_comment_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`u_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `user_comment_ibfk_1` FOREIGN KEY (`user_comment_id`) REFERENCES `comment` (`comment_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `user_comment_ibfk_1` FOREIGN KEY (`user_comment_id`) REFERENCES `comment` (`comment_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `user_comment_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`u_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `user_discussion`
 --
 ALTER TABLE `user_discussion`
-  ADD CONSTRAINT `user_discussion_ibfk_2` FOREIGN KEY (`user_discussion_id`) REFERENCES `discussion` (`discussion_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `user_discussion_ibfk_1` FOREIGN KEY (`u_id`) REFERENCES `user` (`u_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `user_discussion_ibfk_1` FOREIGN KEY (`u_id`) REFERENCES `user` (`u_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `user_discussion_ibfk_2` FOREIGN KEY (`user_discussion_id`) REFERENCES `discussion` (`discussion_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
