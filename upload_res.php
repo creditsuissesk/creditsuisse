@@ -31,10 +31,12 @@ if (!function_exists("GetSQLValueString")) {
 		return $theValue;
 	  }
 	  }
+	  ?>
+<?php
 if (!isset($_SESSION)) {
   session_start();
 }
-$MM_authorizedUsers = "author";
+$MM_authorizedUsers = "cm,author";
 $MM_donotCheckaccess = "false";
 
 // *** Restrict Access To Page: Grant or deny access to this page

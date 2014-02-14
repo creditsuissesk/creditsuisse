@@ -3,7 +3,7 @@
 if (!isset($_SESSION)) {
   session_start();
 }
-$MM_authorizedUsers = "author";
+$MM_authorizedUsers = "cm,author";
 $MM_donotCheckaccess = "false";
 
 // *** Restrict Access To Page: Grant or deny access to this page
@@ -253,7 +253,7 @@ var resList = new List('resource', resOptions);
         </div><!--end of file tab-->
    </div>
 </div>
-<p><a href="authorhome.php">Back to Home</a></p>
+<p><a href=<?php if ($_SESSION['MM_UserGroup'] == 'author')echo '"authorhome.php"';else if($_SESSION['MM_UserGroup'] == 'cm')echo '"cmhome.php"' ?>>Back to Home</a></p>
 <script type="text/javascript">
 var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1");
 </script>

@@ -1,5 +1,53 @@
 <?php require_once('Connections/conn.php'); ?>
-<?php function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
+
+<?php
+if (!isset($_SESSION)) {
+  session_start();
+}
+$MM_authorizedUsers = "cm,author";
+$MM_donotCheckaccess = "false";
+
+// *** Restrict Access To Page: Grant or deny access to this page
+function isAuthorized($strUsers, $strGroups, $UserName, $UserGroup) { 
+  // For security, start by assuming the visitor is NOT authorized. 
+  $isValid = False; 
+
+  // When a visitor has logged into this site, the Session variable MM_Username set equal to their username. 
+  // Therefore, we know that a user is NOT logged in if that Session variable is blank. 
+  if (!empty($UserName)) { 
+    // Besides being logged in, you may restrict access to only certain users based on an ID established when they login. 
+    // Parse the strings into arrays. 
+    $arrUsers = Explode(",", $strUsers); 
+    $arrGroups = Explode(",", $strGroups); 
+    if (in_array($UserName, $arrUsers)) { 
+      $isValid = true; 
+    } 
+    // Or, you may restrict access to only certain users based on their username. 
+    if (in_array($UserGroup, $arrGroups)) { 
+      $isValid = true; 
+    } 
+    if (($strUsers == "") && false) { 
+      $isValid = true; 
+    } 
+  } 
+  return $isValid; 
+}
+
+$MM_restrictGoTo = "userhome.php";
+if (!((isset($_SESSION['MM_Username'])) && (isAuthorized("",$MM_authorizedUsers, $_SESSION['MM_Username'], $_SESSION['MM_UserGroup'])))) {   
+  $MM_qsChar = "?";
+  $MM_referrer = $_SERVER['PHP_SELF'];
+  if (strpos($MM_restrictGoTo, "?")) $MM_qsChar = "&";
+  if (isset($_SERVER['QUERY_STRING']) && strlen($_SERVER['QUERY_STRING']) > 0) 
+  $MM_referrer .= "?" . $_SERVER['QUERY_STRING'];
+  $MM_restrictGoTo = $MM_restrictGoTo. $MM_qsChar . "accesscheck=" . urlencode($MM_referrer);
+  header("Location: ". $MM_restrictGoTo); 
+  exit;
+}
+?>
+
+<?php 
+function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
 {
   if (PHP_VERSION < 6) {
     $theValue = get_magic_quotes_gpc() ? stripslashes($theValue) : $theValue;
@@ -36,20 +84,36 @@ if(isset($_POST['id']))
 	$query = sprintf("SELECT filename, file_type,file_size, file_location FROM resource WHERE r_id = %s",GetSQLValueString($id, "int"));
 	$result = mysql_query($query) or die('Error, query failed'); 
 	list($name, $type, $size, $location) =  mysql_fetch_row($result);
+	$size=$size*1024*1024;
+	
 /*	$extract = fopen($location, 'r');
 	$content = fread($extract, $size);
 	$content = addslashes($content);
-	fclose($extract);*/
-	$content = file_get_contents($location);
+	fclose($extract);
+	//$content = file_get_contents($location);
 	 header("Content-Disposition: attachment; filename=\"$name\"");
-        header("Content-type: $type");
-        header("Content-length: $size");
+        header("Content-type: ".$type);
+        header("Content-length: ".$size);
         print $content;
 		ob_clean();
 		flush();
+		if(ob_get_level())
+		ob_end_flush();
 		echo $content;
 		mysql_close();
-		exit;
+		exit;*/
+	
+    header('Content-Description: File Transfer');
+    header('Content-Type: application/octet-stream');
+    header('Content-Disposition: attachment; filename='.$name);
+    /*header('Expires: 0');
+    header('Cache-Control: must-revalidate');
+    header('Pragma: public');*/
+    header('Content-Length: '.$size);
+    ob_clean();
+    flush();
+    readfile($location);
+    exit;	
 }
 else
 echo '<script type="text/javascript">alert("Id not set");window.location="http://localhost/dreamweaver/authorhome.php";</script>';
