@@ -1,4 +1,3 @@
-<?php require_once('Connections/conn.php'); ?>
 <?php
 if (!isset($_SESSION)) {
   session_start();
@@ -31,6 +30,21 @@ function isAuthorized($strUsers, $strGroups, $UserName, $UserGroup) {
   } 
   return $isValid; 
 }
+
+$MM_restrictGoTo = "/dreamweaver/userhome.php";
+if (!((isset($_SESSION['MM_Username'])) && (isAuthorized("",$MM_authorizedUsers, $_SESSION['MM_Username'], $_SESSION['MM_UserGroup'])))) {   
+  $MM_qsChar = "?";
+  $MM_referrer = $_SERVER['PHP_SELF'];
+  if (strpos($MM_restrictGoTo, "?")) $MM_qsChar = "&";
+  if (isset($_SERVER['QUERY_STRING']) && strlen($_SERVER['QUERY_STRING']) > 0) 
+  $MM_referrer .= "?" . $_SERVER['QUERY_STRING'];
+  $MM_restrictGoTo = $MM_restrictGoTo. $MM_qsChar . "accesscheck=" . urlencode($MM_referrer);
+  header("Location: ". $MM_restrictGoTo); 
+  exit;
+}
+?>
+<?php require_once('Connections/conn.php'); ?>
+<?php
 
 ?>
 <?php
@@ -72,7 +86,7 @@ $ap_stat=1;
 else if($_SESSION['MM_UserGroup']=='author')
 {
 	$redirect_id="http://localhost/dreamweaver/authorhome.php";
-    $ap_stat=1;
+    $ap_stat=0;
 }
 $temp = explode(".", $_FILES["file"]["name"]);
 $extension = end($temp);
@@ -117,6 +131,9 @@ else
   {
   echo '<script type="text/javascript">alert("Invalid File. Please Create Course again");window.location="'.$redirect_id.'";</script>';
   }
+  
+  
+  
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
