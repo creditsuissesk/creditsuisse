@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 14, 2014 at 05:19 PM
+-- Generation Time: Feb 14, 2014 at 08:46 PM
 -- Server version: 5.6.14
 -- PHP Version: 5.5.6
 
@@ -182,9 +182,10 @@ INSERT INTO `discussion_category` (`category_id`, `category_name`) VALUES
 
 CREATE TABLE IF NOT EXISTS `enroll_course` (
   `u_id` int(10) unsigned NOT NULL,
-  `c_id` int(10) unsigned NOT NULL,
+  `c_enroll_id` int(10) unsigned NOT NULL,
   `completion_stat` tinyint(1) NOT NULL,
-  KEY `c_id` (`c_id`),
+  PRIMARY KEY (`u_id`,`c_enroll_id`),
+  KEY `c_id` (`c_enroll_id`),
   KEY `u_id` (`u_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -192,11 +193,11 @@ CREATE TABLE IF NOT EXISTS `enroll_course` (
 -- Dumping data for table `enroll_course`
 --
 
-INSERT INTO `enroll_course` (`u_id`, `c_id`, `completion_stat`) VALUES
-(5, 18, 0),
+INSERT INTO `enroll_course` (`u_id`, `c_enroll_id`, `completion_stat`) VALUES
 (4, 18, 0),
-(8, 18, 0),
-(5, 21, 0);
+(5, 18, 0),
+(5, 21, 0),
+(8, 18, 0);
 
 -- --------------------------------------------------------
 
@@ -431,7 +432,7 @@ ALTER TABLE `discussion`
 -- Constraints for table `enroll_course`
 --
 ALTER TABLE `enroll_course`
-  ADD CONSTRAINT `enroll_course_ibfk_1` FOREIGN KEY (`c_id`) REFERENCES `course` (`c_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `enroll_course_ibfk_1` FOREIGN KEY (`c_enroll_id`) REFERENCES `course` (`c_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `enroll_course_ibfk_2` FOREIGN KEY (`u_id`) REFERENCES `user` (`u_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --

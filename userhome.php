@@ -107,14 +107,14 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 }
 
 mysql_select_db($database_conn, $conn);
-$query_incomplete_courses = sprintf("SELECT * FROM course JOIN enroll_course  ON course.c_id=enroll_course.c_id where enroll_course.u_id=%s AND completion_stat=0 AND DATE(NOW()) BETWEEN start_date AND end_date",GetSQLValueString($_SESSION['MM_UserID'], "int"));
+$query_incomplete_courses = sprintf("SELECT * FROM course JOIN enroll_course  ON course.c_id=enroll_course.c_enroll_id where enroll_course.u_id=%s AND completion_stat=0 AND DATE(NOW()) BETWEEN start_date AND end_date",GetSQLValueString($_SESSION['MM_UserID'], "int"));
 $incomplete_courses = mysql_query($query_incomplete_courses, $conn) or die(mysql_error());
 $row_incomplete_courses = mysql_fetch_assoc($incomplete_courses);
 $totalRows_incomplete_courses = mysql_num_rows($incomplete_courses);
 
 
 mysql_select_db($database_conn, $conn);
-$query_completed_courses = sprintf("SELECT * FROM course JOIN enroll_course ON course.c_id=enroll_course.c_id WHERE enroll_course.u_id=%s AND completion_stat=0 AND DATE(NOW())> end_date",GetSQLValueString($_SESSION['MM_UserID'], "int"));
+$query_completed_courses = sprintf("SELECT * FROM course JOIN enroll_course ON course.c_id=enroll_course.c_enroll_id WHERE enroll_course.u_id=%s AND completion_stat=0 AND DATE(NOW())> end_date",GetSQLValueString($_SESSION['MM_UserID'], "int"));
 $completed_courses = mysql_query($query_completed_courses, $conn) or die(mysql_error());
 $row_completed_courses = mysql_fetch_assoc($completed_courses);
 $totalRows_completed_courses = mysql_num_rows($completed_courses);
@@ -187,7 +187,22 @@ xmlhttp.send();
 function enrollCourse(ele) {
 	var r=confirm("Are you sure you want to enroll for this course?");
 	if (r==true) {
-		
+		if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+		  xmlhttp=new XMLHttpRequest();
+		} else {// code for IE6, IE5
+		  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  		}
+		xmlhttp.onreadystatechange=function()
+		{
+		  if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+		    //document.getElementById("courselist").innerHTML=xmlhttp.responseText;
+			var e = document.getElementById("sortdropdown");
+			var strUser = e.options[e.selectedIndex].value;
+			sortCourses(strUser);
+			}
+		}
+		xmlhttp.open("GET","show_courses.php?enrollId="+ele.id,true);
+		xmlhttp.send();
 	}
 }
 </script>
@@ -259,7 +274,7 @@ else {
 						<aside class="left-sidebar">
                         Sort by:
                         <form action=""> 
-						<select name="users" onChange="sortCourses(this.value)">
+						<select id="sortdropdown" name="users" onChange="sortCourses(this.value)">
 						<option value="">Select a criterion:</option>
 						<option value="1">Most Popular</option>
 						<option value="2">Latest</option>

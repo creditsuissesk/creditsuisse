@@ -80,14 +80,14 @@ mysql_select_db($database_conn, $conn);
 if(isset($_GET['sortType'])) {
 	if($_GET['sortType']==1) {
 		//sort by most popular
-		$query_sort_courses = sprintf("SELECT * FROM `course` LEFT OUTER JOIN (SELECT * FROM `enroll_course` WHERE u_id =%s ) AS `temp` ON course.c_id = temp.c_id WHERE approve_status =1 ORDER BY avg_rating",GetSQLValueString($_SESSION['MM_UserID'], "int"));
+		$query_sort_courses = sprintf("SELECT * FROM `course` LEFT OUTER JOIN (SELECT * FROM `enroll_course` WHERE u_id =%s ) AS `temp` ON course.c_id = temp.c_enroll_id WHERE approve_status =1 ORDER BY avg_rating",GetSQLValueString($_SESSION['MM_UserID'], "int"));
 	}else if($_GET['sortType']==2) {
 		//sort by latest
-		$query_sort_courses = sprintf("SELECT * FROM `course` LEFT OUTER JOIN (SELECT * FROM `enroll_course` WHERE u_id=%s) AS `temp` ON course.c_id = temp.c_id WHERE approve_status=1 ORDER BY inserted_on DESC",GetSQLValueString($_SESSION['MM_UserID'], "int"));
+		$query_sort_courses = sprintf("SELECT * FROM `course` LEFT OUTER JOIN (SELECT * FROM `enroll_course` WHERE u_id=%s) AS `temp` ON course.c_id = temp.c_enroll_id WHERE approve_status=1 ORDER BY inserted_on DESC",GetSQLValueString($_SESSION['MM_UserID'], "int"));
 
 	}else if($_GET['sortType']==3) {
 		//sort by starting soon
-		$query_sort_courses = sprintf("SELECT * FROM `course` LEFT OUTER JOIN (SELECT * FROM `enroll_course` WHERE u_id=%s) AS `temp` ON course.c_id = temp.c_id WHERE approve_status=1 AND start_date>=now() ORDER BY start_date ASC",GetSQLValueString($_SESSION['MM_UserID'], "int"));
+		$query_sort_courses = sprintf("SELECT * FROM `course` LEFT OUTER JOIN (SELECT * FROM `enroll_course` WHERE u_id=%s) AS `temp` ON course.c_id = temp.c_enroll_id WHERE approve_status=1 AND start_date>=now() ORDER BY start_date ASC",GetSQLValueString($_SESSION['MM_UserID'], "int"));
 
 	}
 
@@ -107,9 +107,14 @@ if(isset($_GET['sortType'])) {
 			echo '<p class="enrolled">Already enrolled!</p>';
 		}else {
 			//not yet enrolled for course
-			echo '<a href="index.php" class="enroll">Enroll Now!</a>';
+			echo '<a id="'.$row_sort['c_id'].'" href="index.php" class="enroll" onClick="enrollCourse(this); return false;">Enroll Now!</a>';
 		}
 		echo "</li>";
 	}while($row_sort = mysql_fetch_assoc($sort));
+}
+else if (isset($_GET['enrollId'])) {
+	//for enrolling courses
+	$enroll_query=sprintf("INSERT INTO `enroll_course`(u_id,c_enroll_id,completion_stat) VALUES (%s,%s,0)",GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($_GET['enrollId'], "int"));
+	$enroll = mysql_query($enroll_query, $conn) or die(mysql_error());
 }
 ?>
