@@ -104,10 +104,10 @@ if(isset($_GET['sortType'])) {
 		echo '<a href="index.php" class="details">See Details</a>';
 		if (!empty($row_sort['u_id'])) {
 			//enrolled for course already
-			echo '<p class="enrolled">Already enrolled!</p>';
+			echo '<p class="enrolled">Enrolled!</p>';
 		}else {
 			//not yet enrolled for course
-			echo '<a id="'.$row_sort['c_id'].'" href="index.php" class="enroll" onClick="enrollCourse(this); return false;">Enroll Now!</a>';
+			echo '<a id="'.$row_sort['c_id'].'" class="enroll" onClick="enrollCourse(this); return false;">Enroll Now!</a>';
 		}
 		echo "</li>";
 	}while($row_sort = mysql_fetch_assoc($sort));

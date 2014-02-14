@@ -200,6 +200,9 @@ function enrollCourse(ele) {
 			var strUser = e.options[e.selectedIndex].value;
 			sortCourses(strUser);
 			}
+			else {
+				ele.innerHTML='<a id="'+ele.id+'" class="enroll">Enrolling...</a>';
+			}
 		}
 		xmlhttp.open("GET","show_courses.php?enrollId="+ele.id,true);
 		xmlhttp.send();

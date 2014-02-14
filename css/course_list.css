@@ -194,6 +194,7 @@ aside,main {
 	font-size: 12px;
 	position: static;
 	padding: 0;
+	cursor:pointer;
 }
 #course div ul li p.enrolled{
 	color: #F00;
