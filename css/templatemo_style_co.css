@@ -188,7 +188,8 @@ h6 { font-size: 10px; margin: 0 0 5px; padding: 0; }
 }
 
 #templatemo_content #social span.header {
-	background-image: url(../images/social.png)	
+	background-image: url(../images/social.png)
+		
 }
 
 #templatemo_content #portfolio span.header { 

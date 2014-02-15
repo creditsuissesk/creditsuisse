@@ -89,7 +89,7 @@ $row_course_details = mysql_fetch_assoc($course_details);
 $totalRows_course_details = mysql_num_rows($course_details);
 
 mysql_select_db($database_conn, $conn);
-$query_resource = sprintf("SELECT r_id,c_id,uploaded_date,file_size,r_type,type_id,file_type,filename,download_status FROM `resource`NATURAL JOIN `resource_type` WHERE c_id=%s ",GetSQLValueString($_GET['c_id'], "int"));
+$query_resource = sprintf("SELECT * FROM `resource`NATURAL JOIN `resource_type` WHERE c_id=%s ",GetSQLValueString($_GET['c_id'], "int"));
 $resource = mysql_query($query_resource, $conn) or die(mysql_error());
 $row_resource = mysql_fetch_assoc($resource);
 $totalRows_resource = mysql_num_rows($resource);
@@ -100,12 +100,12 @@ $author_details = mysql_query($query_author_details, $conn) or die(mysql_error()
 $row_author_details = mysql_fetch_assoc($author_details);
 $totalRows_author_details = mysql_num_rows($author_details);
 
-mysql_select_db($database_conn, $conn);
+/*mysql_select_db($database_conn, $conn);
 $query_other_course = sprintf("SELECT * FROM course WHERE u_id = %s", GetSQLValueString($row_course_details['u_id'], "int"));
 $other_course = mysql_query($query_other_course, $conn) or die(mysql_error());
 $row_other_course = mysql_fetch_assoc($other_course);
 $totalRows_other_course = mysql_num_rows($other_course);
-
+*/
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -153,23 +153,13 @@ $totalRows_other_course = mysql_num_rows($other_course);
 				<li id="home"><span class="header"></span>
 					<div class="inner">
 						<h2>Welcome to <?php echo $row_course_details['c_name'];?></h2>
-						<p><em> This course is included in stream <?php echo $row_course_details['c_stream']; echo $row_course_details['description'];?>.</em></p>
-						<img src="<?php echo $row_course_details['course_image'];?>" alt="" class="image_fl" height=100 width =100 />
+						<p>
+                        <img src="<?php echo $row_course_details['course_image'];?>" alt="" class="image_fl" height=200 width =300 />
+                        </p>
+                        <p><em> This course is included in stream <?php echo $row_course_details['c_stream'].". "; echo $row_course_details['description'];?></em></p>
+						
 						<div class="col_half float_r">
-                        <img src="<?php echo $row_author_details['photo'];?>" alt="" height=50 width =50 />
-							<p><b>Name : </b><i><?php echo $row_author_details['f_name']." ".$row_author_details['l_name'];?></i></p>
-                            <p><b>Degree of specialization : </b><i><?php echo $row_author_details['degree'];?></i></p>
-                            <p><b>Institute of Specialization :</b><i> <?php echo $row_author_details['institute'];?></i></p>
-                            <p><b>Contact him at : </b><i><?php echo $row_author_details['u_name'];?></i></p>
-                            <p><b> About himself:</b> <p style="font-style:italic"><?php echo $row_author_details['about'];?></p></p>
-                            <?php if($totalRows_other_course>0){?>
-							<h3>Other Courses by Author</h3>
-							<ul class="templatemo_list">
-                            <?php do{?>
-								<li><a href="<?php echo 'course_detail_stud.php?c_id='.$row_other_course['c_id'];?>"><?php echo $row_other_course['c_name'];?></a></li>
-							<?php }while ($row_other_course = mysql_fetch_assoc($other_course)); ?>	
-							</ul>
-                            <?php }else{ echo "";} ?>
+                        
 						</div>
 					</div>
 				</li>
@@ -177,25 +167,40 @@ $totalRows_other_course = mysql_num_rows($other_course);
 				<li id="about"><span class="header"></span>
 					<div class="inner">
 						<h2>About</h2>
-						<img src="images/templatemo_image_02.jpg" alt="Image 02" class="image_fr" />
-						<p><em>Ut tincidunt risus porta ipsum tristique sodales. Cras et urna erat. Integer laoreet turpis id arcu congue scelerisque.</em></p>
-						<p>Aenean facilisis bibendum neque, adipiscing dapibus felis elementum id. Vestibulum ante ipsum primis in <a href="#">faucibus orci</a> luctus et ultrices posuere cubilia Curae; Phasellus id metus leo, vitae posuere ligula. Aliquam volutpat congue facilisis. Nunc dui mauris, eleifend id facilisis vitae, interdum sit amet ipsum. Praesent congue placerat imperdiet. Nulla facilisi. Morbi sollicitudin congue. Validate <a href="http://validator.w3.org/check?uri=referer" rel="nofollow"><strong>XHTML</strong></a> &amp; <a href="http://jigsaw.w3.org/css-validator/check/referer" rel="nofollow"><strong>CSS</strong></a>.</p>
-						<p>Nulla quam felis, gravida et eleifend sed, sollicitudin quis purus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec est purus, fermentum in vulputate nec, laoreet sed dui. Duis in metus eu augue aliquet vestibulum. Nam laoreet, augue eu imperdiet tristique, elit <a href="#">orci rutrum elit</a>, bibendum lobortis arcu magna sed nunc. Suspendisse eros diam, dictum in elementum at, pharetra eget massa. Phasellus odio risus, pharetra vel rutrum quis, iaculis ac purus. Nam et mi non urna congue ornare. Aenean et dolor diam.</p>
+						<img src="<?php echo $row_author_details['photo'];?>" alt="" height=50 width =50 />
+							<p><b>Name : </b><i><?php echo $row_author_details['f_name']." ".$row_author_details['l_name'];?></i></p>
+                            <p><b>Degree of specialization : </b><i><?php echo $row_author_details['degree'];?></i></p>
+                            <p><b>Institute of Specialization :</b><i> <?php echo $row_author_details['institute'];?></i></p>
+                            <p><b>Contact him at : </b><i><?php echo $row_author_details['u_name'];?></i></p>
+                            <p><b> About himself:</b> <p style="font-style:italic"><?php echo $row_author_details['about'];?></p></p>
+                           <!-- other courses ka part
+						   <?php //if($totalRows_other_course>0){?>
+							<h3>Other Courses by Author</h3>
+							<ul class="templatemo_list">
+                            <?php //do{?>
+								<li><a href="<?php// echo 'course_detail_stud.php?c_id='.$row_other_course['c_id'];?>"><?php //echo $row_other_course['c_name'];?></a></li>
+							<?php //}while ($row_other_course = mysql_fetch_assoc($other_course)); ?>	
+							</ul>
+                            <?php //}else{ echo "";} ?>  -->
 					</div>
 				</li>
 			
 				<li id="social"><span class="header"></span>
 					<div class="inner">
-						<h2>Social</h2>
-						<p><em>Maecenas consectetur adipiscing neque, eget vestibulum orci suscipit eu. Nam adipiscing, nisi eu porta porttitor, tellus sem sollicitudin orci, sed pharetra lorem augue vel nibh. Donec id tortor ipsum, vitae tempor turpis. In hac habitasse platea dictumst.</em></p>
-						<ul class="social_links">
-							<li><a href="http://www.facebook.com/templatemo" class="facebook">Facebook</a></li>
-							<li><a href="#" class="flickr">Flickr</a></li>
-							<li><a href="#" class="linkedin">Linkedin</a></li>
-							<li><a href="#" class="twitter">Twitter</a></li>
-							<li><a href="#" class="yahoo">Yahoo</a></li>
-							<li><a href="#" class="youtube">Youtube</a></li>
-						</ul>
+						<h2>Resources</h2>
+						<p><em>Following are the list of Resources for the course</em></p>
+						<p style="font-style:italic" style="font-size:24px">
+                         <?php if($totalRows_resource>0){?>
+                        <ul class="templatemo_list">
+                            
+							<?php do{?>
+								<li><table><tr><td><a href="<?php echo $row_resource['file_location'];?>"><?php echo $row_resource['filename'];?></a></td><?php if($row_resource['download_status']==1){ echo '<td><a href="download_res.php?id="'.$row_resource['r_id'].'"><img src="images/download-icon.png" alt="" height=24 width =24  /></a></td>';}?></tr></table></li>
+							
+							<?php }while ($row_resource = mysql_fetch_assoc($resource)); ?>	
+							
+                            </ul>
+                            <?php }else{ echo "No Resources for this course have been uploaded. Please Wait for resources to be uploaded. Sorry for inconveniene caused.";} ?>
+                        </p>
 					</div>
 				</li>
 			
@@ -260,3 +265,8 @@ $totalRows_other_course = mysql_num_rows($other_course);
 <script type='text/javascript' src='js/logging.js'></script>
 </body>
 </html>
+<?php 
+mysql_free_result($author_details);
+mysql_free_result($course_details);
+mysql_free_result($resource);
+?>

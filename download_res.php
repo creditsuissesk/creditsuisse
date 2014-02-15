@@ -4,7 +4,7 @@
 if (!isset($_SESSION)) {
   session_start();
 }
-$MM_authorizedUsers = "cm,author";
+$MM_authorizedUsers = "cm,author,student";
 $MM_donotCheckaccess = "false";
 
 // *** Restrict Access To Page: Grant or deny access to this page
@@ -33,7 +33,7 @@ function isAuthorized($strUsers, $strGroups, $UserName, $UserGroup) {
   return $isValid; 
 }
 
-$MM_restrictGoTo = "userhome.php";
+$MM_restrictGoTo = "login.php";
 if (!((isset($_SESSION['MM_Username'])) && (isAuthorized("",$MM_authorizedUsers, $_SESSION['MM_Username'], $_SESSION['MM_UserGroup'])))) {   
   $MM_qsChar = "?";
   $MM_referrer = $_SERVER['PHP_SELF'];
@@ -78,9 +78,16 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 ?>
 <?php
 $db = mysql_select_db($database_conn, $conn);
-if(isset($_POST['id']))
+if(isset($_POST['id'])||isset($_GET['id']))
 {
-	$id    = $_POST['id'];
+	if(isset($_POST['id']))
+	{  
+		$id= $_POST['id'];
+	}
+	else
+	{
+		$id= $_GET['id'];
+	}
 	$query = sprintf("SELECT filename, file_type,file_size, file_location FROM resource WHERE r_id = %s",GetSQLValueString($id, "int"));
 	$result = mysql_query($query) or die('Error, query failed'); 
 	list($name, $type, $size, $location) =  mysql_fetch_row($result);
