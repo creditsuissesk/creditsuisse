@@ -82,8 +82,9 @@ $colname_course_details = "-1";
 if (isset($_GET['c_id'])) {
   $colname_course_details = $_GET['c_id'];
 }
+$value=GetSQLValueString($colname_course_details, "int");
 mysql_select_db($database_conn, $conn);
-$query_course_details = sprintf("SELECT * FROM course WHERE c_id = %s", GetSQLValueString($colname_course_details, "int"));
+$query_course_details = "SELECT *, DATE_FORMAT(start_date,'%d-%m-%Y') AS date_start,DATE_FORMAT(end_date,'%d-%m-%Y') AS date_end FROM course WHERE c_id =".$value;
 $course_details = mysql_query($query_course_details, $conn) or die(mysql_error());
 $row_course_details = mysql_fetch_assoc($course_details);
 $totalRows_course_details = mysql_num_rows($course_details);
@@ -113,8 +114,6 @@ $totalRows_other_course = mysql_num_rows($other_course);
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title><?php echo $row_course_details['c_name'];?></title>
-<meta name="keywords" content="single, slider, free templates, website templates, CSS, HTML" />
-<meta name="description" content="Single Slider is a free CSS template provided by templatemo.com" />
 
 
 <link href="css/templatemo_style_co.css?1" rel="stylesheet" type="text/css" />
@@ -159,7 +158,8 @@ $totalRows_other_course = mysql_num_rows($other_course);
                         <img src="<?php echo $row_course_details['course_image'];?>" alt="" class="image_fl" height=200 width =300 />
                         </p>
                         <p><em> This course is included in stream <?php echo $row_course_details['c_stream'].". "; echo $row_course_details['description'];?></em></p>
-						
+						<p style="font-style:!important" style="font-size:medium">Start Date: <?php echo $row_course_details['date_start']?></p>
+                        <p style="font-style:!important" style="font-size:medium">End Date: <?php echo $row_course_details['date_end']?></p>
 						<div class="col_half float_r">
                         
 						</div>
@@ -255,7 +255,7 @@ $totalRows_other_course = mysql_num_rows($other_course);
 						
 					</div>
 				</li>
-			
+				
 			</ul>
 			
 		</div> <!-- END of content -->
