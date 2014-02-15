@@ -137,6 +137,7 @@ function addQuestion() {
 			if (xmlhttp.readyState==4 && xmlhttp.status==200) {
 		    	//document.getElementById("courselist").innerHTML=xmlhttp.responseText;
 				alert("Question added successfully!");
+				showquestions();
 			}
 		}
 		xmlhttp.open("GET","course_eval.php?c_id="+cId+"&ques="+question+"&opt1="+opt1+"&opt2="+opt2+"&opt3="+opt3+"&opt4="+opt4+"&correct="+correct,true);
@@ -144,6 +145,27 @@ function addQuestion() {
 	} else {
 		alert("Please fill all the fields");
 	}
+}
+
+function showquestions() {
+	var cId = document.getElementById("c_id").value;
+	if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    document.getElementById("questionslist").innerHTML=xmlhttp.responseText;
+    }
+  }
+xmlhttp.open("GET","course_eval.php?show_questions="+cId,true);
+xmlhttp.send();
 }
 </script>
 
@@ -286,29 +308,34 @@ var resList = new List('resource', resOptions);
                             <form id="mcqform">
                             <h4 style="color:#93CDF5;float:left;">New Question:</h4><br /><br />
                             Please select the button against correct option.<br />
-                            <input id="ques" size="100" type="text" placeholder="Enter your question here" /><br />
-                            <table>
+                            
+                            <table><tr><td></td>
+                            <td><input id="ques" size="100" type="text" placeholder="Enter your question here" /></td></tr>
                             <tr><td>
-                            <input type="radio" id="r1" name="correct" value="1"/>                          
-                            <input id="opt1" size="100" type="text" placeholder="Enter option 1"/></td></tr>
+                            <input type="radio" id="r1" name="correct" value="1"/></td>                          
+                            <td><input id="opt1" size="100" type="text" placeholder="Enter option 1"/></td></tr>
                             <tr><td>
-                            <input type="radio" id="r2" name="correct" value="2"/>
-                            <input id="opt2" size="100" type="text" placeholder="Enter option 2"/></td></tr>
+                            <input type="radio" id="r2" name="correct" value="2"/></td>
+                            <td><input id="opt2" size="100" type="text" placeholder="Enter option 2"/></td></tr>
                             <tr><td>
-                            <input type="radio" id="r3" name="correct" value="3"/>
-                            <input id="opt3" size="100" type="text" placeholder="Enter option 3"/></td></tr>
+                            <input type="radio" id="r3" name="correct" value="3"/></td>
+                            <td><input id="opt3" size="100" type="text" placeholder="Enter option 3"/></td></tr>
                             <tr><td>
-                            <input type="radio" id="r4" name="correct" value="4"/>                            
-                            <input id="opt4" size="100" type="text" placeholder="Enter option 4"/></td></tr>
+                            <input type="radio" id="r4" name="correct" value="4"/></td>
+                            <td><input id="opt4" size="100" type="text" placeholder="Enter option 4"/></td></tr>
                             </table>
                             <input type="hidden" id="c_id" value="<?php echo $_GET['c_id']?>"/>
                             <input id="submit" type="button" class="buttom" value="Submit" onclick="addQuestion()" />
                             </form>
 						</li>
                      </ul>
+                     <!--- this ul will contain existing questions --->
+                     <ul id="questionslist">
+                     </ul>
                     </div></div></div>
 				</main><!-- .content -->
 			</div><!--- .container-->
+			<script> $(document).ready(function(){showquestions();});</script>
          </div> <!--- end of evaluation tab--->
    </div>
 </div>

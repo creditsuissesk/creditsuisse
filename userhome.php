@@ -338,7 +338,7 @@ else {
 						<option value="1" selected>Name</option>
 						<option value="2">Stream</option> 
 						</select> <br>
-                        <input type="text" id="searchword" style="margin-top:10px;" onkeypress="searchCourses();"> 
+                        <input type="text" id="searchword" style="margin-top:10px;" onKeyPress="searchCourses();"> 
 						</form>
                         
 						</aside><!-- .left-sidebar -->
