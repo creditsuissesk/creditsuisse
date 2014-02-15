@@ -294,7 +294,14 @@ $totalRows_categories = mysql_num_rows($categories);
 
 <nav id="headerbar">
 	<ul id="headerbar" style="margin:0px;">
-		<li id="headerbar"><a href="userhome.php">Home</a></li>
+		<li id="headerbar"><a href="<?php if($_SESSION['MM_UserGroup']=='student') {
+			echo "userhome.php";
+		}else if ($_SESSION['MM_UserGroup']=='author') {
+			echo "authorhome.php";
+		}else if ($_SESSION['MM_UserGroup']=='admin') {
+			echo "adminhome.php";
+		}
+		?>">Home</a></li>
 		<li id="headerbar"><a href="forum_new.php?mode=showmain">Forums</a></li>
 		<li id="headerbar" style="color: rgb(0, 0, 0);font-size: 14px;"><a href="#"><?php echo $_SESSION['MM_Username'];?></a>
 			<ul id="headerbar" style="margin: 0px;">

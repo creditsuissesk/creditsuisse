@@ -140,7 +140,8 @@ $totalRows_current_courses = mysql_num_rows($current_courses);
 <script src="SpryAssets/SpryTabbedPanels.js" type="text/javascript"></script>
 <link href="SpryAssets/SpryTabbedPanels.css" rel="stylesheet" type="text/css" />
 <link href="css/templatemo_style.css?12" type="text/css" rel="stylesheet" />
-<link href="css/table.css" type="text/css" rel="stylesheet" /> 
+<link href="css/table.css" type="text/css" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" media="screen" href="css/nav_bar.css" /> 
 <!---
 script for js/list.js tables
 --->
@@ -192,6 +193,23 @@ function MM_validateForm() { //v4.0
 </head>
 
 <body alink="#D6D6D6">
+
+<nav id="headerbar">
+	<ul id="headerbar">
+		<li id="headerbar"><a href="userhome.php">Home</a></li>
+		<li id="headerbar"><a href="forum_new.php?mode=showmain">Forums</a></li>
+		<li id="headerbar"><a href="#"><?php echo $_SESSION['MM_Username'];?></a>
+			<ul id="headerbar">
+				<li id="headerbar"><a href="userhome.php?userTabToDisplay=5">Profile</a></li>
+				<li id="headerbar"><a href="<?php echo $logoutAction ?>">Log Out</a>
+				</li>
+			</ul>
+		</li>
+	</ul>
+</nav>
+<br/>
+
+
 <h1>Hello, <?php echo $_SESSION['MM_f_name'];?></h1>
 <div id="TabbedPanels1" class="TabbedPanels">
   <ul class="TabbedPanelsTabGroup">
