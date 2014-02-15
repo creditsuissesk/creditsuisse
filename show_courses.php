@@ -89,8 +89,7 @@ if(isset($_GET['sortType'])) {
 		//sort by starting soon
 		$query_sort_courses = sprintf("SELECT * FROM `course` LEFT OUTER JOIN (SELECT * FROM `enroll_course` WHERE u_id=%s) AS `temp` ON course.c_id = temp.c_enroll_id WHERE approve_status=1 AND start_date>=now() ORDER BY start_date ASC",GetSQLValueString($_SESSION['MM_UserID'], "int"));
 
-	}else
-	if($_GET['sortType']==4) {
+	}else if($_GET['sortType']==4) {
 		//sort by running course
 		$query_sort_courses = sprintf("SELECT * FROM `course` LEFT OUTER JOIN (SELECT * FROM `enroll_course` WHERE u_id=%s) AS `temp` ON course.c_id = temp.c_enroll_id WHERE approve_status=1 AND start_date<=now() AND end_date>now() ORDER BY start_date ASC",GetSQLValueString($_SESSION['MM_UserID'], "int"));
 	}
@@ -101,7 +100,7 @@ if(isset($_GET['sortType'])) {
 		do {
 			echo "<li>";
 			echo '<a href="index.php"><img src="'.$row_sort['course_image'].'" alt=""/></a>';
-			echo '<span><a href="index.php">'.$row_sort['c_name'].'</a></span><br>';
+			echo '<span><a href="index.php">'.$row_sort['c_name'].'</a> in '.$row_sort['c_stream'].'</span><br>';
 			echo '<p>'.$row_sort['description'].'</p>';
 			echo '<p class="dates">Duration : '.$row_sort['start_date'].' - '.$row_sort['end_date'].'</p>';
 			echo '<a href="index.php" class="details">See Details</a>';
@@ -181,6 +180,42 @@ else if (isset($_GET['enrollId'])) {
 		} else { 
 			echo "No courses satisfy this condition at present";
 		}	
+	}
+}else if (isset($_GET['searchKey']) && isset($_GET['searchType']) ) {
+	//search course according to keyword
+	if($_GET['searchType']==1) {
+		//search by course name
+		//$query_search_courses = sprintf("SELECT * FROM `course` LEFT OUTER JOIN (SELECT * FROM `enroll_course` WHERE u_id=%s) AS `temp` ON course.c_id = temp.c_enroll_id WHERE approve_status=1 AND c_name LIKE '%%s%' ORDER BY start_date ASC",GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($_GET['searchKey'], "int"));
+		$query_search_courses = "SELECT * FROM `course` LEFT OUTER JOIN (SELECT * FROM `enroll_course` WHERE u_id=".$_SESSION['MM_UserID'].") AS `temp` ON course.c_id = temp.c_enroll_id WHERE approve_status=1 AND c_name LIKE '%".$_GET['searchKey']."%' ORDER BY start_date ASC";
+		file_put_contents("test.txt",$query_search_courses);
+	}else if ($_GET['searchType']==2) {
+		//search by course stream
+		//$query_search_courses = sprintf("SELECT * FROM `course` LEFT OUTER JOIN (SELECT * FROM `enroll_course` WHERE u_id=%s) AS `temp` ON course.c_id = temp.c_enroll_id WHERE approve_status=1 AND c_stream LIKE '%%s%' ORDER BY start_date ASC",GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($_GET['searchKey'], "int"));
+		$query_search_courses = "SELECT * FROM `course` LEFT OUTER JOIN (SELECT * FROM `enroll_course` WHERE u_id=".$_SESSION['MM_UserID'].") AS `temp` ON course.c_id = temp.c_enroll_id WHERE approve_status=1 AND c_stream LIKE '%".$_GET['searchKey']."%' ORDER BY start_date ASC";
+		file_put_contents("test.txt",$query_search_courses);
+	}
+	$search = mysql_query($query_search_courses, $conn) or die(mysql_error());
+	$row_search = mysql_fetch_assoc($search);
+	$totalRows_search = mysql_num_rows($search);
+	if($totalRows_search>0){
+		do {
+			echo "<li>";
+			echo '<a href="index.php"><img src="'.$row_search['course_image'].'" alt=""/></a>';
+			echo '<span><a href="index.php">'.$row_search['c_name'].'</a> in '.$row_search['c_stream'].'</span><br>';
+			echo '<p>'.$row_search['description'].'</p>';
+			echo '<p class="dates">Duration : '.$row_search['start_date'].' - '.$row_search['end_date'].'</p>';
+			echo '<a href="index.php" class="details">See Details</a>';
+			if (!empty($row_search['u_id'])) {
+				//enrolled for course already
+				echo '<p class="enrolled">Enrolled!</p>';
+			}else {
+				//not yet enrolled for course
+				echo '<a id="'.$row_search['c_id'].'" class="enroll" onClick="enrollCourse(this); return false;">Enroll Now!</a>';
+			}
+			echo "</li>";
+		}while($row_search = mysql_fetch_assoc($search));
+	} else { 
+		echo "No courses satisfy this condition at present";
 	}
 }
 ?>

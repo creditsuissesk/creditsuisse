@@ -107,13 +107,6 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 }
 
 mysql_select_db($database_conn, $conn);
-$query_incomplete_courses = sprintf("SELECT * FROM course JOIN enroll_course  ON course.c_id=enroll_course.c_enroll_id where enroll_course.u_id=%s AND completion_stat=0 AND DATE(NOW()) BETWEEN start_date AND end_date",GetSQLValueString($_SESSION['MM_UserID'], "int"));
-$incomplete_courses = mysql_query($query_incomplete_courses, $conn) or die(mysql_error());
-$row_incomplete_courses = mysql_fetch_assoc($incomplete_courses);
-$totalRows_incomplete_courses = mysql_num_rows($incomplete_courses);
-
-
-mysql_select_db($database_conn, $conn);
 $query_completed_courses = sprintf("SELECT * FROM course JOIN enroll_course ON course.c_id=enroll_course.c_enroll_id WHERE enroll_course.u_id=%s AND completion_stat=0 AND DATE(NOW())> end_date",GetSQLValueString($_SESSION['MM_UserID'], "int"));
 $completed_courses = mysql_query($query_completed_courses, $conn) or die(mysql_error());
 $row_completed_courses = mysql_fetch_assoc($completed_courses);
@@ -225,15 +218,39 @@ function enrollCourse(ele) {
 		{
 		  if (xmlhttp.readyState==4 && xmlhttp.status==200) {
 		    //document.getElementById("courselist").innerHTML=xmlhttp.responseText;
-			var e = document.getElementById("sortdropdown");
-			var strUser = e.options[e.selectedIndex].value;
-			sortCourses(strUser,1);
+				var e = document.getElementById("sortdropdown");
+				var strUser = e.options[e.selectedIndex].value;
+				sortCourses(strUser,0);
 			}
 			else {
 				ele.innerHTML='<a id="'+ele.id+'" class="enroll">Enrolling...</a>';
 			}
 		}
 		xmlhttp.open("GET","show_courses.php?enrollId="+ele.id,true);
+		xmlhttp.send();
+	}
+}
+
+function searchCourses() {
+	var e = document.getElementById("searchdropdown");
+	var searchtype = e.options[e.selectedIndex].value;
+	var searchkey = document.getElementById("searchword").value;
+	if (searchkey=="") {
+		var e = document.getElementById("sortdropdown");
+			var strUser = e.options[e.selectedIndex].value;
+			sortCourses(strUser,1);
+	} else {
+		if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  		xmlhttp=new XMLHttpRequest();
+	  	} else {// code for IE6, IE5
+			xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		xmlhttp.onreadystatechange=function() {
+			if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+		    	document.getElementById("courselist").innerHTML=xmlhttp.responseText;
+			}
+		}
+		xmlhttp.open("GET","show_courses.php?searchType="+searchtype+"&searchKey="+searchkey,true);
 		xmlhttp.send();
 	}
 }
@@ -314,6 +331,16 @@ else {
 						</select>
 						</form>
                         <script> $(document).ready(function(){sortCourses(1,1);});</script>
+                        
+                        Search course by:
+                        <form action=""> 
+						<select id="searchdropdown" name="users" onChange="sortCourses(this.value,0)">
+						<option value="1" selected>Name</option>
+						<option value="2">Stream</option> 
+						</select> <br>
+                        <input type="text" id="searchword" style="margin-top:10px;" onkeypress="searchCourses();"> 
+						</form>
+                        
 						</aside><!-- .left-sidebar -->
                 </div>
     </div></div></div> <!--- course divs closing --->
@@ -386,6 +413,5 @@ var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1",{defaultTab:<?p
 </body>
 </html>
 <?php
-mysql_free_result($incomplete_courses);
 //mysql_free_result($get_user_details);
 ?>
