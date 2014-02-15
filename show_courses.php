@@ -89,12 +89,15 @@ if(isset($_GET['sortType'])) {
 		//sort by starting soon
 		$query_sort_courses = sprintf("SELECT * FROM `course` LEFT OUTER JOIN (SELECT * FROM `enroll_course` WHERE u_id=%s) AS `temp` ON course.c_id = temp.c_enroll_id WHERE approve_status=1 AND start_date>=now() ORDER BY start_date ASC",GetSQLValueString($_SESSION['MM_UserID'], "int"));
 
+	}else
+	if($_GET['sortType']==4) {
+		//sort by running course
+		$query_sort_courses = sprintf("SELECT * FROM `course` LEFT OUTER JOIN (SELECT * FROM `enroll_course` WHERE u_id=%s) AS `temp` ON course.c_id = temp.c_enroll_id WHERE approve_status=1 AND start_date<=now() AND end_date>now() ORDER BY start_date ASC",GetSQLValueString($_SESSION['MM_UserID'], "int"));
 	}
-
 	$sort = mysql_query($query_sort_courses, $conn) or die(mysql_error());
 	$row_sort = mysql_fetch_assoc($sort);
 	$totalRows_sort = mysql_num_rows($sort);
-	
+	if($totalRows_sort>0){
 	do {
 		echo "<li>";
 		echo '<a href="index.php"><img src="'.$row_sort['course_image'].'" alt=""/></a>';
@@ -112,9 +115,13 @@ if(isset($_GET['sortType'])) {
 		echo "</li>";
 	}while($row_sort = mysql_fetch_assoc($sort));
 }
+else { echo "No courses satisfy this condition at present";}
+}
 else if (isset($_GET['enrollId'])) {
 	//for enrolling courses
 	$enroll_query=sprintf("INSERT INTO `enroll_course`(u_id,c_enroll_id,completion_stat) VALUES (%s,%s,0)",GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($_GET['enrollId'], "int"));
 	$enroll = mysql_query($enroll_query, $conn) or die(mysql_error());
 }
+
+
 ?>

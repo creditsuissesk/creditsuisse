@@ -121,14 +121,14 @@ $totalRows_completed_courses = mysql_num_rows($completed_courses);
 
 
 
-mysql_select_db($database_conn, $conn);
+/*mysql_select_db($database_conn, $conn);
 $query_get_user_details = sprintf("SELECT * FROM `user` where u_id=%s",GetSQLValueString($_SESSION['MM_UserID'], "int"));
 $get_user_details = mysql_query($query_get_user_details, $conn) or die(mysql_error());
 $row_get_user_details = mysql_fetch_assoc($get_user_details);
-$totalRows_get_user_details = mysql_num_rows($get_user_details);
+$totalRows_get_user_details = mysql_num_rows($get_user_details);*/
 ?>
 
-<title><?php echo $row_get_user_details['f_name'];?></title>
+<title><?php echo /*$row_get_user_details['f_name']*/$_SESSION['MM_f_name'];?></title>
 <script src="SpryAssets/SpryTabbedPanels.js" type="text/javascript"></script>
 <link href="SpryAssets/SpryTabbedPanels.css" rel="stylesheet" type="text/css">
 <link href="css/templatemo_style.css" type="text/css" rel="stylesheet" /> 
@@ -241,7 +241,7 @@ else {
 </nav>
 <br/>
             
-<h1><?php echo $row_get_user_details['f_name'];?>'s home </h1>
+<h1><?php echo /*$row_get_user_details['f_name']*/$_SESSION['MM_f_name'];?>'s home </h1>
 <div id="TabbedPanels1" class="TabbedPanels">
   <ul class="TabbedPanelsTabGroup">
     <li class="TabbedPanelsTab" tabindex="0">Recent Activity</li>
@@ -282,6 +282,7 @@ else {
 						<option value="1">Most Popular</option>
 						<option value="2">Latest</option>
                         <option value="3">Starting Soon</option>
+                        <option value="4">Running Courses</option>
 						</select>
 						</form>
 						</aside><!-- .left-sidebar -->
@@ -416,6 +417,5 @@ var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1",{defaultTab:<?p
 </html>
 <?php
 mysql_free_result($incomplete_courses);
-
-mysql_free_result($get_user_details);
+//mysql_free_result($get_user_details);
 ?>
