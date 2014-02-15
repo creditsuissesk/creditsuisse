@@ -67,7 +67,7 @@ h6 { font-size: 10px; margin: 0 0 5px; padding: 0; }
 
 #templatemo_wrapper {
 	width: 100%;
-	background: url(../images/templatemo_main.jpg) no-repeat top center
+	background: url(../images/templatemo_body.jpg) no-repeat top center
 }
 
 #templatemo_main { 
@@ -93,7 +93,7 @@ h6 { font-size: 10px; margin: 0 0 5px; padding: 0; }
 	height: 95px; 
 	color: #acacac; 
 	text-indent: -10000px; 
-	background: url(../images/Course_detail.png) no-repeat center left; 
+	background: url(../images/templatemo_logo.png) no-repeat center left; 
 }
 #site_title .site_link,
 #site_title .site_link:hover{

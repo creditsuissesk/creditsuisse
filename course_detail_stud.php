@@ -115,6 +115,8 @@ $totalRows_other_course = mysql_num_rows($other_course);
 <title><?php echo $row_course_details['c_name'];?></title>
 <meta name="keywords" content="single, slider, free templates, website templates, CSS, HTML" />
 <meta name="description" content="Single Slider is a free CSS template provided by templatemo.com" />
+
+
 <link href="css/templatemo_style_co.css?1" rel="stylesheet" type="text/css" />
 
 <script src="js/jquery-1.2.6.min.js" type="text/javascript"></script>
@@ -167,7 +169,7 @@ $totalRows_other_course = mysql_num_rows($other_course);
 				<li id="about"><span class="header"></span>
 					<div class="inner">
 						<h2>About</h2>
-						<img src="<?php echo $row_author_details['photo'];?>" alt="" height=50 width =50 />
+						<img src="<?php echo $row_author_details['photo'];?>" alt="" height=200 width =300 />
 							<p><b>Name : </b><i><?php echo $row_author_details['f_name']." ".$row_author_details['l_name'];?></i></p>
                             <p><b>Degree of specialization : </b><i><?php echo $row_author_details['degree'];?></i></p>
                             <p><b>Institute of Specialization :</b><i> <?php echo $row_author_details['institute'];?></i></p>
