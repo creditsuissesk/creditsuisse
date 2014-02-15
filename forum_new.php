@@ -1,5 +1,27 @@
 <?php require_once('Connections/conn.php'); ?>
 <?php
+// ** Logout the current user. **
+$logoutAction = $_SERVER['PHP_SELF']."?doLogout=true";
+if ((isset($_SERVER['QUERY_STRING'])) && ($_SERVER['QUERY_STRING'] != "")){
+  $logoutAction .="&". htmlentities($_SERVER['QUERY_STRING']);
+}
+
+if ((isset($_GET['doLogout'])) &&($_GET['doLogout']=="true")){
+  //to fully log out a visitor we need to clear the session varialbles
+  $_SESSION['MM_Username'] = NULL;
+  $_SESSION['MM_UserGroup'] = NULL;
+  $_SESSION['PrevUrl'] = NULL;
+  unset($_SESSION['MM_Username']);
+  unset($_SESSION['MM_UserGroup']);
+  unset($_SESSION['PrevUrl']);
+	
+  $logoutGoTo = "index.php";
+  if ($logoutGoTo) {
+    header("Location: $logoutGoTo");
+    exit;
+  }
+}
+
 if (!isset($_SESSION)) {
   session_start();
 }
@@ -271,11 +293,11 @@ $totalRows_categories = mysql_num_rows($categories);
 ?>
 
 <nav id="headerbar">
-	<ul id="headerbar">
+	<ul id="headerbar" style="margin:0px;">
 		<li id="headerbar"><a href="userhome.php">Home</a></li>
 		<li id="headerbar"><a href="forum_new.php?mode=showmain">Forums</a></li>
-		<li id="headerbar"><a href="#"><?php echo $_SESSION['MM_Username'];?></a>
-			<ul id="headerbar">
+		<li id="headerbar" style="color: rgb(0, 0, 0);font-size: 14px;"><a href="#"><?php echo $_SESSION['MM_Username'];?></a>
+			<ul id="headerbar" style="margin: 0px;">
 				<li id="headerbar"><a href="userhome.php?userTabToDisplay=5">Profile</a></li>
 				<li id="headerbar"><a href="<?php echo $logoutAction ?>">Log Out</a>
 				</li>
