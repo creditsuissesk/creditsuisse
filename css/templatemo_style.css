@@ -68,7 +68,7 @@ img { margin: 0; padding: 0; border: none }
 .img_nom { display: block; margin-bottom: 15px }
 .img_fl { float: left; margin: 3px 15px 5px 0 }
 .img_fr { float: left; margin: 3px 0 5px 15px }
-.img_temp {}
+.img_temp {width: 200px; height:120px;}
 
 .left { float: left }
 .right { float: right }
@@ -96,7 +96,7 @@ img { margin: 0; padding: 0; border: none }
 	height: 480px;
 	margin: 0 auto;
 	padding: 9px;
-	background: url(images/templatemo_content_bg.png) no-repeat
+	background: url(../images/templatemo_content_bg.png) no-repeat
 }
 
 #templatemo_main {
@@ -170,19 +170,19 @@ img { margin: 0; padding: 0; border: none }
 .row1 { width: 400px; height: 120px }
 .row2 { width: 400px; height: 240px }
 
-.box1 { background: #9168b3 url(images/templatemo_01.png) scroll 20px 25px no-repeat }
+.box1 { background: #9168b3 url(../images/templatemo_01.png) scroll 20px 25px no-repeat }
 .box1:hover { background-color: #7c549d }
 
-.box2 { background: #a8b368 url(images/templatemo_02.png) scroll 20px 25px no-repeat }
+.box2 { background: #a8b368 url(../images/templatemo_02.png) scroll 20px 25px no-repeat }
 .box2:hover { background-color: #909b51 }
 
-.box3 { background: #b36c68 url(images/templatemo_03.png) scroll 20px 25px no-repeat }
+.box3 { background: #b36c68 url(../images/templatemo_03.png) scroll 20px 25px no-repeat }
 .box3:hover { background-color: #9d5652 }
 
-.box4 { background: #636363 url(images/templatemo_04.png) scroll 20px 25px no-repeat }
+.box4 { background: #636363 url(../images/templatemo_04.png) scroll 20px 25px no-repeat }
 .box4:hover { background-color: #4b4b4b }
 
-.box5 { background: #413959 url(images/twitter.png) scroll 18px 15px no-repeat  }
+.box5 { background: #413959 url(../images/twitter.png) scroll 18px 15px no-repeat  }
 .box5:hover { background-color: #302945 }
 
 .box6 { background: #3c3b3b }

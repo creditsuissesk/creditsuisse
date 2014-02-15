@@ -158,7 +158,7 @@ function clearText(field)
 </script>
 
 <script>
-function sortCourses(str)
+function sortCourses(str,refreshEnrolled)
 {
 if (str=="")
   {
@@ -178,9 +178,38 @@ xmlhttp.onreadystatechange=function()
   if (xmlhttp.readyState==4 && xmlhttp.status==200)
     {
     document.getElementById("courselist").innerHTML=xmlhttp.responseText;
+		if(refreshEnrolled==1) {
+			showEnrolledCourses();
+		}
     }
   }
 xmlhttp.open("GET","show_courses.php?sortType="+str,true);
+xmlhttp.send();
+}
+
+function showEnrolledCourses()
+{
+/*if (str=="")
+  {
+  document.getElementById("txtHint").innerHTML="";
+  return;
+  }*/
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    document.getElementById("content").innerHTML=xmlhttp.responseText;
+    }
+  }
+xmlhttp.open("GET","show_courses.php?showCourses=1",true);
 xmlhttp.send();
 }
 
@@ -198,7 +227,7 @@ function enrollCourse(ele) {
 		    //document.getElementById("courselist").innerHTML=xmlhttp.responseText;
 			var e = document.getElementById("sortdropdown");
 			var strUser = e.options[e.selectedIndex].value;
-			sortCourses(strUser);
+			sortCourses(strUser,1);
 			}
 			else {
 				ele.innerHTML='<a id="'+ele.id+'" class="enroll">Enrolling...</a>';
@@ -261,7 +290,7 @@ else {
 			    <div class="course-content">
 				<div class="middle">
 						<div class="container">
-							<main class="content">
+							<main class="course-content">
                             <div id="course">
 				<div>	
 				<div class="first">
@@ -277,92 +306,33 @@ else {
 						<aside class="left-sidebar">
                         Sort by:
                         <form action=""> 
-						<select id="sortdropdown" name="users" onChange="sortCourses(this.value)">
-						<option value="">Select a criterion:</option>
-						<option value="1">Most Popular</option>
+						<select id="sortdropdown" name="users" onChange="sortCourses(this.value,0)">
+						<option value="1" selected>Most Popular</option>
 						<option value="2">Latest</option>
                         <option value="3">Starting Soon</option>
                         <option value="4">Running Courses</option>
 						</select>
 						</form>
+                        <script> $(document).ready(function(){sortCourses(1,1);});</script>
 						</aside><!-- .left-sidebar -->
                 </div>
     </div></div></div> <!--- course divs closing --->
     
     </div> <!--- this div ends browse courses tab --->
     <div class="TabbedPanelsContent">
-        <?php if ($totalRows_incomplete_courses>0) {?>
-   		<?php $var=0; ?>
 		<div id="templatemo_main_wrapper">
 			<div id="templatemo_main"> 
 		    	<div id="content"> 
-				    <?php do { ?>
-	          		<?php echo  "<div class='section section_with_padding' id='a".$var."'>";?>
-	                <h1><?php echo $row_incomplete_courses['c_name']?></h1> 
-	                <div class="half right">
-                    <div class="img_border img_temp"> <img src="<?php echo $row_incomplete_courses['course_image']; ?>" alt="image 1" /></div>
-	                	<p><em><?php echo $row_incomplete_courses['description']?></em></p>            
-                    <?php //list all resources of that course    
-					$query_resources = sprintf("SELECT * FROM `resource` WHERE c_id=%s AND approve_status=1",GetSQLValueString($row_incomplete_courses['c_id'], "int"));
-		$resource = mysql_query($query_resources, $GLOBALS['conn']) or die(mysql_error());
-		$row_resource = mysql_fetch_assoc($resource);
-					?>
-                    </div>
-	    			<div class="half left">
-					<?php 
-						echo "<table>";
-						do {
-							
-							echo "<tr><td><a href='view_resource.php'>".$row_resource['filename']."</a></td>";
-							
-							if($row_resource['download_status']==1){?>
-                            <td>
-        <form  id="form1" name="form1" method="POST" action="download_res.php">    
-        
-        <input name="change" id="change" value="Download" type="submit" >        
-        </input>
-        <input type="hidden" name="id" id="id" value="<?php echo $row_resource['r_id'];?>"  />
-        
-        <input type="hidden" name="MM_change" value="form1" />
-        </form> </td>
-        <?php }else {echo "";}
-							echo "</tr>";
-						}while ($row_resource= mysql_fetch_assoc($resource));
-					?></table>
-              </div>
-                     
-    		            <?php 
-							if ($var ==0) {
-								//echo "<a href='#a".$row_courses['c_id']."' class='page_nav_btn previous'>Previous</a>";
-			                }else {
-								$temp=$var-1;
-								echo "<a href='#a".$temp."' class='page_nav_btn previous'>Previous</a>";
-			                }
-							if ($var == $totalRows_incomplete_courses-1) {
-							}else {
-								$temp=$var+1;
-								echo "<a href='#a".$temp."' class='page_nav_btn next'>Next</a> ";
-							}
-		                ?>
-       	  </div><!---END of  half right --->
-	            <?php //echo "</div>"; ?> <!-- END of Services -->
-    	        <?php $var=$var+1; ?>
-			    <?php } while ($row_incomplete_courses = mysql_fetch_assoc($incomplete_courses)); ?>     
-      </div>
+		      	</div>
+			</div>
+		</div>
 	</div>
-  </div>
-        <?php }
-		else {
-			echo "You haven't enrolled for any courses yet!";
-		}
-		?>
-</div>
     <div class="TabbedPanelsContent">
     <?php if ($totalRows_completed_courses>0) {?>
     <?php $var=0; ?>
 		<div id="templatemo_main_wrapper">
 			<div id="templatemo_main"> 
-		    	<div id="content">
+		    	<div class="content">
                 
 				    <?php do { ?>
 	          		<?php echo  "<div class='section section_with_padding' id='a".$row_completed_courses['c_id']."'>";?>
