@@ -116,7 +116,7 @@ if(isset($_GET['c_id']) && isset($_GET['ques']) && isset($_GET['opt1']) && isset
 			file_put_contents("test.txt",$totalRows_count_ques);
 		do {
 			echo '<li>';
-			echo '<h4 style="color:#93CDF5;float:left;">'.$row_count_ques['ques'].'</h4><br />';
+			echo '<h4 style="color:#93CDF5;float:left;">'.$row_count_ques['ques'].'</h4><br /><br />';
 			echo '<table>';
 			echo '<tr><td>';  
 			if($row_count_ques['answer']==1) {echo '<img src="images/mark-right.jpg" width="15" height="15"/>';}
