@@ -98,30 +98,89 @@ if(isset($_GET['sortType'])) {
 	$row_sort = mysql_fetch_assoc($sort);
 	$totalRows_sort = mysql_num_rows($sort);
 	if($totalRows_sort>0){
-	do {
-		echo "<li>";
-		echo '<a href="index.php"><img src="'.$row_sort['course_image'].'" alt=""/></a>';
-		echo '<span><a href="index.php">'.$row_sort['c_name'].'</a></span><br>';
-		echo '<p>'.$row_sort['description'].'</p>';
-		echo '<p class="dates">Duration : '.$row_sort['start_date'].' - '.$row_sort['end_date'].'</p>';
-		echo '<a href="index.php" class="details">See Details</a>';
-		if (!empty($row_sort['u_id'])) {
-			//enrolled for course already
-			echo '<p class="enrolled">Enrolled!</p>';
-		}else {
-			//not yet enrolled for course
-			echo '<a id="'.$row_sort['c_id'].'" class="enroll" onClick="enrollCourse(this); return false;">Enroll Now!</a>';
-		}
-		echo "</li>";
-	}while($row_sort = mysql_fetch_assoc($sort));
-}
-else { echo "No courses satisfy this condition at present";}
-}
+		do {
+			echo "<li>";
+			echo '<a href="index.php"><img src="'.$row_sort['course_image'].'" alt=""/></a>';
+			echo '<span><a href="index.php">'.$row_sort['c_name'].'</a></span><br>';
+			echo '<p>'.$row_sort['description'].'</p>';
+			echo '<p class="dates">Duration : '.$row_sort['start_date'].' - '.$row_sort['end_date'].'</p>';
+			echo '<a href="index.php" class="details">See Details</a>';
+			if (!empty($row_sort['u_id'])) {
+				//enrolled for course already
+				echo '<p class="enrolled">Enrolled!</p>';
+			}else {
+				//not yet enrolled for course
+				echo '<a id="'.$row_sort['c_id'].'" class="enroll" onClick="enrollCourse(this); return false;">Enroll Now!</a>';
+			}
+			echo "</li>";
+		}while($row_sort = mysql_fetch_assoc($sort));
+	} else { 
+		echo "No courses satisfy this condition at present";}
+	}
 else if (isset($_GET['enrollId'])) {
 	//for enrolling courses
 	$enroll_query=sprintf("INSERT INTO `enroll_course`(u_id,c_enroll_id,completion_stat) VALUES (%s,%s,0)",GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($_GET['enrollId'], "int"));
 	$enroll = mysql_query($enroll_query, $conn) or die(mysql_error());
+}else if (isset($_GET['showCourses'])) {
+	//for showing courses currently going on
+	if($_GET['showCourses']==1) {
+		$query_incomplete_courses = sprintf("SELECT * FROM course JOIN enroll_course  ON course.c_id=enroll_course.c_enroll_id where enroll_course.u_id=%s AND completion_stat=0 AND DATE(NOW()) BETWEEN start_date AND end_date",GetSQLValueString($_SESSION['MM_UserID'], "int"));
+		$incomplete_courses = mysql_query($query_incomplete_courses, $conn) or die(mysql_error());
+		$row_incomplete_courses = mysql_fetch_assoc($incomplete_courses);
+		$totalRows_incomplete_courses = mysql_num_rows($incomplete_courses);
+		
+		if($totalRows_incomplete_courses>0){
+			$var=0;
+			do {
+				echo "<div class='section section_with_padding' id='a".$var."'>";
+	            echo "<h1>".$row_incomplete_courses['c_name']."</h1> ";
+	            echo "<div class='half right'>";
+                echo '<div class="img_border img_temp"> <img src="'.$row_incomplete_courses['course_image'].'" alt="image 1" width="200" height="120"/></div>';
+	            echo '<p><em>'.$row_incomplete_courses['description'].'</em></p>';
+				echo '</div>';
+				//list all resources of that course
+				    
+				$query_resources = sprintf("SELECT * FROM `resource` WHERE c_id=%s AND approve_status=1",GetSQLValueString($row_incomplete_courses['c_id'], "int"));
+				$resource = mysql_query($query_resources, $GLOBALS['conn']) or die(mysql_error());
+				$row_resource = mysql_fetch_assoc($resource);
+	    		echo '<div class="half left">';
+				echo "<table>";
+				do {		
+					echo "<tr><td><a href='view_resource.php'>".$row_resource['filename']."</a></td>";
+					if($row_resource['download_status']==1){
+						echo "<td>";
+        				echo '<form  id="form1" name="form1" method="POST" action="download_res.php">';
+				        echo '<input name="change" id="change" value="Download" type="submit" />';
+						echo '<input type="hidden" name="id" id="id" value="'.$row_resource['r_id'].'"  />';
+						echo '<input type="hidden" name="MM_change" value="form1" />';
+						echo '</form> </td>';
+					}else {
+						echo "";
+					}
+					echo "</tr>";
+				}while ($row_resource= mysql_fetch_assoc($resource));
+				echo '</table>';
+				echo '</div>';
+			  
+				if ($var ==0) {
+					//this is first course, no need to show previous button
+				}else {
+					$temp=$var-1;
+					echo "<a href='#a".$temp."' class='page_nav_btn previous'>Previous</a>";
+				}
+				if ($var == $totalRows_incomplete_courses-1) {
+					//this is last course, no need to show next button	
+				}else {
+					$temp=$var+1;
+					echo "<a href='#a".$temp."' class='page_nav_btn next'>Next</a> ";
+				}
+				echo "</div>"; //END of  half right
+				//echo "</div>"; //END of Services
+				$var=$var+1;
+			}while($row_incomplete_courses = mysql_fetch_assoc($incomplete_courses));
+		} else { 
+			echo "No courses satisfy this condition at present";
+		}	
+	}
 }
-
-
 ?>
