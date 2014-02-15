@@ -103,7 +103,7 @@ if(isset($_GET['sortType'])) {
 			echo '<span><a href="index.php">'.$row_sort['c_name'].'</a> in '.$row_sort['c_stream'].'</span><br>';
 			echo '<p>'.$row_sort['description'].'</p>';
 			echo '<p class="dates">Duration : '.$row_sort['start_date'].' - '.$row_sort['end_date'].'</p>';
-			echo '<a href="index.php" class="details">See Details</a>';
+			echo '<a href="course_detail_stud.php?c_id='.$row_sort['c_id'].'" class="details">See Details</a>';
 			if (!empty($row_sort['u_id'])) {
 				//enrolled for course already
 				echo '<p class="enrolled">Enrolled!</p>';

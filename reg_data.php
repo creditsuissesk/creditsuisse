@@ -65,7 +65,7 @@ if ((($_FILES["file"]["type"] == "image/gif")
 	  }
 	  }	  
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form")) {
-		$insertSQL = sprintf("INSERT INTO `user` (u_name, password, f_name, l_name, contact_no, dob, institute, stream,role,photo) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s,%s)",
+		$insertSQL = sprintf("INSERT INTO `user` (u_name, password, f_name, l_name, contact_no, dob, institute, stream,role,photo,degree,about) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s,%s,%s,%s)",
 							 GetSQLValueString($_POST['u_name'], "text"),
 							 GetSQLValueString($_POST['pass'], "text"),
 							 GetSQLValueString($_POST['f_name'], "text"),
@@ -75,7 +75,9 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form")) {
 							 GetSQLValueString($_POST['inst_name'], "text"),
 							 GetSQLValueString($_POST['stream'], "text"),
 							 GetSQLValueString($_POST['role'], "text"),
-							 GetSQLValueString( $upload_add,"text"));
+							 GetSQLValueString( $upload_add,"text"),
+							 GetSQLValueString($_POST['degree'], "text"),
+							 GetSQLValueString($_POST['about'], "text"));
 	  
 		mysql_select_db($database_conn, $conn);
 		$Result1 = mysql_query($insertSQL, $conn) or die(mysql_error());

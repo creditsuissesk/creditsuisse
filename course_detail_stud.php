@@ -94,9 +94,17 @@ $resource = mysql_query($query_resource, $conn) or die(mysql_error());
 $row_resource = mysql_fetch_assoc($resource);
 $totalRows_resource = mysql_num_rows($resource);
 
+mysql_select_db($database_conn, $conn);
+$query_author_details = sprintf("SELECT * FROM user WHERE u_id = %s", GetSQLValueString($row_course_details['u_id'], "int"));
+$author_details = mysql_query($query_author_details, $conn) or die(mysql_error());
+$row_author_details = mysql_fetch_assoc($author_details);
+$totalRows_author_details = mysql_num_rows($author_details);
 
-
-
+mysql_select_db($database_conn, $conn);
+$query_other_course = sprintf("SELECT * FROM course WHERE u_id = %s", GetSQLValueString($row_course_details['u_id'], "int"));
+$other_course = mysql_query($query_other_course, $conn) or die(mysql_error());
+$row_other_course = mysql_fetch_assoc($other_course);
+$totalRows_other_course = mysql_num_rows($other_course);
 
 ?>
 
@@ -104,7 +112,7 @@ $totalRows_resource = mysql_num_rows($resource);
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Course Detailes</title>
+<title><?php echo $row_course_details['c_name'];?></title>
 <meta name="keywords" content="single, slider, free templates, website templates, CSS, HTML" />
 <meta name="description" content="Single Slider is a free CSS template provided by templatemo.com" />
 <link href="css/templatemo_style_co.css?1" rel="stylesheet" type="text/css" />
@@ -144,17 +152,24 @@ $totalRows_resource = mysql_num_rows($resource);
 			
 				<li id="home"><span class="header"></span>
 					<div class="inner">
-						<h2>Welcome to Course Name</h2>
-						<p><em> This is the course description.</em></p>
-						<img src="images/course_picture/Data Struct.jpg" alt="" class="image_fl" height=200 width =200 />
+						<h2>Welcome to <?php echo $row_course_details['c_name'];?></h2>
+						<p><em> This course is included in stream <?php echo $row_course_details['c_stream']; echo $row_course_details['description'];?>.</em></p>
+						<img src="<?php echo $row_course_details['course_image'];?>" alt="" class="image_fl" height=100 width =100 />
 						<div class="col_half float_r">
-							<p>here author of course will be mentioned and his details </p>
-							<h3>Other courses by him</h3>
+                        <img src="<?php echo $row_author_details['photo'];?>" alt="" height=50 width =50 />
+							<p><b>Name : </b><i><?php echo $row_author_details['f_name']." ".$row_author_details['l_name'];?></i></p>
+                            <p><b>Degree of specialization : </b><i><?php echo $row_author_details['degree'];?></i></p>
+                            <p><b>Institute of Specialization :</b><i> <?php echo $row_author_details['institute'];?></i></p>
+                            <p><b>Contact him at : </b><i><?php echo $row_author_details['u_name'];?></i></p>
+                            <p><b> About himself:</b> <p style="font-style:italic"><?php echo $row_author_details['about'];?></p></p>
+                            <?php if($totalRows_other_course>0){?>
+							<h3>Other Courses by Author</h3>
 							<ul class="templatemo_list">
-								<li>course A</li>
-								<li>Course B</li>
-								<li>Course C</li>
+                            <?php do{?>
+								<li><a href="<?php echo 'course_detail_stud.php?c_id='.$row_other_course['c_id'];?>"><?php echo $row_other_course['c_name'];?></a></li>
+							<?php }while ($row_other_course = mysql_fetch_assoc($other_course)); ?>	
 							</ul>
+                            <?php }else{ echo "";} ?>
 						</div>
 					</div>
 				</li>

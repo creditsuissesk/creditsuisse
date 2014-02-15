@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 15, 2014 at 01:54 PM
+-- Generation Time: Feb 15, 2014 at 03:48 PM
 -- Server version: 5.6.14
 -- PHP Version: 5.5.6
 
@@ -94,7 +94,7 @@ CREATE TABLE IF NOT EXISTS `course` (
   `end_date` date NOT NULL,
   `u_id` int(11) unsigned NOT NULL,
   `approve_status` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  `course_image` varchar(75) NOT NULL DEFAULT 'images/gallery/09-I',
+  `course_image` varchar(75) NOT NULL DEFAULT 'images/gallery/09-l.jpg',
   `avg_rating` double NOT NULL,
   `description` text NOT NULL,
   PRIMARY KEY (`c_id`),
@@ -112,7 +112,7 @@ INSERT INTO `course` (`c_id`, `c_name`, `c_stream`, `inserted_on`, `start_date`,
 (21, 'Web Designing', 'Computer Science', '2014-02-14 16:12:36', '2014-01-03', '2014-07-17', 2, 2, 'images/gallery/03.jpg', 0, ''),
 (22, 'Database Management', 'Computer Science', '2014-02-14 16:12:36', '2014-01-16', '2014-08-18', 2, 0, 'images/gallery/03.jpg', 0, 'Description!'),
 (23, 'Database-Advanced', 'Computer Science', '2014-02-14 16:12:36', '2014-03-06', '2014-08-05', 2, 0, 'images/gallery/04.jpg', 0, 'This course is based n advance techniques of using database'),
-(27, 'PHP', 'Computer Science', '2014-02-14 16:12:36', '2014-02-20', '2017-02-20', 2, 0, 'images/course_picture/PHPjpg', 0, 'this is basic course'),
+(27, 'PHP', 'Computer Science', '2014-02-14 16:12:36', '2014-02-20', '2017-02-20', 2, 0, 'images/course_picture/PHP.jpg', 0, 'this is basic course'),
 (28, 'Java Scripts', 'Computer Science', '2014-02-14 16:12:36', '2015-02-12', '2015-02-27', 2, 0, 'images/course_picture/Java Scripts.jpg', 0, 'Basics of Java Scripting'),
 (29, 'Data Struct', 'Computer', '2014-02-08 16:12:36', '2014-02-14', '2014-02-21', 13, 1, 'images/course_picture/Data Struct.jpg', 0, 'ahjd'),
 (30, 'temp_course', 'cs', '2014-02-12 16:12:36', '2014-03-06', '2014-02-22', 2, 1, 'images/course_picture/temp_course.jpg', 0, 'temp');
@@ -289,6 +289,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `dob` date NOT NULL,
   `institute` varchar(40) NOT NULL,
   `stream` varchar(20) NOT NULL,
+  `degree` varchar(50) NOT NULL DEFAULT 'B.E.',
   `role` varchar(10) NOT NULL,
   `approve_id` tinyint(1) NOT NULL DEFAULT '0',
   `photo` varchar(255) NOT NULL,
@@ -306,18 +307,18 @@ CREATE TABLE IF NOT EXISTS `user` (
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`u_id`, `u_name`, `password`, `f_name`, `l_name`, `contact_no`, `dob`, `institute`, `stream`, `role`, `approve_id`, `photo`, `about`, `show_email`, `gender`, `user_score`, `count_bookmarks`, `created_comments`, `count_discussions`) VALUES
-(1, 'xyz@gmail.com', 'qwerty', 'Abdul', 'Shaikh', 2147483647, '1993-03-01', 'SPIT', 'Computers', 'student', 1, 'images/profiles/01.jpg', '', 0, 0, 0, 0, 2, 0),
-(2, 'abc@tech.org', 'qwerty', 'Abhishek', 'Chaturvedi', 26845172, '1979-04-02', 'VJTI', 'Information Technolo', 'author', 1, 'images/profiles/02.jpg', '', 0, 0, 0, 0, 0, 0),
-(3, 'dalvishaarad@gmail.c', 'password', 'Shaarad', 'Dalvi', 2147483647, '1992-04-01', 'vjti', 'comps', 'student', 1, 'images/profiles/03.jpg', '', 0, 0, 2, 0, 0, 0),
-(4, 'shaaraddalvi@outlook.com', 'password', 'Shaarad', 'Inamdar', 25406266, '1993-11-01', 'TSEC', 'Electronics', 'student', 1, 'images/profiles/04.jpg', '', 0, 0, 0, 0, 0, 0),
-(5, 'sh@yahoo.co.in', 'password', 'sahil', 'shah', 25406858, '1994-01-18', 'vjti', 'comp', 'student', 1, 'images/profiles/05.jpg', '', 0, 0, 1, 0, 0, 0),
-(6, 'root', 'rootpass', 'root', 'root', 2147483647, '1964-08-25', 'root', 'root', 'admin', 1, 'images/profiles/06.jpg', '', 0, 0, 0, 0, 0, 0),
-(8, 'kunalshah@gmail.com', 'pass1234', 'Kunal', 'Shah', 2147483647, '1993-07-17', 'VJTI', 'computers', 'student', 1, 'images/profiles/08.jpg', '', 0, 0, 0, 0, 0, 0),
-(9, 'nw@gmail.com', 'password', 'Nachiket', 'wagle', 982680350, '1993-04-07', 'vjti', 'Civil', 'student', 2, '', '', 0, 0, 0, 0, 0, 0),
-(10, 'new@gmail.com', 'password', 'Niket', 'wagle', 21474836, '1991-12-09', 'vjti', 'mechanical', 'student', 0, '', '', 0, 0, 0, 0, 0, 0),
-(12, 'photouser@gmail.com', 'password', 'Palak', 'Kulkarni', 987654321, '1995-01-06', 'SPCE', 'Civil', 'student', 1, 'images/profiles/lamborghini-cars-logo-emblem.jpg', '', 0, 0, -1, 0, 1, 1),
-(13, 'cm@gmail.com', 'qwerty', 'Chandresh', 'Mehta', 28964512, '1989-02-02', 'IIT-B', 'Computer Science', 'cm', 1, 'images/profiles/cm@gmail.com', '', 0, 0, 0, 0, 0, 0);
+INSERT INTO `user` (`u_id`, `u_name`, `password`, `f_name`, `l_name`, `contact_no`, `dob`, `institute`, `stream`, `degree`, `role`, `approve_id`, `photo`, `about`, `show_email`, `gender`, `user_score`, `count_bookmarks`, `created_comments`, `count_discussions`) VALUES
+(1, 'xyz@gmail.com', 'qwerty', 'Abdul', 'Shaikh', 2147483647, '1993-03-01', 'SPIT', 'Computers', 'B.E.', 'student', 1, 'images/profiles/01.jpg', '', 0, 0, 0, 0, 2, 0),
+(2, 'abc@tech.org', 'qwerty', 'Abhishek', 'Chaturvedi', 26845172, '1979-04-02', 'VJTI', 'Information Technolo', 'PHD in cryptography and Security', 'author', 1, 'images/profiles/02.jpg', '', 0, 0, 0, 0, 0, 0),
+(3, 'dalvishaarad@gmail.c', 'password', 'Shaarad', 'Dalvi', 2147483647, '1992-04-01', 'vjti', 'comps', 'B.E.', 'student', 1, 'images/profiles/03.jpg', '', 0, 0, 2, 0, 0, 0),
+(4, 'shaaraddalvi@outlook.com', 'password', 'Shaarad', 'Inamdar', 25406266, '1993-11-01', 'TSEC', 'Electronics', 'B.E.', 'student', 1, 'images/profiles/04.jpg', '', 0, 0, 0, 0, 0, 0),
+(5, 'sh@yahoo.co.in', 'password', 'sahil', 'shah', 25406858, '1994-01-18', 'vjti', 'comp', 'B.E.', 'student', 1, 'images/profiles/05.jpg', '', 0, 0, 1, 0, 0, 0),
+(6, 'root', 'rootpass', 'root', 'root', 2147483647, '1964-08-25', 'root', 'root', 'B.E.', 'admin', 1, 'images/profiles/06.jpg', '', 0, 0, 0, 0, 0, 0),
+(8, 'kunalshah@gmail.com', 'pass1234', 'Kunal', 'Shah', 2147483647, '1993-07-17', 'VJTI', 'computers', 'B.E.', 'student', 1, 'images/profiles/08.jpg', '', 0, 0, 0, 0, 0, 0),
+(9, 'nw@gmail.com', 'password', 'Nachiket', 'wagle', 982680350, '1993-04-07', 'vjti', 'Civil', 'B.E.', 'student', 2, '', '', 0, 0, 0, 0, 0, 0),
+(10, 'new@gmail.com', 'password', 'Niket', 'wagle', 21474836, '1991-12-09', 'vjti', 'mechanical', 'B.E.', 'student', 0, '', '', 0, 0, 0, 0, 0, 0),
+(12, 'photouser@gmail.com', 'password', 'Palak', 'Kulkarni', 987654321, '1995-01-06', 'SPCE', 'Civil', 'B.E.', 'student', 1, 'images/profiles/lamborghini-cars-logo-emblem.jpg', '', 0, 0, -1, 0, 1, 1),
+(13, 'cm@gmail.com', 'qwerty', 'Chandresh', 'Mehta', 28964512, '1989-02-02', 'IIT-B', 'Computer Science', 'PHD in algorithims', 'cm', 1, 'images/profiles/cm@gmail.com', '', 0, 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 

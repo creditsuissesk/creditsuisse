@@ -147,11 +147,17 @@
 		  <input type="text" name="contact" id="contact" placeholder="Contact No. of 10 Digits"/>
 	   <p class="contact">
 		  <label for="inst_name">Institute Name* : </label></p>
-		  <input type="text" name="inst_name" id="inst_name" placeholder="Institute Name"/>
+		  <input type="text" name="inst_name" id="inst_name" placeholder="Institute of Specialization"/>
 		<p class="contact">
 		  <label for="stream">Stream* : </label></p>
-		  <input type="text" name="stream" id="stream" placeholder="Stream Name"/>
-		  <p><label for="role">I am...* : </label></p>
+		  <input type="text" name="stream" id="stream" placeholder="Field of Specialization"/>
+          <p class="contact">
+		  <label for="degree">Qualification* : </label></p>
+		  <input type="text" name="degree" id="degree" placeholder="Enter the Qualification of study eg. B.Tech"/>
+		  <p class="contact">
+		  <label for="about">About* : </label></p>
+		  <textarea name="about" id="about" placeholder="About Yourself" rows="5" cols="45"/>
+          <p><label for="role">I am...* : </label></p>
           <p>
 		   <select class="select-style gender" name="role" id="role">
 				  <option value="student">Student</option>
@@ -162,7 +168,7 @@
       <p> <label for="file">Profile Pciture:</label>
 <input type="file" name="file" id="file">
 		</p>
-      <p ><input class="buttom" name="submit" id="submit" value="Sign me up!" type="submit" onClick="MM_validateForm('pass','','R','f_name','','R','l_name','','R','contact','','RisNum','inst_name','','R','stream','','R');return document.MM_returnValue" 
+      <p ><input class="buttom" name="submit" id="submit" value="Sign me up!" type="submit" onClick="MM_validateForm('pass','','R','f_name','','R','l_name','','R','contact','','RisNum','inst_name','','R','stream','','R','degree','','R','about','','R');return document.MM_returnValue" 
 	action="reg_data.php"	  />
 		  <input class="buttom" type="reset" name="reset" id="reset" value="Reset" />
 		</p>
