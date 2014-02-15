@@ -87,7 +87,7 @@ $row_course_details = mysql_fetch_assoc($course_details);
 $totalRows_course_details = mysql_num_rows($course_details);
 
 mysql_select_db($database_conn, $conn);
-$query_course_students = sprintf("SELECT * FROM `user` NATURAL JOIN `enroll_course` WHERE c_id=%s",GetSQLValueString($_GET['c_id'], "int"));
+$query_course_students = sprintf("SELECT * FROM `user` NATURAL JOIN `enroll_course` WHERE c_enroll_id=%s",GetSQLValueString($_GET['c_id'], "int"));
 $course_students = mysql_query($query_course_students, $conn) or die(mysql_error());
 $row_course_students = mysql_fetch_assoc($course_students);
 $totalRows_course_students = mysql_num_rows($course_students);
@@ -111,7 +111,42 @@ $totalRows_resource = mysql_num_rows($resource);
 <link href="SpryAssets/SpryTabbedPanels.css" rel="stylesheet" type="text/css" />
 <script src="js/jquery.min.js"></script>
 <link href="css/templatemo_style.css?123" type="text/css" rel="stylesheet" /> 
+<link rel="stylesheet" type="text/css" media="screen" href="css/course_list.css" /> 
 <link href="css/table.css" type="text/css" rel="stylesheet" /> 
+<script>
+function addQuestion() {
+	var question = document.getElementById("ques").value;
+	var opt1 = document.getElementById("opt1").value;
+	var opt2 = document.getElementById("opt2").value;
+	var opt3 = document.getElementById("opt3").value;
+	var opt4 = document.getElementById("opt4").value;
+	var correct=0;
+	var cId = document.getElementById("c_id").value;
+	if(document.getElementById("r1").checked) {correct=1;}
+	else if(document.getElementById("r2").checked) {correct=2;}
+	else if(document.getElementById("r3").checked) {correct=3;}
+	else if(document.getElementById("r4").checked) {correct=4;}
+	if (question!="" && opt1!="" && opt2!="" && opt3!="" && opt4!="" && correct>0) {
+		//all fields are filled
+		if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  		xmlhttp=new XMLHttpRequest();
+	  	} else {// code for IE6, IE5
+			xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		xmlhttp.onreadystatechange=function() {
+			if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+		    	//document.getElementById("courselist").innerHTML=xmlhttp.responseText;
+				alert("Question added successfully!");
+			}
+		}
+		xmlhttp.open("GET","course_eval.php?c_id="+cId+"&ques="+question+"&opt1="+opt1+"&opt2="+opt2+"&opt3="+opt3+"&opt4="+opt4+"&correct="+correct,true);
+		xmlhttp.send();
+	} else {
+		alert("Please fill all the fields");
+	}
+}
+</script>
+
 </head>
 
 <body>
@@ -129,7 +164,8 @@ table td, table th {
     <li class="TabbedPanelsTab" tabindex="0">Description</li>
     <li class="TabbedPanelsTab" tabindex="0">Student List</li>
     <li class="TabbedPanelsTab" tabindex="0">Files</li>
-</ul>
+    <li class="TabbedPanelsTab" tabindex="0">Course Evaluation</li>
+  </ul>
   <div class="TabbedPanelsContentGroup">
     <div class="TabbedPanelsContent">
       <p>&nbsp;<?php echo $row_course_details['description']; ?></p>
@@ -183,74 +219,97 @@ var userList = new List('users', options);
 </div>
 		 <!--start of file tab-->
          <div class="TabbedPanelsContent">
-         <?php if($totalRows_resource>0) {?>
-      	<div id="resource">
-    <div class="datagrid">
-  <table>
-   <thead>
-    <tr>
-     <th class="sort" data-sort="name">Resource Name</th>
-     <th class="sort" data-sort="size">Resource Size</th>
-     <th class="sort" data-sort="type">Resource Type</th>
-     <th class="sort" data-sort="date">Resource Uploaded Date</th>
-     <th class="sort" data-sort="f_type">File Type</th>
-     <th></th>
-     <th></th>
-      <th colspan="2">
-          <input type="text" class="search" placeholder="Search Resource" />
-        </th>
-    </tr>
-   </thead> 
-    <tbody class="list">
-    <?php do { ?>
-      <tr>
-        <td class="name"><?php echo $row_resource['filename'];?></td>
-        <td class="size"><?php echo $row_resource['file_size'];?></td>
-        <td class="type"><?php echo $row_resource['r_type'];?></td>
-        <td class="date"><?php echo $row_resource['uploaded_date'];?></td>
-        <td class="f_type"><?php echo $row_resource['file_type'];?></td>
-<?php if($row_resource['download_status']==1){?>
-        <form  id="form1" name="form1" method="POST" action="download_res.php">    
-        
-        <td> 
-        <input name="change" id="change" value="Download" type="submit" >        
-        </input>
-        <input type="hidden" name="id" id="id" value="<?php echo $row_resource['r_id'];?>"  />
-        
-        <input type="hidden" name="MM_change" value="form1" />
-        </td>
-        </form>
-        <?php }else echo "<td> </td>";?>
-         <form  id="form2" name="form2" method="POST" action="remove_res.php">    
-        
-        <td> 
-        <input name="change" id="change" value="Remove" type="submit" >        
-        </input>
-        <input type="hidden" name="id" id="id" value="<?php echo $row_resource['r_id'];?>"  />
-        
-        <input type="hidden" name="MM_change" value="form2" />
-        </td>
-        </form>
-        
-       </tr> 
-    </tbody>
-    <?php } while ($row_resource = mysql_fetch_assoc($resource)); ?>
-   </table>
-        </div>
-        </div>
-        <?php }
+           <?php if($totalRows_resource>0) {?>
+           <div id="resource">
+             <div class="datagrid">
+               <table>
+                 <thead>
+                   <tr>
+                     <th class="sort" data-sort="name">Resource Name</th>
+                     <th class="sort" data-sort="size">Resource Size</th>
+                     <th class="sort" data-sort="type">Resource Type</th>
+                     <th class="sort" data-sort="date">Resource Uploaded Date</th>
+                     <th class="sort" data-sort="f_type">File Type</th>
+                     <th></th>
+                     <th></th>
+                     <th colspan="2"> <input type="text" class="search" placeholder="Search Resource" />
+                     </th>
+                   </tr>
+                 </thead>
+                 <tbody class="list">
+                   <?php do { ?>
+                   <tr>
+                     <td class="name"><?php echo $row_resource['filename'];?></td>
+                     <td class="size"><?php echo $row_resource['file_size'];?></td>
+                     <td class="type"><?php echo $row_resource['r_type'];?></td>
+                     <td class="date"><?php echo $row_resource['uploaded_date'];?></td>
+                     <td class="f_type"><?php echo $row_resource['file_type'];?></td>
+                     <?php if($row_resource['download_status']==1){?>
+                     <form  id="form1" name="form1" method="POST" action="download_res.php">
+                       <td><input name="change" id="change" value="Download" type="submit" />
+                         <input type="hidden" name="id" id="id" value="<?php echo $row_resource['r_id'];?>"  />
+                         <input type="hidden" name="MM_change" value="form1" /></td>
+                     </form>
+                     <?php }else echo "<td> </td>";?>
+                     <form  id="form2" name="form2" method="POST" action="remove_res.php">
+                       <td><input name="change" id="change" value="Remove" type="submit" />
+                         <input type="hidden" name="id" id="id" value="<?php echo $row_resource['r_id'];?>"  />
+                         <input type="hidden" name="MM_change" value="form2" /></td>
+                     </form>
+                   </tr>
+                 </tbody>
+                 <?php } while ($row_resource = mysql_fetch_assoc($resource)); ?>
+               </table>
+             </div>
+           </div>
+           <?php }
 		else {
 			echo "No resources have been uploaded for this course yet!";
 		}
 		?>
-<script>
+           <script>
 var resOptions = {
   valueNames: ['name','size','type','date','f_type' ]
 };
 // Init list
 var resList = new List('resource', resOptions);
-</script>
-        </div><!--end of file tab-->
+           </script>
+         </div>
+         <!--end of file tab-->
+         <div class="TabbedPanelsContent">
+			<div class="container">
+				<main class="course-content">
+					<div id="course"><div><div class="evaluation">
+					<h2>Course Evaluation</h2>
+                    <ul>
+						<li>
+                            <form id="mcqform">
+                            <h4 style="color:#93CDF5;float:left;">New Question:</h4><br /><br />
+                            Please select the button against correct option.<br />
+                            <input id="ques" size="100" type="text" placeholder="Enter your question here" /><br />
+                            <table>
+                            <tr><td>
+                            <input type="radio" id="r1" name="correct" value="1"/>                          
+                            <input id="opt1" size="100" type="text" placeholder="Enter option 1"/></td></tr>
+                            <tr><td>
+                            <input type="radio" id="r2" name="correct" value="2"/>
+                            <input id="opt2" size="100" type="text" placeholder="Enter option 2"/></td></tr>
+                            <tr><td>
+                            <input type="radio" id="r3" name="correct" value="3"/>
+                            <input id="opt3" size="100" type="text" placeholder="Enter option 3"/></td></tr>
+                            <tr><td>
+                            <input type="radio" id="r4" name="correct" value="4"/>                            
+                            <input id="opt4" size="100" type="text" placeholder="Enter option 4"/></td></tr>
+                            </table>
+                            <input type="hidden" id="c_id" value="<?php echo $_GET['c_id']?>"/>
+                            <input id="submit" type="button" class="buttom" value="Submit" onclick="addQuestion()" />
+                            </form>
+						</li>
+                     </ul>
+                    </div></div></div>
+				</main><!-- .content -->
+			</div><!--- .container-->
+         </div> <!--- end of evaluation tab--->
    </div>
 </div>
 <p><a href=<?php if ($_SESSION['MM_UserGroup'] == 'author')echo '"authorhome.php"';else if($_SESSION['MM_UserGroup'] == 'cm')echo '"cmhome.php"' ?>>Back to Home</a></p>

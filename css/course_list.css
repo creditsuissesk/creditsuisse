@@ -109,6 +109,12 @@ aside,main {
 	margin: 0 0 0 30px;
 	position: relative;
 }
+#course div div.evaluation{   
+	float: right;
+	width: 100%;
+	margin: 0 0 0 30px;
+	position: relative;
+}
 #course div h2{
 	color: #93CDF5;
 	font-size: 22px;
@@ -236,3 +242,11 @@ aside,main {
 #course div a:hover{
 	color: #105272;
 }
+
+form#mcqform input {
+	padding:5px;
+	margin:5px;
+}
+
+form#mcqform input.buttom{ background: #4b8df9; display: inline-block; padding: 5px 10px 6px; color: #fbf7f7; text-decoration: none; font-weight: bold; line-height: 1; -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px; -moz-box-shadow: 0 1px 3px #999; -webkit-box-shadow: 0 1px 3px #999; box-shadow: 0 1px 3px #999; text-shadow: 0 -1px 1px #222; border: none; position: relative; cursor: pointer; font-size: 14px; font-family:Verdana, Geneva, sans-serif;}
+form#mcqform input.buttom:hover	{ background-color: #2a78f6; }

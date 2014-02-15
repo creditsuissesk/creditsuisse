@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 15, 2014 at 03:48 PM
+-- Generation Time: Feb 15, 2014 at 07:16 PM
 -- Server version: 5.6.14
 -- PHP Version: 5.5.6
 
@@ -116,6 +116,25 @@ INSERT INTO `course` (`c_id`, `c_name`, `c_stream`, `inserted_on`, `start_date`,
 (28, 'Java Scripts', 'Computer Science', '2014-02-14 16:12:36', '2015-02-12', '2015-02-27', 2, 0, 'images/course_picture/Java Scripts.jpg', 0, 'Basics of Java Scripting'),
 (29, 'Data Struct', 'Computer', '2014-02-08 16:12:36', '2014-02-14', '2014-02-21', 13, 1, 'images/course_picture/Data Struct.jpg', 0, 'ahjd'),
 (30, 'temp_course', 'cs', '2014-02-12 16:12:36', '2014-03-06', '2014-02-22', 2, 1, 'images/course_picture/temp_course.jpg', 0, 'temp');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `course_eval`
+--
+
+CREATE TABLE IF NOT EXISTS `course_eval` (
+  `c_id_eval` int(11) unsigned NOT NULL,
+  `q_no` int(11) NOT NULL,
+  `ques` text NOT NULL,
+  `opt1` text NOT NULL,
+  `opt2` text NOT NULL,
+  `opt3` text NOT NULL,
+  `opt4` text NOT NULL,
+  `answer` tinyint(4) NOT NULL,
+  PRIMARY KEY (`c_id_eval`,`q_no`),
+  KEY `c_id_eval` (`c_id_eval`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -421,6 +440,12 @@ ALTER TABLE `comment`
 --
 ALTER TABLE `course`
   ADD CONSTRAINT `course_ibfk_1` FOREIGN KEY (`u_id`) REFERENCES `user` (`u_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `course_eval`
+--
+ALTER TABLE `course_eval`
+  ADD CONSTRAINT `course_eval_ibfk_1` FOREIGN KEY (`c_id_eval`) REFERENCES `course` (`c_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `discussion`
