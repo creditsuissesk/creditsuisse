@@ -196,11 +196,11 @@ function MM_validateForm() { //v4.0
 
 <nav id="headerbar">
 	<ul id="headerbar">
-		<li id="headerbar"><a href="userhome.php">Home</a></li>
+		<li id="headerbar"><a href="authorhome.php">Home</a></li>
 		<li id="headerbar"><a href="forum_new.php?mode=showmain">Forums</a></li>
 		<li id="headerbar"><a href="#"><?php echo $_SESSION['MM_Username'];?></a>
 			<ul id="headerbar">
-				<li id="headerbar"><a href="userhome.php?userTabToDisplay=5">Profile</a></li>
+				<li id="headerbar"><a href="authorhome.php">Profile</a></li>
 				<li id="headerbar"><a href="<?php echo $logoutAction ?>">Log Out</a>
 				</li>
 			</ul>

@@ -299,13 +299,20 @@ $totalRows_categories = mysql_num_rows($categories);
 		}else if ($_SESSION['MM_UserGroup']=='author') {
 			echo "authorhome.php";
 		}else if ($_SESSION['MM_UserGroup']=='admin') {
-			echo "adminhome.php";
+			echo "admin_home.php";
 		}
 		?>">Home</a></li>
 		<li id="headerbar"><a href="forum_new.php?mode=showmain">Forums</a></li>
 		<li id="headerbar" style="color: rgb(0, 0, 0);font-size: 14px;"><a href="#"><?php echo $_SESSION['MM_Username'];?></a>
 			<ul id="headerbar" style="margin: 0px;">
-				<li id="headerbar"><a href="userhome.php?userTabToDisplay=5">Profile</a></li>
+				<li id="headerbar"><a href="<?php if ($_SESSION['MM_UserGroup']=='student') {
+                	echo "userhome.php?userTabToDisplay=5";
+				}else if ($_SESSION['MM_UserGroup']=='author') {
+					echo "authorhome.php";
+				}else if ($_SESSION['MM_UserGroup']=='admin') {
+					echo "admin_home.php";
+				}
+				?>">Profile</a></li>
 				<li id="headerbar"><a href="<?php echo $logoutAction ?>">Log Out</a>
 				</li>
 			</ul>
