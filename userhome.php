@@ -107,7 +107,7 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 }
 
 mysql_select_db($database_conn, $conn);
-$query_completed_courses = sprintf("SELECT * FROM course JOIN enroll_course ON course.c_id=enroll_course.c_enroll_id WHERE enroll_course.u_id=%s AND completion_stat=0 AND DATE(NOW())> end_date",GetSQLValueString($_SESSION['MM_UserID'], "int"));
+$query_completed_courses = sprintf("SELECT * FROM course JOIN enroll_course ON course.c_id=enroll_course.c_enroll_id WHERE enroll_course.u_id=%s AND completion_stat=1 AND DATE(NOW())> end_date",GetSQLValueString($_SESSION['MM_UserID'], "int"));
 $completed_courses = mysql_query($query_completed_courses, $conn) or die(mysql_error());
 $row_completed_courses = mysql_fetch_assoc($completed_courses);
 $totalRows_completed_courses = mysql_num_rows($completed_courses);
@@ -119,6 +119,18 @@ $query_get_user_details = sprintf("SELECT * FROM `user` where u_id=%s",GetSQLVal
 $get_user_details = mysql_query($query_get_user_details, $conn) or die(mysql_error());
 $row_get_user_details = mysql_fetch_assoc($get_user_details);
 $totalRows_get_user_details = mysql_num_rows($get_user_details);*/
+
+
+$query_resource = sprintf("SELECT c_id,c_name,c_stream,start_date,end_date,avg_rating FROM course JOIN enroll_course ON c_id=c_enroll_id where course.approve_status=1 and enroll_course.u_id=%s",GetSQLValueString($_SESSION['MM_UserID'], "int"));
+$new_resource = mysql_query($query_resource, $conn) or die(mysql_error());
+$row_new_resource = mysql_fetch_assoc($new_resource);
+$totalRows_new_resource = mysql_num_rows($new_resource);
+
+mysql_select_db($database_conn, $conn);
+$query_author_details = sprintf("SELECT * FROM user WHERE u_name = %s", GetSQLValueString($_SESSION['MM_Username'], "int"));
+$author_details = mysql_query($query_author_details, $conn) or die(mysql_error());
+$row_author_details = mysql_fetch_assoc($author_details);
+$totalRows_author_details = mysql_num_rows($author_details);
 ?>
 
 <title><?php echo /*$row_get_user_details['f_name']*/$_SESSION['MM_f_name'];?></title>
@@ -554,9 +566,56 @@ else {
         
     </div>
     <div class="TabbedPanelsContent">Content 4</div>
-    <div class="TabbedPanelsContent">Content 5</div>
-    <div class="TabbedPanelsContent">Content 6</div>
-    <div class="TabbedPanelsContent">Content 7</div>
+    <!-- start of profile tab-->
+    <div class="TabbedPanelsContent">
+    <img src="<?php echo $row_author_details['photo'];?>" alt="" height=200 width =300 />
+							<p><b>Name : </b><i><?php echo $row_author_details['f_name']." ".$row_author_details['l_name'];?></i></p>
+                            <p><b>Degree of specialization : </b><i><?php echo $row_author_details['degree'];?></i></p>
+                            <p><b>Institute of Specialization :</b><i> <?php echo $row_author_details['institute'];?></i></p>
+                            <p><b>Contact me at : </b><i><?php echo $row_author_details['u_name'];?></i></p>
+                            <p><b> About myself:</b> <p style="font-style:italic"><?php echo $row_author_details['about'];?></p></p>
+    </div>
+    <!-- end of profile tab-->
+    <div class="TabbedPanelsContent">
+     <!--start of tab upload resource-->
+     <div id="New Resource">
+      <p>Please enter the Resource details : </p>
+      <form id="new_resource" method="POST" action="upload_res.php" enctype="multipart/form-data">
+       <p>
+          <label for="co_name">Regarding Course* :</label>
+          <select id= "co_name" name="co_name">
+<?php 
+		 do { 
+		
+				echo '<option value="'.$row_new_resource['c_id'].'"';
+            echo '>'. $row_new_resource['c_name'] . '</option>'."\n";
+		} while ($row_new_resource= mysql_fetch_assoc( $new_resource));
+?></select>
+       </p>
+       <p>
+          <label for="r_name">Resource Name* :</label>
+          <input type="text" name="r_name" id="r_name" />
+       </p> 
+       <p>
+          <input type="hidden" id= "r_type" name="r_type" value="5">
+       </p> 
+       <p>
+       <label for="download">Download Status* :</label>
+       <select id= "download" name="download">
+       <option value="1">Allow Download</option>
+       <option value="0">Deny Download</option>
+       </select>
+       </p>
+       <br/>
+       <p> 
+       <label for="file">File* :</label>
+<input type="file" name="file" id="file">
+		</p>  
+      	   <input name="submit" type="submit" id="submit" onClick="MM_validateForm('co_name','','R','r_name','','R','r_type','','R');return document.MM_returnValue" value="Upload" action="upload_res.php"/>
+      <input type="hidden" name="MM_insert" value="form" />
+      </form>
+      	</div><!--end of tab upload resource-->
+      </div>
   </div>
 </div>
 <p><br />

@@ -36,7 +36,7 @@ if (!function_exists("GetSQLValueString")) {
 if (!isset($_SESSION)) {
   session_start();
 }
-$MM_authorizedUsers = "cm,author";
+$MM_authorizedUsers = "cm,author,student";
 $MM_donotCheckaccess = "false";
 
 // *** Restrict Access To Page: Grant or deny access to this page
@@ -65,7 +65,7 @@ function isAuthorized($strUsers, $strGroups, $UserName, $UserGroup) {
   return $isValid; 
 }
 
-$MM_restrictGoTo = "userhome.php";
+$MM_restrictGoTo = "/dreamweaver/login.php";
 if (!((isset($_SESSION['MM_Username'])) && (isAuthorized("",$MM_authorizedUsers, $_SESSION['MM_Username'], $_SESSION['MM_UserGroup'])))) {   
   $MM_qsChar = "?";
   $MM_referrer = $_SERVER['PHP_SELF'];
@@ -78,7 +78,20 @@ if (!((isset($_SESSION['MM_Username'])) && (isAuthorized("",$MM_authorizedUsers,
 }
 ?>
 <?php 
-$allowedExts = array("gif", "jpeg", "jpg", "png");
+if($_SESSION['MM_UserGroup']=="cm")
+{
+	$approve_stat = 1;
+	$redirect="http://localhost/dreamweaver/cmhome.php";
+}
+else
+{
+	$approve_stat = 0;
+	if($_SESSION['MM_UserGroup']=="author")
+	$redirect="http://localhost/dreamweaver/authorhome.php";
+	else
+	$redirect="http://localhost/dreamweaver/userhome.php";
+}
+$allowedExts = array("gif", "jpeg", "jpg", "png","pdf");
 $temp = explode(".", $_FILES["file"]["name"]);
 $extension = end($temp);
 $max_size=500000000;
@@ -90,14 +103,17 @@ if ((($_FILES["file"]["type"] == "image/gif")
 || ($_FILES["file"]["type"] == "image/pjpeg")
 || ($_FILES["file"]["type"] == "image/x-png")
 || ($_FILES["file"]["type"] == "image/png")
-|| ($_FILES["file"]["type"] == "application/pdf"))
-&& ($_FILES["file"]["size"] < $max_size)
-/*&& in_array($extension, $allowedExts)*/
+|| ($_FILES["file"]["type"] == "application/pdf")
+|| ($_FILES["file"]["type"] == "application/x-pdf")
+|| in_array($extension, $allowedExts))
+&& 
+($_FILES["file"]["size"] < $max_size)
+
 )
   {
   if ($_FILES["file"]["error"] > 0)
     {
-    echo '<script type="text/javascript">alert("File Error: '. $_FILES["file"]["error"] . ' ");window.location="http://localhost/dreamweaver/authorhome.php";</script>';
+    echo '<script type="text/javascript">alert("File Error: '. $_FILES["file"]["error"] . ' ");window.location="'.$redirect.'";</script>';
     }
   else
     {
@@ -113,16 +129,17 @@ if ( ! is_dir($path)) {
 }
     if (file_exists($upload_add))
       {
-      echo  '<script type="text/javascript">alert("'. $filename . '  already exists. "); window.location="http://localhost/dreamweaver/authorhome.php";</script>';
+      echo  '<script type="text/javascript">alert("'. $filename . '  already exists. "); window.location="'.$redirect.'";</script>';
       }
     else
       {
       move_uploaded_file($_FILES["file"]["tmp_name"],
       $upload_add);
+
 	  $filesize=$_FILES["file"]["size"]/1024/1024;	  
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form")){
-		$insertSQL = sprintf("INSERT INTO resource (c_id,type_id,filename, file_type,file_size, file_location,uploaded_by,download_status ) ".
-           "VALUES (%s,%s,%s,%s,%s,%s,%s,%s)",
+		$insertSQL = sprintf("INSERT INTO resource (c_id,type_id,filename, file_type,file_size, file_location,uploaded_by,download_status,approve_status) ".
+           "VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)",
 							 GetSQLValueString($_POST["co_name"], "int"),
 							 GetSQLValueString($_POST["r_type"], "int"),
 							 GetSQLValueString($filename, "text"),
@@ -130,14 +147,15 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form")){
 							 GetSQLValueString($filesize, "double"),
 							 GetSQLValueString($upload_add, "text"),
 							 GetSQLValueString($_SESSION['MM_UserID'], "int"),
-							 GetSQLValueString($_POST["download"], "int")
+							 GetSQLValueString($_POST["download"], "int"),
+							 GetSQLValueString($approve_stat, "int")
 							 );
 	  
 		mysql_select_db($database_conn, $conn);
 		$Result1 = mysql_query($insertSQL, $conn) or die(mysql_error());
 	  }
 	  }
-	  echo '<script type="text/javascript">alert("File Succesfully Uploaded"); window.location="http://localhost/dreamweaver/authorhome.php"; </script>';
+	  echo '<script type="text/javascript">alert("File Succesfully Uploaded"); window.location="'.$redirect.'"; </script>';
     }
 	    }
 else
@@ -148,13 +166,14 @@ else
 			|| ($_FILES["file"]["type"] == "image/pjpeg")
 			|| ($_FILES["file"]["type"] == "image/x-png")
 			|| ($_FILES["file"]["type"] == "image/png")
-			|| ($_FILES["file"]["type"] == 				"application/pdf")))
-  echo '<script type="text/javascript">alert("Invalid File Type");  window.location="http://localhost/dreamweaver/authorhome.php";</script>';
+			|| ($_FILES["file"]["type"] =="application/pdf")))
+  echo '<script type="text/javascript">alert("Invalid File Type");  window.location="'.$redirect.'";</script>';
   else 
-  if(($_FILES["file"]["size"] < $max_size))
+  if(($_FILES["file"]["size"] > $max_size))
   echo '<script type="text/javascript">alert("File Size is '.$_FILES["file"]["size"].'which GREATER than the allowed size. Allowed Size is '.$max_size_mb.' mb.");
-  window.location="http://localhost/dreamweaver/authorhome.php";</script>';
-  
+  window.location="'.$redirect.'";</script>';
+  else
+  echo '<script type="text/javascript">alert("Problem in uploading");window.location="'.$redirect.'";</script>';
   }
 
 		/*$insertGoTo = "authorhome.php";

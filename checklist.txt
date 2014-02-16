@@ -3,6 +3,5 @@ Student must be able to rate a library resource and recommend it to peers.
 Any user can report a library resource as spam/offensive, which is moderated by the content manager
 Bookmarks/pinning of resources
 Basic automated recommendations based on student stream, ratings etc. and peer recommendations
-Recent additions to the library
 Moderation of forum by admin
 Display QR code against published article/resource.
