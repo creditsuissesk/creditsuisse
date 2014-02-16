@@ -145,5 +145,47 @@ if(isset($_GET['c_id']) && isset($_GET['ques']) && isset($_GET['opt1']) && isset
 			echo "No questions have been entered for this course yet.";
 		}
 	}
+}else if (isset($_GET['takeTest'])) {
+	//load the test MCQs
+	//check whether the test taker is indeed enrolled in this course
+	$query_check_student = sprintf("SELECT * FROM `enroll_course` WHERE c_enroll_id=%s AND u_id=%s",GetSQLValueString($_GET['takeTest'], "int"),GetSQLValueString($_SESSION['MM_UserID'], "int"));
+	$check_student = mysql_query($query_check_student, $conn) or die(mysql_error());
+	$row_check_student = mysql_fetch_assoc($check_student);
+	$totalRows_check_student = mysql_num_rows($check_student);
+	
+	if ($totalRows_check_student==1) {
+		//request is authentic. proceed loading questions.
+		//load the test.
+		$query_load_test = sprintf("SELECT * FROM `course_eval` WHERE c_id_eval=%s ORDER BY q_no ASC",GetSQLValueString($_GET['takeTest'], "int"));
+	$load_test = mysql_query($query_load_test, $conn) or die(mysql_error());
+	$row_load_test = mysql_fetch_assoc($load_test);
+	$totalRows_load_test = mysql_num_rows($load_test);
+		
+		echo '<div class="container">';
+		echo '<main class="course-content-exam" style="background-color:#FFF;border-radius:5px;">';
+		echo '<div id="course" style="height:300px;position:relative;padding:0px;">';
+		echo '<div style="max-height:100%;overflow:auto;"><div class="evaluation">';
+		echo '<ul id="questionslist" style="overflow:auto;">';
+		echo '<form id="evalform">';
+		do {
+			echo '<li>';
+			echo '<div id="question'.$row_load_test['q_no'].'" style="color:#000;font-size:14px;">';
+			echo 'Q. '.$row_load_test['q_no'].' : '.$row_load_test['ques'];
+			echo '</div>';
+			echo '<table style="color:#000;">';
+			echo '<tr><td><input type="radio" id="r'.$row_load_test['q_no'].'-1" name="answer'.$row_load_test['q_no'].'" value="'.$row_load_test['q_no'].'-1"/></td><td>'.$row_load_test['opt1'].'</td></tr>';
+			echo '<tr><td><input type="radio" id="r'.$row_load_test['q_no'].'-2" name="answer'.$row_load_test['q_no'].'" value="'.$row_load_test['q_no'].'-2"/></td><td>'.$row_load_test['opt2'].'</td></tr>';			
+			echo '<tr><td><input type="radio" id="r'.$row_load_test['q_no'].'-3" name="answer'.$row_load_test['q_no'].'" value="'.$row_load_test['q_no'].'-3"/></td><td>'.$row_load_test['opt3'].'</td></tr>';
+			echo '<tr><td><input type="radio" id="r'.$row_load_test['q_no'].'-4" name="answer'.$row_load_test['q_no'].'" value="'.$row_load_test['q_no'].'-4"/></td><td>'.$row_load_test['opt4'].'</td></tr>';
+			echo '</table>';
+			echo '</li>';
+		}while($row_load_test = mysql_fetch_assoc($load_test));
+		echo '<input id="submit'.$_GET['takeTest'].'" type="button" class="buttom" value="Submit Answers" onclick="submitTest()" />';
+		echo '</form>';
+		echo '</ul>';
+		echo '</div></div></div>';
+		echo '</main><!-- .content -->';
+		echo '</div><!---container --->';
+	}
 }
 ?>

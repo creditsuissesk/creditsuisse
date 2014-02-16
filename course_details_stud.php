@@ -109,13 +109,6 @@ $totalRows_other_course = mysql_num_rows($other_course);
 */
 ?>
 
-
-
-
-
-
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -129,6 +122,8 @@ $totalRows_other_course = mysql_num_rows($other_course);
 <script type="text/javascript" src="js/jquery.localscroll-min.js"></script> 
 <script type="text/javascript" src="js/init.js"></script>  
 <link rel="stylesheet" href="css/slimbox2.css" type="text/css" media="screen" /> 
+<link rel="stylesheet" href="css/course_list.css" type="text/css" media="screen" /> 
+<link rel="stylesheet" type="text/css" media="screen" href="css/nav_bar.css" />
 <script type="text/JavaScript" src="js/slimbox2.js"></script> 
 <script language="javascript" type="text/javascript">
 function clearText(field)
@@ -136,9 +131,48 @@ function clearText(field)
     if (field.defaultValue == field.value) field.value = '';
     else if (field.value == '') field.value = field.defaultValue;
 }
+
+function takeTest() {
+	var cId = document.getElementById("hiddenId").value;
+	if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    document.getElementById("content-holder").innerHTML=xmlhttp.responseText;
+    }
+  }
+xmlhttp.open("GET","course_eval.php?takeTest="+cId,true);
+xmlhttp.send();
+}
+
+function submitTest() {
+}
 </script>
 </head> 
 <body> 
+<nav id="headerbar">
+	<ul id="headerbar">
+		<li id="headerbar"><a href="userhome.php">Home</a></li>
+		<li id="headerbar"><a href="forum_new.php?mode=showmain">Forums</a></li>
+		<li id="headerbar"><a href="#"><?php echo $_SESSION['MM_Username'];?></a>
+			<ul id="headerbar">
+				<li id="headerbar"><a href="userhome.php?userTabToDisplay=5">Profile</a></li>
+				<li id="headerbar"><a href="<?php echo $logoutAction ?>">Log Out</a>
+				</li>
+			</ul>
+		</li>
+	</ul>
+</nav>
+<br/>
+
 
 <div id="templatemo_header_wrapper">
 	<div id="templatemo_header">
@@ -236,7 +270,7 @@ function clearText(field)
                     <p><em><?php echo $row_course_details['description'];?></em></p>
                     <?php if (empty($row_course_details['u_enroll_id'])) {
                     	echo '<form id="enrollform">';
-                    	echo '<input id="submit" type="button" class="buttom" value="Enroll!" onclick="addQuestion()" />';
+                    	echo '<input id="submit" type="button" class="buttom" value="Enroll!" onclick="enrollCourse()" />';
                     	echo '</form>';
 					}
 					?>
@@ -295,14 +329,34 @@ function clearText(field)
 
             <div class="section section_with_padding" id="evaluation"> 
                	<h1>Evaluation</h1>
-              	<p><em>Sed eu erat vehicula, semper mauris nec, dignissim nisl. Cras vehicula varius felis sit amet fermentum. Proin eros sem, posuere quis tortor sed, semper malesuada turpis. Integer tincidunt malesuada turpis, ac convallis nibh. Integer feugiat gravida est nec accumsan. Nunc posuere, magna id ornare mollis.</em></p>
-                <blockquote class="testimonial_block">
-                <p>Suspendisse est augue, tempus id volutpat vitae, tempus vitae nibh. Praesent aliquet imperdiet urna et luctus.</p>
-                <cite>Anthony - <span>Advertising Manager</span></cite> </blockquote>
-                <blockquote class="testimonial_block">
-                <p>Proin eros sem, posuere quis tortor sed, semper malesuada turpis. Integer tincidunt malesuada turpis, ac convallis nibh.</p>
-                <cite>George - <span>Marketing Specialist</span></cite> </blockquote>
-            
+                <div id="content-holder">
+				<?php 
+				//check if there are any available tests. Show options accordingly.
+				$query_test_exists= sprintf("SELECT * FROM `course_eval` WHERE c_id_eval=%s",GetSQLValueString($_GET['c_id'], "int"));
+				$check_test_exists = mysql_query($query_test_exists, $conn) or die(mysql_error());
+				$row_test_exists = mysql_fetch_assoc($check_test_exists);
+				$totalRows_test_exists = mysql_num_rows($check_test_exists);
+				if($totalRows_test_exists>0){
+					//test is available. check if candidate has already taken the test.
+					$query_test_check=sprintf("SELECT * FROM `enroll_course` WHERE u_id=%s AND c_enroll_id=%s",GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($_GET['c_id'], "int"));
+					$check_test=mysql_query($query_test_check,$conn) or die(mysql_error());
+					$row_check_test=mysql_fetch_assoc($check_test);
+					if($row_check_test['marks']==-1) {
+					//Test has not been taken. Show options of taking test.
+					echo "There is a test for this course available!<br>";
+					echo '<form id="enrollform" style="padding-top:10px;">';
+                    echo '<input id="submit" type="button" class="buttom" value="Take Test!" onclick="takeTest();" />';
+					echo '<input id="hiddenId" type="hidden" value="'.$_GET['c_id'].'" />';
+                    echo '</form>';
+					}else {
+						//test has already been taken. Show user the marks.
+						echo "You have already taken test and have secured ".$row_check_test['marks']."/".$totalRows_test_exists*10;
+					}
+				}else {
+					echo "Sorry, no test has been created for this course by author yet!";
+				}
+				?>
+            	</div><!--- end of content-holder--->
                 <a href="#home" class="home_btn">home</a> 
                 <a href="#resources" class="page_nav_btn previous">Previous</a>
                 <a href="#contact" class="page_nav_btn next">Next</a>

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 15, 2014 at 07:16 PM
+-- Generation Time: Feb 16, 2014 at 07:11 PM
 -- Server version: 5.6.14
 -- PHP Version: 5.5.6
 
@@ -106,7 +106,7 @@ CREATE TABLE IF NOT EXISTS `course` (
 --
 
 INSERT INTO `course` (`c_id`, `c_name`, `c_stream`, `inserted_on`, `start_date`, `end_date`, `u_id`, `approve_status`, `course_image`, `avg_rating`, `description`) VALUES
-(18, 'Cryptography-Basic', 'Computer Science', '2014-01-03 16:12:36', '2014-01-12', '2016-01-11', 2, 1, 'images/gallery/09.jpg', 0, 'This is course on cryptography. In this course we will introduce you to basic ciphers and the basics of cryptography.'),
+(18, 'Cryptography-Basic', 'Computer Science', '2014-01-03 16:12:36', '2014-01-12', '2016-01-11', 2, 1, 'images/gallery/09-l.jpg', 0, 'This is course on cryptography. In this course we will introduce you to basic ciphers and the basics of cryptography.'),
 (19, 'Networking Protocols', 'Networking', '2014-02-27 16:12:36', '2014-05-01', '2014-10-31', 2, 0, 'images/gallery/07.jpg', 0, ''),
 (20, 'Cryptography-Advanced', 'Computer Science', '2014-01-15 16:12:36', '2014-01-22', '2014-07-17', 2, 1, 'images/gallery/05.jpg', 0, 'this is crypto'),
 (21, 'Web Designing', 'Computer Science', '2014-02-14 16:12:36', '2014-01-03', '2014-07-17', 2, 2, 'images/gallery/03.jpg', 0, ''),
@@ -135,6 +135,15 @@ CREATE TABLE IF NOT EXISTS `course_eval` (
   PRIMARY KEY (`c_id_eval`,`q_no`),
   KEY `c_id_eval` (`c_id_eval`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `course_eval`
+--
+
+INSERT INTO `course_eval` (`c_id_eval`, `q_no`, `ques`, `opt1`, `opt2`, `opt3`, `opt4`, `answer`) VALUES
+(18, 1, 'Which is asymmetric?', 'DES', 'AES', 'RSA', 'IDEA', 3),
+(18, 2, 'Which is not a hash algorithm?', 'SHA', 'MD5', 'RSA', 'SHA-256', 3),
+(18, 3, 'Which of these is least secure?', 'Caesar Cipher', 'Blowfish', 'DES', 'AES', 1);
 
 -- --------------------------------------------------------
 
@@ -203,6 +212,7 @@ CREATE TABLE IF NOT EXISTS `enroll_course` (
   `u_id` int(10) unsigned NOT NULL,
   `c_enroll_id` int(10) unsigned NOT NULL,
   `completion_stat` tinyint(1) NOT NULL,
+  `marks` int(11) NOT NULL DEFAULT '-1',
   PRIMARY KEY (`u_id`,`c_enroll_id`),
   KEY `c_id` (`c_enroll_id`),
   KEY `u_id` (`u_id`)
@@ -212,11 +222,11 @@ CREATE TABLE IF NOT EXISTS `enroll_course` (
 -- Dumping data for table `enroll_course`
 --
 
-INSERT INTO `enroll_course` (`u_id`, `c_enroll_id`, `completion_stat`) VALUES
-(4, 18, 0),
-(5, 18, 0),
-(5, 21, 0),
-(8, 18, 0);
+INSERT INTO `enroll_course` (`u_id`, `c_enroll_id`, `completion_stat`, `marks`) VALUES
+(4, 18, 0, -1),
+(5, 18, 0, -1),
+(5, 21, 0, -1),
+(8, 18, 0, -1);
 
 -- --------------------------------------------------------
 

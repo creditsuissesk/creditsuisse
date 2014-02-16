@@ -300,6 +300,8 @@ $totalRows_categories = mysql_num_rows($categories);
 			echo "authorhome.php";
 		}else if ($_SESSION['MM_UserGroup']=='admin') {
 			echo "admin_home.php";
+		}else if ($_SESSION['MM_UserGroup']=='cm') {
+			echo "cmhome.php";
 		}
 		?>">Home</a></li>
 		<li id="headerbar"><a href="forum_new.php?mode=showmain">Forums</a></li>
@@ -311,6 +313,8 @@ $totalRows_categories = mysql_num_rows($categories);
 					echo "authorhome.php";
 				}else if ($_SESSION['MM_UserGroup']=='admin') {
 					echo "admin_home.php";
+				}else if ($_SESSION['MM_UserGroup']=='cm') {
+					echo "cmhome.php";
 				}
 				?>">Profile</a></li>
 				<li id="headerbar"><a href="<?php echo $logoutAction ?>">Log Out</a>

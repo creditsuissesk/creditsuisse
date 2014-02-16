@@ -200,6 +200,7 @@ if ((isset($_POST["MM_update_r"])) && ($_POST["MM_update_r"] == "form2")) {
 <title>Content Manager Home</title>
 <script src="SpryAssets/SpryTabbedPanels.js" type="text/javascript"></script>
 <link href="SpryAssets/SpryTabbedPanels.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" type="text/css" media="screen" href="css/nav_bar.css" />
 <link href="css/templatemo_style.css?12" type="text/css" rel="stylesheet" />
 <link href="css/table.css" type="text/css" rel="stylesheet" /> 
 <!---
@@ -253,7 +254,22 @@ function MM_validateForm() { //v4.0
 </head>
 
 <body>
-<body alink="#D6D6D6">
+
+<nav id="headerbar">
+	<ul id="headerbar">
+		<li id="headerbar"><a href="cmhome.php">Home</a></li>
+		<li id="headerbar"><a href="forum_new.php?mode=showmain">Forums</a></li>
+		<li id="headerbar"><a href="#"><?php echo $_SESSION['MM_Username'];?></a>
+			<ul id="headerbar">
+				<li id="headerbar"><a href="cmhome.php">Profile</a></li>
+				<li id="headerbar"><a href="<?php echo $logoutAction ?>">Log Out</a>
+				</li>
+			</ul>
+		</li>
+	</ul>
+</nav>
+<br/>
+
 <h1>Hello, <?php echo $_SESSION['MM_f_name'];?></h1>
 <div id="TabbedPanels1" class="TabbedPanels">
   <ul class="TabbedPanelsTabGroup">

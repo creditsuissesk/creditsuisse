@@ -99,11 +99,11 @@ if(isset($_GET['sortType'])) {
 	if($totalRows_sort>0){
 		do {
 			echo "<li>";
-			echo '<a href="index.php"><img src="'.$row_sort['course_image'].'" alt=""/></a>';
-			echo '<span><a href="index.php">'.$row_sort['c_name'].'</a> in '.$row_sort['c_stream'].'</span><br>';
+			echo '<a href="course_details_stud.php?c_id='.$row_sort['c_id'].'"><img src="'.$row_sort['course_image'].'" alt=""/></a>';
+			echo '<span><a href="course_details_stud.php?c_id='.$row_sort['c_id'].'">'.$row_sort['c_name'].'</a> in '.$row_sort['c_stream'].'</span><br>';
 			echo '<p>'.$row_sort['description'].'</p>';
 			echo '<p class="dates">Duration : '.$row_sort['start_date'].' - '.$row_sort['end_date'].'</p>';
-			echo '<a href="course_detail_stud.php?c_id='.$row_sort['c_id'].'" class="details">See Details</a>';
+			echo '<a href="course_details_stud.php?c_id='.$row_sort['c_id'].'" class="details">See Details</a>';
 			if (!empty($row_sort['u_id'])) {
 				//enrolled for course already
 				echo '<p class="enrolled">Enrolled!</p>';
@@ -132,9 +132,9 @@ else if (isset($_GET['enrollId'])) {
 			$var=0;
 			do {
 				echo "<div class='section section_with_padding' id='a".$var."'>";
-	            echo "<h1>".$row_incomplete_courses['c_name']."</h1> ";
+	            echo "<a href='course_details_stud.php?c_id=".$row_incomplete_courses['c_id']."' ><h1>".$row_incomplete_courses['c_name']."</h1></a>";
 	            echo "<div class='half right'>";
-                echo '<div class="img_border img_temp"> <img src="'.$row_incomplete_courses['course_image'].'" alt="image 1" width="200" height="120"/></div>';
+                echo '<div class="img_border img_temp"> <a href="course_details_stud.php?c_id='.$row_incomplete_courses['c_id'].'" ><img src="'.$row_incomplete_courses['course_image'].'" alt="image 1" width="200" height="120"/></a></div>';
 	            echo '<p><em>'.$row_incomplete_courses['description'].'</em></p>';
 				echo '</div>';
 				//list all resources of that course
@@ -200,11 +200,11 @@ else if (isset($_GET['enrollId'])) {
 	if($totalRows_search>0){
 		do {
 			echo "<li>";
-			echo '<a href="index.php"><img src="'.$row_search['course_image'].'" alt=""/></a>';
-			echo '<span><a href="index.php">'.$row_search['c_name'].'</a> in '.$row_search['c_stream'].'</span><br>';
+			echo '<a href="course_details_stud.php?c_id='.$row_search['c_id'].'"><img src="'.$row_search['course_image'].'" alt=""/></a>';
+			echo '<span><a href="course_details_stud.php?c_id='.$row_search['c_id'].'">'.$row_search['c_name'].'</a> in '.$row_search['c_stream'].'</span><br>';
 			echo '<p>'.$row_search['description'].'</p>';
 			echo '<p class="dates">Duration : '.$row_search['start_date'].' - '.$row_search['end_date'].'</p>';
-			echo '<a href="index.php" class="details">See Details</a>';
+			echo '<a href="course_details_stud.php?c_id'.$row_search['c_id'].'" class="details">See Details</a>';
 			if (!empty($row_search['u_id'])) {
 				//enrolled for course already
 				echo '<p class="enrolled">Enrolled!</p>';
