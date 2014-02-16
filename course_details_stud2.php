@@ -251,11 +251,19 @@ function clearText(field)
 				</div>
                 <a href="#home" class="home_btn">home</a> 
                 <a href="#home" class="page_nav_btn previous">Previous</a>
-                <a href="#resources" class="page_nav_btn next">Next</a>
+                <?php //if user is enrolled then go next to resources else go next to contact
+				if (!empty($row_course_details['u_enroll_id'])) { 
+					echo '<a href="#resources" class="page_nav_btn next">Next</a>';
+				}else {
+					echo '<a href="#contact" class="page_nav_btn next">Next</a>';
+				}  ?>
             </div> <!-- END of About -->
             
+            <?php if (!empty($row_course_details['u_enroll_id'])) { 
+				//show the two tabs only if user has enrolled
+			?>
             <div class="section section_with_padding" id="resources"> 
-                <h1>Services</h1>
+                <h1>Resources</h1>
                 <div class="half left">
                 	<p><em>Praesent condimentum ac quam a scelerisque. Interdum et malesuada fames ac ante ipsum primis in faucibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer feugiat gravida est nec accumsan. Nunc posuere, magna id ornare mollis.</em></p>
                 	<ul class="list_bullet">
@@ -281,36 +289,12 @@ function clearText(field)
                 </div>
                 <a href="#home" class="home_btn">home</a> 
                 <a href="#about" class="page_nav_btn previous">Previous</a>
-                <a href="#gallery" class="page_nav_btn next">Next</a> 
+                <a href="#evaluation" class="page_nav_btn next">Next</a> 
             </div> <!-- END of resources -->
             
-            <div class="section" id="gallery"> 
-                <ul>
-                    <li><a href="images/gallery/01-l.jpg" rel="lightbox[gallery]"><img src="images/gallery/01.jpg" alt="image 1" /></a></li>
-                    <li><a href="images/gallery/02-l.jpg" rel="lightbox[gallery]"><img src="images/gallery/02.jpg" alt="image 2" /></a></li>
-                    <li><a href="images/gallery/03-l.jpg" rel="lightbox[gallery]"><img src="images/gallery/03.jpg" alt="image 3" /></a></li>
-                    <li><a href="images/gallery/04-l.jpg" rel="lightbox[gallery]"><img src="images/gallery/04.jpg" alt="image 4" /></a></li>
-                    <li><a href="images/gallery/05-l.jpg" rel="lightbox[gallery]"><img src="images/gallery/05.jpg" alt="image 5" /></a></li>
-                    <li><a href="images/gallery/06-l.jpg" rel="lightbox[gallery]"><img src="images/gallery/06.jpg" alt="image 6" /></a></li>
-                    <li><a href="images/gallery/07-l.jpg" rel="lightbox[gallery]"><img src="images/gallery/07.jpg" alt="image 7" /></a></li>
-                    <li><a href="images/gallery/08-l.jpg" rel="lightbox[gallery]"><img src="images/gallery/08.jpg" alt="image 8" /></a></li>
-                    <li><a href="images/gallery/09-l.jpg" rel="lightbox[gallery]"><img src="images/gallery/09.jpg" alt="image 9" /></a></li>
-                    <li><a href="images/gallery/10-l.jpg" rel="lightbox[gallery]"><img src="images/gallery/10.jpg" alt="image 10" /></a></li>
-                    <li><a href="images/gallery/11-l.jpg" rel="lightbox[gallery]"><img src="images/gallery/11.jpg" alt="image 11" /></a></li>
-                    <li><a href="images/gallery/12-l.jpg" rel="lightbox[gallery]"><img src="images/gallery/12.jpg" alt="image 12" /></a></li>
-                    <li><a href="images/gallery/13-l.jpg" rel="lightbox[gallery]"><img src="images/gallery/03.jpg" alt="image 13" /></a></li>
-                    <li><a href="images/gallery/14-l.jpg" rel="lightbox[gallery]"><img src="images/gallery/14.jpg" alt="image 14" /></a></li>
-                    <li><a href="images/gallery/15-l.jpg" rel="lightbox[gallery]"><img src="images/gallery/15.jpg" alt="image 15" /></a></li>
-                    <li><a href="images/gallery/16-l.jpg" rel="lightbox[gallery]"><img src="images/gallery/16.jpg" alt="image 16" /></a></li>
-                    
-                </ul>
-                <a href="#home" class="home_btn">home</a> 
-                <a href="#resources" class="page_nav_btn previous">Previous</a>
-                <a href="#evaluation" class="page_nav_btn next">Next</a>		
-            </div> <!-- END of Gallery -->
-            
+
             <div class="section section_with_padding" id="evaluation"> 
-               	<h1>Testimonials</h1>
+               	<h1>Evaluation</h1>
               	<p><em>Sed eu erat vehicula, semper mauris nec, dignissim nisl. Cras vehicula varius felis sit amet fermentum. Proin eros sem, posuere quis tortor sed, semper malesuada turpis. Integer tincidunt malesuada turpis, ac convallis nibh. Integer feugiat gravida est nec accumsan. Nunc posuere, magna id ornare mollis.</em></p>
                 <blockquote class="testimonial_block">
                 <p>Suspendisse est augue, tempus id volutpat vitae, tempus vitae nibh. Praesent aliquet imperdiet urna et luctus.</p>
@@ -320,9 +304,12 @@ function clearText(field)
                 <cite>George - <span>Marketing Specialist</span></cite> </blockquote>
             
                 <a href="#home" class="home_btn">home</a> 
-                <a href="#gallery" class="page_nav_btn previous">Previous</a>
+                <a href="#resources" class="page_nav_btn previous">Previous</a>
                 <a href="#contact" class="page_nav_btn next">Next</a>
             </div> <!-- END of evaluation -->
+            
+            
+            <?php } //end of the if of only-enrolled tabs ?>
             
             <div class="section section_with_padding" id="contact"> 
                 <h1>Contact</h1> 
@@ -341,7 +328,12 @@ function clearText(field)
                 </div>
                 
                 <a href="#home" class="home_btn">home</a> 
-                <a href="#evaluation" class="page_nav_btn previous">Previous</a>
+                <?php //if user is enrolled, previous page is evaluation, else is about
+				if (!empty($row_course_details['u_enroll_id'])) {
+					echo '<a href="#evaluation" class="page_nav_btn previous">Previous</a>';
+				}else {
+					echo '<a href="#about" class="page_nav_btn previous">Previous</a>';
+				} ?>
                 <a href="#home" class="page_nav_btn next">Next</a>
             	</div> <!-- END of Contact -->
                 
