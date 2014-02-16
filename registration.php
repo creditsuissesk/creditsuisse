@@ -156,7 +156,7 @@
 		  <input type="text" name="degree" id="degree" placeholder="Enter the Qualification of study eg. B.Tech"/>
 		  <p class="contact">
 		  <label for="about">About* : </label></p>
-		  <textarea name="about" id="about" placeholder="About Yourself" rows="5" cols="45"/>
+		  <textarea name="about" id="about" placeholder="About Yourself" rows="5" cols="45"></textarea><br/>
           <p><label for="role">I am...* : </label></p>
           <p>
 		   <select class="select-style gender" name="role" id="role">

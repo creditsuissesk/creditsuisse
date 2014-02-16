@@ -127,6 +127,7 @@ $totalRows_get_user_details = mysql_num_rows($get_user_details);*/
 <link href="css/templatemo_style.css" type="text/css" rel="stylesheet" /> 
 <link rel="stylesheet" type="text/css" media="screen" href="css/nav_bar.css" />
 <link rel="stylesheet" type="text/css" media="screen" href="css/course_list.css" />
+<link rel="stylesheet" type="text/css" media="screen" href="css/resource_list.css" />
 
 <script type="text/javascript" src="js/jquery.min.js"></script> 
 <script type="text/javascript" src="js/jquery.scrollTo-min.js"></script> 
@@ -255,7 +256,113 @@ function searchCourses() {
 	}
 }
 </script>
+<script>
+function sortresources(str,refreshEnrolled)
+{
+	
+if (str=="")
+  {
+  document.getElementById("txtHint").innerHTML="";
+  return;
+  }
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    document.getElementById("resourcelist").innerHTML=xmlhttp.responseText;
+		if(refreshEnrolled==1) {
+			showEnrolledresources();
+		}
+    }
+  }
+xmlhttp.open("GET","show_resources.php?sortType="+str,true);
+xmlhttp.send();
 
+}
+/*
+function showEnrolledresources()
+{
+/*if (str=="")
+  {
+  document.getElementById("txtHint").innerHTML="";
+  return;
+  }//commented till here
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    document.getElementById("content").innerHTML=xmlhttp.responseText;
+    }
+  }
+xmlhttp.open("GET","show_resources.php?showresources=1",true);
+xmlhttp.send();
+}
+
+function enrollresource(ele) {
+	var r=confirm("Are you sure you want to enroll for this resource?");
+	if (r==true) {
+		if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+		  xmlhttp=new XMLHttpRequest();
+		} else {// code for IE6, IE5
+		  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  		}
+		xmlhttp.onreadystatechange=function()
+		{
+		  if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+		    //document.getElementById("courselist").innerHTML=xmlhttp.responseText;
+				var e = document.getElementById("sortdropdown");
+				var strUser = e.options[e.selectedIndex].value;
+				sortresources(strUser,0);
+			}
+			else {
+				ele.innerHTML='<a id="'+ele.id+'" class="enroll">Enrolling...</a>';
+			}
+		}
+		xmlhttp.open("GET","show_resources.php?enrollId="+ele.id,true);
+		xmlhttp.send();
+	}
+}*/
+
+function searchresources() {
+	var e = document.getElementById("searchdropdown1");
+	var searchtype = e.options[e.selectedIndex].value;
+	var searchkey = document.getElementById("searchword1").value;
+	if (searchkey=="") {
+		var e = document.getElementById("sortdropdown1");
+			var strUser = e.options[e.selectedIndex].value;
+			sortresources(strUser,1);
+	} else {
+		if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  		xmlhttp=new XMLHttpRequest();
+	  	} else {// code for IE6, IE5
+			xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		xmlhttp.onreadystatechange=function() {
+			if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+		    	document.getElementById("resourcelist").innerHTML=xmlhttp.responseText;
+			}
+		}
+		xmlhttp.open("GET","show_resources.php?searchType="+searchtype+"&searchKey="+searchkey,true);
+		xmlhttp.send();
+	}
+}
+</script>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 </head>
 <body>
@@ -290,16 +397,62 @@ else {
 <h1><?php echo /*$row_get_user_details['f_name']*/$_SESSION['MM_f_name'];?>'s home </h1>
 <div id="TabbedPanels1" class="TabbedPanels">
   <ul class="TabbedPanelsTabGroup">
-    <li class="TabbedPanelsTab" tabindex="0">Recent Activity</li>
+    <li class="TabbedPanelsTab" tabindex="0">Browse Resources</li>
     <li class="TabbedPanelsTab" tabindex="0">Browse Courses</li>
     <li class="TabbedPanelsTab" tabindex="0">Your Courses</li>
     <li class="TabbedPanelsTab" tabindex="0">Completed Courses</li>
     <li class="TabbedPanelsTab" tabindex="0">Recommended</li>
-    <li class="TabbedPanelsTab" tabindex="0">Enrollmarks</li>
+  <!--  <li class="TabbedPanelsTab" tabindex="0">Enroll marks</li> -->
     <li class="TabbedPanelsTab" tabindex="0">Profile</li>
+    <li class="TabbedPanelsTab" tabindex="0">Upload Papers</li>
   </ul>
   <div class="TabbedPanelsContentGroup">
-    <div class="TabbedPanelsContent">Content 1</div>
+    <div class="TabbedPanelsContent">
+     <div class="Resource-wrapper">
+	    	<div class="resource-content-wrapper">
+			    <div class="resource-content">
+				<div class="middle">
+						<div class="container">
+							<main class="resource-content">
+                            <div id="resource">
+				<div>	
+				<div class="first">
+					<h2>Resources</h2>
+					<ul id="resourcelist">
+					<!--- Resources appear here dynamically --->	
+					</ul>
+					<!--<a href="index.php">View all</a>-->
+				</div></div></div>
+							</main><!-- .content -->
+						</div><!-- .container-->
+
+						<aside class="left-sidebar">
+                        Sort by:
+                        <form action=""> 
+						<select id="sortdropdown1" name="use" onChange="sortresources(this.value,0)">
+						<option value="1" selected>Most Popular</option>
+						<option value="2">Latest</option>
+						</select>
+						</form>
+                        <script> $(document).ready(function(){sortresources(1,1);});</script>
+                        
+                        Search resource by:
+                        <form action=""> 
+						<select id="searchdropdown1" name="use" onChange="sortresources(this.value,0)">
+						<option value="1" selected>File Name</option>
+						<option value="2">Course Name</option> 
+						</select> <br>
+                        <input type="text" id="searchword1" style="margin-top:10px;" onKeyPress="searchresources();"> 
+						</form>
+                        
+						</aside><!-- .left-sidebar -->
+                </div>
+    		</div>
+    	</div> <!--- resource divs closing --->
+    
+    </div> <!--- this div ends browse resources tab --->
+    
+    </div>
 	<div class="TabbedPanelsContent">
     <!--- browse course tab --->
     <div class="course-wrapper">
@@ -403,6 +556,7 @@ else {
     <div class="TabbedPanelsContent">Content 4</div>
     <div class="TabbedPanelsContent">Content 5</div>
     <div class="TabbedPanelsContent">Content 6</div>
+    <div class="TabbedPanelsContent">Content 7</div>
   </div>
 </div>
 <p><br />

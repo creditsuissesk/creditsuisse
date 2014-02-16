@@ -1,0 +1,248 @@
+@charset "utf-8";
+#resource-wrapper
+{
+	clear: both;
+	float: left;
+	width: 100%;
+	margin: 10px 0; 
+	/*background: transparent url(../images/hr_dotted.gif) 60% 0 repeat-y; */
+}
+
+#resource-content-wrapper
+{
+	width: 100%;
+	float: left;
+}
+
+#resource-content
+{
+	float: left;
+	padding: 0 20px;
+}
+
+#resource-left-sidebar-wrapper
+{
+	width: 15%;
+	float: left;
+}
+
+#resource-right-sidebar-wrapper
+{
+	width: 15%;
+	float: right;
+}
+
+/*start*/
+aside,main {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+	display:block;
+}
+
+/* Middle
+-----------------------------------------------------------------------------*/
+.middle {
+	width: 100%;
+	position: relative;
+	/*border: 1px solid #1a1a1a;*/
+	/*border-top: 10px solid #151515;*/
+	/*background: #404040 url(../images/navigation_hover.gif) top left repeat;*/
+	margin: 10px 10px; 
+	padding: 10px 10px; 
+	line-height: 1.6em;
+}
+.middle:after {
+	display: table;
+	clear: both;
+	content: '';
+}
+.container {
+	width: 100%;
+	float: left;
+	overflow: hidden;
+}
+.resource-content {
+	padding: 0 50px 0 50px;
+}
+
+
+/* Left Sidebar
+-----------------------------------------------------------------------------*/
+.left-sidebar {
+	float: left;
+	width: 15%;
+	margin-left: -100%;
+	position: relative;
+	/*background: #B5E3FF;*/
+}
+
+
+/* Right Sidebar
+-----------------------------------------------------------------------------*/
+.right-sidebar {
+	float: left;
+	width: 15%;
+	margin-left: -250px;
+	position: relative;
+	/*background: #FFACAA;*/
+}
+
+
+#resource{
+	width: 100%;
+	/*background-color: #09154F;*/
+	overflow: hidden;
+	padding: 0 0 45px;
+}
+#resource div{  
+	width: inherit;
+	margin: 0 auto;
+	overflow: hidden;
+}
+
+#resource div div.first{   
+	float: right;
+	width: 85%;
+	margin: 0 0 0 30px;
+	position: relative;
+}
+#resource div div.evaluation{   
+	float: right;
+	width: 100%;
+	margin: 0 0 0 30px;
+	position: relative;
+}
+#resource div h2{
+	color: #93CDF5;
+	font-size: 22px;
+	text-transform: uppercase;
+	margin: 0 0 15px 20px;
+}
+#resource div ul{
+	list-style: none;
+	background-color: #FFFFFF;
+	padding: 15px;
+	margin: 0;
+    overflow: hidden;
+	border-radius: 5px;
+}
+#resource div ul li{
+	height: 15%;
+	overflow: hidden;
+	margin: 0 0 20px 0;
+	_margin: 0 0 10px 0;
+}
+#resource div ul li a{
+	float: left;
+	display: block;
+	position: static;
+	background: none;
+	padding: 0;
+}
+#resource div ul li a img{
+	border: 0;
+	width: 140px;
+	height: 86 px;
+	margin: 0 15px 0 0;
+}
+#resource div ul li span{
+	display: block;
+	clear: none;
+    float: left;
+    text-align: justify;
+}
+#resource div ul li span a{
+	text-decoration: none;
+	font-size: 14px;
+	font-family: arial;
+	color: #105272;
+	font-weight: bold;
+	background: none;
+	position: static;
+	/*padding: 0;*/
+	padding-right:10px;
+
+}
+#resource div ul li p{
+	clear: none;
+    /*float: right;*/
+    text-align: justify;
+    /*width: 158px;*/
+	color: #393D42;
+	font-family: arial;
+	font-size: 14px;
+	margin: 0 0 15px;
+}
+#resource div ul li a.details{
+	font-size: 12px;
+	color: #674900;
+	text-decoration: none;
+	font-family: arial;
+	background: url(../images/icons.gif) no-repeat 0 -155px;
+	width: 74px;
+	height: 18px;
+	text-align: center;
+	line-height: 18px;
+	margin: 0 5px 0 0;
+	position: static;
+	padding: 0;
+}
+#resource div ul li a.enroll{
+	color: #d4ffff;
+	text-decoration: none;
+	font-family: arial;
+	background: url(../images/interface.gif) no-repeat;
+	width: 70px;
+	height: 18px;
+	text-align: center;
+	line-height: 18px;
+	font-size: 12px;
+	position: static;
+	padding: 0;
+	cursor:pointer;
+}
+#resource div ul li p.enrolled{
+	color: #F00;
+	text-decoration: none;
+	font-family: arial;
+	/*background: url(../images/interface.gif) no-repeat;*/
+	/*text-align: center;*/
+	line-height: 18px;
+	font-size: 12px;
+	position: static;
+	padding: 0;
+}
+#resource div ul li p.dates{
+	font-size: 12px;
+	color: #009;
+	text-decoration: none;
+	font-family: arial;
+	/*background: url(../images/icons.gif) no-repeat 0 -155px;*/
+	
+	/*text-align: center;*/
+
+	line-height: 18px;
+	margin: 0 5px 0 0;
+	position: static;
+	padding: 0;
+}
+#resource div a{
+	font-family:arial;
+	font-size: 14px;
+	color: #4d4d4d;
+	text-decoration: none;
+
+	top: 480px;
+	right: 15px;
+	background: url(../images/arrow1.gif) no-repeat right center;
+	padding: 0 10px 0 0;
+}
+#resource div a:hover{
+	color: #105272;
+}
+
+
