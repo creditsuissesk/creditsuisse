@@ -181,11 +181,59 @@ if(isset($_GET['c_id']) && isset($_GET['ques']) && isset($_GET['opt1']) && isset
 			echo '</li>';
 		}while($row_load_test = mysql_fetch_assoc($load_test));
 		echo '<input id="submit'.$_GET['takeTest'].'" type="button" class="buttom" value="Submit Answers" onclick="submitTest()" />';
+		echo '<input id="hiddenId" type="hidden" value="'.$_GET['takeTest'].'" />';
 		echo '</form>';
 		echo '</ul>';
 		echo '</div></div></div>';
 		echo '</main><!-- .content -->';
 		echo '</div><!---container --->';
+	}
+}else if (isset($_GET['evalTest'])) {
+	//get the course id to be evaluated
+	$c_id=$_GET['evalTest'];
+	//check whether the test taker is indeed enrolled in this course
+	$query_check_student = sprintf("SELECT * FROM `enroll_course` WHERE c_enroll_id=%s AND u_id=%s",GetSQLValueString($_GET['evalTest'], "int"),GetSQLValueString($_SESSION['MM_UserID'], "int"));
+	$check_student = mysql_query($query_check_student, $conn) or die(mysql_error());
+	$row_check_student = mysql_fetch_assoc($check_student);
+	$totalRows_check_student = mysql_num_rows($check_student);
+	if ($totalRows_check_student==1) {
+		//request is authentic. proceed loading questions.
+		
+		//get all the questions and answers for the course test.
+		$query_load_test = sprintf("SELECT * FROM `course_eval` WHERE c_id_eval=%s ORDER BY q_no ASC",GetSQLValueString($_GET['evalTest'], "int"));
+		$load_test = mysql_query($query_load_test, $conn) or die(mysql_error());
+		$row_load_test = mysql_fetch_assoc($load_test);
+		$totalRows_load_test = mysql_num_rows($load_test);
+		
+		$condition="";
+		$q_no=1;	
+		foreach($_GET as $key => $value)
+		{
+			if(is_numeric($key)) {//only the GET parameters which are questions are kept numeric, so this conditions filters whether a GET parameter is (question,answer) pair or not.
+			   //echo 'Question = ' . $key . '<br />';
+			   //echo 'Answer= ' . $value;
+			   if($q_no==1) {
+				   $condition.="(q_no=".$key." AND answer=".$value.")";
+				   
+			   }else {
+					$condition.=" OR (q_no=".$key." AND answer=".$value.")";
+			   }
+			   $q_no+=2;
+			}
+		}
+		$query_eval_test=sprintf("SELECT * FROM `course_eval` WHERE c_id_eval=%s AND (",GetSQLValueString($_GET['evalTest'], "int"));
+		$query_eval_test.=$condition.")";
+		file_put_contents("test.txt",$query_eval_test);
+		$eval_test = mysql_query($query_eval_test, $conn) or die(mysql_error());
+		$row_eval_test = mysql_fetch_assoc($eval_test);
+		$totalRows_eval_test = mysql_num_rows($eval_test);
+		
+		//$totalRows_eval_test contains number of answers correctly given. Save score= this * 10 into database as candidates score.
+		$query_save_score=sprintf("UPDATE `enroll_course` SET marks=%s WHERE u_id=%s AND c_enroll_id=%s",GetSQLValueString($totalRows_eval_test*10, "int"),GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($_GET['evalTest'], "int"));
+		$save_score = mysql_query($query_save_score, $conn) or die(mysql_error());
+		
+		echo "Score recorded successfully! You scored ".($totalRows_eval_test*10)." marks out of ".($totalRows_load_test*10).".";
+		
 	}
 }
 ?>
