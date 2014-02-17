@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 16, 2014 at 07:11 PM
+-- Generation Time: Feb 17, 2014 at 08:02 PM
 -- Server version: 5.6.14
 -- PHP Version: 5.5.6
 
@@ -109,7 +109,7 @@ INSERT INTO `course` (`c_id`, `c_name`, `c_stream`, `inserted_on`, `start_date`,
 (18, 'Cryptography-Basic', 'Computer Science', '2014-01-03 16:12:36', '2014-01-12', '2016-01-11', 2, 1, 'images/gallery/09-l.jpg', 0, 'This is course on cryptography. In this course we will introduce you to basic ciphers and the basics of cryptography.'),
 (19, 'Networking Protocols', 'Networking', '2014-02-27 16:12:36', '2014-05-01', '2014-10-31', 2, 0, 'images/gallery/07.jpg', 0, ''),
 (20, 'Cryptography-Advanced', 'Computer Science', '2014-01-15 16:12:36', '2014-01-22', '2014-07-17', 2, 1, 'images/gallery/05.jpg', 0, 'this is crypto'),
-(21, 'Web Designing', 'Computer Science', '2014-02-14 16:12:36', '2014-01-03', '2014-07-17', 2, 2, 'images/gallery/03.jpg', 0, ''),
+(21, 'Web Designing', 'Computer Science', '2014-02-14 16:12:36', '2014-01-03', '2014-07-17', 2, 1, 'images/gallery/03.jpg', 0, ''),
 (22, 'Database Management', 'Computer Science', '2014-02-14 16:12:36', '2014-01-16', '2014-08-18', 2, 0, 'images/gallery/03.jpg', 0, 'Description!'),
 (23, 'Database-Advanced', 'Computer Science', '2014-02-14 16:12:36', '2014-03-06', '2014-08-05', 2, 0, 'images/gallery/04.jpg', 0, 'This course is based n advance techniques of using database'),
 (27, 'PHP', 'Computer Science', '2014-02-14 16:12:36', '2014-02-20', '2017-02-20', 2, 0, 'images/course_picture/PHP.jpg', 0, 'this is basic course'),
@@ -224,7 +224,7 @@ CREATE TABLE IF NOT EXISTS `enroll_course` (
 
 INSERT INTO `enroll_course` (`u_id`, `c_enroll_id`, `completion_stat`, `marks`) VALUES
 (4, 18, 0, -1),
-(5, 18, 0, -1),
+(5, 18, 0, 30),
 (5, 21, 0, -1),
 (8, 18, 0, -1);
 
@@ -256,6 +256,7 @@ CREATE TABLE IF NOT EXISTS `resource` (
   `file_type` varchar(30) NOT NULL,
   `file_size` double NOT NULL,
   `file_location` varchar(255) NOT NULL,
+  `view_location` varchar(255) NOT NULL,
   `uploaded_by` int(11) unsigned NOT NULL,
   `uploaded_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `download_status` tinyint(1) NOT NULL DEFAULT '0',
@@ -272,10 +273,10 @@ CREATE TABLE IF NOT EXISTS `resource` (
 -- Dumping data for table `resource`
 --
 
-INSERT INTO `resource` (`r_id`, `c_id`, `type_id`, `filename`, `file_type`, `file_size`, `file_location`, `uploaded_by`, `uploaded_date`, `download_status`, `approve_status`, `avg_rating`, `flag_status`) VALUES
-(1, 18, 1, 'Reference.pdf', 'application/pdf', 5.3696355819702, 'resource/18/Reference.pdf', 2, '2014-02-09 00:15:49', 1, 1, 0, 0),
-(2, 18, 7, 'Example.jpg', 'image/jpeg', 0.13896942138672, 'resource/18/Example.jpg', 2, '2014-02-09 00:17:09', 0, 1, 0, 0),
-(3, 20, 1, 'reference.pdf', 'application/pdf', 102.67518806458, 'resource/20/reference.pdf', 2, '2014-02-12 17:17:39', 1, 0, 0, 0);
+INSERT INTO `resource` (`r_id`, `c_id`, `type_id`, `filename`, `file_type`, `file_size`, `file_location`, `view_location`, `uploaded_by`, `uploaded_date`, `download_status`, `approve_status`, `avg_rating`, `flag_status`) VALUES
+(1, 18, 1, 'Reference.pdf', 'application/pdf', 5.3696355819702, 'resource/18/Reference.pdf', 'resource/18-s/abstract.swf', 2, '2014-02-09 00:15:49', 1, 1, 0, 0),
+(2, 18, 7, 'Example.jpg', 'image/jpeg', 0.13896942138672, 'resource/18/Example.jpg', 'resource/18-s/des.swf', 2, '2014-02-09 00:17:09', 0, 1, 0, 0),
+(3, 20, 1, 'reference.pdf', 'application/pdf', 102.67518806458, 'resource/20/reference.pdf', '', 2, '2014-02-12 17:17:39', 1, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -378,14 +379,14 @@ INSERT INTO `user_comment` (`user_comment_id`, `user_id`, `vote_status`, `bookma
 (8, 1, -1, 0, '2014-02-08 05:04:58'),
 (10, 1, 0, 0, '2014-02-08 05:04:58'),
 (11, 1, 0, 0, '2014-02-09 11:31:29'),
-(2, 5, 0, 0, '2014-02-09 10:08:14'),
-(3, 5, 0, 0, '2014-02-09 10:08:14'),
+(2, 5, 0, 0, '2014-02-17 19:00:20'),
+(3, 5, 0, 0, '2014-02-17 19:00:20'),
 (5, 5, 0, 0, '2014-02-09 11:32:11'),
-(6, 5, 0, 0, '2014-02-09 10:08:14'),
+(6, 5, 0, 0, '2014-02-17 19:00:20'),
 (7, 5, 0, 0, '2014-01-30 12:02:25'),
-(8, 5, 0, 0, '2014-02-09 10:08:14'),
+(8, 5, 0, 0, '2014-02-17 19:00:20'),
 (9, 5, 0, 0, '2014-02-09 11:17:44'),
-(10, 5, 0, 0, '2014-02-09 10:08:14'),
+(10, 5, 0, 0, '2014-02-17 19:00:20'),
 (11, 5, 0, 0, '2014-02-09 11:32:11'),
 (2, 12, 0, 0, '2014-02-03 11:38:18'),
 (3, 12, -1, 0, '2014-02-03 11:38:18'),
@@ -421,7 +422,7 @@ INSERT INTO `user_discussion` (`u_id`, `user_discussion_id`, `seen_comments`, `d
 (1, 2, 5, '2014-02-08 05:05:24', 0, -1),
 (1, 3, 0, '2014-01-24 07:27:27', 0, 0),
 (1, 4, 2, '2014-02-09 11:31:29', 0, 0),
-(5, 2, 5, '2014-02-09 11:16:41', 1, 0),
+(5, 2, 5, '2014-02-17 19:00:19', 1, 0),
 (5, 3, 0, '2014-02-09 10:08:10', 0, 0),
 (5, 4, 2, '2014-02-09 11:32:10', 1, 0),
 (5, 8, 1, '2014-02-09 11:16:42', 1, 0),
