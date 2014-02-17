@@ -121,6 +121,8 @@ $totalRows_other_course = mysql_num_rows($other_course);
 <script type="text/javascript" src="js/jquery.scrollTo-min.js"></script> 
 <script type="text/javascript" src="js/jquery.localscroll-min.js"></script> 
 <script type="text/javascript" src="js/init.js"></script>  
+<script type="text/javascript" src="js/floatview.js"></script> 
+<script type="text/javascript" src="js/course_details_stud.js"></script> 
 <link rel="stylesheet" href="css/slimbox2.css" type="text/css" media="screen" /> 
 <link rel="stylesheet" href="css/course_list.css" type="text/css" media="screen" /> 
 <link rel="stylesheet" type="text/css" media="screen" href="css/nav_bar.css" />
@@ -132,68 +134,7 @@ function clearText(field)
     else if (field.value == '') field.value = field.defaultValue;
 }
 
-function takeTest() {
-	var cId = document.getElementById("hiddenId").value;
-	if (window.XMLHttpRequest)
-  {// code for IE7+, Firefox, Chrome, Opera, Safari
-  xmlhttp=new XMLHttpRequest();
-  }
-else
-  {// code for IE6, IE5
-  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-  }
-xmlhttp.onreadystatechange=function()
-  {
-  if (xmlhttp.readyState==4 && xmlhttp.status==200)
-    {
-    document.getElementById("content-holder").innerHTML=xmlhttp.responseText;
-    }
-  }
-xmlhttp.open("GET","course_eval.php?takeTest="+cId,true);
-xmlhttp.send();
-}
 
-function submitTest() {
-	 var inputs = document.getElementById("evalform").elements;
-	 var radios = [];
-	 var query = ""; 
-	 var solved=0;
-	 for (var i = 0; i < inputs.length; ++i) {
-        if (inputs[i].type == 'radio') {
-            radios.push(inputs[i]);
-        }
-    }
-	var firstFlag=0;
-	for (var i = 0; i < radios.length; i++) {
-        if (radios[i].checked) {
-			var pos=radios[i].value.toString().indexOf("-");
-			query+="&"+radios[i].value.toString().substring(0,pos)+"="+radios[i].value.toString().substring(pos+1);
-			solved++;
-        }
-    }
-	if (solved==3) {
-		var cId = document.getElementById("hiddenId").value;
-		if (window.XMLHttpRequest)
-		  {// code for IE7+, Firefox, Chrome, Opera, Safari
-		  xmlhttp=new XMLHttpRequest();
-		  }
-		else
-		  {// code for IE6, IE5
-		  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-		  }
-		xmlhttp.onreadystatechange=function()
-		  {
-		  if (xmlhttp.readyState==4 && xmlhttp.status==200)
-		    {
-		    document.getElementById("content-holder").innerHTML=xmlhttp.responseText;
-		    }
-		  }
-		xmlhttp.open("GET","course_eval.php?evalTest="+cId+query,true);
-		xmlhttp.send();
-	}else {
-		alert("You must attempt all questions in order to get evaluated!");
-	}
-}
 </script>
 </head> 
 <body> 
@@ -354,7 +295,7 @@ function submitTest() {
 				<ul id="resourcelist">
                 <?php 
                 do {
-					echo '<li><table><tr><td><b><div id="rname">'.$row_get_resources['filename'].'</div></b></td>';
+					echo '<li><table><tr><td><b><div id="rname"><a onclick="viewResource(); return false;">'.$row_get_resources['filename'].'</a></div></b></td>';
 					if($row_get_resources['download_status']==1) {
 						echo '<td><img src="images/Download-icon.png" width="25px" height="25px"/></td></tr></table></li>';
 					}else {

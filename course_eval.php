@@ -180,7 +180,7 @@ if(isset($_GET['c_id']) && isset($_GET['ques']) && isset($_GET['opt1']) && isset
 			echo '</table>';
 			echo '</li>';
 		}while($row_load_test = mysql_fetch_assoc($load_test));
-		echo '<input id="submit'.$_GET['takeTest'].'" type="button" class="buttom" value="Submit Answers" onclick="submitTest()" />';
+		echo '<input id="submit'.$_GET['takeTest'].'" type="button" class="buttom" value="Submit Answers" onclick="submitTest('.$totalRows_load_test.')" />';
 		echo '<input id="hiddenId" type="hidden" value="'.$_GET['takeTest'].'" />';
 		echo '</form>';
 		echo '</ul>';
