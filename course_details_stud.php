@@ -1,5 +1,33 @@
 <?php require_once('Connections/conn.php'); ?>
 <?php
+//initialize the session
+if (!isset($_SESSION)) {
+  session_start();
+}
+
+// ** Logout the current user. **
+$logoutAction = $_SERVER['PHP_SELF']."?doLogout=true";
+if ((isset($_SERVER['QUERY_STRING'])) && ($_SERVER['QUERY_STRING'] != "")){
+  $logoutAction .="&". htmlentities($_SERVER['QUERY_STRING']);
+}
+
+if ((isset($_GET['doLogout'])) &&($_GET['doLogout']=="true")){
+  //to fully log out a visitor we need to clear the session varialbles
+  $_SESSION['MM_Username'] = NULL;
+  $_SESSION['MM_UserGroup'] = NULL;
+  $_SESSION['PrevUrl'] = NULL;
+  unset($_SESSION['MM_Username']);
+  unset($_SESSION['MM_UserGroup']);
+  unset($_SESSION['PrevUrl']);
+	
+  $logoutGoTo = "index.php";
+  if ($logoutGoTo) {
+    header("Location: $logoutGoTo");
+    exit;
+  }
+}
+?>
+<?php
 if (!isset($_SESSION)) {
   session_start();
 }
@@ -332,9 +360,9 @@ function clearText(field)
                 <?php 
                 do {
 					echo '<li><table><tr><td><b><div id="'.$row_get_resources['r_id'].'" onclick="showResource('.$row_get_resources['r_id'].',\'';
-					if($row_get_resources['file_type']=="application/pdf") {
+					if(strpos($row_get_resources['file_type'],"application/pdf")!==false) {
 						echo "pdf";
-					}else if ($row_get_resources['file_type']=="image/jpeg") {
+					}else if (strpos($row_get_resources['file_type'],"image")!==false) {
 						echo "image";
 					}
 					echo '\',\''.$row_get_resources['filename'].'\');"><div id="rname">'.$row_get_resources['filename'].'</div></div></b></td>';
