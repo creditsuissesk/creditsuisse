@@ -121,7 +121,6 @@ $totalRows_other_course = mysql_num_rows($other_course);
 <script type="text/javascript" src="js/jquery.scrollTo-min.js"></script> 
 <script type="text/javascript" src="js/jquery.localscroll-min.js"></script> 
 <script type="text/javascript" src="js/init.js"></script>  
-<script type="text/javascript" src="js/floatview.js"></script> 
 <script type="text/javascript" src="js/course_details_stud.js"></script> 
 <link rel="stylesheet" href="css/slimbox2.css" type="text/css" media="screen" /> 
 <link rel="stylesheet" href="css/course_list.css" type="text/css" media="screen" /> 
@@ -152,7 +151,6 @@ function clearText(field)
 	</ul>
 </nav>
 <br/>
-
 
 <div id="templatemo_header_wrapper">
 	<div id="templatemo_header">
@@ -412,7 +410,6 @@ function clearText(field)
 </div>
 
 </div>
-
 </body> 
 <script type='text/javascript' src='js/logging.js'></script>
 </html>
