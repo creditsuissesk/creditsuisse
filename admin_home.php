@@ -162,18 +162,16 @@ $query_all_users = "SELECT * FROM `user` natural join `approve_user` WHERE appro
 $all_users = mysql_query($query_all_users, $conn) or die(mysql_error());
 $row_all_users = mysql_fetch_assoc($all_users);
 $totalRows_all_users = mysql_num_rows($all_users);
-/*Existing users ka end of query*/
+/*end of Existing users ka  query*/
 
+/* Start of query for Flagged Discussion*/
 mysql_select_db($database_conn, $conn);
-$query_get_admin_info = sprintf("SELECT * FROM user WHERE u_id = %s",GetSQLValueString($_SESSION['MM_UserID'],"int"));
+$query_discussion= "SELECT * FROM `discussion` JOIN `discussion_category` ON discussion.category_id= discussion_category.category_id WHERE discussion.flag=1";
+$discussion = mysql_query($query_discussion, $conn) or die(mysql_error());
+$row_discussion = mysql_fetch_assoc($discussion);
+$totalRows_discussion = mysql_num_rows($discussion);
 
-$get_admin_info= mysql_query($query_get_admin_info, $conn) or die(mysql_error());
-$row_get_admin_info = mysql_fetch_assoc($get_admin_info);
-$totalRows_get_admin_info = mysql_num_rows($get_admin_info);
-
-
-
-
+/* End of query for flagged discussion*/
 
 
 
@@ -187,7 +185,8 @@ $totalRows_get_admin_info = mysql_num_rows($get_admin_info);
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Admin Home</title>
+
+<title><?php echo /*$row_get_user_details['f_name']*/$_SESSION['MM_f_name'];?></title>
 <script src="SpryAssets/SpryTabbedPanels.js" type="text/javascript"></script>
 <link href="SpryAssets/SpryTabbedPanels.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" media="screen" href="css/nav_bar.css" /> 
@@ -235,10 +234,11 @@ body,td {
 	</ul>
 </nav>
 <br/>
+<h1><?php echo /*$row_get_user_details['f_name']*/$_SESSION['MM_f_name'];?>'s home </h1>
 
 <?php 
 if (isset($_GET['showTab'])) {
-	if($_GET['showTab']<2) {
+	if($_GET['showTab']<4) {
 		$tabToShow=$_GET['showTab'];
 	}
 }
@@ -246,11 +246,12 @@ else {
 	$tabToShow=0;
 }
 ?>
-<p>Welcome <? echo GetSQLValueString($_SESSION['MM_f_name'],"text") ?> </p>
 <div id="TabbedPanels1" class="TabbedPanels">
   <ul class="TabbedPanelsTabGroup">
     <li class="TabbedPanelsTab" tabindex="0">New Users</li>
     <li class="TabbedPanelsTab" tabindex="0">Existing Users</li>
+    <li class="TabbedPanelsTab" tabindex="0">Flagged Discussion</li>
+    <li class="TabbedPanelsTab" tabindex="0">Flagged Comments</li>
   </ul>
   <div class="TabbedPanelsContentGroup">
     <div class="TabbedPanelsContent">
@@ -390,6 +391,78 @@ var ex_Options = {
 var ex_List = new List('existing_users', ex_Options);
 </script>
     </div><!--end of existing users' tab content-->
+  
+  <!--start of Flagged Discussion tab content-->
+  <div class="TabbedPanelsContent">
+  <div id="flag_d">
+    <?php if ($totalRows_discussion>0 ) { ?>
+    <div class="datagrid">
+    
+    <table>
+    <thead>
+  <tr>
+  	<th class="sort" data-sort="name">Discussion Name</th>
+     <th class="sort" data-sort="category">Category</th>
+    <th class="sort" data-sort="Rating">Rating(Votes)</th>
+    <th>Final Status</th>
+    <th>    </th>
+    <th colspan="2">
+          <input type="text" class="search" placeholder="Search Discussion" />
+        </th>
+  </tr>
+  </thead>
+    <a href="<?php echo $logoutAction ?>">
+  </a>
+  <tbody class="list">
+  <?php do { ?>
+    
+  
+    <tr>
+     
+      <td class="name"><?php echo $row_discussion['name']; ?></td>
+      <td class="category"><?php echo $row_discussion['category_name']; ?></td>
+      <td class="rating"><?php echo $row_discussion['rating']; ?></td>
+
+<form  id="form2" name="form2" method="POST" action="edit_discussion.php">      <td><select name="actiontype" id="actiontype">
+        <option value="flag">  </option>
+        <option value="unflag">Clear Flag</option>
+        <option value="delete">Delete</option>
+        </select></td>
+      <td> 
+      <input name="update" id="update" value="update" type="submit" ></input> 
+        <input type="hidden" name="redirect_url" value="admin_home.php" />
+        <input type="hidden" id="disc_id" name="disc_id" value="<?php echo $row_discussion['discussion_id']?>" />
+        </td></form>
+    </tr>
+    <?php } while ($row_discussion = mysql_fetch_assoc($discussion)); ?>
+    </tbody>
+    </table>
+  </div>
+    <?php } else {
+		echo "No Flagged Discussion";
+	} ?>
+    <script>
+var currdis = {
+  valueNames: [ 'name','rating','category']
+};
+
+// Init list
+var dislist = new List('new_users', currdis);
+</script>
+  </div>
+  </div>
+  <!--End of Flagged Discussion tab content-->
+  
+  
+  
+    
+  <!--start of Flagged Comments tab content-->
+  <div class="TabbedPanelsContent">
+  
+  
+  
+  </div>
+  <!--End of Flagged Comments tab content-->
   </div>
 </div>
 <a href="<?php echo $logoutAction ?>">Log out</a>

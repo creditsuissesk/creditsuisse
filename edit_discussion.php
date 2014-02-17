@@ -89,7 +89,7 @@ if(isset($_POST['actiontype']) && $_POST['actiontype']=="delete") {
 		$totalRows_disc = mysql_num_rows($disc);
 		
 		//if user is actually discussion poster then only proceed
-		if($_SESSION['MM_UserID']==$row_disc['insert_uid']) {
+		if($_SESSION['MM_UserID']==$row_disc['insert_uid']||$_SESSION['MM_UserGroup']=='admin') {
 			//first, delete all comments in that discussion
 				$get_comments=sprintf("SELECT comment_id,insert_uid FROM `comment` WHERE discussion_id=%s",GetSQLValueString($_POST['disc_id'], "int"));
 				$comment=mysql_query($get_comments,$conn);

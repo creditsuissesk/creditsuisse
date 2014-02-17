@@ -127,7 +127,7 @@ $row_new_resource = mysql_fetch_assoc($new_resource);
 $totalRows_new_resource = mysql_num_rows($new_resource);
 
 mysql_select_db($database_conn, $conn);
-$query_author_details = sprintf("SELECT * FROM user WHERE u_name = %s", GetSQLValueString($_SESSION['MM_Username'], "int"));
+$query_author_details = sprintf("SELECT * FROM user WHERE u_id = %s", GetSQLValueString($_SESSION['MM_UserID'], "int"));
 $author_details = mysql_query($query_author_details, $conn) or die(mysql_error());
 $row_author_details = mysql_fetch_assoc($author_details);
 $totalRows_author_details = mysql_num_rows($author_details);

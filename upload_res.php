@@ -91,7 +91,11 @@ else
 	else
 	$redirect="http://localhost/dreamweaver/userhome.php";
 }
-$allowedExts = array("gif", "jpeg", "jpg", "png","pdf");
+$allowedExts = array("gif", "jpeg", "jpg", "png","pdf","mp4","doc","docx","pptx","ppt","txt");
+
+	
+
+
 $temp = explode(".", $_FILES["file"]["name"]);
 $extension = end($temp);
 $max_size=500000000;
@@ -105,7 +109,13 @@ if ((($_FILES["file"]["type"] == "image/gif")
 || ($_FILES["file"]["type"] == "image/png")
 || ($_FILES["file"]["type"] == "application/pdf")
 || ($_FILES["file"]["type"] == "application/x-pdf")
-|| in_array($extension, $allowedExts))
+||($_FILES["file"]["type"] == "video/mp4")
+||($_FILES["file"]["type"] == "application/msword")
+||($_FILES["file"]["type"] == "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+||($_FILES["file"]["type"] == "application/vnd.ms-powerpoint")
+||($_FILES["file"]["type"] == "application/vnd.openxmlformats-officedocument.presentationml.presentation")
+||($_FILES["file"]["type"] == "text/plain"))
+&& in_array($extension, $allowedExts)
 && 
 ($_FILES["file"]["size"] < $max_size)
 
@@ -160,7 +170,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form")){
 	    }
 else
   {
-	  if ((($_FILES["file"]["type"] == "image/gif")
+	  if (!(($_FILES["file"]["type"] == "image/gif")
 			|| ($_FILES["file"]["type"] == "image/jpeg")
 			|| ($_FILES["file"]["type"] == "image/jpg")
 			|| ($_FILES["file"]["type"] == "image/pjpeg")
