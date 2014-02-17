@@ -154,6 +154,28 @@ xmlhttp.send();
 }
 
 function submitTest() {
+	 var inputs = document.getElementById("evalform").elements;
+	 var radios = [];
+	 var query = "?"; 
+	 for (var i = 0; i < inputs.length; ++i) {
+        if (inputs[i].type == 'radio') {
+            radios.push(inputs[i]);
+        }
+    }
+	var firstFlag=0;
+	for (var i = 0; i < radios.length; i++) {
+        if (radios[i].checked) {
+            alert(radios[i].value);
+			var pos=radios[i].value.toString().indexOf("-");
+			if(firstFlag==0) {
+				query+=radios[i].value.toString().substring(0,pos)+"="+radios[i].value.toString().substring(pos+1);
+				firstFlag=1;
+			}else {
+				query+="&"+radios[i].value.toString().substring(0,pos)+"="+radios[i].value.toString().substring(pos+1);
+			}
+        }
+    }
+	alert(query);
 }
 </script>
 </head> 

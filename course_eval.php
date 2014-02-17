@@ -166,7 +166,7 @@ if(isset($_GET['c_id']) && isset($_GET['ques']) && isset($_GET['opt1']) && isset
 		echo '<div id="course" style="height:300px;position:relative;padding:0px;">';
 		echo '<div style="max-height:100%;overflow:auto;"><div class="evaluation">';
 		echo '<ul id="questionslist" style="overflow:auto;">';
-		echo '<form id="evalform">';
+		echo '<form name="evalform" id="evalform">';
 		do {
 			echo '<li>';
 			echo '<div id="question'.$row_load_test['q_no'].'" style="color:#000;font-size:14px;">';
