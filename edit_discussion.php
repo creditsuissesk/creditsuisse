@@ -119,11 +119,17 @@ if(isset($_POST['actiontype']) && $_POST['actiontype']=="delete") {
 		  $insertGoTo .= $_SERVER['QUERY_STRING'];		 
 		}
 		}//end of two post variables if case
-	}
-	else if (isset($_POST['actiontype']) && $_POST['actiontype']=="flag") {
+	} else if (isset($_POST['actiontype']) && $_POST['actiontype']=="flag") {
 		//flag discussion
 				$flag_disc = sprintf("UPDATE `discussion` SET flag=1 WHERE discussion_id=%s",GetSQLValueString($_POST['disc_id'], "int"));
 				$result_flag_disc= mysql_query($flag_disc, $conn) or die(mysql_error());
+	} else if (isset($_POST['actiontype']) && $_POST['actiontype']=="unflag") {
+		//check if session owner is root, only then proceed
+		if($_SESSION['MM_UserGroup']=='admin') {
+			//unflag discussion
+			$unflag_disc = sprintf("UPDATE `discussion` SET flag=0 WHERE discussion_id=%s",GetSQLValueString($_POST['disc_id'], "int"));
+			$unresult_flag_disc= mysql_query($unflag_disc, $conn) or die(mysql_error());
+		}
 	}
 	header("Location: ".$_POST['redirect_url']);
 ?>
