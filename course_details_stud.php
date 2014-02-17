@@ -180,16 +180,19 @@ function showResource(id,type,name) {
 	light = new LightFace.IFrame({
 		height:height_set,
 		width:width_set,
-		url: 'show_resource_float.php?r_id='+id,
+		url: 'show_resource_float.php?actiontype=loadResource&r_id='+id,
 		title: 'Resource : '+name
 		}).addButton('Close', function() { light.close(); },true).open();		
 }
 
-		window.addEvent('domready',function(){
-			
-			//document.id('start').addEvent('click',);
-			
-		});
+function showRating(id,name) {
+	light = new LightFace.IFrame({
+		height:150,
+		width:200,
+		url: 'show_resource_float.php?actiontype=loadRating&r_id='+id,
+		title: name
+		}).addButton('Close', function() { light.close(); },true).open();
+}
 </script>    
     
 <script language="javascript" type="text/javascript">
@@ -367,10 +370,11 @@ function clearText(field)
 					}
 					echo '\',\''.$row_get_resources['filename'].'\');"><div id="rname">'.$row_get_resources['filename'].'</div></div></b></td>';
 					if($row_get_resources['download_status']==1) {
-						echo '<td><img src="images/Download-icon.png" width="25px" height="25px"/></td></tr></table></li>';
-					}else {
-						echo '</tr></table></li>';
+						echo '<td><img src="images/Download-icon.png" width="25px" height="25px"/></td>';
 					}
+					//show voting icon
+					echo '<td><img src="images/rating-icon.png" width="25px" height="25px" onclick="showRating(1,\'Resource\');"/></td>';
+					echo '</tr></table></li>';
                 }while($row_get_resources = mysql_fetch_assoc($get_resources));
 				?>
                 

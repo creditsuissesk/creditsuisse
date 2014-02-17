@@ -3,6 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Resource</title>
+
+<!--- files for voting--->
+<script src="lib/jQuery.js" type="text/javascript"></script>
+<script src="lib/jquery.upvote.js" type="text/javascript"></script>
+<link href="lib/jquery.upvote.css" rel="stylesheet" type="text/css">
+
 </head>
 <?php
 //this page generates resource floating layout.
@@ -86,7 +92,7 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 <body>
 <?php
 mysql_select_db($database_conn, $conn);
-if(isset($_GET['r_id'])) {
+if(isset($_GET['r_id']) && (isset($_GET['actiontype']) && $_GET['actiontype']=="loadResource")) {
 	$query_get_resource= sprintf("SELECT * FROM `resource` WHERE r_id=%s",GetSQLValueString($_GET['r_id'], "int"));
 	$get_resource = mysql_query($query_get_resource, $conn) or die(mysql_error());
 	$row_get_resource = mysql_fetch_assoc($get_resource);
@@ -98,6 +104,13 @@ if(isset($_GET['r_id'])) {
 	}else if ($row_get_resource['file_type']=="image/jpeg") {
 		echo '<embed height="300" width="600" src="'.$row_get_resource['view_location'].'">';
 	}
+}if(isset($_GET['r_id']) && (isset($_GET['actiontype']) && $_GET['actiontype']=="loadRating")) {
+	echo '<div class="upvote">';
+	echo '<a class="upvote"></a>';
+	echo '<span class="count">0</span>';
+	echo '<a class="downvote"></a>';
+	echo '<a class="star"></a>';
+	echo '</div>';
 }
 ?>
 </body>

@@ -103,7 +103,6 @@ if(isset($_GET['c_id']) && isset($_GET['ques']) && isset($_GET['opt1']) && isset
 	$row_check_course = mysql_fetch_assoc($check_course);
 	$totalRows_check_course = mysql_num_rows($check_course);
 	//if course creator is indeed session owner, then only proceed
-			file_put_contents("test.txt","inside show questions");
 	if($row_check_course['u_id']==$_SESSION['MM_UserID']) {
 
 		//get current questions
@@ -111,9 +110,7 @@ if(isset($_GET['c_id']) && isset($_GET['ques']) && isset($_GET['opt1']) && isset
 		$count_ques = mysql_query($query_count_ques, $conn) or die(mysql_error());
 		$row_count_ques = mysql_fetch_assoc($count_ques);
 		$totalRows_count_ques = mysql_num_rows($count_ques);
-		file_put_contents("test.txt",$totalRows_count_ques);
 		if ($totalRows_count_ques>0) {
-			file_put_contents("test.txt",$totalRows_count_ques);
 		do {
 			echo '<li>';
 			echo '<h4 style="color:#93CDF5;float:left;">'.$row_count_ques['ques'].'</h4><br /><br />';
@@ -223,7 +220,6 @@ if(isset($_GET['c_id']) && isset($_GET['ques']) && isset($_GET['opt1']) && isset
 		}
 		$query_eval_test=sprintf("SELECT * FROM `course_eval` WHERE c_id_eval=%s AND (",GetSQLValueString($_GET['evalTest'], "int"));
 		$query_eval_test.=$condition.")";
-		file_put_contents("test.txt",$query_eval_test);
 		$eval_test = mysql_query($query_eval_test, $conn) or die(mysql_error());
 		$row_eval_test = mysql_fetch_assoc($eval_test);
 		$totalRows_eval_test = mysql_num_rows($eval_test);
