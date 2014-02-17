@@ -123,7 +123,7 @@ else if (isset($_GET['enrollId'])) {
 }else if (isset($_GET['showCourses'])) {
 	//for showing courses currently going on
 	if($_GET['showCourses']==1) {
-		$query_incomplete_courses = sprintf("SELECT * FROM course JOIN enroll_course  ON course.c_id=enroll_course.c_enroll_id where enroll_course.u_id=%s AND completion_stat=0 AND DATE(NOW()) BETWEEN start_date AND end_date",GetSQLValueString($_SESSION['MM_UserID'], "int"));
+		$query_incomplete_courses = sprintf("SELECT * FROM course JOIN enroll_course  ON course.c_id=enroll_course.c_enroll_id where enroll_course.u_id=%s AND approve_status=1 AND completion_stat=0 AND DATE(NOW()) BETWEEN start_date AND end_date",GetSQLValueString($_SESSION['MM_UserID'], "int"));
 		$incomplete_courses = mysql_query($query_incomplete_courses, $conn) or die(mysql_error());
 		$row_incomplete_courses = mysql_fetch_assoc($incomplete_courses);
 		$totalRows_incomplete_courses = mysql_num_rows($incomplete_courses);

@@ -337,29 +337,39 @@ function submitTest() {
 			?>
             <div class="section section_with_padding" id="resources"> 
                 <h1>Resources</h1>
-                <div class="half left">
-                	<p><em>Praesent condimentum ac quam a scelerisque. Interdum et malesuada fames ac ante ipsum primis in faucibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer feugiat gravida est nec accumsan. Nunc posuere, magna id ornare mollis.</em></p>
-                	<ul class="list_bullet">
-                        <li>Maecenas ac odio ipsum donec cursus</li>
-                        <li>Fusce risus tortor, interdum</li>
-                        <li>Proin facilisis ullamcorper</li>
-                        <li><a href="#">Sed vel justo quis ligula</a></li>
-                        <li>Ut tristique sagittis arcu</li>
-                        <li>Maecenas ac odio ipsum donec cursus</li>
-                        <li>Fusce risus tortor, interdum</li>
-                        <li>Proin facilisis ullamcorper</li>
-                    </ul>
-                    
-                </div>
-                <div class="half right">
-                    <div class="img_border img_nom"> <a href="#gallery"><img src="images/templatemo_image_01.jpg" alt="image 1" /></a>	
-                    </div>
-                    
-               	  <p>Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nam mauris ipsum, pulvinar sit amet varius at, placerat ut felis. Curabitur consectetur aliquam purus, eget faucibus est ultrices iaculis. Suspendisse luctus mauris et erat imperdiet rutrum. Visit <a href="#gallery"><strong> Gallery Page</strong></a> for more info.<br />
-               	    <br />
-				All photos are provided by <a href="http://www.photovaco.com" target="_blank">photovaco</a> website.<br />
-				Validate <a href="http://validator.w3.org/check?uri=referer" rel="nofollow">XHTML</a> &amp; <a href="http://jigsaw.w3.org/css-validator/check/referer" rel="nofollow">CSS</a></p>
-                </div>
+                <?php //get all resources of the course and show container only if resources are available 
+					$query_get_resources=sprintf("SELECT * FROM `resource` WHERE c_id=%s",GetSQLValueString($_GET['c_id'],"int"));
+					$get_resources = mysql_query($query_get_resources, $conn) or die(mysql_error());
+					$row_get_resources = mysql_fetch_assoc($get_resources);
+					$totalRows_get_resources = mysql_num_rows($get_resources);
+					//show container only if resources are uploaded
+					if($totalRows_get_resources>0) {
+						
+				?>
+				
+                <div class="container">
+				<main class="course-content-exam" style="background-color:#FFF;border-radius:5px;">
+				<div id="course" style="height:300px;position:relative;padding:0px;">
+				<div style="max-height:100%;overflow:auto;"><div class="evaluation">
+				<ul id="resourcelist">
+                <?php 
+                do {
+					echo '<li><table><tr><td><b><div id="rname">'.$row_get_resources['filename'].'</div></b></td>';
+					if($row_get_resources['download_status']==1) {
+						echo '<td><img src="images/Download-icon.png" width="25px" height="25px"/></td></tr></table></li>';
+					}else {
+						echo '</tr></table></li>';
+					}
+                }while($row_get_resources = mysql_fetch_assoc($get_resources));
+				?>
+                
+                </ul>
+				</div></div></div>
+				</main><!-- .content -->
+				</div><!---container --->
+                <?php } else { //no resource exists. Notify so.
+					echo "No resources have been uploaded by author. Please check again later.";
+				}?>
                 <a href="#home" class="home_btn">home</a> 
                 <a href="#about" class="page_nav_btn previous">Previous</a>
                 <a href="#evaluation" class="page_nav_btn next">Next</a> 
