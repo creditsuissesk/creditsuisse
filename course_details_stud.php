@@ -126,6 +126,30 @@ $totalRows_other_course = mysql_num_rows($other_course);
 <link rel="stylesheet" href="css/course_list.css" type="text/css" media="screen" /> 
 <link rel="stylesheet" type="text/css" media="screen" href="css/nav_bar.css" />
 <script type="text/JavaScript" src="js/slimbox2.js"></script> 
+
+<style>
+		@import "css/LightFace.css";
+	</style>
+	<link rel="stylesheet" href="css/lightface.css" />
+	<script src="js/mootools.js"></script>
+	<script src="js/LightFace.js"></script>
+	<script src="js/LightFace.js"></script>
+	<script src="js/LightFace.IFrame.js"></script>
+	<script src="js/LightFace.Image.js"></script>
+	<script src="js/LightFace.Request.js"></script>
+    
+<script>
+
+		window.addEvent('domready',function(){
+			
+			document.id('start').addEvent('click',function() {
+				light = new LightFace.IFrame({ height:520, width:920, url: 'show_resource_float.php?r_id=1', title: 'Resource' }).addButton('Close', function() { light.close(); },true).open();
+				
+			});
+			
+		});
+</script>    
+    
 <script language="javascript" type="text/javascript">
 function clearText(field)
 {
@@ -291,6 +315,7 @@ function clearText(field)
 				<div id="course" style="height:300px;position:relative;padding:0px;">
 				<div style="max-height:100%;overflow:auto;"><div class="evaluation">
 				<ul id="resourcelist">
+                <li id="start"> clickme</li>
                 <?php 
                 do {
 					echo '<li><table><tr><td><b><div id="rname"><a onclick="viewResource(); return false;">'.$row_get_resources['filename'].'</a></div></b></td>';
