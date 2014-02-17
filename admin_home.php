@@ -173,6 +173,14 @@ $totalRows_discussion = mysql_num_rows($discussion);
 
 /* End of query for flagged discussion*/
 
+/* Start of query for Flagged comment*/
+mysql_select_db($database_conn, $conn);
+$query_comment= "SELECT comment.insert_uid,comment_body,comment_score,name,comment.discussion_id,comment.comment_id FROM `comment` JOIN `discussion` ON discussion.discussion_id= comment.discussion_id WHERE comment.flag=1";
+$comment = mysql_query($query_comment, $conn) or die(mysql_error());
+$row_comment = mysql_fetch_assoc($comment);
+$totalRows_comment = mysql_num_rows($comment);
+
+/* End of query for flagged comment*/
 
 
 
@@ -447,7 +455,7 @@ var currdis = {
 };
 
 // Init list
-var dislist = new List('new_users', currdis);
+var dislist = new List('flag_d', currdis);
 </script>
   </div>
   </div>
@@ -457,12 +465,66 @@ var dislist = new List('new_users', currdis);
   
     
   <!--start of Flagged Comments tab content-->
-  <div class="TabbedPanelsContent">
+    <div class="TabbedPanelsContent">
+  <div id="flag_c">
+    <?php if ($totalRows_comment>0 ) { ?>
+    <div class="datagrid">
+    
+    <table>
+    <thead>
+  <tr>
+  	<th class="sort" data-sort="name">Comment Body</th>
+     <th class="sort" data-sort="category">Disussion </th>
+    <th class="sort" data-sort="Rating">Rating(Votes)</th>
+    <th>Final Status</th>
+    <th>    </th>
+    <th colspan="2">
+          <input type="text" class="search" placeholder="Search Comments" />
+        </th>
+  </tr>
+  </thead>
+    <a href="<?php echo $logoutAction ?>">
+  </a>
+  <tbody class="list">
+  <?php do { ?>
+    
   
-  
-  
+    <tr>
+     
+      <td class="name"><?php echo $row_comment['comment_body']; ?></td>
+      <td class="category"><?php echo $row_comment['name']; ?></td>
+      <td class="rating"><?php echo $row_comment['comment_score']; ?></td>
+
+<form  id="form2" name="form2" method="POST" action="edit_comment.php">      
+<td><select name="actiontype" id="actiontype">
+        <option value="flag">  </option>
+        <option value="unflag">Clear Flag</option>
+        <option value="delete">Delete</option>
+        </select></td>
+      <td> 
+      <input name="update" id="update" value="update" type="submit" ></input> 
+        <input type="hidden" name="redirect_disc_id" value="<?php echo $row_comment['discussion_id'];?>" />
+        <input type="hidden" id="comment_id" name="comment_id" value="<?php echo $row_comment['comment_id'];?>" />
+        <input type="hidden" id="insert_uid" name="insert_uid" value="<?php echo $row_comment['insert_uid'];?>" />
+        </td></form>
+    </tr>
+    <?php } while ($row_comment = mysql_fetch_assoc($comment)); ?>
+    </tbody>
+    </table>
   </div>
-  <!--End of Flagged Comments tab content-->
+    <?php } else {
+		echo "No Flagged Comments";
+	} ?>
+    <script>
+var currcom = {
+  valueNames: [ 'name','rating','category']
+};
+
+// Init list
+var comlist = new List('flag_c', currcom);
+</script>
+  </div>
+  </div>  <!--End of Flagged Comments tab content-->
   </div>
 </div>
 <a href="<?php echo $logoutAction ?>">Log out</a>

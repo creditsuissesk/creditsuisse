@@ -80,20 +80,37 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 mysql_select_db($database_conn, $conn);
 if(isset($_POST['actiontype']) && $_POST['actiontype']=="delete") {
 	if(isset($_POST['comment_id']) && isset($_POST['redirect_disc_id']) ) {
-		echo "all POST set";
+	
 		$query_comment = sprintf("SELECT * FROM `comment` WHERE comment_id=%s",GetSQLValueString($_POST['comment_id'], "int"));
 		$comment = mysql_query($query_comment, $GLOBALS['conn']) or die(mysql_error());
 		$row_comment = mysql_fetch_assoc($comment);
 		$totalRows_comment = mysql_num_rows($comment);
 		if($_SESSION['MM_UserID']==$row_comment['insert_uid']) {
-			deleteComment($_POST['comment_id'],$_SESSION['MM_UserID']);
+			deleteComment($_POST['comment_id'],$_SESSION['MM_UserID']);	
 		}
+		else
+		//case for admin moderation 
+			if($_SESSION['MM_UserGroup']=='admin')
+			{
+				deleteComment($_POST['comment_id'],$_POST['insert_uid']);
+			}
 		}//end of two post variables if case
 	}
-	else if (isset($_POST['actiontype']) && $_POST['actiontype']=="flag") {
+	else{ if (isset($_POST['actiontype']) && $_POST['actiontype']=="flag") {
 		//flag comment
 				$flag_comment = sprintf("UPDATE `comment` SET flag=1 WHERE comment_id=%s",GetSQLValueString($_POST['comment_id'], "int"));
 				$result_flag_comment = mysql_query($flag_comment, $conn) or die(mysql_error());
+
 	}
-	header("Location: forum_new.php?showTab=discussions&mode=disc&discussionid=".$_POST['redirect_disc_id']);
+	else {
+		if(isset($_POST['actiontype']) && $_POST['actiontype']=="unflag")
+	{
+		//unflag comment
+		$unflag_comment = sprintf("UPDATE `comment` SET flag=0 WHERE comment_id=%s",GetSQLValueString($_POST['comment_id'], "int"));
+				$unresult_flag_comment = mysql_query($unflag_comment, $conn) or die(mysql_error());
+	}
+	}
+		header("Location: forum_new.php?showTab=discussions&mode=disc&discussionid=".$_POST['redirect_disc_id']);
+}
+	
 ?>
