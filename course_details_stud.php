@@ -139,13 +139,27 @@ $totalRows_other_course = mysql_num_rows($other_course);
 	<script src="js/LightFace.Request.js"></script>
     
 <script>
+function showResource(id,type,name) {
+	//show dimensions based on content type
+	var height_set,width_set;
+	if(type=="pdf") {
+		height_set=520;
+		width_set=920;
+	}else if (type=="image") {
+		height_set=320;
+		width_set=620;
+	}
+	light = new LightFace.IFrame({
+		height:height_set,
+		width:width_set,
+		url: 'show_resource_float.php?r_id='+id,
+		title: 'Resource : '+name
+		}).addButton('Close', function() { light.close(); },true).open();		
+}
 
 		window.addEvent('domready',function(){
 			
-			document.id('start').addEvent('click',function() {
-				light = new LightFace.IFrame({ height:520, width:920, url: 'show_resource_float.php?r_id=1', title: 'Resource' }).addButton('Close', function() { light.close(); },true).open();
-				
-			});
+			//document.id('start').addEvent('click',);
 			
 		});
 </script>    
@@ -315,10 +329,15 @@ function clearText(field)
 				<div id="course" style="height:300px;position:relative;padding:0px;">
 				<div style="max-height:100%;overflow:auto;"><div class="evaluation">
 				<ul id="resourcelist">
-                <li id="start"> clickme</li>
                 <?php 
                 do {
-					echo '<li><table><tr><td><b><div id="rname"><a onclick="viewResource(); return false;">'.$row_get_resources['filename'].'</a></div></b></td>';
+					echo '<li><table><tr><td><b><div id="'.$row_get_resources['r_id'].'" onclick="showResource('.$row_get_resources['r_id'].',\'';
+					if($row_get_resources['file_type']=="application/pdf") {
+						echo "pdf";
+					}else if ($row_get_resources['file_type']=="image/jpeg") {
+						echo "image";
+					}
+					echo '\',\''.$row_get_resources['filename'].'\');"><div id="rname">'.$row_get_resources['filename'].'</div></div></b></td>';
 					if($row_get_resources['download_status']==1) {
 						echo '<td><img src="images/Download-icon.png" width="25px" height="25px"/></td></tr></table></li>';
 					}else {

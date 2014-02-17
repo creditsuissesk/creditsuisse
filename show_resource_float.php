@@ -95,6 +95,8 @@ if(isset($_GET['r_id'])) {
 	if($row_get_resource['file_type']=="application/pdf") {
 		//outputting code to show pdf
 		echo '<embed height="500" width="900" src="'.$row_get_resource['view_location'].'">';
+	}else if ($row_get_resource['file_type']=="image/jpeg") {
+		echo '<embed height="300" width="600" src="'.$row_get_resource['view_location'].'">';
 	}
 }
 ?>
