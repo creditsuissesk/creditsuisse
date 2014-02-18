@@ -93,6 +93,7 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 <?php
 mysql_select_db($database_conn, $conn);
 if(isset($_GET['r_id']) && (isset($_GET['actiontype']) && $_GET['actiontype']=="loadResource")) {
+	//show resource in float
 	$query_get_resource= sprintf("SELECT * FROM `resource` WHERE r_id=%s",GetSQLValueString($_GET['r_id'], "int"));
 	$get_resource = mysql_query($query_get_resource, $conn) or die(mysql_error());
 	$row_get_resource = mysql_fetch_assoc($get_resource);
@@ -105,12 +106,76 @@ if(isset($_GET['r_id']) && (isset($_GET['actiontype']) && $_GET['actiontype']=="
 		echo '<embed height="300" width="600" src="'.$row_get_resource['view_location'].'">';
 	}
 }if(isset($_GET['r_id']) && (isset($_GET['actiontype']) && $_GET['actiontype']=="loadRating")) {
-	echo '<div class="upvote">';
+	//load the bookmarking and flagging float.
+	$query_get_resource= sprintf("SELECT * FROM `resource` LEFT OUTER JOIN `user_resource` ON resource.r_id=user_resource.user_resource_id WHERE r_id=%s",GetSQLValueString($_GET['r_id'], "int"));
+	$get_resource = mysql_query($query_get_resource, $conn) or die(mysql_error());
+	$row_get_resource = mysql_fetch_assoc($get_resource);
+	$totalRows_get_resource= mysql_num_rows($get_resource);
+	echo '<table style="margin-left:60px;"><tr><td>';
+	echo '<div id="res'.$row_get_resource['r_id'].'" class="upvote">';
 	echo '<a class="upvote"></a>';
 	echo '<span class="count">0</span>';
 	echo '<a class="downvote"></a>';
 	echo '<a class="star"></a>';
 	echo '</div>';
+	echo '</td><td>';
+	if($row_get_resource['flag_status']==1) {
+		echo "<img src='images/red_flag.png' width='30' height='30'/>";
+	}else {
+		echo "<img src='images/flag.png' style='cursor:pointer;' width='30' height='30' onclick='flag(".$row_get_resource['r_id'].");'/>";
+	}
+	echo '</td></tr></table>';
+	echo '<script language="javascript">';
+	
+	echo "function flag(r_id) {
+	var r=confirm(\"Are you sure you want to flag this discussion?\");
+			if (r==true){
+				$.ajax({
+					url: 'voter_res.php',
+					type: 'post',
+					data: { id: r_id,action:'flag'}
+				});	
+	  		} 
+	};";
+	
+	echo "var res_callback = function(data) {";
+	echo "	$.ajax({
+		url: 'voter_res.php',
+		type: 'post',
+		data: { id: data.id, up: data.upvoted, down: data.downvoted, star: data.starred , count: $('#res'+ data.id).upvote('count'),upstatus:$('#res'+data.id).upvote('upvoted'),downstatus:$('#res'+data.id).upvote('downvoted')},
+		});	
+	};";
+	echo "
+	var res_callback2= function(data) {
+		if($('#res'+data.id).upvote('upvoted')==true || $('#res'+data.id).upvote('downvoted')==true) { ";
+	echo	'alert("You can\'t vote yourself");';
+	echo "	}
+		$.ajax({
+			url: 'voter_res.php',
+			type: 'post',
+			data: {id: data.id, star:data.starred}
+		});
+	};";
+	
+	if($row_get_resource['uploaded_by']==$_SESSION['MM_UserID']){
+			echo "$('#res".$row_get_resource['r_id']."').upvote({count:".$row_get_resource['avg_rating'].",id:".$row_get_resource['r_id'].", callback: res_callback2";
+			if ($row_get_resource['bookmarked']==1) {
+				echo ",starred:1";
+			} 
+			echo "});";
+	} else {
+			echo "$('#res".$row_get_resource['r_id']."').upvote({count:".$row_get_resource['avg_rating'].",id:".$row_get_resource['r_id'].", callback: res_callback";
+			if ($row_get_resource['vote_status']==1) {
+				echo ",upvoted:1";
+			}else if ($row_get_resource['vote_status']==-1){
+				echo ",downvoted:1";
+			}
+			if ($row_get_resource['bookmarked']==1) {
+				echo ",starred:1";
+			}
+			echo "});";
+	}
+	echo '</script>';
 }
 ?>
 </body>

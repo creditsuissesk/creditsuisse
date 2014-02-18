@@ -605,9 +605,9 @@ $totalRows_categories = mysql_num_rows($categories);
                     <!--- script for discussion vote widget --->
                     <script language="javascript">
 							<?php if($row_disc['insert_uid']==$_SESSION['MM_UserID']){?>
-								$('#disc<?php echo $row_disc['discussion_id'];?>').upvote({count: <?php echo $row_disc['rating'];?>,id: <?php echo $row_disc['discussion_id'];?>, callback: disc_callback2,
+								$('#disc<?php echo $row_disc['discussion_id'];?>').upvote({count: <?php echo $row_disc['rating'];?>,id: <?php echo $row_disc['discussion_id'];?>, callback: disc_callback2
 								<?php if ($row_disc['bookmarked']==1) {
-										echo "starred:1";
+										echo ",starred:1";
 									} ?>});
 							<?php } else { ?>
 									$('#disc<?php echo $row_disc['discussion_id'];?>').upvote({count: <?php echo$row_disc['rating'];?>,id: <?php echo $row_disc['discussion_id'];?>, callback: disc_callback
