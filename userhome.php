@@ -299,58 +299,6 @@ xmlhttp.open("GET","show_resources.php?sortType="+str,true);
 xmlhttp.send();
 
 }
-/*
-function showEnrolledresources()
-{
-/*if (str=="")
-  {
-  document.getElementById("txtHint").innerHTML="";
-  return;
-  }//commented till here
-if (window.XMLHttpRequest)
-  {// code for IE7+, Firefox, Chrome, Opera, Safari
-  xmlhttp=new XMLHttpRequest();
-  }
-else
-  {// code for IE6, IE5
-  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-  }
-xmlhttp.onreadystatechange=function()
-  {
-  if (xmlhttp.readyState==4 && xmlhttp.status==200)
-    {
-    document.getElementById("content").innerHTML=xmlhttp.responseText;
-    }
-  }
-xmlhttp.open("GET","show_resources.php?showresources=1",true);
-xmlhttp.send();
-}
-
-function enrollresource(ele) {
-	var r=confirm("Are you sure you want to enroll for this resource?");
-	if (r==true) {
-		if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
-		  xmlhttp=new XMLHttpRequest();
-		} else {// code for IE6, IE5
-		  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-  		}
-		xmlhttp.onreadystatechange=function()
-		{
-		  if (xmlhttp.readyState==4 && xmlhttp.status==200) {
-		    //document.getElementById("courselist").innerHTML=xmlhttp.responseText;
-				var e = document.getElementById("sortdropdown");
-				var strUser = e.options[e.selectedIndex].value;
-				sortresources(strUser,0);
-			}
-			else {
-				ele.innerHTML='<a id="'+ele.id+'" class="enroll">Enrolling...</a>';
-			}
-		}
-		xmlhttp.open("GET","show_resources.php?enrollId="+ele.id,true);
-		xmlhttp.send();
-	}
-}*/
-
 function searchresources() {
 	var e = document.getElementById("searchdropdown1");
 	var searchtype = e.options[e.selectedIndex].value;
@@ -442,11 +390,12 @@ else {
                         Sort by:
                         <form action=""> 
 						<select id="sortdropdown1" name="use" onChange="sortresources(this.value,0)">
-						<option value="1" selected>Most Popular</option>
-						<option value="2">Latest</option>
+						<option value="1" selected>Your Bookmarks</option>
+						<option value="2">Most Popular</option>
+                        <option value="3">Latest</option>
 						</select>
 						</form>
-                        <script> $(document).ready(function(){sortresources(1,1);});</script>
+                        <!---<script> $(document).ready(function(){sortresources(1,1);});</script> --->
                         
                         Search resource by:
                         <form action=""> 
@@ -495,7 +444,7 @@ else {
                         <option value="4">Running Courses</option>
 						</select>
 						</form>
-                        <script> $(document).ready(function(){sortCourses(1,1);});</script>
+                        <script> $(document).ready(function(){sortCourses(1,1);sortresources(1,1);});</script>
                         
                         Search course by:
                         <form action=""> 

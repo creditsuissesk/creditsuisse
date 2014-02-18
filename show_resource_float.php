@@ -105,7 +105,9 @@ if(isset($_GET['r_id']) && (isset($_GET['actiontype']) && $_GET['actiontype']=="
 	}else if ($row_get_resource['file_type']=="image/jpeg") {
 		echo '<embed height="300" width="600" src="'.$row_get_resource['view_location'].'">';
 	}
-}if(isset($_GET['r_id']) && (isset($_GET['actiontype']) && $_GET['actiontype']=="loadRating")) {
+}
+
+if(isset($_GET['r_id']) && (isset($_GET['actiontype']) && $_GET['actiontype']=="loadRating")) {
 	//load the bookmarking and flagging float.
 	$query_get_resource= sprintf("SELECT * FROM `resource` LEFT OUTER JOIN `user_resource` ON resource.r_id=user_resource.user_resource_id WHERE r_id=%s",GetSQLValueString($_GET['r_id'], "int"));
 	$get_resource = mysql_query($query_get_resource, $conn) or die(mysql_error());
@@ -181,6 +183,16 @@ if(isset($_GET['r_id']) && (isset($_GET['actiontype']) && $_GET['actiontype']=="
 			echo "});";
 	}
 	echo '</script>';
+}
+
+if(isset($_GET['r_id']) && (isset($_GET['actiontype']) && $_GET['actiontype']=="loadQR")) {
+	//get resource file details.
+	$query_get_resource= sprintf("SELECT * FROM `resource` LEFT OUTER JOIN `user_resource` ON resource.r_id=user_resource.user_resource_id WHERE r_id=%s",GetSQLValueString($_GET['r_id'], "int"));
+	$get_resource = mysql_query($query_get_resource, $conn) or die(mysql_error());
+	$row_get_resource = mysql_fetch_assoc($get_resource);
+	$totalRows_get_resource= mysql_num_rows($get_resource);
+	//redirect to QR API page to generate QR code
+	 header( 'Location: https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://localhost/dreamweaver/'.$row_get_resource['filename'] ) ;
 }
 ?>
 </body>

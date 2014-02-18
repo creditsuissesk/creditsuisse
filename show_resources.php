@@ -79,12 +79,14 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 mysql_select_db($database_conn, $conn);
 if(isset($_GET['sortType'])) {
 	if($_GET['sortType']==1) {
+		//bookmarked
+		$query_sort_courses = sprintf("SELECT * FROM (SELECT c_name,uploaded_date, filename ,resource.c_id, resource.avg_rating AS rating, resource.download_status, r_id  FROM `resource` JOIN `course` ON course.c_id = resource.c_id WHERE resource.approve_status =1 AND course.approve_status =1 ) AS `temp` JOIN `enroll_course` ON temp.c_id = c_enroll_id JOIN `user_resource` ON temp.r_id=user_resource_id WHERE enroll_course.u_id=%s AND bookmarked=1",GetSQLValueString($_SESSION['MM_UserID'], "int"));
+	}else if($_GET['sortType']==2) {
 		//sort by most popular
 		$query_sort_courses = sprintf("SELECT * FROM (SELECT c_name,uploaded_date, filename ,resource.c_id, resource.avg_rating AS rating, resource.download_status, r_id  FROM `resource` JOIN `course` ON course.c_id = resource.c_id WHERE resource.approve_status =1 AND course.approve_status =1 ) AS `temp` JOIN `enroll_course` ON temp.c_id = c_enroll_id WHERE enroll_course.u_id=%s ORDER BY temp.rating",GetSQLValueString($_SESSION['MM_UserID'], "int"));
-	}else if($_GET['sortType']==2) {
+	}else if($_GET['sortType']==3) {
 		//sort by latest
 		$query_sort_courses = sprintf("SELECT * FROM (SELECT resource.uploaded_date, c_name, r_id, filename,resource.c_id,resource.avg_rating AS rating, resource.download_status  FROM `resource` JOIN `course` ON course.c_id = resource.c_id WHERE resource.approve_status =1 AND course.approve_status =1 ) AS `temp` JOIN `enroll_course` ON temp.c_id = c_enroll_id WHERE enroll_course.u_id=%s ORDER BY temp.uploaded_date DESC",GetSQLValueString($_SESSION['MM_UserID'], "int"));
-
 	}
 	$sort = mysql_query($query_sort_courses, $conn) or die(mysql_error());
 	$row_sort = mysql_fetch_assoc($sort);
@@ -127,7 +129,7 @@ else if (isset($_GET['searchKey']) && isset($_GET['searchType']) ) {
 			echo "<li>";
 			echo '<span><b>'.$row_search['filename'].'</b> in <i>'.$row_search['c_name'].'</i></span><br>';
 			echo '<p class="dates">Uploaded on: '.$row_search['uploaded_date'].'</p>';
-			echo '<p ><b> Average Rating: </b><i>'.$row_search['rating'].'</i></p>';
+			echo '<p ><b> Votes : </b><i>'.$row_search['rating'].'</i></p>';
 			if (($row_search['download_status']==1)) {
 				//enrolled for course already
 				echo '<p class="enrolled"><a href="download_res.php?id='.$row_search['r_id'].'">Download</p>';
@@ -142,19 +144,3 @@ else if (isset($_GET['searchKey']) && isset($_GET['searchType']) ) {
 	}
 
 ?>
-
-
-
-
-
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Untitled Document</title>
-</head>
-
-<body>
-</body>
-</html>
