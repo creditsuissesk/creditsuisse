@@ -182,10 +182,16 @@ img { margin: 0; padding: 0; border: none }
 .box4 { background: #636363 url(../images/templatemo_04.png) scroll 20px 25px no-repeat }
 .box4:hover { background-color: #4b4b4b }
 
-.box5 { background: #413959 url(../images/twitter.png) scroll 18px 15px no-repeat  }
+.box5 { background: #413959 url() scroll 18px 15px no-repeat  }
 .box5:hover { background-color: #302945 }
 
 .box6 { background: #3c3b3b }
+
+.box8 { background: #B3EE3A url() scroll 20px 25px no-repeat }
+.box8:hover { background-color: #698B22 }
+
+.box7 { background: #CD1076  url() scroll 20px 25px no-repeat }
+.box7:hover { background-color: #8B0A50 }
 
 .home_box .box_with_padding { padding: 25px 15px 15px 140px }
 

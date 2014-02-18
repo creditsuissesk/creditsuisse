@@ -1,3 +1,98 @@
+<?php require_once('Connections/conn.php'); ?>
+<?php
+if (!function_exists("GetSQLValueString")) {
+function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
+{
+  if (PHP_VERSION < 6) {
+    $theValue = get_magic_quotes_gpc() ? stripslashes($theValue) : $theValue;
+  }
+
+  $theValue = function_exists("mysql_real_escape_string") ? mysql_real_escape_string($theValue) : mysql_escape_string($theValue);
+
+  switch ($theType) {
+    case "text":
+      $theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
+      break;    
+    case "long":
+    case "int":
+      $theValue = ($theValue != "") ? intval($theValue) : "NULL";
+      break;
+    case "double":
+      $theValue = ($theValue != "") ? doubleval($theValue) : "NULL";
+      break;
+    case "date":
+      $theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
+      break;
+    case "defined":
+      $theValue = ($theValue != "") ? $theDefinedValue : $theNotDefinedValue;
+      break;
+  }
+  return $theValue;
+}
+}
+?>
+<?php
+// *** Validate request to login to this site.
+if (!isset($_SESSION)) {
+  session_start();
+}
+
+$loginFormAction = $_SERVER['PHP_SELF'];
+if (isset($_GET['accesscheck'])) {
+  $_SESSION['PrevUrl'] = $_GET['accesscheck'];
+}
+
+if (isset($_POST['username'])) {
+  $loginUsername=$_POST['username'];
+  $password=$_POST['pass'];
+  $MM_fldUserAuthorization = "role";
+  $MM_redirectLoginSuccessUser = "userhome.php";
+  $MM_redirectLoginSuccessAuthor = "authorhome.php";
+  $MM_redirectLoginSuccessRoot = "admin_home.php";
+  $MM_redirectLoginSuccessCM = "cmhome.php";
+  $MM_redirectLoginFailed = "index.php#login";
+  $MM_redirecttoReferrer = false;
+  mysql_select_db($database_conn, $conn);
+  	
+  $LoginRS__query=sprintf("SELECT u_id,f_name, u_name, password, role FROM `user` WHERE u_name=%s AND password=%s AND approve_id=1",GetSQLValueString($loginUsername, "text"), GetSQLValueString($password, "text")); 
+  $LoginRS = mysql_query($LoginRS__query, $conn) or die(mysql_error());
+  $loginFoundUser = mysql_num_rows($LoginRS);
+  if ($loginFoundUser) {
+    
+    $loginStrGroup  = mysql_result($LoginRS,0,'role');
+    
+	if (PHP_VERSION >= 5.1) {session_regenerate_id(true);} else {session_regenerate_id();}
+    //declare two session variables and assign them
+    $_SESSION['MM_Username'] = $loginUsername;
+    $_SESSION['MM_UserGroup'] = $loginStrGroup;
+	$_SESSION['MM_UserID'] = mysql_result($LoginRS,0,'u_id');
+	$_SESSION['MM_f_name'] = mysql_result($LoginRS,0,'f_name');
+    if (isset($_SESSION['PrevUrl']) && false) {
+      $MM_redirectLoginSuccess = $_SESSION['PrevUrl'];	
+    }
+	if ($_SESSION['MM_UserGroup'] == 'admin') {
+	  header("Location: ".$MM_redirectLoginSuccessRoot );
+	} elseif ($_SESSION['MM_UserGroup'] == 'student') {
+	  header("Location: ".$MM_redirectLoginSuccessUser);
+	} elseif ($_SESSION['MM_UserGroup'] == 'author') {
+	  header("Location: ".$MM_redirectLoginSuccessAuthor)			;}elseif ($_SESSION['MM_UserGroup'] == 'cm') {
+	  header("Location: ".$MM_redirectLoginSuccessCM);
+	}
+    //header("Location: " . $MM_redirectLoginSuccess );
+  }
+  else {
+    header("Location: ". $MM_redirectLoginFailed );
+  }
+}
+?>
+
+
+
+
+
+
+
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -10,6 +105,8 @@
 <script type="text/javascript" src="js/jquery.localscroll-min.js"></script> 
 <script type="text/javascript" src="js/init.js"></script>  
 <link rel="stylesheet" href="css/slimbox2.css" type="text/css" media="screen" /> 
+
+<link rel="stylesheet" href="css/login.css" type="text/css" media="screen" /> 
 <script type="text/JavaScript" src="js/slimbox2.js"></script> 
 <script language="javascript" type="text/javascript">
 function clearText(field)
@@ -18,6 +115,24 @@ function clearText(field)
     else if (field.value == '') field.value = field.defaultValue;
 }
 </script>
+
+<script src="js/jquery.min.js"></script>
+<script>
+		$(function(){
+		  var $form_inputs =   $('form input');
+		  var $rainbow_and_border = $('.rain, .border');
+		  /* Used to provide loping animations in fallback mode */
+		  $form_inputs.bind('focus', function(){
+		  	$rainbow_and_border.addClass('end').removeClass('unfocus start');
+		  });
+		  $form_inputs.bind('blur', function(){
+		  	$rainbow_and_border.addClass('unfocus start').removeClass('end');
+		  });
+		  $form_inputs.first().delay(800).queue(function() {
+			$(this).focus();
+		  });
+		});
+	</script>
 </head> 
 <body> 
 
@@ -61,22 +176,22 @@ function clearText(field)
  				<div class="home_box right">
                 	<div class="row1 box5">
                     	<div class="box_with_padding">
-                        <a href="registration.php"	><h4>Sign Up</h4></a>
+                        <a href="registration.php"	><h2>Sign Up</h2></a>
                          Just a click away from obtaining knowledge
 						</div>
                     </div>
                     <!-- <div class="row2" id="home_gallery">
                     	<a href="images/gallery/01-l.jpg" rel="lightbox[home_gallery]" class="left"><img src="images/gallery/01.jpg" alt="image 1" /></a>
                         					</div> -->
-                    <div class="row1 box5">
+                    <div class="row1 box8">
                     	<div class="box_with_padding">
-                        <a href="login.php"	><h4>Sign In</h4></a>
+                        <a href="#login"	><h2>Sign In</h2></a>
                          Go Grab knowledge from latest Courses
 						</div>
                     </div>
-                    <div class="row1 box5">
+                    <div class="row1 box7">
                     	<div class="box_with_padding">
-                        <a href="registration.php"	><h4>Sign Up</h4></a>
+                        <a href="registration.php"	><h2>Sign Up</h2></a>
                          Just a click away from obtaining knowledge
 						</div>
                     </div>                        
@@ -132,7 +247,7 @@ function clearText(field)
                 <a href="#about" class="page_nav_btn previous">Previous</a>
                 <a href="#testimonial" class="page_nav_btn next">Next</a> 
             </div> <!-- END of Services -->
-            
+           
             
             <div class="section section_with_padding" id="testimonial"> 
                	<h1>Testimonials</h1>
@@ -161,7 +276,8 @@ function clearText(field)
                 
                 <a href="#home" class="home_btn">home</a> 
                 <a href="#testimonial" class="page_nav_btn previous">Previous</a>
-                <a href="#home" class="page_nav_btn next">Next</a>
+                <a href="#login" class="page_nav_btn next">Next</a>
+                
             	</div> <!-- END of Contact -->
                 
                 <div class="half right">
@@ -184,7 +300,35 @@ function clearText(field)
                 
                 
             
+            
+            
         </div> 
+         <div class="section section_with_padding log" id="login"> 
+          <div class="log">    
+                <div id="home">
+		<div class="rain">
+			<div class="border start">
+				<form ACTION="<?php echo $loginFormAction; ?>" id="form1" name="form1" method="POST">
+					<label for="username">Email</label>
+					<input name="username" type="text" placeholder="username" id="username"/>
+					<label for="pass">Password</label>
+					<input name="pass" type="password" placeholder="Password" id="pass"/>
+                                        <input type="submit" value="LOG IN" id="submit" />
+				</form>
+			</div>
+		</div>
+                </div>
+                </div>
+                <a href="#home" class="home_btn">home</a> 
+                <a href="#contact" class="page_nav_btn previous">Previous</a>
+                <a href="#home" class="page_nav_btn next">Next</a>
+            </div> <!-- END of Login -->
+        
+        
+        
+        
+        
+        
     </div>
 </div>
 
