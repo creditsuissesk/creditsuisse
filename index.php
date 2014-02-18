@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Virtual Library</title>
 <meta name="keywords" content="tech layer, free template, one page layout" />
-<link href="css/templatemo_style.css" type="text/css" rel="stylesheet" /> 
+<link href="css/home_page.css" type="text/css" rel="stylesheet" /> 
 <script type="text/javascript" src="js/jquery.min.js"></script> 
 <script type="text/javascript" src="js/jquery.scrollTo-min.js"></script> 
 <script type="text/javascript" src="js/jquery.localscroll-min.js"></script> 

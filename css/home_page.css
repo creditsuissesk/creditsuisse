@@ -15,10 +15,10 @@ body{
 }
 
 a, a:link, a:visited { 
-color: #7799bb;  
-	/*color : #FFF; */
+/*color: #5C5C5C;*/  
+	color : #FFF; 
 	text-decoration: none;
-	font-size: 12px; 
+	/*font-size: 12px;*/ 
 	font-weight: bold; 
 	
 }
