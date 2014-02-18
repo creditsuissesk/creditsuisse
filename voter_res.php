@@ -138,6 +138,7 @@ if
 		//user actually enrolled. now flag resource.
 		$query_flag_res = sprintf("UPDATE `resource` SET flag_status=1 WHERE r_id=%s",GetSQLValueString($_POST['id'], "int"));
 		$flag_res = mysql_query($query_flag_res, $conn) or die(mysql_error());
+		echo "1"; //echoeing success to change flag icon 
 	}
 }
 ?>

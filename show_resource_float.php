@@ -120,9 +120,9 @@ if(isset($_GET['r_id']) && (isset($_GET['actiontype']) && $_GET['actiontype']=="
 	echo '</div>';
 	echo '</td><td>';
 	if($row_get_resource['flag_status']==1) {
-		echo "<img src='images/red_flag.png' width='30' height='30'/>";
+		echo "<img id='flagged' src='images/red_flag.png' width='30' height='30'/>";
 	}else {
-		echo "<img src='images/flag.png' style='cursor:pointer;' width='30' height='30' onclick='flag(".$row_get_resource['r_id'].");'/>";
+		echo "<img id='unflagged' src='images/flag.png' style='cursor:pointer;' width='30' height='30' onclick='flag(".$row_get_resource['r_id'].");'/>";
 	}
 	echo '</td></tr></table>';
 	echo '<script language="javascript">';
@@ -133,7 +133,12 @@ if(isset($_GET['r_id']) && (isset($_GET['actiontype']) && $_GET['actiontype']=="
 				$.ajax({
 					url: 'voter_res.php',
 					type: 'post',
-					data: { id: r_id,action:'flag'}
+					data: { id: r_id,action:'flag'},
+					success: function (response) {
+						if(response==1) {
+							document.getElementById('unflagged').src= 'images/red_flag.png';
+						}
+					}
 				});	
 	  		} 
 	};";

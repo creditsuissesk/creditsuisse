@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 17, 2014 at 08:02 PM
+-- Generation Time: Feb 18, 2014 at 05:41 PM
 -- Server version: 5.6.14
 -- PHP Version: 5.5.6
 
@@ -274,8 +274,8 @@ CREATE TABLE IF NOT EXISTS `resource` (
 --
 
 INSERT INTO `resource` (`r_id`, `c_id`, `type_id`, `filename`, `file_type`, `file_size`, `file_location`, `view_location`, `uploaded_by`, `uploaded_date`, `download_status`, `approve_status`, `avg_rating`, `flag_status`) VALUES
-(1, 18, 1, 'Reference.pdf', 'application/pdf', 5.3696355819702, 'resource/18/Reference.pdf', 'resource/18-s/abstract.swf', 2, '2014-02-09 00:15:49', 1, 1, 0, 0),
-(2, 18, 7, 'Example.jpg', 'image/jpeg', 0.13896942138672, 'resource/18/Example.jpg', 'resource/18-s/des.swf', 2, '2014-02-09 00:17:09', 0, 1, 0, 0),
+(1, 18, 1, 'Reference.pdf', 'application/pdf', 5.3696355819702, 'resource/18/Reference.pdf', 'resource/18-s/abstract.swf', 2, '2014-02-09 00:15:49', 1, 1, 1, 1),
+(2, 18, 7, 'Example.jpg', 'image/jpeg', 0.13896942138672, 'resource/18/Example.jpg', 'resource/18-s/des.swf', 2, '2014-02-09 00:17:09', 0, 1, 2, 0),
 (3, 20, 1, 'reference.pdf', 'application/pdf', 102.67518806458, 'resource/20/reference.pdf', '', 2, '2014-02-12 17:17:39', 1, 0, 0, 0);
 
 -- --------------------------------------------------------
@@ -339,7 +339,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 
 INSERT INTO `user` (`u_id`, `u_name`, `password`, `f_name`, `l_name`, `contact_no`, `dob`, `institute`, `stream`, `degree`, `role`, `approve_id`, `photo`, `about`, `show_email`, `gender`, `user_score`, `count_bookmarks`, `created_comments`, `count_discussions`) VALUES
 (1, 'xyz@gmail.com', 'qwerty', 'Abdul', 'Shaikh', 2147483647, '1993-03-01', 'SPIT', 'Computers', 'B.E.', 'student', 1, 'images/profiles/01.jpg', '', 0, 0, 0, 0, 2, 0),
-(2, 'abc@tech.org', 'qwerty', 'Abhishek', 'Chaturvedi', 26845172, '1979-04-02', 'VJTI', 'Information Technolo', 'PHD in cryptography and Security', 'author', 1, 'images/profiles/02.jpg', '', 0, 0, 0, 0, 0, 0),
+(2, 'abc@tech.org', 'qwerty', 'Abhishek', 'Chaturvedi', 26845172, '1979-04-02', 'VJTI', 'Information Technolo', 'PHD in cryptography and Security', 'author', 1, 'images/profiles/02.jpg', '', 0, 0, 2, 0, 0, 0),
 (3, 'dalvishaarad@gmail.c', 'password', 'Shaarad', 'Dalvi', 2147483647, '1992-04-01', 'vjti', 'comps', 'B.E.', 'student', 1, 'images/profiles/03.jpg', '', 0, 0, 2, 0, 0, 0),
 (4, 'shaaraddalvi@outlook.com', 'password', 'Shaarad', 'Inamdar', 25406266, '1993-11-01', 'TSEC', 'Electronics', 'B.E.', 'student', 1, 'images/profiles/04.jpg', '', 0, 0, 0, 0, 0, 0),
 (5, 'sh@yahoo.co.in', 'password', 'sahil', 'shah', 25406858, '1994-01-18', 'vjti', 'comp', 'B.E.', 'student', 1, 'images/profiles/05.jpg', '', 0, 0, 1, 0, 0, 0),
@@ -379,14 +379,14 @@ INSERT INTO `user_comment` (`user_comment_id`, `user_id`, `vote_status`, `bookma
 (8, 1, -1, 0, '2014-02-08 05:04:58'),
 (10, 1, 0, 0, '2014-02-08 05:04:58'),
 (11, 1, 0, 0, '2014-02-09 11:31:29'),
-(2, 5, 0, 0, '2014-02-17 19:00:20'),
-(3, 5, 0, 0, '2014-02-17 19:00:20'),
+(2, 5, 0, 0, '2014-02-18 12:54:19'),
+(3, 5, 0, 0, '2014-02-18 12:54:19'),
 (5, 5, 0, 0, '2014-02-09 11:32:11'),
-(6, 5, 0, 0, '2014-02-17 19:00:20'),
+(6, 5, 0, 0, '2014-02-18 12:54:19'),
 (7, 5, 0, 0, '2014-01-30 12:02:25'),
-(8, 5, 0, 0, '2014-02-17 19:00:20'),
+(8, 5, 0, 0, '2014-02-18 12:54:19'),
 (9, 5, 0, 0, '2014-02-09 11:17:44'),
-(10, 5, 0, 0, '2014-02-17 19:00:20'),
+(10, 5, 0, 0, '2014-02-18 12:54:19'),
 (11, 5, 0, 0, '2014-02-09 11:32:11'),
 (2, 12, 0, 0, '2014-02-03 11:38:18'),
 (3, 12, -1, 0, '2014-02-03 11:38:18'),
@@ -422,7 +422,7 @@ INSERT INTO `user_discussion` (`u_id`, `user_discussion_id`, `seen_comments`, `d
 (1, 2, 5, '2014-02-08 05:05:24', 0, -1),
 (1, 3, 0, '2014-01-24 07:27:27', 0, 0),
 (1, 4, 2, '2014-02-09 11:31:29', 0, 0),
-(5, 2, 5, '2014-02-17 19:00:19', 1, 0),
+(5, 2, 5, '2014-02-18 12:54:19', 0, 0),
 (5, 3, 0, '2014-02-09 10:08:10', 0, 0),
 (5, 4, 2, '2014-02-09 11:32:10', 1, 0),
 (5, 8, 1, '2014-02-09 11:16:42', 1, 0),
@@ -433,6 +433,30 @@ INSERT INTO `user_discussion` (`u_id`, `user_discussion_id`, `seen_comments`, `d
 (12, 8, 1, '2014-02-03 09:56:01', 0, 0),
 (12, 9, 0, '2014-02-03 09:46:22', 0, 0),
 (12, 10, 1, '2014-01-31 08:55:17', 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_resource`
+--
+
+CREATE TABLE IF NOT EXISTS `user_resource` (
+  `user_resource_id` int(10) unsigned NOT NULL,
+  `u_id` int(10) unsigned NOT NULL,
+  `vote_status` tinyint(4) NOT NULL DEFAULT '0',
+  `bookmarked` tinyint(4) NOT NULL DEFAULT '0',
+  `date_last_viewed` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`user_resource_id`,`u_id`),
+  KEY `u_id` (`u_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `user_resource`
+--
+
+INSERT INTO `user_resource` (`user_resource_id`, `u_id`, `vote_status`, `bookmarked`, `date_last_viewed`) VALUES
+(1, 5, 1, 0, '2014-02-18 14:23:58'),
+(2, 5, 1, 0, '2014-02-18 14:26:42');
 
 --
 -- Constraints for dumped tables
@@ -500,6 +524,13 @@ ALTER TABLE `user_comment`
 ALTER TABLE `user_discussion`
   ADD CONSTRAINT `user_discussion_ibfk_1` FOREIGN KEY (`u_id`) REFERENCES `user` (`u_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `user_discussion_ibfk_2` FOREIGN KEY (`user_discussion_id`) REFERENCES `discussion` (`discussion_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `user_resource`
+--
+ALTER TABLE `user_resource`
+  ADD CONSTRAINT `user_resource_ibfk_2` FOREIGN KEY (`u_id`) REFERENCES `user` (`u_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `user_resource_ibfk_1` FOREIGN KEY (`user_resource_id`) REFERENCES `resource` (`r_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
