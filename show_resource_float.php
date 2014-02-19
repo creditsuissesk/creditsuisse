@@ -155,7 +155,7 @@ if(isset($_GET['r_id']) && (isset($_GET['actiontype']) && $_GET['actiontype']=="
 	echo "
 	var res_callback2= function(data) {
 		if($('#res'+data.id).upvote('upvoted')==true || $('#res'+data.id).upvote('downvoted')==true) { ";
-	echo	'alert("You can\'t vote yourself");';
+	echo	'alert("You can\'t vote your own resource");';
 	echo "	}
 		$.ajax({
 			url: 'voter_res.php',

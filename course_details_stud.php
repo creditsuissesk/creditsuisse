@@ -228,6 +228,15 @@ function enrollCourse(cId) {
 		xmlhttp.send();
 	}
 }
+
+function recoCourse(cId) {
+	light = new LightFace.IFrame({
+		height:320,
+		width:620,
+		url: 'course_reco.php?c_id='+cId,
+		title: "Select student to refer course"
+		}).addButton('Close', function() { light.close(); },true).open();
+}
 </script>    
     
 <script language="javascript" type="text/javascript">
@@ -356,7 +365,7 @@ function clearText(field)
                     	echo '</form>';
 					}else {
 						echo '<form id="recoform">';
-                    	echo '<input id="submit" type="button" class="buttom" value="Recommend to others" onclick="reco	Course()" />';
+                    	echo '<input id="submit" type="button" class="buttom" value="Recommend to others" onclick="recoCourse('.$row_course_details['c_id'].')" />';
                     	echo '</form>';
 					}
 					?>
