@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 18, 2014 at 05:41 PM
+-- Generation Time: Feb 19, 2014 at 11:55 AM
 -- Server version: 5.6.14
 -- PHP Version: 5.5.6
 
@@ -148,6 +148,21 @@ INSERT INTO `course_eval` (`c_id_eval`, `q_no`, `ques`, `opt1`, `opt2`, `opt3`, 
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `course_reco`
+--
+
+CREATE TABLE IF NOT EXISTS `course_reco` (
+  `c_reco_id` int(11) unsigned NOT NULL,
+  `from_u_id` int(11) unsigned NOT NULL,
+  `to_u_id` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`c_reco_id`,`from_u_id`,`to_u_id`),
+  KEY `from_u_id` (`from_u_id`),
+  KEY `to_u_id` (`to_u_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `discussion`
 --
 
@@ -227,20 +242,6 @@ INSERT INTO `enroll_course` (`u_id`, `c_enroll_id`, `completion_stat`, `marks`) 
 (5, 18, 0, 30),
 (5, 21, 0, -1),
 (8, 18, 0, -1);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `rate_resource`
---
-
-CREATE TABLE IF NOT EXISTS `rate_resource` (
-  `u_id` int(10) unsigned NOT NULL,
-  `r_id` int(10) unsigned NOT NULL,
-  `rating` double unsigned NOT NULL,
-  KEY `r_id` (`r_id`),
-  KEY `u_id` (`u_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -339,7 +340,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 
 INSERT INTO `user` (`u_id`, `u_name`, `password`, `f_name`, `l_name`, `contact_no`, `dob`, `institute`, `stream`, `degree`, `role`, `approve_id`, `photo`, `about`, `show_email`, `gender`, `user_score`, `count_bookmarks`, `created_comments`, `count_discussions`) VALUES
 (1, 'xyz@gmail.com', 'qwerty', 'Abdul', 'Shaikh', 2147483647, '1993-03-01', 'SPIT', 'Computers', 'B.E.', 'student', 1, 'images/profiles/01.jpg', '', 0, 0, 0, 0, 2, 0),
-(2, 'abc@tech.org', 'qwerty', 'Abhishek', 'Chaturvedi', 26845172, '1979-04-02', 'VJTI', 'Information Technolo', 'PHD in cryptography and Security', 'author', 1, 'images/profiles/02.jpg', '', 0, 0, 2, 0, 0, 0),
+(2, 'abc@tech.org', 'qwerty', 'Abhishek', 'Chaturvedi', 26845172, '1979-04-02', 'VJTI', 'Information Technolo', 'PHD in cryptography and Security', 'author', 1, 'images/profiles/02.jpg', '', 0, 0, 4, 0, 0, 0),
 (3, 'dalvishaarad@gmail.c', 'password', 'Shaarad', 'Dalvi', 2147483647, '1992-04-01', 'vjti', 'comps', 'B.E.', 'student', 1, 'images/profiles/03.jpg', '', 0, 0, 2, 0, 0, 0),
 (4, 'shaaraddalvi@outlook.com', 'password', 'Shaarad', 'Inamdar', 25406266, '1993-11-01', 'TSEC', 'Electronics', 'B.E.', 'student', 1, 'images/profiles/04.jpg', '', 0, 0, 0, 0, 0, 0),
 (5, 'sh@yahoo.co.in', 'password', 'sahil', 'shah', 25406858, '1994-01-18', 'vjti', 'comp', 'B.E.', 'student', 1, 'images/profiles/05.jpg', '', 0, 0, 1, 0, 0, 0),
@@ -456,7 +457,7 @@ CREATE TABLE IF NOT EXISTS `user_resource` (
 
 INSERT INTO `user_resource` (`user_resource_id`, `u_id`, `vote_status`, `bookmarked`, `date_last_viewed`) VALUES
 (1, 5, 1, 0, '2014-02-18 14:23:58'),
-(2, 5, 1, 0, '2014-02-18 14:26:42');
+(2, 5, 1, 0, '2014-02-18 18:03:43');
 
 --
 -- Constraints for dumped tables
@@ -483,6 +484,14 @@ ALTER TABLE `course_eval`
   ADD CONSTRAINT `course_eval_ibfk_1` FOREIGN KEY (`c_id_eval`) REFERENCES `course` (`c_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Constraints for table `course_reco`
+--
+ALTER TABLE `course_reco`
+  ADD CONSTRAINT `course_reco_ibfk_3` FOREIGN KEY (`to_u_id`) REFERENCES `user` (`u_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `course_reco_ibfk_1` FOREIGN KEY (`c_reco_id`) REFERENCES `course` (`c_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `course_reco_ibfk_2` FOREIGN KEY (`from_u_id`) REFERENCES `user` (`u_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Constraints for table `discussion`
 --
 ALTER TABLE `discussion`
@@ -495,13 +504,6 @@ ALTER TABLE `discussion`
 ALTER TABLE `enroll_course`
   ADD CONSTRAINT `enroll_course_ibfk_1` FOREIGN KEY (`c_enroll_id`) REFERENCES `course` (`c_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `enroll_course_ibfk_2` FOREIGN KEY (`u_id`) REFERENCES `user` (`u_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `rate_resource`
---
-ALTER TABLE `rate_resource`
-  ADD CONSTRAINT `rate_resource_ibfk_2` FOREIGN KEY (`u_id`) REFERENCES `user` (`u_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `rate_resource_ibfk_3` FOREIGN KEY (`r_id`) REFERENCES `resource` (`r_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `resource`
@@ -529,8 +531,8 @@ ALTER TABLE `user_discussion`
 -- Constraints for table `user_resource`
 --
 ALTER TABLE `user_resource`
-  ADD CONSTRAINT `user_resource_ibfk_2` FOREIGN KEY (`u_id`) REFERENCES `user` (`u_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `user_resource_ibfk_1` FOREIGN KEY (`user_resource_id`) REFERENCES `resource` (`r_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `user_resource_ibfk_1` FOREIGN KEY (`user_resource_id`) REFERENCES `resource` (`r_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `user_resource_ibfk_2` FOREIGN KEY (`u_id`) REFERENCES `user` (`u_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

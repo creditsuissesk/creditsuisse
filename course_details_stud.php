@@ -202,6 +202,32 @@ function showQR(id,name) {
 		title: name
 		}).addButton('Close', function() { light.close(); },true).open();
 }
+
+function enrollCourse(cId) {
+	var r=confirm("Are you sure you want to enroll for this course?");
+	if (r==true) {
+		if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+		  xmlhttp=new XMLHttpRequest();
+		} else {// code for IE6, IE5
+		  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  		}
+		xmlhttp.onreadystatechange=function()
+		{
+		  if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+		    //document.getElementById("courselist").innerHTML=xmlhttp.responseText;
+				//var e = document.getElementById("sortdropdown");
+				//var strUser = e.options[e.selectedIndex].value;
+				//sortCourses(strUser,0);
+				window.location.reload();
+			}
+			else {
+				//ele.innerHTML='<a id="'+ele.id+'" class="enroll">Enrolling...</a>';
+			}
+		}
+		xmlhttp.open("GET","show_courses.php?enrollId="+cId,true);
+		xmlhttp.send();
+	}
+}
 </script>    
     
 <script language="javascript" type="text/javascript">
@@ -326,7 +352,11 @@ function clearText(field)
                     <p><em><?php echo $row_course_details['description'];?></em></p>
                     <?php if (empty($row_course_details['u_enroll_id'])) {
                     	echo '<form id="enrollform">';
-                    	echo '<input id="submit" type="button" class="buttom" value="Enroll!" onclick="enrollCourse()" />';
+                    	echo '<input id="submit" type="button" class="buttom" value="Enroll!" onclick="enrollCourse('.$row_course_details['c_id'].')" />';
+                    	echo '</form>';
+					}else {
+						echo '<form id="recoform">';
+                    	echo '<input id="submit" type="button" class="buttom" value="Recommend to others" onclick="reco	Course()" />';
                     	echo '</form>';
 					}
 					?>
