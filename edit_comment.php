@@ -92,9 +92,10 @@ if(isset($_POST['actiontype']) && $_POST['actiontype']=="delete") {
 		//case for admin moderation 
 			if($_SESSION['MM_UserGroup']=='admin')
 			{
-				deleteComment($_POST['comment_id'],$_POST['insert_uid']);
+				deleteComment($_POST['comment_id'],$row_comment['insert_uid']);
 			}
 		}
+		header("Location: forum_new.php?showTab=discussions&mode=disc&discussionid=".$_POST['redirect_disc_id']);
 	}//end of two post variables if case
 	else{ if (isset($_POST['actiontype']) && $_POST['actiontype']=="flag") {
 		//flag comment
