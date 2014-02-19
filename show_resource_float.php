@@ -199,7 +199,8 @@ if(isset($_GET['r_id']) && (isset($_GET['actiontype']) && $_GET['actiontype']=="
 	for ($i = 0; $i < count($parts) - 1; $i++) {
 		 $dir .= $parts[$i] . "/";
 	}
-	 header( 'Location: https://api.qrserver.com/v1/create-qr-code/?size=150x150&data='.$dir.'index.php?mode=qr&viewId='.$row_get_resource['r_id']) ;
+	$redirect=urlencode('http://'.$dir.'index.php?mode=qr&viewId='.$row_get_resource['r_id']);
+	 header( 'Location: https://api.qrserver.com/v1/create-qr-code/?size=150x150&data='.$redirect) ;
 }
 ?>
 </body>
