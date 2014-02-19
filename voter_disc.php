@@ -94,20 +94,19 @@ if (isset($_POST['up']) ||  isset($_POST['down'])){
 			//update user-vote given to discussion in user_discussion table
 			$new_score=$_POST['count'];
 			$difference=$new_score-$prev_score;
-			
-						//file_put_contents("test.txt",$difference."\n\r".$_POST['upstatus']."\n\r".$_POST['downstatus']);
-			if($_POST['upstatus']=="true" || $_POST['upstatus']=="1") {
-				$vote_value=1;
-				//file_put_contents("test.txt","upvoted",FILE_APPEND);				
-			}else if ($_POST['downstatus']=="true" || $_POST['downstatus']=="1") {
-				//file_put_contents("test.txt","downvoted",FILE_APPEND);
-				$vote_value=-1;	
-			}else if (empty($_POST['upstatus']) and empty($_POST['downstatus'])) {
-				//file_put_contents("test.txt","neutral",FILE_APPEND);				
-				$vote_value=0;
-			}
+			  /*file_put_contents("test.txt",$difference."\n\r".$_POST['upstatus']."\n\r".$_POST['downstatus']);
+			  if($_POST['upstatus']=="true" || $_POST['upstatus']=="1") {
+				  $vote_value=1;
+				  file_put_contents("test.txt","upvoted",FILE_APPEND);				
+			  }else if ($_POST['downstatus']=="true" || $_POST['downstatus']=="1") {
+				  file_put_contents("test.txt","downvoted",FILE_APPEND);
+				  $vote_value=-1;	
+			  }else if (empty($_POST['upstatus']) and empty($_POST['downstatus'])) {
+				  //file_put_contents("test.txt","neutral",FILE_APPEND);				
+				  $vote_value=0;
+			  }*/
 			//$query_update_userdisc = sprintf("UPDATE `user_discussion` SET vote_status=%s WHERE user_discussion_id=%s AND u_id=%s",GetSQLValueString($vote_value, "int"),GetSQLValueString($_POST['id'], "int"),GetSQLValueString($_SESSION['MM_UserID'], "int"));
-			$query_update_userdisc=sprintf("INSERT INTO `user_discussion` (u_id,user_discussion_id,seen_comments,date_last_viewed,bookmarked,vote_status) VALUES ('%s','%s','0',now(),'0',%s) ON DUPLICATE KEY UPDATE date_last_viewed=now(),vote_status=%s;",GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($_POST['id'], "int"),GetSQLValueString($vote_value, "int"),GetSQLValueString($vote_value, "int"));
+			$query_update_userdisc=sprintf("INSERT INTO `user_discussion` (u_id,user_discussion_id,seen_comments,date_last_viewed,bookmarked,vote_status) VALUES ('%s','%s','0',now(),'0',%s) ON DUPLICATE KEY UPDATE date_last_viewed=now(),vote_status=vote_status+%s;",GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($_POST['id'], "int"),GetSQLValueString($difference, "int"),GetSQLValueString($difference, "int"));
 			$update_userdisc=mysql_query($query_update_userdisc, $conn) or die(mysql_error());
 			
 			//update the score of user to whom vote was given

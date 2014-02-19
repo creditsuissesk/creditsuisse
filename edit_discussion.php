@@ -107,7 +107,7 @@ if(isset($_POST['actiontype']) && $_POST['actiontype']=="delete") {
 			$disc_delete = mysql_query($delete_disc, $conn) or die(mysql_error());
 			
 				//discussion deleted successfully now decrement poster's discussion count and score
-				$update_user = sprintf("UPDATE `user` SET count_discussions=count_discussions-1, user_score=user_score-%s WHERE u_id=%s",GetSQLValueString($row_disc['rating'], "int"),GetSQLValueString($_SESSION['MM_UserID'], "int"));
+				$update_user = sprintf("UPDATE `user` SET count_discussions=count_discussions-1, user_score=user_score-%s WHERE u_id=%s",GetSQLValueString($row_disc['rating'], "int"),GetSQLValueString($row_disc['insert_uid'], "int"));
 				$result_update_user = mysql_query($update_user, $conn) or die(mysql_error());
 				
 				

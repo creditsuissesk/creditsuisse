@@ -94,8 +94,8 @@ if(isset($_POST['actiontype']) && $_POST['actiontype']=="delete") {
 			{
 				deleteComment($_POST['comment_id'],$_POST['insert_uid']);
 			}
-		}//end of two post variables if case
-	}
+		}
+	}//end of two post variables if case
 	else{ if (isset($_POST['actiontype']) && $_POST['actiontype']=="flag") {
 		//flag comment
 				$flag_comment = sprintf("UPDATE `comment` SET flag=1 WHERE comment_id=%s",GetSQLValueString($_POST['comment_id'], "int"));

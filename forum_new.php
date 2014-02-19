@@ -470,7 +470,7 @@ $totalRows_categories = mysql_num_rows($categories);
                             </td>
                             <td>
                             <?php echo '<script> var path="forum_new.php?mode=showmain" </script> ';?>
-                            <?php if($_SESSION['MM_UserID']==$row_disc['insert_uid']) {
+                            <?php if(($_SESSION['MM_UserID']==$row_disc['insert_uid']) || ($_SESSION['MM_UserGroup']=='admin')) {
                             echo '<img id="'.$row_disc['discussion_id'].'" src="images/trash.png" width="30" height="30" onclick="edit_discussion(this,path,0)"/>';
 									$padding=1;
 							}else {
@@ -559,7 +559,7 @@ $totalRows_categories = mysql_num_rows($categories);
 							    <!---<a class="star"></a> --->
 						    </div>
                             </td>
-                            <td><?php if ($row_comments['insert_uid']==$_SESSION['MM_UserID']) {
+                            <td><?php if (($row_comments['insert_uid']==$_SESSION['MM_UserID']) || ($_SESSION['MM_UserGroup']=='admin')) {
 							echo "<img id='".$row_comments['comment_id']."' src='images/trash.png' width='30' height='30' onclick='edit_comment(this,".$row_comments['discussion_id'].",0)'/>";
 								$padding=0;
 							}else {$padding=1;}?>
@@ -743,7 +743,7 @@ $totalRows_categories = mysql_num_rows($categories);
                             </td>
                             <td>
                             <?php echo '<script> var path="http://'. $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'].'";</script> ';?>
-                            <?php if($_SESSION['MM_UserID']==$row_discussions['insert_uid']) {
+                            <?php if(($_SESSION['MM_UserID']==$row_discussions['insert_uid']) || ($_SESSION['MM_UserGroup']=='admin')) {
 								
                             echo '<img id="'.$row_discussions['discussion_id'].'" src="images/trash.png" width="30" height="30" onclick="edit_discussion(this,path,0)"/>';
 									$padding=1;
