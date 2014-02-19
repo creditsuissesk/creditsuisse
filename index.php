@@ -162,7 +162,7 @@ function clearText(field)
                     </div>
                     <div class="row1 box3">
                     	<div class="box_with_padding">
-                        	<h2><a href="#testimonial">Institutions</a></h2>
+                        	<h2><a href="#institution">Institutions</a></h2>
                             Name of Institutions from where we get author of our courses
 						</div>
                     </div>
@@ -245,18 +245,18 @@ function clearText(field)
                 </div>
                 <a href="#home" class="home_btn">home</a> 
                 <a href="#about" class="page_nav_btn previous">Previous</a>
-                <a href="#testimonial" class="page_nav_btn next">Next</a> 
+                <a href="#institution" class="page_nav_btn next">Next</a> 
             </div> <!-- END of Services -->
            
             
-            <div class="section section_with_padding" id="testimonial"> 
-               	<h1>Testimonials</h1>
-              <div> this is testimonials </div>
+            <div class="section section_with_padding" id="institution"> 
+               	<h1>institutions</h1>
+              <div> this is institutions </div>
             
                 <a href="#home" class="home_btn">home</a> 
                 <a href="#services" class="page_nav_btn previous">Previous</a>
                 <a href="#contact" class="page_nav_btn next">Next</a>
-            </div> <!-- END of Testimonial -->
+            </div> <!-- END of institution -->
             
             <div class="section section_with_padding" id="contact"> 
                 <h1>Contact</h1> 
@@ -275,7 +275,7 @@ function clearText(field)
                 </div>
                 
                 <a href="#home" class="home_btn">home</a> 
-                <a href="#testimonial" class="page_nav_btn previous">Previous</a>
+                <a href="#institution" class="page_nav_btn previous">Previous</a>
                 <a href="#login" class="page_nav_btn next">Next</a>
                 
             	</div> <!-- END of Contact -->

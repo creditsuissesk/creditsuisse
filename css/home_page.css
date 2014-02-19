@@ -44,7 +44,7 @@ p a:hover { color: #CC66FF; text-decoration: none; }
 
 .clear{ clear:left; }
 
-blockquote.testimonial_block { margin: 40px; background:  url(images/icon_testimonial.png) left center no-repeat; padding-left: 120px }
+blockquote.institution_block { margin: 40px; background:  url(images/icon_testimonial.png) left center no-repeat; padding-left: 120px }
 cite { font-weight: bold; color:#fff; }
 cite a, cite a:link, cite a:visited  { font-size: 12px; text-decoration: none; font-style: normal }
 cite span { font-weight: 400; color: #ccc; }

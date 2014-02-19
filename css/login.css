@@ -93,7 +93,7 @@
 			}
 			
 			/* Regular Form Styles */
-			form{
+			#form1{
 				background: #212121;
 				-moz-border-radius: 5px;
 				-webkit-border-radius: 5px;
@@ -103,13 +103,13 @@
 				background: -moz-radial-gradient(50% 46% 90deg,circle closest-corner, #242424, #090909);
 				background: -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 150, from(#242424), to(#090909));
 			}
-			form label{
+			#form1 label{
 				display: block;
 				padding: 10px 10px 5px 15px;
 				font-size: 11px;
 				color: #777;
 			}
-			form input{
+			#form1 input{
 				display: block;
 				margin: 5px 10px 10px 15px;
 				width: 85%;
@@ -123,11 +123,11 @@
 				color: #444;
 				font-size: 16px;
 			}
-			form input:focus{
+			#form1 input:focus{
 				outline: 1px solid #555;
 				color: #FFF;
 			}
-			input[type="submit"]{
+			#form1 input[type="submit"]{
 				color: #999;
 				padding: 5px 10px;
 				float: right;
