@@ -86,13 +86,6 @@ if (isset($_POST['username'])) {
 }
 ?>
 
-
-
-
-
-
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -132,7 +125,60 @@ function clearText(field)
 			$(this).focus();
 		  });
 		});
-	</script>
+</script>
+<?php 
+//code to pop-up a resource for viewing when redirected here by a QR code scan.
+//URL will be of the type index.php?mode=qr&viewId=resourceIdHere
+if(isset($_GET['mode']) && isset($_GET['viewId'])) {
+	//query the database about resource details to show it in a float window.
+	if($_GET['mode']=='qr') {
+	mysql_select_db($database_conn, $conn);
+	$query_get_resource=sprintf("SELECT * FROM `resource` WHERE r_id=%s",GetSQLValueString($_GET['viewId'],"int"));
+	$get_resource = mysql_query($query_get_resource, $conn) or die(mysql_error());
+	$row_get_resource = mysql_fetch_assoc($get_resource);
+	$totalRows_get_resource = mysql_num_rows($get_resource);
+?>
+<style>
+	@import "css/LightFace.css";
+</style>
+<link rel="stylesheet" href="css/lightface.css" />
+<script src="js/mootools.js"></script>
+<script src="js/LightFace.js"></script>
+<script src="js/LightFace.js"></script>
+<script src="js/LightFace.IFrame.js"></script>
+<script src="js/LightFace.Image.js"></script>
+<script src="js/LightFace.Request.js"></script>
+<script>
+	function showResource(id,type,name) {
+	//show dimensions based on content type
+	var height_set,width_set;
+	if(type=="pdf") {
+		height_set=520;
+		width_set=920;
+	}else if (type=="image") {
+		height_set=320;
+		width_set=620;
+	}
+	light = new LightFace.IFrame({
+		height:height_set,
+		width:width_set,
+		url: 'view_resource_qr.php?actiontype=loadResource&r_id='+id,
+		title: 'Resource : '+name
+		}).addButton('Close', function() { light.close(); },true).open();		
+}
+
+<?php echo "$(document).ready(function(){showResource(".$row_get_resource['r_id'].",'";
+	if(strpos($row_get_resource['file_type'],"application/pdf")!==false) {
+		echo "pdf";
+	}else if (strpos($row_get_resource['file_type'],"image")!==false) {
+		echo "image";
+	}
+	echo "','".$row_get_resource['filename']."');});";?>
+</script>
+<?php } //end of mode=qr if
+}//end of resource popup if?>
+
+
 </head> 
 <body> 
 

@@ -44,7 +44,7 @@ function isAuthorized($strUsers, $strGroups, $UserName, $UserGroup) {
   return $isValid; 
 }
 
-$MM_restrictGoTo = "index.php";
+$MM_restrictGoTo = "index.php#login";
 if (!((isset($_SESSION['MM_Username'])) && (isAuthorized("",$MM_authorizedUsers, $_SESSION['MM_Username'], $_SESSION['MM_UserGroup'])))) {   
   $MM_qsChar = "?";
   $MM_referrer = $_SERVER['PHP_SELF'];
@@ -192,7 +192,14 @@ if(isset($_GET['r_id']) && (isset($_GET['actiontype']) && $_GET['actiontype']=="
 	$row_get_resource = mysql_fetch_assoc($get_resource);
 	$totalRows_get_resource= mysql_num_rows($get_resource);
 	//redirect to QR API page to generate QR code
-	 header( 'Location: https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://localhost/dreamweaver/'.$row_get_resource['filename'] ) ;
+	//get current directory in $dir
+	$url = $_SERVER['REQUEST_URI']; //returns the current URL
+	$parts = explode('/',$url);
+	$dir = $_SERVER['SERVER_NAME'];
+	for ($i = 0; $i < count($parts) - 1; $i++) {
+		 $dir .= $parts[$i] . "/";
+	}
+	 header( 'Location: https://api.qrserver.com/v1/create-qr-code/?size=150x150&data='.$dir.'index.php?mode=qr&viewId='.$row_get_resource['r_id']) ;
 }
 ?>
 </body>
