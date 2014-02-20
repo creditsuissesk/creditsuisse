@@ -160,7 +160,7 @@ if(isset($_GET['c_id'])) {
 }
 if (isset($_GET['search']) && isset($_GET['course_id']) ) {
 	//after receiving the search query, show the table of users, who are not already sent recommendation by same user and who are not already enrolled in this course.
-	$query_search_student="SELECT * from `user` LEFT OUTER JOIN (SELECT * FROM `course_reco` WHERE c_reco_id=".$_GET['course_id']." AND from_u_id=".$_SESSION['MM_UserID'].")AS temp ON user.u_id=temp.to_u_id LEFT OUTER JOIN `enroll_course` ON user.u_id=enroll_course.u_id AND enroll_course.c_enroll_id=".$_GET['course_id']." WHERE ((u_name LIKE '%".$_GET['search']."%') OR (f_name LIKE '%".$_GET['search']."%') OR (l_name LIKE '%".$_GET['search']."%')) AND role='student' AND (NOT user.u_id=".$_SESSION['MM_UserID'].")";
+	$query_search_student="SELECT *,user.u_id AS show_user_id from `user` LEFT OUTER JOIN (SELECT * FROM `course_reco` WHERE c_reco_id=".$_GET['course_id']." AND from_u_id=".$_SESSION['MM_UserID'].")AS temp ON user.u_id=temp.to_u_id LEFT OUTER JOIN `enroll_course` ON user.u_id=enroll_course.u_id AND enroll_course.c_enroll_id=".$_GET['course_id']." WHERE ((u_name LIKE '%".$_GET['search']."%') OR (f_name LIKE '%".$_GET['search']."%') OR (l_name LIKE '%".$_GET['search']."%')) AND role='student' AND (NOT user.u_id=".$_SESSION['MM_UserID'].")";
 	$search_student=mysql_query($query_search_student, $conn) or die(mysql_error());
 	$row_search_student = mysql_fetch_assoc($search_student);
 	$totalRows_search_student = mysql_num_rows($search_student);
@@ -171,7 +171,7 @@ if (isset($_GET['search']) && isset($_GET['course_id']) ) {
 			echo '<tr>';
 			if(empty($row_search_student['c_reco_id']) && empty($row_search_student['marks'])) {	
 			//no recommendation has been already made and the user has not enrolled
-				echo '<td> <a title="Click to recommend this course" onclick="recommendStudent(this)" id="'.$row_search_student['u_id'].'" style="cursor:pointer;">'.$row_search_student['f_name'].' '.$row_search_student['l_name'].'</a></td>';
+				echo '<td> <a title="Click to recommend this course" onclick="recommendStudent(this)" id="'.$row_search_student['show_user_id'].'" style="cursor:pointer;">'.$row_search_student['f_name'].' '.$row_search_student['l_name'].'</a></td>';
 			}else if(!empty($row_search_student['c_reco_id']) && empty($row_search_student['marks'])){
 				//recommendation has been already made. show a tick.
 				echo '<td> '.$row_search_student['f_name'].' '.$row_search_student['l_name'].'</td><td><img src="images/tick.png" width="15" height="15" title="You have already recommended this course to this user" /></td>';
