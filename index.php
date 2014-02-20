@@ -67,6 +67,7 @@ if (isset($_POST['username'])) {
     $_SESSION['MM_UserGroup'] = $loginStrGroup;
 	$_SESSION['MM_UserID'] = mysql_result($LoginRS,0,'u_id');
 	$_SESSION['MM_f_name'] = mysql_result($LoginRS,0,'f_name');
+	$_SESSION['MM_stream'] = mysql_result($LoginRS,0,'stream');
     if (isset($_SESSION['PrevUrl']) && false) {
       $MM_redirectLoginSuccess = $_SESSION['PrevUrl'];	
     }

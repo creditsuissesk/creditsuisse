@@ -131,6 +131,14 @@ $query_author_details = sprintf("SELECT * FROM user WHERE u_id = %s", GetSQLValu
 $author_details = mysql_query($query_author_details, $conn) or die(mysql_error());
 $row_author_details = mysql_fetch_assoc($author_details);
 $totalRows_author_details = mysql_num_rows($author_details);
+
+$value=GetSQLValueString($_SESSION['MM_stream'], "text");
+$value2=GetSQLValueString($_SESSION['MM_UserID'], "int");
+mysql_select_db($database_conn, $conn);
+$query_sort_courses = "SELECT * FROM `course` WHERE (c_id NOT IN (SELECT c_enroll_id FROM `enroll_course` WHERE u_id='".$_SESSION['MM_UserID']."')) AND c_stream LIKE '%".$_SESSION['MM_stream']."%' ORDER BY avg_rating DESC";
+$sort = mysql_query($query_sort_courses, $conn) or die(mysql_error());
+	$row_sort = mysql_fetch_assoc($sort);
+	$totalRows_sort = mysql_num_rows($sort);
 ?>
 
 <title><?php echo /*$row_get_user_details['f_name']*/$_SESSION['MM_f_name'];?></title>
@@ -153,6 +161,7 @@ body,td,th {
 }
 </style>
 <link href="SpryAssets/SpryRating.css" rel="stylesheet" type="text/css">
+<link href="css/auto_rec.css" rel="stylesheet" type="text/css">
 <script type="text/JavaScript" src="js/slimbox2.js"></script>
 <script src="SpryAssets/SpryRating.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
@@ -323,6 +332,38 @@ function searchresources() {
 	}
 }
 </script>
+<script>
+/*function sortauto_reco(str,refreshEnrolled)
+{
+	
+if (str=="")
+  {
+  document.getElementById("txtHint").innerHTML="";
+  return;
+  }
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    document.getElementById("resourcelist").innerHTML=xmlhttp.responseText;
+		if(refreshEnrolled==1) {
+			showEnrolledresources();
+		}
+    }
+  }
+xmlhttp.open("GET","show_auto_reco.php?sortType="+str,true);
+xmlhttp.send();
+
+}*/
+</script>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 </head>
 <body>
@@ -361,7 +402,7 @@ else {
     <li class="TabbedPanelsTab" tabindex="0">Browse Courses</li>
     <li class="TabbedPanelsTab" tabindex="0">Your Courses</li>
     <li class="TabbedPanelsTab" tabindex="0">Completed Courses</li>
-    <li class="TabbedPanelsTab" tabindex="0">Recommended</li>
+    <li class="TabbedPanelsTab" tabindex="0">Recommendation</li>
   <!--  <li class="TabbedPanelsTab" tabindex="0">Enroll marks</li> -->
     <li class="TabbedPanelsTab" tabindex="0">Profile</li>
     <li class="TabbedPanelsTab" tabindex="0">Upload Papers</li>
@@ -514,7 +555,53 @@ else {
 		?>
         
     </div>
-    <div class="TabbedPanelsContent">Content 4</div>
+    
+    
+    <!-- start of auto recommendation tab-->
+    <div class="TabbedPanelsContent">
+     <!--- browse auto_reco tab --->
+    <div class="auto_reco-wrapper">
+	    	<div class="auto_reco-content-wrapper">
+			    <div class="auto_reco-content">
+				<div class="middle">
+						<div class="container">
+							<main class="auto_reco-content">
+                            <div id="auto_reco">
+				<div>	
+				<div class="first">
+					<h2 >Courses Based on Auto recommendation</h2>
+					<ul id="auto_recolist">
+					<!---  auto_reoc courses appear here dynamically --->	<?php if($totalRows_sort>0){
+		do {
+			echo "<li>";
+			echo '<a href="course_details_stud.php?c_id='.$row_sort['c_id'].'"><img src="'.$row_sort['course_image'].'" alt=""/></a>';
+			echo '<span><a href="course_details_stud.php?c_id='.$row_sort['c_id'].'">'.$row_sort['c_name'].'</a> in '.$row_sort['c_stream'].'</span><br>';
+			echo '<p>'.$row_sort['description'].'</p>';
+			echo '<p class="dates">Duration : '.$row_sort['start_date'].' - '.$row_sort['end_date'].'</p>';
+			echo '<a href="course_details_stud.php?c_id='.$row_sort['c_id'].'" class="details">See Details</a>';
+			
+				echo '<a id="'.$row_sort['c_id'].'" class="enroll" onClick="enrollCourse(this); return false;">Enroll Now!</a>';
+			echo "</li>";
+		}while($row_sort = mysql_fetch_assoc($sort));
+	} else { 
+		echo "No courses can be recommended at present";}
+?>
+					</ul>
+					<a href="index.php">View all</a>
+				</div></div></div>
+							</main><!-- .content -->
+						</div><!-- .container-->
+
+					
+                        </div>
+                            </div></div></div> <!--- course divs closing --->
+    
+    
+    
+    </div>
+    <!-- end of auto recommendation tab-->
+    
+    
     <!-- start of profile tab-->
     <div class="TabbedPanelsContent">
     <img src="<?php echo $row_author_details['photo'];?>" alt="" height=200 width =300 />

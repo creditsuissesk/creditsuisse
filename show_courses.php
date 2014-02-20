@@ -187,12 +187,12 @@ else if (isset($_GET['enrollId'])) {
 		//search by course name
 		//$query_search_courses = sprintf("SELECT * FROM `course` LEFT OUTER JOIN (SELECT * FROM `enroll_course` WHERE u_id=%s) AS `temp` ON course.c_id = temp.c_enroll_id WHERE approve_status=1 AND c_name LIKE '%%s%' ORDER BY start_date ASC",GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($_GET['searchKey'], "int"));
 		$query_search_courses = "SELECT * FROM `course` LEFT OUTER JOIN (SELECT * FROM `enroll_course` WHERE u_id=".$_SESSION['MM_UserID'].") AS `temp` ON course.c_id = temp.c_enroll_id WHERE approve_status=1 AND c_name LIKE '%".$_GET['searchKey']."%' ORDER BY start_date ASC";
-		file_put_contents("test.txt",$query_search_courses);
+		
 	}else if ($_GET['searchType']==2) {
 		//search by course stream
 		//$query_search_courses = sprintf("SELECT * FROM `course` LEFT OUTER JOIN (SELECT * FROM `enroll_course` WHERE u_id=%s) AS `temp` ON course.c_id = temp.c_enroll_id WHERE approve_status=1 AND c_stream LIKE '%%s%' ORDER BY start_date ASC",GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($_GET['searchKey'], "int"));
 		$query_search_courses = "SELECT * FROM `course` LEFT OUTER JOIN (SELECT * FROM `enroll_course` WHERE u_id=".$_SESSION['MM_UserID'].") AS `temp` ON course.c_id = temp.c_enroll_id WHERE approve_status=1 AND c_stream LIKE '%".$_GET['searchKey']."%' ORDER BY start_date ASC";
-		file_put_contents("test.txt",$query_search_courses);
+		
 	}
 	$search = mysql_query($query_search_courses, $conn) or die(mysql_error());
 	$row_search = mysql_fetch_assoc($search);
