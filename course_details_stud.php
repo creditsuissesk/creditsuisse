@@ -112,7 +112,7 @@ if (isset($_GET['c_id'])) {
 }
 $value=GetSQLValueString($colname_course_details, "int");
 mysql_select_db($database_conn, $conn);
-$query_course_details = "SELECT c_id,c_name,c_stream,inserted_on,course.u_id,approve_status,course_image,avg_rating,description,enroll_course.u_id as u_enroll_id, c_enroll_id,completion_stat,DATE_FORMAT(start_date,'%d-%m-%Y') AS date_start,DATE_FORMAT(end_date,'%d-%m-%Y') AS date_end FROM `course` LEFT OUTER JOIN `enroll_course` ON course.c_id=enroll_course.c_enroll_id AND enroll_course.u_id=".$_SESSION['MM_UserID']." WHERE c_id =".$value;
+$query_course_details = "SELECT c_id,c_name,c_stream,inserted_on,course.u_id,approve_status,course_image,avg_rating,description,enroll_course.u_id as u_enroll_id,enroll_course.marks,enroll_course.rating,c_enroll_id,completion_stat,DATE_FORMAT(start_date,'%d-%m-%Y') AS date_start,DATE_FORMAT(end_date,'%d-%m-%Y') AS date_end FROM `course` LEFT OUTER JOIN `enroll_course` ON course.c_id=enroll_course.c_enroll_id AND enroll_course.u_id=".$_SESSION['MM_UserID']." WHERE c_id =".$value;
 $course_details = mysql_query($query_course_details, $conn) or die(mysql_error());
 $row_course_details = mysql_fetch_assoc($course_details);
 $totalRows_course_details = mysql_num_rows($course_details);
@@ -166,8 +166,8 @@ $totalRows_other_course = mysql_num_rows($other_course);
 	<script src="js/LightFace.Image.js"></script>
 	<script src="js/LightFace.Request.js"></script>
     
-<script>
-</script>    
+<script src="./js/jquery.rateit.js" type="text/javascript"></script>
+<link href="./css/rateit.css" rel="stylesheet" type="text/css">
     
 <script language="javascript" type="text/javascript">
 function clearText(field)
@@ -297,6 +297,41 @@ function clearText(field)
 						echo '<form id="recoform">';
                     	echo '<input id="submit" type="button" class="buttom" value="Recommend to others" onclick="recoCourse('.$row_course_details['c_id'].')" />';
                     	echo '</form>';
+					}if($row_course_details['marks']!=-1){
+						//student has taken the test and to be shown rating widget.
+						?>
+						<br>Rate this course : 
+						<div class= "rateit bigstars" data-rateit-starwidth="32" data-rateit-starheight="32" id="rateit"data-rateit-value="<?php echo $row_course_details['rating'];?>" data-rateit-ispreset="true">
+						</div>
+						<div>
+						<span style="margin-left:150px;" id="hover"></span>
+						</div>
+						<script type="text/javascript">
+						var ratingType=['Poor','Fair','Good','Very Good','Excellent!'];
+						$('#rateit').bind('over', function (event,value) { 
+							$(this).attr('title', value);
+							if(value==null) {
+								$('#hover').text("");
+							}else {
+								$('#hover').text(ratingType[value-1]);
+							}
+						});
+						$('#rateit').on('beforerated', function (e, value) {
+         					if (!confirm('Are you sure you want to rate this course '+ ratingType[Math.floor(value)-1]+ "?")) {
+				              e.preventDefault();
+							}
+						});
+						$('#rateit').on('beforereset', function (e) {
+							if (!confirm('Are you sure you want to reset the rating?')) {
+								e.preventDefault();
+							}
+						});
+						$("#rateit").bind('rated', function (event, value) { 
+							var rateReturn=rateCourse(<?php echo $row_course_details['c_id'];?>,value);
+						});
+						$("#rateit").bind('reset', function () { rateCourse(<?php echo $row_course_details['c_id'];?>,0); });
+						</script>
+					<?php 
 					}
 					?>
 				</div>
@@ -351,7 +386,7 @@ function clearText(field)
 						echo '<td><img src="images/Download-icon.png" title="Download this resource" style="cursor:pointer;" width="25px" height="25px"/></td>';
 					}
 					//show voting icon
-					echo '<td><img src="images/rating-icon.png" title="Rate/Bookmark this resource"style="cursor:pointer;" width="25px" height="25px" onclick="showRating('.$row_get_resources['r_id'].',\''.$row_get_resources['filename'].'\');"/></td>';
+					echo '<td><img src="images/rating-icon.png" title="Rate/Bookmark this resource"style="cursor:pointer;" width="25px" height="25px" onclick="showResourceRating('.$row_get_resources['r_id'].',\''.$row_get_resources['filename'].'\');"/></td>';
 					
 					//show QR code icon
 					echo '<td><img src="images/qr.png" title="Get QR Code of this resource" style="cursor:pointer;" width="25px" height="25px" onclick="showQR('.$row_get_resources['r_id'].',\''.$row_get_resources['filename'].'\');"/></td>';

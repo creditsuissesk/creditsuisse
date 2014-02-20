@@ -79,7 +79,8 @@ function showResource(id,type,name) {
 		}).addButton('Close', function() { light.close(); },true).open();		
 }
 
-function showRating(id,name) {
+function showResourceRating(id,name) {
+	//loads the rating + flagging float.
 	light = new LightFace.IFrame({
 		height:150,
 		width:200,
@@ -130,5 +131,23 @@ function recoCourse(cId) {
 		url: 'course_reco.php?c_id='+cId,
 		title: "Select student to refer course"
 		}).addButton('Close', function() { light.close(); },true).open();
+}
+
+function rateCourse(id,rate) {
+	//rates course id with rate value. calls rate_course.php with c_id and rate_value
+	if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+		  xmlhttp=new XMLHttpRequest();
+		} else {// code for IE6, IE5
+		  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  		}
+		xmlhttp.onreadystatechange=function()
+		{
+		  if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+			}
+			else {
+			}
+		}
+		xmlhttp.open("GET","rate_course.php?c_id="+id+"&rate_value="+rate,true);
+		xmlhttp.send();
 }
 
