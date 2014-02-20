@@ -135,7 +135,7 @@ $totalRows_author_details = mysql_num_rows($author_details);
 $value=GetSQLValueString($_SESSION['MM_stream'], "text");
 $value2=GetSQLValueString($_SESSION['MM_UserID'], "int");
 mysql_select_db($database_conn, $conn);
-$query_sort_courses = "SELECT * FROM `course` WHERE (c_id NOT IN (SELECT c_enroll_id FROM `enroll_course` WHERE u_id='".$_SESSION['MM_UserID']."')) AND c_stream LIKE '%".$_SESSION['MM_stream']."%' ORDER BY avg_rating DESC";
+$query_sort_courses = "SELECT * FROM `course` WHERE (c_id NOT IN (SELECT c_enroll_id FROM `enroll_course` WHERE u_id='".$value2."')) AND c_stream LIKE '%".$_SESSION['MM_stream']."%' ORDER BY avg_rating DESC";
 $sort = mysql_query($query_sort_courses, $conn) or die(mysql_error());
 	$row_sort = mysql_fetch_assoc($sort);
 	$totalRows_sort = mysql_num_rows($sort);
