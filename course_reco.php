@@ -151,6 +151,10 @@ if(isset($_GET['c_id'])) {
         </form>
         <div id="tableholder">
         </div>
+        <script> $(document).ready(function() {
+			searchStudent();
+        });
+        </script>
         </body>
 		</html>
 	<?php
@@ -160,13 +164,17 @@ if(isset($_GET['c_id'])) {
 }
 if (isset($_GET['search']) && isset($_GET['course_id']) ) {
 	//after receiving the search query, show the table of users, who are not already sent recommendation by same user and who are not already enrolled in this course.
-	$query_search_student="SELECT *,user.u_id AS show_user_id from `user` LEFT OUTER JOIN (SELECT * FROM `course_reco` WHERE c_reco_id=".$_GET['course_id']." AND from_u_id=".$_SESSION['MM_UserID'].")AS temp ON user.u_id=temp.to_u_id LEFT OUTER JOIN `enroll_course` ON user.u_id=enroll_course.u_id AND enroll_course.c_enroll_id=".$_GET['course_id']." WHERE ((u_name LIKE '%".$_GET['search']."%') OR (f_name LIKE '%".$_GET['search']."%') OR (l_name LIKE '%".$_GET['search']."%')) AND role='student' AND (NOT user.u_id=".$_SESSION['MM_UserID'].")";
+	$query_search_student="SELECT *,user.u_id AS show_user_id from `user` LEFT OUTER JOIN (SELECT * FROM `course_reco` WHERE c_reco_id=".$_GET['course_id']." AND from_u_id=".$_SESSION['MM_UserID'].")AS temp ON user.u_id=temp.to_u_id LEFT OUTER JOIN `enroll_course` ON user.u_id=enroll_course.u_id AND enroll_course.c_enroll_id=".$_GET['course_id']." WHERE ((u_name LIKE '%".$_GET['search']."%') OR (f_name LIKE '%".$_GET['search']."%') OR (l_name LIKE '%".$_GET['search']."%')) AND role='student' AND (NOT user.u_id=".$_SESSION['MM_UserID'].") AND user.approve_id=1";
 	$search_student=mysql_query($query_search_student, $conn) or die(mysql_error());
 	$row_search_student = mysql_fetch_assoc($search_student);
 	$totalRows_search_student = mysql_num_rows($search_student);
-	echo '<table class="datagrid" style="css/table.css">';
+
 	$omitted_entries=0;
 	if($totalRows_search_student>0)  {
+		//divs for scrolling
+		echo '<div style="height:250px;position:relative;padding:0px;">';
+		echo '<div style="max-height:100%;overflow:auto;"><div style="overflow:auto;">';
+		echo '<table class="datagrid" style="css/table.css">';
 		do {
 			echo '<tr>';
 			if(empty($row_search_student['c_reco_id']) && empty($row_search_student['marks'])) {	
@@ -182,6 +190,7 @@ if (isset($_GET['search']) && isset($_GET['course_id']) ) {
 			echo '</tr>';
 		}while($row_search_student=mysql_fetch_assoc($search_student));
 		echo "</table>";
+		echo "</div></div></div>";
 	}
 	//if a query result contains a student who has already enrolled, he is not shown in results. but if he is the only one, then no matching result message needs to be shown. hence omitted entries variable.
 	if($totalRows_search_student-$omitted_entries==0) {	
