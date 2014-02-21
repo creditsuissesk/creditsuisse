@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 21, 2014 at 10:08 AM
+-- Generation Time: Feb 21, 2014 at 01:26 PM
 -- Server version: 5.6.14
 -- PHP Version: 5.5.6
 
@@ -247,7 +247,7 @@ CREATE TABLE IF NOT EXISTS `enroll_course` (
 
 INSERT INTO `enroll_course` (`u_id`, `c_enroll_id`, `completion_stat`, `marks`, `rating`) VALUES
 (4, 18, 0, -1, '0.0'),
-(5, 18, 0, 30, '4.5'),
+(5, 18, 0, 30, '1.5'),
 (5, 21, 0, -1, '0.0'),
 (8, 18, 0, -1, '0.0');
 
@@ -270,7 +270,7 @@ CREATE TABLE IF NOT EXISTS `resource` (
   `uploaded_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `download_status` tinyint(1) NOT NULL DEFAULT '0',
   `approve_status` tinyint(1) NOT NULL DEFAULT '0',
-  `avg_rating` double unsigned NOT NULL DEFAULT '0',
+  `avg_rating` decimal(2,1) DEFAULT NULL,
   `flag_status` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`r_id`),
   KEY `c_id` (`c_id`),
@@ -283,8 +283,8 @@ CREATE TABLE IF NOT EXISTS `resource` (
 --
 
 INSERT INTO `resource` (`r_id`, `c_id`, `type_id`, `filename`, `file_type`, `file_size`, `file_location`, `view_location`, `uploaded_by`, `uploaded_date`, `download_status`, `approve_status`, `avg_rating`, `flag_status`) VALUES
-(1, 18, 1, 'Reference.pdf', 'application/pdf', 5.3696355819702, 'resource/18/Reference.pdf', 'resource/18-s/abstract.swf', 2, '2014-02-09 00:15:49', 1, 1, 1, 1),
-(2, 18, 7, 'Example.jpg', 'image/jpeg', 0.13896942138672, 'resource/18/Example.jpg', 'resource/18-s/des.swf', 2, '2014-02-09 00:17:09', 0, 1, 2, 1);
+(1, 18, 1, 'Reference.pdf', 'application/pdf', 5.3696355819702, 'resource/18/Reference.pdf', 'resource/18-s/abstract.swf', 2, '2014-02-09 00:15:49', 1, 1, '1.0', 1),
+(2, 18, 7, 'Example.jpg', 'image/jpeg', 0.13896942138672, 'resource/18/Example.jpg', 'resource/18-s/des.swf', 2, '2014-02-09 00:17:09', 0, 1, '2.0', 1);
 
 -- --------------------------------------------------------
 
@@ -481,7 +481,7 @@ CREATE TABLE IF NOT EXISTS `user_resource` (
 --
 
 INSERT INTO `user_resource` (`user_resource_id`, `u_id`, `rating`, `bookmarked`, `date_last_viewed`) VALUES
-(1, 5, '1.5', 0, '2014-02-21 07:53:04'),
+(1, 5, '1.5', 1, '2014-02-21 10:58:58'),
 (2, 5, '5.0', 0, '2014-02-21 08:56:44');
 
 --

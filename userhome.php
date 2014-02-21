@@ -107,6 +107,12 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 }
 
 mysql_select_db($database_conn, $conn);
+$query_incomplete_courses = sprintf("SELECT * FROM course JOIN enroll_course  ON course.c_id=enroll_course.c_enroll_id where enroll_course.u_id=%s AND completion_stat=0 AND DATE(NOW()) BETWEEN start_date AND end_date",GetSQLValueString($_SESSION['MM_UserID'], "int"));
+$incomplete_courses = mysql_query($query_incomplete_courses, $conn) or die(mysql_error());
+$row_incomplete_courses = mysql_fetch_assoc($incomplete_courses);
+$totalRows_incomplete_courses = mysql_num_rows($incomplete_courses);
+
+
 $query_completed_courses = sprintf("SELECT * FROM course JOIN enroll_course ON course.c_id=enroll_course.c_enroll_id WHERE enroll_course.u_id=%s AND completion_stat=1 AND DATE(NOW())> end_date",GetSQLValueString($_SESSION['MM_UserID'], "int"));
 $completed_courses = mysql_query($query_completed_courses, $conn) or die(mysql_error());
 $row_completed_courses = mysql_fetch_assoc($completed_courses);
@@ -141,7 +147,7 @@ $sort = mysql_query($query_sort_courses, $conn) or die(mysql_error());
 	$totalRows_sort = mysql_num_rows($sort);
 ?>
 
-<title><?php echo /*$row_get_user_details['f_name']*/$_SESSION['MM_f_name'];?></title>
+<title><?php echo /*$row_['f_name']*/$_SESSION['MM_f_name'];?></title>
 <script src="SpryAssets/SpryTabbedPanels.js" type="text/javascript"></script>
 <link href="SpryAssets/SpryTabbedPanels.css" rel="stylesheet" type="text/css">
 <link href="css/templatemo_style.css" type="text/css" rel="stylesheet" /> 
@@ -173,7 +179,7 @@ function clearText(field)
 </script>
 
 <script>
-function sortCourses(str,refreshEnrolled)
+function sortCourses(str)
 {
 if (str=="")
   {
@@ -193,38 +199,9 @@ xmlhttp.onreadystatechange=function()
   if (xmlhttp.readyState==4 && xmlhttp.status==200)
     {
     document.getElementById("courselist").innerHTML=xmlhttp.responseText;
-		if(refreshEnrolled==1) {
-			showEnrolledCourses();
-		}
     }
   }
 xmlhttp.open("GET","show_courses.php?sortType="+str,true);
-xmlhttp.send();
-}
-
-function showEnrolledCourses()
-{
-/*if (str=="")
-  {
-  document.getElementById("txtHint").innerHTML="";
-  return;
-  }*/
-if (window.XMLHttpRequest)
-  {// code for IE7+, Firefox, Chrome, Opera, Safari
-  xmlhttp=new XMLHttpRequest();
-  }
-else
-  {// code for IE6, IE5
-  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-  }
-xmlhttp.onreadystatechange=function()
-  {
-  if (xmlhttp.readyState==4 && xmlhttp.status==200)
-    {
-    document.getElementById("content").innerHTML=xmlhttp.responseText;
-    }
-  }
-xmlhttp.open("GET","show_courses.php?showCourses=1",true);
 xmlhttp.send();
 }
 
@@ -242,7 +219,8 @@ function enrollCourse(ele) {
 		    //document.getElementById("courselist").innerHTML=xmlhttp.responseText;
 				var e = document.getElementById("sortdropdown");
 				var strUser = e.options[e.selectedIndex].value;
-				sortCourses(strUser,0);
+				//sortCourses(strUser);
+				window.location.reload();
 			}
 			else {
 				ele.innerHTML='<a id="'+ele.id+'" class="enroll">Enrolling...</a>';
@@ -260,7 +238,7 @@ function searchCourses() {
 	if (searchkey=="") {
 		var e = document.getElementById("sortdropdown");
 			var strUser = e.options[e.selectedIndex].value;
-			sortCourses(strUser,1);
+			sortCourses(strUser);
 	} else {
 		if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
 	  		xmlhttp=new XMLHttpRequest();
@@ -278,7 +256,7 @@ function searchCourses() {
 }
 </script>
 <script>
-function sortresources(str,refreshEnrolled)
+function sortresources(str)
 {
 	
 if (str=="")
@@ -299,9 +277,7 @@ xmlhttp.onreadystatechange=function()
   if (xmlhttp.readyState==4 && xmlhttp.status==200)
     {
     document.getElementById("resourcelist").innerHTML=xmlhttp.responseText;
-		if(refreshEnrolled==1) {
-			showEnrolledresources();
-		}
+	sortCourses(1);
     }
   }
 xmlhttp.open("GET","show_resources.php?sortType="+str,true);
@@ -315,7 +291,7 @@ function searchresources() {
 	if (searchkey=="") {
 		var e = document.getElementById("sortdropdown1");
 			var strUser = e.options[e.selectedIndex].value;
-			sortresources(strUser,1);
+			sortresources(strUser);
 	} else {
 		if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
 	  		xmlhttp=new XMLHttpRequest();
@@ -430,17 +406,16 @@ else {
 						<aside class="left-sidebar">
                         Sort by:
                         <form action=""> 
-						<select id="sortdropdown1" name="use" onChange="sortresources(this.value,0)">
+						<select id="sortdropdown1" name="use" onChange="sortresources(this.value)">
 						<option value="1" selected>Your Bookmarks</option>
 						<option value="2">Most Popular</option>
                         <option value="3">Latest</option>
 						</select>
 						</form>
-                        <!---<script> $(document).ready(function(){sortresources(1,1);});</script> --->
                         
                         Search resource by:
                         <form action=""> 
-						<select id="searchdropdown1" name="use" onChange="sortresources(this.value,0)">
+						<select id="searchdropdown1" name="use" onChange="sortresources(this.value)">
 						<option value="1" selected>File Name</option>
 						<option value="2">Course Name</option> 
 						</select> <br>
@@ -478,18 +453,18 @@ else {
 						<aside class="left-sidebar">
                         Sort by:
                         <form action=""> 
-						<select id="sortdropdown" name="users" onChange="sortCourses(this.value,0)">
+						<select id="sortdropdown" name="users" onChange="sortCourses(this.value)">
 						<option value="1" selected>Most Popular</option>
 						<option value="2">Latest</option>
                         <option value="3">Starting Soon</option>
                         <option value="4">Running Courses</option>
 						</select>
 						</form>
-                        <script> $(document).ready(function(){sortCourses(1,1);sortresources(1,1);});</script>
+                        <script> $(document).ready(function(){sortresources(1);});</script>
                         
                         Search course by:
                         <form action=""> 
-						<select id="searchdropdown" name="users" onChange="sortCourses(this.value,0)">
+						<select id="searchdropdown" name="users" onChange="sortCourses(this.value)">
 						<option value="1" selected>Name</option>
 						<option value="2">Stream</option> 
 						</select> <br>
@@ -502,13 +477,67 @@ else {
     
     </div> <!--- this div ends browse courses tab --->
     <div class="TabbedPanelsContent">
+    <?php if ($totalRows_incomplete_courses>0) {?>
+   		<?php $var=0; ?>
 		<div id="templatemo_main_wrapper">
 			<div id="templatemo_main"> 
 		    	<div id="content"> 
+                <?php do { ?>
+	          		<?php echo  "<div class='section section_with_padding' id='a".$var."'>";?>
+	                <h1><a style="font-size: 36px; margin: 0 0 30px; padding: 5px 0;color: #fff; font-weight: normal; "href="course_details_stud.php?c_id=<?php echo $row_incomplete_courses['c_id']?>" ><?php echo $row_incomplete_courses['c_name']?></a></h1> 
+	                <div class="half right">
+                    <div class="img_border img_temp"> <img src="<?php echo $row_incomplete_courses['course_image']; ?>" alt="image 1" /></div>
+	                	<p><em><?php echo $row_incomplete_courses['description']?></em></p>            
+                    <?php //list all resources of that course    
+					$query_resources = sprintf("SELECT * FROM `resource` WHERE c_id=%s AND approve_status=1",GetSQLValueString($row_incomplete_courses['c_id'], "int"));
+		$resource = mysql_query($query_resources, $GLOBALS['conn']) or die(mysql_error());
+		$row_resource = mysql_fetch_assoc($resource);
+					?>
+                    </div>
+	    			<div class="half left">
+					<table>
+					<?php 
+						do {
+							echo "<tr><td><a href='view_resource.php'>".$row_resource['filename']."</a></td>";
+							if($row_resource['download_status']==1){?>
+	                            <td>
+						        <form  id="form1" name="form1" method="POST" action="download_res.php">            
+						        <input name="change" id="change" value="Download" type="submit" ></input>
+								<input type="hidden" name="id" id="id" value="<?php echo $row_resource['r_id'];?>"  />
+								<input type="hidden" name="MM_change" value="form1" />
+								</form>
+                                </td>
+					<?php 	}else {echo "";}
+							echo "</tr>";
+						}while ($row_resource= mysql_fetch_assoc($resource));
+					?></table>
+              		</div>
+    		            <?php 
+							if ($var ==0) {
+								//echo "<a href='#a".$row_courses['c_id']."' class='page_nav_btn previous'>Previous</a>";
+			                }else {
+								$temp=$var-1;
+								echo "<a href='#a".$temp."' class='page_nav_btn previous'>Previous</a>";
+			                }
+							if ($var == $totalRows_incomplete_courses-1) {
+							}else {
+								$temp=$var+1;
+								echo "<a href='#a".$temp."' class='page_nav_btn next'>Next</a> ";
+							}
+		                ?>
+       	  </div><!---END of  half right --->
+	            <?php //echo "</div>"; ?> <!-- END of Services -->
+    	        <?php $var=$var+1; ?>
+			    <?php } while ($row_incomplete_courses = mysql_fetch_assoc($incomplete_courses)); ?> 
 		      	</div>
 			</div>
-		</div>
-	</div>
+		</div><!--- this div ends templatemo_main_wrapper --->
+        <?php }
+		else {
+			echo "You haven't enrolled for any courses yet!";
+		}
+		?>
+	</div><!--- end of enrolled courses tab --->
     <div class="TabbedPanelsContent">
     <?php if ($totalRows_completed_courses>0) {?>
     <?php $var=0; ?>
@@ -662,5 +691,6 @@ var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1",{defaultTab:<?p
 </body>
 </html>
 <?php
+mysql_free_result($incomplete_courses);
 //mysql_free_result($get_user_details);
 ?>

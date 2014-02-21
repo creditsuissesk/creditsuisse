@@ -176,6 +176,21 @@ function clearText(field)
     else if (field.value == '') field.value = field.defaultValue;
 }
 
+<?php if(!empty($row_course_details['u_enroll_id']) && isset($_GET['show_res'])){ 
+	//if user is enrolled and showResource is set then open resource popup after loading page
+	$query_get_resource= sprintf("SELECT * FROM `resource` WHERE r_id=%s",GetSQLValueString($_GET['show_res'], "int"));
+	$get_resource = mysql_query($query_get_resource, $conn) or die(mysql_error());
+	$row_get_resource = mysql_fetch_assoc($get_resource);
+	$filetype="";
+	if(strpos($row_get_resource['file_type'],"application/pdf")!==false) {
+		$filetype="pdf";
+	}else if (strpos($row_get_resource['file_type'],"image")!==false) {
+		$filetype="image";
+	}
+	?>
+	$(document).ready(function(){showResource(<?php echo $_GET['show_res'];?>,'<?php echo $filetype;?>','<?php echo $row_get_resource['filename'];?>')});
+	
+<?php }?>
 
 </script>
 </head> 

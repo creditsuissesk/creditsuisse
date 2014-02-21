@@ -80,13 +80,13 @@ mysql_select_db($database_conn, $conn);
 if(isset($_GET['sortType'])) {
 	if($_GET['sortType']==1) {
 		//bookmarked
-		$query_sort_courses = sprintf("SELECT * FROM (SELECT c_name,uploaded_date, filename ,resource.c_id, resource.avg_rating AS rating, resource.download_status, r_id  FROM `resource` JOIN `course` ON course.c_id = resource.c_id WHERE resource.approve_status =1 AND course.approve_status =1 ) AS `temp` JOIN `enroll_course` ON temp.c_id = c_enroll_id JOIN `user_resource` ON temp.r_id=user_resource_id WHERE enroll_course.u_id=%s AND bookmarked=1",GetSQLValueString($_SESSION['MM_UserID'], "int"));
+		$query_sort_courses = sprintf("SELECT * FROM (SELECT c_name,uploaded_date, filename ,resource.c_id, resource.avg_rating AS res_avg_rating, resource.download_status, r_id  FROM `resource` JOIN `course` ON course.c_id = resource.c_id WHERE resource.approve_status =1 AND course.approve_status =1 ) AS `temp` JOIN `enroll_course` ON temp.c_id = c_enroll_id JOIN `user_resource` ON temp.r_id=user_resource_id WHERE enroll_course.u_id=%s AND bookmarked=1",GetSQLValueString($_SESSION['MM_UserID'], "int"));
 	}else if($_GET['sortType']==2) {
 		//sort by most popular
-		$query_sort_courses = sprintf("SELECT * FROM (SELECT c_name,uploaded_date, filename ,resource.c_id, resource.avg_rating AS rating, resource.download_status, r_id  FROM `resource` JOIN `course` ON course.c_id = resource.c_id WHERE resource.approve_status =1 AND course.approve_status =1 ) AS `temp` JOIN `enroll_course` ON temp.c_id = c_enroll_id WHERE enroll_course.u_id=%s ORDER BY temp.rating",GetSQLValueString($_SESSION['MM_UserID'], "int"));
+		$query_sort_courses = sprintf("SELECT * FROM (SELECT c_name,uploaded_date, filename ,resource.c_id, resource.avg_rating AS res_avg_rating, resource.download_status, r_id  FROM `resource` JOIN `course` ON course.c_id = resource.c_id WHERE resource.approve_status =1 AND course.approve_status =1 ) AS `temp` JOIN `enroll_course` ON temp.c_id = c_enroll_id WHERE enroll_course.u_id=%s ORDER BY temp.res_avg_rating DESC",GetSQLValueString($_SESSION['MM_UserID'], "int"));
 	}else if($_GET['sortType']==3) {
 		//sort by latest
-		$query_sort_courses = sprintf("SELECT * FROM (SELECT resource.uploaded_date, c_name, r_id, filename,resource.c_id,resource.avg_rating AS rating, resource.download_status  FROM `resource` JOIN `course` ON course.c_id = resource.c_id WHERE resource.approve_status =1 AND course.approve_status =1 ) AS `temp` JOIN `enroll_course` ON temp.c_id = c_enroll_id WHERE enroll_course.u_id=%s ORDER BY temp.uploaded_date DESC",GetSQLValueString($_SESSION['MM_UserID'], "int"));
+		$query_sort_courses = sprintf("SELECT * FROM (SELECT resource.uploaded_date, c_name, r_id, filename,resource.c_id,resource.avg_rating AS res_avg_rating, resource.download_status  FROM `resource` JOIN `course` ON course.c_id = resource.c_id WHERE resource.approve_status =1 AND course.approve_status =1 ) AS `temp` JOIN `enroll_course` ON temp.c_id = c_enroll_id WHERE enroll_course.u_id=%s ORDER BY temp.uploaded_date DESC",GetSQLValueString($_SESSION['MM_UserID'], "int"));
 	}
 	$sort = mysql_query($query_sort_courses, $conn) or die(mysql_error());
 	$row_sort = mysql_fetch_assoc($sort);
@@ -94,9 +94,9 @@ if(isset($_GET['sortType'])) {
 	if($totalRows_sort>0){
 		do {
 			echo "<li>";
-			echo '<span><b>'.$row_sort['filename'].'</b> in <i>'.$row_sort['c_name'].'</i></span><br>';
+			echo '<span><b><a href="course_details_stud.php?c_id='.$row_sort['c_id'].'&show_res='.$row_sort['r_id'].'#resources">'.$row_sort['filename'].'</a></b> in <i>'.$row_sort['c_name'].'</i></span><br>';
 			echo '<p class="dates">Uploaded on: '.$row_sort['uploaded_date'].'</p>';
-			echo '<p ><b> Average Rating: </b><i>'.$row_sort['rating'].'</i></p>';
+			echo '<p ><b> Average Rating: </b><i>'.$row_sort['res_avg_rating'].'</i></p>';
 			if (($row_sort['download_status']==1)) {
 				//enrolled for course already
 				echo '<p class="enrolled"><a href="download_res.php?id='.$row_sort['r_id'].'">Download</a></p>';
