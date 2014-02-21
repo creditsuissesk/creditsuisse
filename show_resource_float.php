@@ -4,10 +4,11 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Resource</title>
 
-<!--- files for voting--->
-<script src="lib/jQuery.js" type="text/javascript"></script>
-<script src="lib/jquery.upvote.js" type="text/javascript"></script>
-<link href="lib/jquery.upvote.css" rel="stylesheet" type="text/css">
+<!--- files for rating--->
+<script type="text/javascript" src="js/jquery.min.js"></script> 
+<script src="./js/jquery.rateit.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/course_details_stud.js"></script>
+<link href="./css/rateit.css" rel="stylesheet" type="text/css">
 
 </head>
 <?php
@@ -113,76 +114,57 @@ if(isset($_GET['r_id']) && (isset($_GET['actiontype']) && $_GET['actiontype']=="
 	$get_resource = mysql_query($query_get_resource, $conn) or die(mysql_error());
 	$row_get_resource = mysql_fetch_assoc($get_resource);
 	$totalRows_get_resource= mysql_num_rows($get_resource);
-	echo '<table style="margin-left:60px;"><tr><td>';
-	echo '<div id="res'.$row_get_resource['r_id'].'" class="upvote">';
-	echo '<a class="upvote"></a>';
-	echo '<span class="count">0</span>';
-	echo '<a class="downvote"></a>';
-	echo '<a class="star"></a>';
+	echo '<table style="margin-left:10px;"><tr><td>';
+	echo '<div class= "rateit bigstars" data-rateit-starwidth="32" data-rateit-starheight="32" id="rateit" data-rateit-value="'.$row_get_resource['rating'].'" data-rateit-ispreset="true">';
 	echo '</div>';
-	echo '</td><td>';
-	if($row_get_resource['flag_status']==1) {
-		echo "<img id='flagged' src='images/red_flag.png' width='30' height='30'/>";
+	echo '<div>';
+	echo '<span style="margin-left:15px;" id="hover"></span>';
+	echo '</div>';
+	echo '</td></tr><tr><td>';
+	if($row_get_resource['bookmarked']==1) {
+		//already bookmarked
+		echo "<img id='book_y' style='cursor:pointer;' src='images/bookmark_y.png' width='30' height='30' title='You have bookmarked this resource. Click to remove bookmark' onclick='bookmarkResource(this,".$row_get_resource['r_id'].");'/>";
 	}else {
+		echo "<img id='book_n' style='cursor:pointer;' src='images/bookmark_n.png' width='30' height='30' title='Click to bookmark this resource' onclick='bookmarkResource(this,".$row_get_resource['r_id'].");'/>";
+		//not already bookmarked
+	}
+	
+	if($row_get_resource['flag_status']==1) {
+		//already flagged
+		echo "<img id='flagged' src='images/red_flag.png' width='30' height='30' title='This resource has been flagged'/>";
+	}else {
+		//not flagged
 		echo "<img id='unflagged' src='images/flag.png' style='cursor:pointer;' width='30' height='30' onclick='flag(".$row_get_resource['r_id'].");'/>";
 	}
+	
 	echo '</td></tr></table>';
-	echo '<script language="javascript">';
-	
-	echo "function flag(r_id) {
-	var r=confirm(\"Are you sure you want to flag this discussion?\");
-			if (r==true){
-				$.ajax({
-					url: 'voter_res.php',
-					type: 'post',
-					data: { id: r_id,action:'flag'},
-					success: function (response) {
-						if(response==1) {
-							document.getElementById('unflagged').src= 'images/red_flag.png';
-						}
-					}
-				});	
-	  		} 
-	};";
-	
-	echo "var res_callback = function(data) {";
-	echo "	$.ajax({
-		url: 'voter_res.php',
-		type: 'post',
-		data: { id: data.id, up: data.upvoted, down: data.downvoted, star: data.starred , count: $('#res'+ data.id).upvote('count'),upstatus:$('#res'+data.id).upvote('upvoted'),downstatus:$('#res'+data.id).upvote('downvoted')},
-		});	
-	};";
-	echo "
-	var res_callback2= function(data) {
-		if($('#res'+data.id).upvote('upvoted')==true || $('#res'+data.id).upvote('downvoted')==true) { ";
-	echo	'alert("You can\'t vote your own resource");';
-	echo "	}
-		$.ajax({
-			url: 'voter_res.php',
-			type: 'post',
-			data: {id: data.id, star:data.starred}
+	?>
+    <script type="text/javascript">
+		var ratingType=['Poor','Fair','Good','Very Good','Excellent!'];
+		$('#rateit').bind('over', function (event,value) { 
+			$(this).attr('title', value);
+			if(value==null) {
+				$('#hover').text("");
+			}else {
+				$('#hover').text(ratingType[value-1]);
+			}
 		});
-	};";
-	
-	if($row_get_resource['uploaded_by']==$_SESSION['MM_UserID']){
-			echo "$('#res".$row_get_resource['r_id']."').upvote({count:".$row_get_resource['avg_rating'].",id:".$row_get_resource['r_id'].", callback: res_callback2";
-			if ($row_get_resource['bookmarked']==1) {
-				echo ",starred:1";
-			} 
-			echo "});";
-	} else {
-			echo "$('#res".$row_get_resource['r_id']."').upvote({count:".$row_get_resource['avg_rating'].",id:".$row_get_resource['r_id'].", callback: res_callback";
-			if ($row_get_resource['vote_status']==1) {
-				echo ",upvoted:1";
-			}else if ($row_get_resource['vote_status']==-1){
-				echo ",downvoted:1";
+		$('#rateit').on('beforerated', function (e, value) {
+		if (!confirm('Are you sure you want to rate this resourse '+ ratingType[Math.floor(value)-1]+ "?")) {
+			e.preventDefault();
+		}
+		});
+		$('#rateit').on('beforereset', function (e) {
+			if (!confirm('Are you sure you want to reset the rating?')) {
+				e.preventDefault();
 			}
-			if ($row_get_resource['bookmarked']==1) {
-				echo ",starred:1";
-			}
-			echo "});";
-	}
-	echo '</script>';
+		});
+		$("#rateit").bind('rated', function (event, value) { 
+			var rateReturn=rateResource(<?php echo $row_get_resource['r_id'];?>,value);
+		});
+		$("#rateit").bind('reset', function () { rateResource(<?php echo $row_get_resource['r_id'];?>,0); });
+	</script>
+	<?php echo '</script>';
 }
 
 if(isset($_GET['r_id']) && (isset($_GET['actiontype']) && $_GET['actiontype']=="loadQR")) {

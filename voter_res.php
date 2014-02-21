@@ -77,22 +77,21 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 }
 
 mysql_select_db($database_conn, $conn);
-if (isset($_POST['up']) ||  isset($_POST['down'])){
+if (isset($_GET['r_id']) &&  isset($_GET['rate_value'])){
 		//checking to prevent self-voting
-		$query_check_voter = sprintf("SELECT * FROM `resource` WHERE r_id=%s",GetSQLValueString($_POST['id'], "int"));
+		$query_check_voter = sprintf("SELECT * FROM `resource` WHERE r_id=%s",GetSQLValueString($_GET['r_id'], "int"));
 		$check_voter = mysql_query($query_check_voter, $conn) or die(mysql_error());
 		$row_check_voter=mysql_fetch_assoc($check_voter);
-		$prev_score=$row_check_voter['rating'];
-		if ($row_check_voter['insert_uid']==$_SESSION['MM_UserID']) {
+		if ($row_check_voter['uploaded_by']==$_SESSION['MM_UserID']) {
 			//self voting, return 0 as failure
 			echo 0;
 		}else {
 			//fair voting, update the resource rating.
-			$query_update_score = sprintf("UPDATE `resource` SET avg_rating=%s WHERE r_id =%s",GetSQLValueString($_POST['count'], "int"),GetSQLValueString($_POST['id'], "int"));
-			$update_score = mysql_query($query_update_score, $conn) or die(mysql_error());
+			//$query_update_score = sprintf("UPDATE `resource` SET avg_rating=%s WHERE r_id =%s",GetSQLValueString($_POST['count'], "int"),GetSQLValueString($_POST['id'], "int"));
+			//$update_score = mysql_query($query_update_score, $conn) or die(mysql_error());
 
 			//update user-vote given to resource in user_resource table
-			$new_score=$_POST['count'];
+			/*$new_score=$_POST['count'];
 			$difference=$new_score-$prev_score;
 			
 			if($_POST['upstatus']=="true" || $_POST['upstatus']=="1") {
@@ -101,30 +100,32 @@ if (isset($_POST['up']) ||  isset($_POST['down'])){
 				$vote_value=-1;	
 			}else if (empty($_POST['upstatus']) and empty($_POST['downstatus'])) {
 				$vote_value=0;
-			}
+			}*/
 
-			$query_update_userres=sprintf("INSERT INTO `user_resource` (u_id,user_resource_id,vote_status,bookmarked,date_last_viewed) VALUES ('%s','%s','%s','0',now()) ON DUPLICATE KEY UPDATE date_last_viewed=now(),vote_status=%s;",GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($_POST['id'], "int"),GetSQLValueString($vote_value, "int"),GetSQLValueString($vote_value, "int"));
+			$query_update_userres=sprintf("INSERT INTO `user_resource` (u_id,user_resource_id,rating,bookmarked,date_last_viewed) VALUES ('%s','%s','%s','0',now()) ON DUPLICATE KEY UPDATE date_last_viewed=now(),rating=%s;",GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($_GET['r_id'], "int"),GetSQLValueString($_GET['rate_value'], "double"),GetSQLValueString($_GET['rate_value'], "double"));
 			$update_userres=mysql_query($query_update_userres, $conn) or die(mysql_error());
 			
 			//update the score of user to whom vote was given
-			$query_update_author = sprintf("UPDATE `resource` JOIN user ON uploaded_by=u_id SET user_score=user_score+%s WHERE r_id=%s",GetSQLValueString($difference, "int"),GetSQLValueString($_POST['id'], "int"));
-			$update_author = mysql_query($query_update_author, $conn) or die(mysql_error());
+			//$query_update_author = sprintf("UPDATE `resource` JOIN user ON uploaded_by=u_id SET user_score=user_score+%s WHERE r_id=%s",GetSQLValueString($difference, "int"),GetSQLValueString($_POST['id'], "int"));
+			//$update_author = mysql_query($query_update_author, $conn) or die(mysql_error());
 			
 
 			echo 1;
 		}		
 }
-if(isset($_POST['star'])) {
-			//regardless of whoever is user, anyone can bookmark resource.
-			if($_POST['star']=="true" || $_POST['star']=='1'){
+if(isset($_POST['r_id']) && isset($_POST['action']) && isset($_POST['value'])) {
+	if($_POST['action']=="bookmark") {
+		//regardless of whoever is user, anyone can bookmark resource.
+			if($_POST['value']=="1" ){
 					$bookmarked=1;
-			}else if ($_POST['star']!='0'){
+			}else if ($_POST['value']=="0"){
 					$bookmarked=0;
 			}
 			
-			$query_update_userbookmark=sprintf("INSERT INTO `user_resource` (u_id,user_resource_id,vote_status,bookmarked,date_last_viewed) VALUES ('%s','%s','0','%s',now()) ON DUPLICATE KEY UPDATE date_last_viewed=now(),bookmarked=%s;",GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($_POST['id'], "int"),GetSQLValueString($bookmarked, "int"),GetSQLValueString($bookmarked, "int"));
+			$query_update_userbookmark=sprintf("INSERT INTO `user_resource` (u_id,user_resource_id,rating,bookmarked,date_last_viewed) VALUES ('%s','%s','0.0','%s',now()) ON DUPLICATE KEY UPDATE date_last_viewed=now(),bookmarked=%s;",GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($_POST['r_id'], "int"),GetSQLValueString($bookmarked, "int"),GetSQLValueString($bookmarked, "int"));
 			$update_userbookmark=mysql_query($query_update_userbookmark, $conn) or die(mysql_error());
-			unset($_POST);
+			echo 1;
+	}
 }
 if
 (isset($_POST['action']) && $_POST['action']=='flag') {
@@ -133,7 +134,6 @@ if
 	$check_enroll = mysql_query($query_check_enroll, $conn) or die(mysql_error());
 	$row_check_enroll=mysql_fetch_assoc($check_enroll);
 	$totalRows_check_enroll= mysql_num_rows($check_enroll);
-	
 	if($totalRows_check_enroll==1) {
 		//user actually enrolled. now flag resource.
 		$query_flag_res = sprintf("UPDATE `resource` SET flag_status=1 WHERE r_id=%s",GetSQLValueString($_POST['id'], "int"));

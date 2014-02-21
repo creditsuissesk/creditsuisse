@@ -82,8 +82,8 @@ function showResource(id,type,name) {
 function showResourceRating(id,name) {
 	//loads the rating + flagging float.
 	light = new LightFace.IFrame({
-		height:150,
-		width:200,
+		height:120,
+		width:250,
 		url: 'show_resource_float.php?actiontype=loadRating&r_id='+id,
 		title: name
 		}).addButton('Close', function() { light.close(); },true).open();
@@ -151,3 +151,63 @@ function rateCourse(id,rate) {
 		xmlhttp.send();
 }
 
+function rateResource(id,rate) {
+	if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+		  xmlhttp=new XMLHttpRequest();
+		} else {// code for IE6, IE5
+		  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  		}
+		xmlhttp.onreadystatechange=function()
+		{
+		  if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+			}
+			else {
+			}
+		}
+		xmlhttp.open("GET","voter_res.php?r_id="+id+"&rate_value="+rate,true);
+		xmlhttp.send();	
+}
+
+function flag(r_id) {
+	var r=confirm("Do you want to flag this resource ?");
+		if (r==true){
+			$.ajax({
+				url: 'voter_res.php',
+				type: 'post',
+				data: { id: r_id,action:'flag'},
+				success: function (response) {
+				if(response==1) {
+					document.getElementById('unflagged').src= 'images/red_flag.png';
+				}
+				}
+			});	
+	} 
+}
+
+function bookmarkResource(ele,id) {
+	var bookmark=0;
+	if(ele.id=="book_y"){
+		//already bookmarked, remove bookmark
+		bookmark=0;
+	}else if (ele.id=="book_n"){
+		//bookmark resource
+		bookmark=1;
+	}
+	$.ajax({
+		url: 'voter_res.php',
+		type: 'post',
+		data: { r_id: id,action:'bookmark',value:bookmark},
+		success: function (response) {
+		if(response==1 && bookmark==0) {
+			document.getElementById(ele.id).src= 'images/bookmark_n.png';
+			ele.title='Click to bookmark this resource';
+			document.getElementById(ele.id).id= 'book_n';
+		}else if(response==1 && bookmark==1){
+			document.getElementById(ele.id).src= 'images/bookmark_y.png';
+			ele.title='You have bookmarked this resource. Click to remove bookmark'
+			document.getElementById(ele.id).id= 'book_y';
+			
+		}
+		}
+	});	
+}
