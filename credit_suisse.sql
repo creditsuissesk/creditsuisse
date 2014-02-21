@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 21, 2014 at 01:26 PM
+-- Generation Time: Feb 21, 2014 at 01:29 PM
 -- Server version: 5.6.14
 -- PHP Version: 5.5.6
 
@@ -233,9 +233,9 @@ INSERT INTO `discussion_category` (`category_id`, `category_name`) VALUES
 CREATE TABLE IF NOT EXISTS `enroll_course` (
   `u_id` int(10) unsigned NOT NULL,
   `c_enroll_id` int(10) unsigned NOT NULL,
-  `completion_stat` tinyint(1) NOT NULL,
+  `completion_stat` tinyint(1) NOT NULL DEFAULT '0',
   `marks` int(11) NOT NULL DEFAULT '-1',
-  `rating` decimal(2,1) DEFAULT NULL,
+  `rating` decimal(2,1) DEFAULT '0.0',
   PRIMARY KEY (`u_id`,`c_enroll_id`),
   KEY `c_id` (`c_enroll_id`),
   KEY `u_id` (`u_id`)
