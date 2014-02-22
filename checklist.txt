@@ -16,7 +16,7 @@ All php:
 			2)add copyright and all in all pages
 			3)deny copy pasting by using the javascript earlier found
 		
-index.php: 	1)need to replace one sign up tile with current no. of courses and users
+index.php: 	1)need to replace one sign up tile with current no. of courses and users //done
 			2)hashing password
 			3)adding home button in transition
 			4)adding action to send button
@@ -64,5 +64,5 @@ NOTE:  FUNCTIONALITIES LEFT TO IMPLEMENT
 2) Recently trending Discussion/comment
 3) build user reputation
 4) approval for enrolling
-5) adding bookmark button tin browse resource tab
+5) adding bookmark button in browse resource tab
 6) tab of peer recommendation

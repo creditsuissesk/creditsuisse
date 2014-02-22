@@ -89,6 +89,12 @@ if (isset($_GET['c_id']) && isset($_GET['rate_value']) && $_GET['rate_value']>=0
 		//indeed enrolled, set rating.
 		$query_set_rating=sprintf("UPDATE `enroll_course` SET rating=%s WHERE u_id=%s AND c_enroll_id=%s",GetSQLValueString($_GET['rate_value'], "double"),GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($_GET['c_id'], "int"));
 		$set_rating = mysql_query($query_set_rating, $conn) or die(mysql_error());
+		//setting avg_rating after change
+	mysql_select_db($database_conn, $conn);	
+	$query_set_avg_rating=sprintf("update `course` set `avg_rating`= (select avg(rating) from `enroll_course` where c_enroll_id=%s )where c_id=%s",GetSQLValueString($_GET['c_id'], "int"),GetSQLValueString($_GET['c_id'], "int"));
+		$set_avg_rating = mysql_query($query_set_avg_rating, $conn) or die(mysql_error());
 	}
 }
+
+
 ?>

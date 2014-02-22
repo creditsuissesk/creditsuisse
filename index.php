@@ -86,7 +86,21 @@ if (isset($_POST['username'])) {
   }
 }
 ?>
+<?php 
+mysql_select_db($database_conn, $conn);
+$query_no_of_user = sprintf("SELECT count(distinct u_id)as count_u FROM `user` WHERE approve_id =1");
+$no_of_user = mysql_query($query_no_of_user, $conn) or die(mysql_error());
+$row_no_of_user = mysql_fetch_assoc($no_of_user);
+$totalRows_no_of_user = mysql_num_rows($no_of_user);
 
+mysql_select_db($database_conn, $conn);
+$query_no_of_course = sprintf("SELECT count(distinct c_id)as count_c FROM `course` WHERE approve_status =1");
+$no_of_course = mysql_query($query_no_of_course, $conn) or die(mysql_error());
+$row_no_of_course = mysql_fetch_assoc($no_of_course);
+$totalRows_no_of_course = mysql_num_rows($no_of_course);
+
+
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -238,8 +252,12 @@ if(isset($_GET['mode']) && isset($_GET['viewId'])) {
                     </div>
                     <div class="row1 box7">
                     	<div class="box_with_padding">
-                        <a href="registration.php"	><h2>Sign Up</h2></a>
-                         Just a click away from obtaining knowledge
+                        <h2>Statistics</h2>
+       <p>                 
+                   <b>      Total Number of Users:</b><?php echo "<i>".$row_no_of_user['count_u']."</i>";?>
+        <br/>            
+                       <b>  Total Number of Courses:</b><?php echo "<i>".$row_no_of_course['count_c']."</i>";?>
+        </p>
 						</div>
                     </div>                        
                     <div class="row1 box6">

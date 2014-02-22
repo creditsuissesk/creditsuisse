@@ -105,6 +105,10 @@ if (isset($_GET['r_id']) &&  isset($_GET['rate_value'])){
 			$query_update_userres=sprintf("INSERT INTO `user_resource` (u_id,user_resource_id,rating,bookmarked,date_last_viewed) VALUES ('%s','%s','%s','0',now()) ON DUPLICATE KEY UPDATE date_last_viewed=now(),rating=%s;",GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($_GET['r_id'], "int"),GetSQLValueString($_GET['rate_value'], "double"),GetSQLValueString($_GET['rate_value'], "double"));
 			$update_userres=mysql_query($query_update_userres, $conn) or die(mysql_error());
 			
+			mysql_select_db($database_conn, $conn);
+			$query_set_avg_rating=sprintf("update `resource` set `avg_rating`= (select avg(rating) from `user_resource` where user_resource_id=%s )where r_id=%s",GetSQLValueString($_GET['r_id'], "int"),GetSQLValueString($_GET['r_id'], "int"));
+		$set_avg_rating = mysql_query($query_set_avg_rating, $conn) or die(mysql_error());
+		
 			//update the score of user to whom vote was given
 			//$query_update_author = sprintf("UPDATE `resource` JOIN user ON uploaded_by=u_id SET user_score=user_score+%s WHERE r_id=%s",GetSQLValueString($difference, "int"),GetSQLValueString($_POST['id'], "int"));
 			//$update_author = mysql_query($query_update_author, $conn) or die(mysql_error());
@@ -124,6 +128,7 @@ if(isset($_POST['r_id']) && isset($_POST['action']) && isset($_POST['value'])) {
 			
 			$query_update_userbookmark=sprintf("INSERT INTO `user_resource` (u_id,user_resource_id,rating,bookmarked,date_last_viewed) VALUES ('%s','%s','0.0','%s',now()) ON DUPLICATE KEY UPDATE date_last_viewed=now(),bookmarked=%s;",GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($_POST['r_id'], "int"),GetSQLValueString($bookmarked, "int"),GetSQLValueString($bookmarked, "int"));
 			$update_userbookmark=mysql_query($query_update_userbookmark, $conn) or die(mysql_error());
+			
 			echo 1;
 	}
 }

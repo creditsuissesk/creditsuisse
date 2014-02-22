@@ -115,7 +115,7 @@ else if (isset($_GET['searchKey']) && isset($_GET['searchType']) ) {
 	if($_GET['searchType']==2) {
 		//search by course name
 		$query_search_courses = "SELECT * FROM (SELECT resource.uploaded_date, c_name, r_id, filename,resource.c_id,resource.avg_rating AS rating, resource.download_status  FROM `resource` JOIN `course` ON course.c_id = resource.c_id WHERE resource.approve_status =1 AND course.approve_status =1 AND c_name LIKE '%".$_GET['searchKey']."%') AS `temp` JOIN `enroll_course` ON temp.c_id = c_enroll_id WHERE enroll_course.u_id=".$u_id." ORDER BY temp.uploaded_date DESC";
-		file_put_contents("test.txt",$query_search_courses);
+		
 	}else if ($_GET['searchType']==1) {
 		//search by filename
 		$query_search_courses = "SELECT * FROM (SELECT resource.uploaded_date, c_name, r_id, filename,resource.c_id,resource.avg_rating AS rating, resource.download_status  FROM `resource` JOIN `course` ON course.c_id = resource.c_id WHERE resource.approve_status =1 AND course.approve_status =1 ) AS `temp` JOIN `enroll_course` ON temp.c_id = c_enroll_id WHERE enroll_course.u_id=".$u_id." AND filename LIKE '%".$_GET['searchKey']."%' ORDER BY temp.uploaded_date DESC";
