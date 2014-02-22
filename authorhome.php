@@ -131,6 +131,26 @@ $row_current_courses = mysql_fetch_assoc($current_courses);
 $totalRows_current_courses = mysql_num_rows($current_courses);
 
 
+$query_approved_resources = sprintf("SELECT l_name,f_name,r_id,filename,file_type,file_size,uploaded_date,c_name,r.avg_rating as r_avg_rating, r.download_status,file_location
+FROM resource AS r
+JOIN course AS c ON r.c_id = c.c_id JOIN user as u on r.uploaded_by = u.u_id
+WHERE (r.approve_status =1 and r.flag_status=0) and c.approve_status=1 and r.uploaded_by=%s",GetSQLValueString($_SESSION['MM_UserID'], "int"));
+$approved_resources = mysql_query($query_approved_resources, $conn) or die(mysql_error());
+$row_approved_resources = mysql_fetch_assoc($approved_resources);
+$totalRows_approved_resources = mysql_num_rows($approved_resources);
+
+
+$query_all_resources = sprintf("SELECT l_name,f_name,r_id,filename,file_type,file_size,uploaded_date,c_name,r.avg_rating as r_avg_rating, r.download_status,file_location,r.approve_status,r.flag_status
+FROM resource AS r
+JOIN course AS c ON r.c_id = c.c_id JOIN user as u on r.uploaded_by = u.u_id
+WHERE   c.approve_status=1 and r.uploaded_by=%s",GetSQLValueString($_SESSION['MM_UserID'], "int"));
+$all_resources = mysql_query($query_all_resources, $conn) or die(mysql_error());
+$row_all_resources = mysql_fetch_assoc($all_resources);
+$totalRows_all_resources = mysql_num_rows($all_resources);
+
+
+
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -216,6 +236,8 @@ function MM_validateForm() { //v4.0
     <li class="TabbedPanelsTab" tabindex="0">Create Course</li>
     <li class="TabbedPanelsTab" tabindex="0">Current Approved Courses</li>
     <li class="TabbedPanelsTab" tabindex="0">All Courses</li>
+     <li class="TabbedPanelsTab" tabindex="0">Current Approved resources</li>
+    <li class="TabbedPanelsTab" tabindex="0">All resources</li>
     <li class="TabbedPanelsTab" tabindex="0">Upload Resource</li>
   </ul>
   <div class="TabbedPanelsContentGroup">
@@ -259,6 +281,8 @@ function MM_validateForm() { //v4.0
         </p>
       </form>
     </div>	<!---ends tab 1--->
+    
+    <!-- start of second tab -->
     <div class="TabbedPanelsContent">
     <div id="curr_courses">
     <div class="datagrid">
@@ -341,6 +365,139 @@ var allOptions = {
 var allList = new List('all_courses', allOptions);
 </script>
     </div>
+    <!-- End of all courses tab -->
+    
+    <!-- start of approved resource tab -->
+    <div class="TabbedPanelsContent">
+     <?php if($totalRows_approved_resources>0){?>
+    <div id="approved_res">
+    <div class="datagrid">
+   
+     <table>
+    <thead>
+      <tr>
+        <th class="sort" data-sort="r_name">Resource Name</th>
+        <th class="sort" data-sort="c_name">Course Name</th>
+        <th class="sort" data-sort="r_size">Size in Mb</th>
+        <th class="sort" data-sort="r_type">Type</th>
+        <th class="sort" data-sort="author">Uploaded By</th>
+        <th class="sort" data-sort="date">Uploaded Date </th>
+        <th class="sort" data-sort="rate">Average rating</th>
+        <th></th>
+        <th colspan="2">
+          <input type="text" class="search" placeholder="Search Resource" />
+        </th>
+      </tr>
+    </thead>
+    <tbody class="list">
+    <?php do { ?>
+    <tr>
+      <td class="r_name"><a href='<?php echo $row_approved_resources["file_location"]?>'><?php echo $row_approved_resources['filename']; ?></a></td>
+      <td class="c_name"><?php echo $row_approved_resources['c_name']; ?></td>
+      <td class="r_size"><?php echo $row_approved_resources['file_size']; ?></td>
+      <td class="r_type"><?php echo $row_approved_resources['file_type']; ?></td>
+      <td class="author"><?php echo $row_approved_resources['f_name']." ".$row_approved_resources['l_name']; ?></td>
+            <td class="date"><?php echo $row_approved_resources['uploaded_date']; ?></td>
+                  <td class="rate"><?php echo $row_approved_resources['r_avg_rating']; ?></td>
+                  <?php if($row_approved_resources['download_status']==1){?>
+        <form  id="form1" name="form1" method="POST" action="download_res.php">    
+        
+        <td> 
+        <input name="change" id="change" value="Download" type="submit" >        
+        </input>
+        <input type="hidden" name="id" id="id" value="<?php echo $row_approved_resources['r_id'];?>"  />
+        
+        <input type="hidden" name="MM_change" value="form1" />
+        </td>
+        </form>
+        <?php }else echo "<td> </td>";?>
+    <?php } while ($row_approved_resources = mysql_fetch_assoc($approved_resources));?>
+      </tr>
+      </tbody>
+      </table>
+      
+    </div>
+    </div>
+    <?php }else echo"No approved resources"; ?>
+    <script>
+var arOptions = {
+  valueNames: [ 'r_name', 'c_name','r_size','r_type','author','date','rate']
+};
+
+// Init list
+var arList = new List('approved_res', arOptions);
+</script>
+    </div> <!---end of approved resource tab--->
+
+
+<!-- start of approved resource tab -->
+    <div class="TabbedPanelsContent">
+     <?php if($totalRows_all_resources>0){?>
+    <div id="all_res">
+    <div class="datagrid">
+   
+     <table>
+    <thead>
+      <tr>
+        <th class="sort" data-sort="r_name">Resource Name</th>
+        <th class="sort" data-sort="c_name">Course Name</th>
+        <th class="sort" data-sort="r_size">Size in Mb</th>
+        <th class="sort" data-sort="r_type">Type</th>
+        <th class="sort" data-sort="author">Uploaded By</th>
+        <th class="sort" data-sort="date">Uploaded Date </th>
+        <th class="sort" data-sort="rate">Average rating</th>
+        <th class="sort" data-sort="status">Current Status</th>
+        <th></th>
+        <th colspan="2">
+          <input type="text" class="search" placeholder="Search Resource" />
+        </th>
+      </tr>
+    </thead>
+    <tbody class="list">
+    <?php do { ?>
+    <tr>
+      <td class="r_name"><a href='<?php echo $row_all_resources["file_location"]?>'><?php echo $row_all_resources['filename']; ?></a></td>
+      <td class="c_name"><?php echo $row_all_resources['c_name']; ?></td>
+      <td class="r_size"><?php echo $row_all_resources['file_size']; ?></td>
+      <td class="r_type"><?php echo $row_all_resources['file_type']; ?></td>
+      <td class="author"><?php echo $row_all_resources['f_name']." ".$row_all_resources['l_name']; ?></td>
+            <td class="date"><?php echo $row_all_resources['uploaded_date']; ?></td>
+                  <td class="rate"><?php echo $row_all_resources['r_avg_rating']; ?></td>
+                  <td class="status"><?php if($row_all_resources['flag_status']==1) { echo "Flagged resource";}
+				  else if($row_all_resources['approve_status']==0){echo "Resource yet to be approved";}
+				  else if($row_all_resources['approve_status']==1){echo "Resource is approved";}
+				  else if($row_all_resources['approve_status']==2){echo "Resource is rejected";} ?></td>
+                  <?php if($row_all_resources['download_status']==1){?>
+        <form  id="form1" name="form1" method="POST" action="download_res.php">    
+        
+        <td> 
+        <input name="change" id="change" value="Download" type="submit" >        
+        </input>
+        <input type="hidden" name="id" id="id" value="<?php echo $row_all_resources['r_id'];?>"  />
+        
+        <input type="hidden" name="MM_change" value="form1" />
+        </td>
+        </form>
+        <?php }else echo "<td> </td>";?>
+    <?php } while ($row_all_resources = mysql_fetch_assoc($all_resources));?>
+      </tr>
+      </tbody>
+      </table>
+      
+    </div>
+    </div>
+    <?php }else echo"No resources uploaded by you"; ?>
+    <script>
+var arOptions = {
+  valueNames: [ 'r_name', 'c_name','r_size','r_type','author','date','rate']
+};
+
+// Init list
+var arList = new List('all_res', arOptions);
+</script>
+    </div> <!---end of all resource tab--->
+
+    
     <div class="TabbedPanelsContent">
      <!--start of tab upload resource-->
      <div id="New Resource">
