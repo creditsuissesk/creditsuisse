@@ -253,7 +253,7 @@ function MM_validateForm() { //v4.0
 </script>
 </head>
 
-<body>
+<body onLoad="javascript:TabbedPanels1.showPanel(<?php echo $_COOKIE['index'];?>)">
 
 <nav id="headerbar">
 	<ul id="headerbar">

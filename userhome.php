@@ -308,51 +308,19 @@ function searchresources() {
 	}
 }
 </script>
-<script>
-/*function sortauto_reco(str,refreshEnrolled)
-{
-	
-if (str=="")
-  {
-  document.getElementById("txtHint").innerHTML="";
-  return;
-  }
-if (window.XMLHttpRequest)
-  {// code for IE7+, Firefox, Chrome, Opera, Safari
-  xmlhttp=new XMLHttpRequest();
-  }
-else
-  {// code for IE6, IE5
-  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-  }
-xmlhttp.onreadystatechange=function()
-  {
-  if (xmlhttp.readyState==4 && xmlhttp.status==200)
-    {
-    document.getElementById("resourcelist").innerHTML=xmlhttp.responseText;
-		if(refreshEnrolled==1) {
-			showEnrolledresources();
-		}
-    }
-  }
-xmlhttp.open("GET","show_auto_reco.php?sortType="+str,true);
-xmlhttp.send();
-
-}*/
-</script>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 </head>
-<body>
+<body onLoad="javascript:TabbedPanels1.showPanel(<?php echo $_COOKIE['index'];?>)">
 <?php 
-if (isset($_GET['userTabToDisplay'])) {
-	if ($_GET['userTabToDisplay']<6) {
-		$userTabToDisplay=$_GET['userTabToDisplay'];
+if (isset($_GET['showTab'])) {
+	if ($_GET['showTab']<7) {
+		$showTab=$_GET['showTab'];
 	}else {
-		$userTabToDisplay=0;
+		$showTab=0;
 	}
 }
 else {
-	$userTabToDisplay=0;
+	$showTab=0;
 }
 ?>
 
@@ -362,7 +330,7 @@ else {
 		<li id="headerbar"><a href="forum_new.php?mode=showmain">Forums</a></li>
 		<li id="headerbar"><a href="#"><?php echo $_SESSION['MM_Username'];?></a>
 			<ul id="headerbar">
-				<li id="headerbar"><a href="userhome.php?userTabToDisplay=5">Profile</a></li>
+				<li id="headerbar"><a href="userhome.php?showTab=5">Profile</a></li>
 				<li id="headerbar"><a href="<?php echo $logoutAction ?>">Log Out</a>
 				</li>
 			</ul>
@@ -375,13 +343,12 @@ else {
 <div id="TabbedPanels1" class="TabbedPanels">
   <ul class="TabbedPanelsTabGroup">
     <li class="TabbedPanelsTab" tabindex="0">Browse Resources</li>
-    <li class="TabbedPanelsTab" tabindex="0">Browse Courses</li>
-    <li class="TabbedPanelsTab" tabindex="0">Your Courses</li>
-    <li class="TabbedPanelsTab" tabindex="0">Completed Courses</li>
-    <li class="TabbedPanelsTab" tabindex="0">Recommendation</li>
-  <!--  <li class="TabbedPanelsTab" tabindex="0">Enroll marks</li> -->
-    <li class="TabbedPanelsTab" tabindex="0">Profile</li>
-    <li class="TabbedPanelsTab" tabindex="0">Upload Papers</li>
+    <li class="TabbedPanelsTab" tabindex="1">Browse Courses</li>
+    <li class="TabbedPanelsTab" tabindex="2">Your Courses</li>
+    <li class="TabbedPanelsTab" tabindex="3">Completed Courses</li>
+    <li class="TabbedPanelsTab" tabindex="4">Recommendation</li>
+    <li class="TabbedPanelsTab" tabindex="5">Profile</li>
+    <li class="TabbedPanelsTab" tabindex="6">Upload Papers</li>
   </ul>
   <div class="TabbedPanelsContentGroup">
     <div class="TabbedPanelsContent">
@@ -428,7 +395,7 @@ else {
     	</div> <!--- resource divs closing --->
     
     </div> <!--- this div ends browse resources tab --->
-    
+
     </div>
 	<div class="TabbedPanelsContent">
     <!--- browse course tab --->
@@ -474,7 +441,6 @@ else {
 						</aside><!-- .left-sidebar -->
                 </div>
     </div></div></div> <!--- course divs closing --->
-    
     </div> <!--- this div ends browse courses tab --->
     <div class="TabbedPanelsContent">
     <?php if ($totalRows_incomplete_courses>0) {?>
@@ -686,11 +652,16 @@ else {
 <p><br />
   
 <script type="text/javascript">
-var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1",{defaultTab:<?php echo ($userTabToDisplay);?>});
+var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1",{defaultTab:<?php echo $showTab;?>});
 </script>
 </body>
 </html>
 <?php
 mysql_free_result($incomplete_courses);
+mysql_free_result($new_resource);
+mysql_free_result($author_details);
+mysql_free_result($completed_courses);
+mysql_free_result($resource);
+mysql_free_result($sort);
 //mysql_free_result($get_user_details);
 ?>

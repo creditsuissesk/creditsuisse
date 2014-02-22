@@ -281,7 +281,7 @@ $totalRows_categories = mysql_num_rows($categories);
 </script>
 </head>
 
-<body >
+<body onLoad="javascript:TabbedPanels1.showPanel(<?php echo $_COOKIE['index'];?>)">
 <!--- decide the tab number to show--->
 <?php if ( isset($_GET['showTab'])) {
 	if($_GET['showTab']=="discussions") {

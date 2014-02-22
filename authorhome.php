@@ -243,7 +243,7 @@ function showResource(id,type,name) {
 </script>
 </head>
 
-<body alink="#D6D6D6">
+<body onLoad="javascript:TabbedPanels1.showPanel(<?php echo $_COOKIE['index'];?>)" alink="#D6D6D6">
 
 <nav id="headerbar">
 	<ul id="headerbar">

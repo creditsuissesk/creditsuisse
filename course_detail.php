@@ -206,7 +206,7 @@ xmlhttp.send();
 
 </head>
 
-<body>
+<body onLoad="javascript:TabbedPanels1.showPanel(<?php echo $_COOKIE['index'];?>)">
 <nav id="headerbar">
 	<ul id="headerbar" style="margin:0px;">
 		<li id="headerbar"><a href="<?php if ($_SESSION['MM_UserGroup']=='author') {
