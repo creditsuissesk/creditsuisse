@@ -14,14 +14,7 @@ body{
 	background-repeat: no-repeat
 }
 
-a, a:link, a:visited { 
-/*color: #5C5C5C;*/  
-	color : #FFF; 
-	text-decoration: none;
-	/*font-size: 12px;*/ 
-	font-weight: bold; 
-	
-}
+a, a:link, a:visited { color: #FFFFFF; font-weight: normal; text-decoration: none }
 
 ul, li {
 	padding:0;
@@ -75,14 +68,14 @@ img { margin: 0; padding: 0; border: none }
 
 #templatemo_header_wrapper {
 	width: 100%;
-	background: url(images/templatemo_header.png) center bottom no-repeat 
+	background: url(../images/templatemo_header.png) center bottom no-repeat 
 }
 
 #templatemo_header {
 	width: 800px;
 	margin: 0 auto;
 	padding: 35px 20px 40px;
-	background: url(images/templatemo-header-bg.png) no-repeat center;
+	background: url(../images/templatemo-header-bg.png) no-repeat center;
 	position:relative;
 }
 .templatemo_header_bg {
@@ -107,7 +100,7 @@ img { margin: 0; padding: 0; border: none }
 
 #templatemo_footer_wrapper {
 	width: 100%;
-	background: url(images/templatemo_footer.png) center top no-repeat
+	background: url(../images/templatemo_footer.png) center top no-repeat
 }
 
 #templatemo_footer {
@@ -122,7 +115,7 @@ img { margin: 0; padding: 0; border: none }
 	color: #999999;
 }
 
-#site_title { display: block; width: 300px; margin: 0 auto; text-align: center }
+#site_title { display: block; width: 300px; margin: 0 auto; text-align: center;font-size: 28px; color: #fff; font-weight: 700 }
 #site_title a { font-size: 28px; color: #fff; font-weight: 700 }
 
 #content{
@@ -155,7 +148,7 @@ img { margin: 0; padding: 0; border: none }
 	width: 52px; 
 	height: 45px; 
 	display: block;
-	background: url(images/home_btn.png); 
+	background: url(../images/home_btn.png); 
 	text-indent: -10000px 
 }
 

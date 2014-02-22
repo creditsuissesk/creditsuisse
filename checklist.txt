@@ -22,7 +22,7 @@ index.php: 	1)need to replace one sign up tile with current no. of courses and u
 			4)adding action to send button
 			5)add details of all tabs
 			6)back button not working
-			7)login mein show reasons for not being able to login
+			7)login mein show reasons for not being able to login //done
 			8)forgot password functionality(optional)
 
 registration.php: 	1) show profile picture compulsory

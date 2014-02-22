@@ -213,7 +213,7 @@ function clearText(field)
 <div id="templatemo_header_wrapper">
 	<div id="templatemo_header">
     	<div id="site_title"><?php echo $row_course_details['c_name']; ?></div>
-        <a class="templatemo_header_bg" href="http://nl.hiresimage.com" title="Creative commons beelden"  target="_blank"><img src="images/header.png" alt="Creative commons beelden" title="Creative commons beelden" /></a>
+        <a class="templatemo_header_bg" href="" title="Creative commons beelden"  target="_blank"><img src="images/header.png" alt="Creative commons beelden" title="Creative commons beelden" /></a>
     </div>
 </div>
 

@@ -31,61 +31,7 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 }
 }
 ?>
-<?php
-// *** Validate request to login to this site.
-if (!isset($_SESSION)) {
-  session_start();
-}
 
-$loginFormAction = $_SERVER['PHP_SELF'];
-if (isset($_GET['accesscheck'])) {
-  $_SESSION['PrevUrl'] = $_GET['accesscheck'];
-}
-
-if (isset($_POST['username'])) {
-  $loginUsername=$_POST['username'];
-  $password=$_POST['pass'];
-  $MM_fldUserAuthorization = "role";
-  $MM_redirectLoginSuccessUser = "userhome.php";
-  $MM_redirectLoginSuccessAuthor = "authorhome.php";
-  $MM_redirectLoginSuccessRoot = "admin_home.php";
-  $MM_redirectLoginSuccessCM = "cmhome.php";
-  $MM_redirectLoginFailed = "index.php#login";
-  $MM_redirecttoReferrer = false;
-  mysql_select_db($database_conn, $conn);
-  	
-  $LoginRS__query=sprintf("SELECT u_id,f_name, u_name, password, role,stream FROM `user` WHERE u_name=%s AND password=%s AND approve_id=1",GetSQLValueString($loginUsername, "text"), GetSQLValueString($password, "text")); 
-  $LoginRS = mysql_query($LoginRS__query, $conn) or die(mysql_error());
-  $loginFoundUser = mysql_num_rows($LoginRS);
-  if ($loginFoundUser) {
-    
-    $loginStrGroup  = mysql_result($LoginRS,0,'role');
-    
-	if (PHP_VERSION >= 5.1) {session_regenerate_id(true);} else {session_regenerate_id();}
-    //declare two session variables and assign them
-    $_SESSION['MM_Username'] = $loginUsername;
-    $_SESSION['MM_UserGroup'] = $loginStrGroup;
-	$_SESSION['MM_UserID'] = mysql_result($LoginRS,0,'u_id');
-	$_SESSION['MM_f_name'] = mysql_result($LoginRS,0,'f_name');
-	$_SESSION['MM_stream'] = mysql_result($LoginRS,0,'stream');
-    if (isset($_SESSION['PrevUrl']) && false) {
-      $MM_redirectLoginSuccess = $_SESSION['PrevUrl'];	
-    }
-	if ($_SESSION['MM_UserGroup'] == 'admin') {
-	  header("Location: ".$MM_redirectLoginSuccessRoot );
-	} elseif ($_SESSION['MM_UserGroup'] == 'student') {
-	  header("Location: ".$MM_redirectLoginSuccessUser);
-	} elseif ($_SESSION['MM_UserGroup'] == 'author') {
-	  header("Location: ".$MM_redirectLoginSuccessAuthor)			;}elseif ($_SESSION['MM_UserGroup'] == 'cm') {
-	  header("Location: ".$MM_redirectLoginSuccessCM);
-	}
-    //header("Location: " . $MM_redirectLoginSuccess );
-  }
-  else {
-    header("Location: ". $MM_redirectLoginFailed );
-  }
-}
-?>
 <?php 
 mysql_select_db($database_conn, $conn);
 $query_no_of_user = sprintf("SELECT count(distinct u_id)as count_u FROM `user` WHERE approve_id =1");
@@ -100,14 +46,16 @@ $row_no_of_course = mysql_fetch_assoc($no_of_course);
 $totalRows_no_of_course = mysql_num_rows($no_of_course);
 
 
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Virtual Library</title>
 <meta name="keywords" content="tech layer, free template, one page layout" />
-<link href="css/home_page.css" type="text/css" rel="stylesheet" /> 
+<link href="css/home_page.css?123" type="text/css" rel="stylesheet" /> 
 <script type="text/javascript" src="js/jquery.min.js"></script> 
 <script type="text/javascript" src="js/jquery.scrollTo-min.js"></script> 
 <script type="text/javascript" src="js/jquery.localscroll-min.js"></script> 
@@ -199,7 +147,7 @@ if(isset($_GET['mode']) && isset($_GET['viewId'])) {
 
 <div id="templatemo_header_wrapper">
 	<div id="templatemo_header">
-    	<div id="site_title"><a rel="nofollow" href="">Virtual Library</a></div>
+    	<div id="site_title">Virtual Library</div>
         <a class="templatemo_header_bg" href="" title="Creative commons beelden"  target="_blank"><img src="images/header.png" alt="Creative commons beelden" title="Creative commons beelden" /></a>
     </div>
 </div>
@@ -241,9 +189,6 @@ if(isset($_GET['mode']) && isset($_GET['viewId'])) {
                          Just a click away from obtaining knowledge
 						</div>
                     </div>
-                    <!-- <div class="row2" id="home_gallery">
-                    	<a href="images/gallery/01-l.jpg" rel="lightbox[home_gallery]" class="left"><img src="images/gallery/01.jpg" alt="image 1" /></a>
-                        					</div> -->
                     <div class="row1 box8">
                     	<div class="box_with_padding">
                         <a href="#login"	><h2>Sign In</h2></a>
@@ -370,10 +315,9 @@ if(isset($_GET['mode']) && isset($_GET['viewId'])) {
         </div> 
          <div class="section section_with_padding log" id="login"> 
           <div class="log">    
-                <div id="home">
 		<div class="rain">
 			<div class="border start">
-				<form ACTION="<?php echo $loginFormAction; ?>" id="form1" name="form1" method="POST">
+				<form ACTION="login.php" id="form1" name="form1" method="POST">
 					<label for="username">Email</label>
 					<input name="username" type="text" placeholder="username" id="username"/>
 					<label for="pass">Password</label>
@@ -382,7 +326,6 @@ if(isset($_GET['mode']) && isset($_GET['viewId'])) {
 				</form>
 			</div>
 		</div>
-                </div>
                 </div>
                 <a href="#home" class="home_btn">home</a> 
                 <a href="#contact" class="page_nav_btn previous">Previous</a>
