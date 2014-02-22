@@ -398,7 +398,7 @@ function clearText(field)
 					}
 					echo '\',\''.$row_get_resources['filename'].'\');"><div id="rname" title="View this resource" style="cursor:pointer;">'.$row_get_resources['filename'].'</div></div></b></td>';
 					if($row_get_resources['download_status']==1) {
-						echo '<td><img src="images/Download-icon.png" title="Download this resource" style="cursor:pointer;" width="25px" height="25px"/></td>';
+						echo '<td><a href="download_res.php?id='.$row_get_resources['r_id'].'"><img src="images/Download-icon.png" title="Download this resource" style="cursor:pointer;" width="25px" height="25px"/></a></td>';
 					}
 					//show voting icon
 					echo '<td><img src="images/rating-icon.png" title="Rate/Bookmark this resource"style="cursor:pointer;" width="25px" height="25px" onclick="showResourceRating('.$row_get_resources['r_id'].',\''.$row_get_resources['filename'].'\');"/></td>';

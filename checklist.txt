@@ -47,7 +47,7 @@ course_detail.php: 	1)add action to remove button
 					3)disable course evaluation & show appropriate messages for disapproved courses
 admin_home.php:	1)add profile tab
 				2)navbar problem there
-cmhome.php:	1) add author name column in approve courses / add author details in course_details.php
+cmhome.php:	1) add author name column in approve courses//done & add author details in course_details.php
 			2) in pending resource tab change the place holder of search heading
 			3) add profile tab
 			4) In approved resource or pending resource tab give link of viewing swf files rather then download path ka &
@@ -55,7 +55,7 @@ cmhome.php:	1) add author name column in approve courses / add author details in
 					
 course_details_stud.php: 1)add send button's link and update data
 						 2)make qr off-line available (optional)
-						 3)add download link in resource 
+						 3)add download link in resource //done
 						 
 						 
 NOTE:  FUNCTIONALITIES LEFT TO IMPLEMENT

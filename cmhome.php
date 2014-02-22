@@ -107,7 +107,7 @@ if (!((isset($_SESSION['MM_Username'])) && (isAuthorized("",$MM_authorizedUsers,
 <?php 
 
 mysql_select_db($database_conn, $conn);
-$query_pending_courses = sprintf("SELECT c_id,c_name,c_stream,start_date,end_date FROM course where approve_status=0");
+$query_pending_courses = sprintf("SELECT c_id,c_name,c_stream,start_date,end_date,f_name,l_name,u_name,degree,user_score FROM course JOIN user ON course.u_id=user.u_id where approve_status=0");
 $pending_courses = mysql_query($query_pending_courses, $conn) or die(mysql_error());
 $row_pending_courses = mysql_fetch_assoc($pending_courses);
 $totalRows_pending_courses = mysql_num_rows($pending_courses);
@@ -373,6 +373,9 @@ var currList = new List('curr_courses', currOptions);
         <th class="sort" data-sort="allstream">Stream</th>
         <th class="sort" data-sort="allstart">Start Date</th>
         <th class="sort" data-sort="allend">End Date</th>
+        <th class="sort" data-sort="name">Author Name</th>
+        <th class="sort" data-sort="degree">Degree of Author</th>
+        <th class="sort" data-sort="score">Author's Score</th>
         <th></th>
         <th></th>
         <th colspan="2">
@@ -387,6 +390,9 @@ var currList = new List('curr_courses', currOptions);
       <td class="allstream"><?php echo $row_pending_courses['c_stream']; ?></td>
       <td class="allstart"><?php echo $row_pending_courses['start_date']; ?></td>
       <td class="allend"><?php echo $row_pending_courses['end_date']; ?></td>
+      <td class="name"><?php echo $row_pending_courses['f_name']." ".$row_pending_courses['l_name']; ?></td>
+      <td class="degree"><?php echo $row_pending_courses['degree']; ?></td>
+      <td class="score"><?php echo $row_pending_courses['user_score']; ?></td>
       <form  id="form1" name="form1" method="POST" action="<?php echo $editFormAction; ?>">      <td><select name="app_id" id="app_id">
         <option value="0">  </option>
         <option value="1">Approved</option>
