@@ -127,6 +127,12 @@ $resource = mysql_query($query_resource, $conn) or die(mysql_error());
 $row_resource = mysql_fetch_assoc($resource);
 $totalRows_resource = mysql_num_rows($resource);
 
+mysql_select_db($database_conn, $conn);
+$query_author_details = sprintf("SELECT * FROM user JOIN course ON course.u_id=user.u_id WHERE c_id = %s", GetSQLValueString($colname_course_details, "int"));
+$author_details = mysql_query($query_author_details, $conn) or die(mysql_error());
+$row_author_details = mysql_fetch_assoc($author_details);
+$totalRows_author_details = mysql_num_rows($author_details);
+
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -241,6 +247,7 @@ table td, table th {
     <li class="TabbedPanelsTab" tabindex="0">Student List</li>
     <li class="TabbedPanelsTab" tabindex="0">Files</li>
     <li class="TabbedPanelsTab" tabindex="0">Course Evaluation</li>
+     <li class="TabbedPanelsTab" tabindex="0">Author Details</li>
   </ul>
   <div class="TabbedPanelsContentGroup">
     <div class="TabbedPanelsContent">
@@ -391,6 +398,17 @@ var resList = new List('resource', resOptions);
 			</div><!--- .container-->
 			<script> $(document).ready(function(){showquestions();});</script>
          </div> <!--- end of evaluation tab--->
+         <!-- start of author details tab -->
+         <div class="TabbedPanelsContent">
+    <img src="<?php echo $row_author_details['photo'];?>" alt="" height=200 width =300 />
+							<p><b>Name : </b><i><?php echo $row_author_details['f_name']." ".$row_author_details['l_name'];?></i></p>
+                            <p><b>Degree of specialization : </b><i><?php echo $row_author_details['degree'];?></i></p>
+                            <p><b>Institute of Specialization :</b><i> <?php echo $row_author_details['institute'];?></i></p>
+                            <p><b>Contact me at : </b><i><?php echo $row_author_details['u_name'];?></i></p>
+                            <p><b> About myself:</b> <p style="font-style:italic"><?php echo $row_author_details['about'];?></p></p>
+    </div>
+         
+         <!-- end of author details tab -->
    </div>
 </div>
 <p><a href=<?php if ($_SESSION['MM_UserGroup'] == 'author')echo '"authorhome.php"';else if($_SESSION['MM_UserGroup'] == 'cm')echo '"cmhome.php"' ?>>Back to Home</a></p>

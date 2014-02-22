@@ -519,7 +519,7 @@ var allList = new List('pending_courses', allOptions);
       
     </div>
     </div>
-    <?php }else echo"NO Approved Courses"; ?>
+    <?php }else echo"No approved resources"; ?>
     <script>
 var arOptions = {
   valueNames: [ 'r_name', 'c_name','r_size','r_type','author','date','rate']
@@ -547,7 +547,7 @@ var arList = new List('approved_res', arOptions);
         <th></th>
         <th></th>
         <th colspan="2">
-          <input type="text" class="search" placeholder="Search course" />
+          <input type="text" class="search" placeholder="Search resource" />
         </th>
       </tr>
     </thead>
