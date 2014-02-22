@@ -156,8 +156,8 @@ $totalRows_other_course = mysql_num_rows($other_course);
 <script type="text/JavaScript" src="js/slimbox2.js"></script> 
 
 <style>
-		@import "css/LightFace.css";
-	</style>
+	@import "css/LightFace.css";
+</style>
 	<link rel="stylesheet" href="css/lightface.css" />
 	<script src="js/mootools.js"></script>
 	<script src="js/LightFace.js"></script>

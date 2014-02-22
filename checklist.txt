@@ -33,7 +33,7 @@ Userhome.php:	1) add view all link in every tab used
 				2) personalize errors provided by upload_res.php
 			
 
-Forums.php:	1) the thrash and delete icons size increased a lot
+Forums.php:	1) the thrash and delete icons size increased a lot//done
 			2) category should have courses name also as an option
 			3) on creating discussion reload the web page
 			4) to any activity of click reload whole page

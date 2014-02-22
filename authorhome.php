@@ -167,6 +167,19 @@ script for js/list.js tables
 --->
 <script src="js/list.js"></script>
 <script src="js/jquery.min.js"></script>
+
+<!--- script for resource viewing --->
+<style>
+	@import "css/LightFace.css";
+</style>
+<link rel="stylesheet" href="css/lightface.css" />
+<script src="js/mootools.js"></script>
+<script src="js/LightFace.js"></script>
+<script src="js/LightFace.js"></script>
+<script src="js/LightFace.IFrame.js"></script>
+<script src="js/LightFace.Image.js"></script>
+<script src="js/LightFace.Request.js"></script>
+
 <!--
 script for calendar
 --->
@@ -209,6 +222,24 @@ function MM_validateForm() { //v4.0
     } if (errors) alert('The following error(s) occurred:\n'+errors);
     document.MM_returnValue = (errors == '');
 } }
+
+function showResource(id,type,name) {
+	//show dimensions based on content type
+	var height_set,width_set;
+	if(type=="pdf") {
+		height_set=520;
+		width_set=920;
+	}else if (type=="image") {
+		height_set=320;
+		width_set=620;
+	}
+	light = new LightFace.IFrame({
+		height:height_set,
+		width:width_set,
+		url: 'show_resource_float.php?actiontype=loadResource&r_id='+id,
+		title: 'Resource : '+name
+		}).addButton('Close', function() { light.close(); },true).open();		
+}
 </script>
 </head>
 
@@ -456,7 +487,14 @@ var arList = new List('approved_res', arOptions);
     <tbody class="list">
     <?php do { ?>
     <tr>
-      <td class="r_name"><a href='<?php echo $row_all_resources["file_location"]?>'><?php echo $row_all_resources['filename']; ?></a></td>
+      <td class="r_name"><?php echo '<div id="'.$row_all_resources['r_id'].'" style="cursor:pointer;" onclick="showResource('.$row_all_resources['r_id'].',\'';
+					if(strpos($row_all_resources['file_type'],"application/pdf")!==false) {
+						echo "pdf";
+					}else if (strpos($row_all_resources['file_type'],"image")!==false) {
+						echo "image";
+					}
+					echo '\',\''.$row_all_resources['filename'].'\');">' ?>
+      <?php echo $row_all_resources['filename'].'</div>'; ?></td>
       <td class="c_name"><?php echo $row_all_resources['c_name']; ?></td>
       <td class="r_size"><?php echo $row_all_resources['file_size']; ?></td>
       <td class="r_type"><?php echo $row_all_resources['file_type']; ?></td>
