@@ -197,6 +197,7 @@ $totalRows_comment = mysql_num_rows($comment);
 <title><?php echo /*$row_get_user_details['f_name']*/$_SESSION['MM_f_name'];?></title>
 <script src="SpryAssets/SpryTabbedPanels.js" type="text/javascript"></script>
 <link href="SpryAssets/SpryTabbedPanels.css" rel="stylesheet" type="text/css">
+
 <link rel="stylesheet" type="text/css" media="screen" href="css/nav_bar.css" /> 
 <link href="css/templatemo_style.css" type="text/css" rel="stylesheet" /> 
 <script type="text/JavaScript" src="js/slimbox2.js"></script>
@@ -228,14 +229,14 @@ body,td {
  
 
 <body>
-<nav id="headerbar">
-	<ul id="headerbar">
-		<li id="headerbar"><a href="admin_home.php">Home</a></li>
-		<li id="headerbar"><a href="forum_new.php?mode=showmain">Forums</a></li>
-		<li id="headerbar"><a href="#"><?php echo $_SESSION['MM_Username'];?></a>
-			<ul id="headerbar">
-				<li id="headerbar"><a href="admin_home.php">Profile</a></li>
-				<li id="headerbar"><a href="<?php echo $logoutAction ?>">Log Out</a>
+<nav id="headerbar" style="color:#E2E2E2;font-size:12px;">
+	<ul id="headerbar" style="color:#E2E2E2;font-size:12px;">
+		<li id="headerbar" style="color:#E2E2E2;font-size:12px;"><a href="admin_home.php"  style="font-weight:normal;">Home</a></li>
+		<li id="headerbar" style="color:#E2E2E2;font-size:12px;"><a href="forum_new.php?mode=showmain" style="font-weight:normal;">Forums</a></li>
+		<li id="headerbar" style="color:#E2E2E2;font-size:12px;width:100px;"><a href="#" style="font-weight:normal;"><?php echo $_SESSION['MM_Username'];?></a>
+			<ul id="headerbar" style="color:#E2E2E2;font-size:12px;width:100px;">
+				<li id="headerbar" style="color:#E2E2E2;font-size:12px;"><a href="admin_home.php" style="font-weight:normal;padding-left:10px;">Profile</a></li>
+				<li id="headerbar" style="color:#E2E2E2;font-size:12px;"><a href="<?php echo $logoutAction ?>" style="font-weight:normal;padding-left:10px;width">Log Out</a>
 				</li>
 			</ul>
 		</li>

@@ -40,13 +40,13 @@ Forums.php:	1) the thrash and delete icons size increased a lot//done
 			5) add that admin gets only delete option coz flagging the comment/discussion makes no sense for admin
 
 authorhome.php: 1) create profile tab
-				2) show uploaded resources tab by author himself and their status like courses
+				2) show uploaded resources tab by author himself and their status like courses //done
 
 course_detail.php: 	1)add action to 'remove' button
 					2)give hint regarding the method of input for questions to be inserted
 					3)disable course evaluation & show appropriate messages for disapproved courses
 admin_home.php:	1)add profile tab
-				2)navbar problem there
+				2)navbar problem there //done
 cmhome.php:	1) add author name column in approve courses//done & add author details in course_details.php //done
 			2) in pending resource tab change the place holder of search heading //done
 			3) add profile tab
