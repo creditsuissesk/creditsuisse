@@ -384,6 +384,7 @@ Spry.Widget.TabbedPanels.prototype.showPanel = function(elementOrIndex)
 	panels[tpIndex].style.display = "block";
 
 	this.currentTabIndex = tpIndex;
+	document.cookie = "index="+tpIndex;
 };
 
 Spry.Widget.TabbedPanels.prototype.attachBehaviors = function(element)

@@ -227,8 +227,7 @@ body,td {
 <link href="css/table.css?12" rel="stylesheet" type="text/css" />
 <script src="SpryAssets/SpryRating.js" type="text/javascript"></script>
  
-
-<body>
+<body onLoad="javascript:TabbedPanels1.showPanel(<?php echo $_COOKIE['index'];?>)">
 <nav id="headerbar" style="color:#E2E2E2;font-size:12px;">
 	<ul id="headerbar" style="color:#E2E2E2;font-size:12px;">
 		<li id="headerbar" style="color:#E2E2E2;font-size:12px;"><a href="admin_home.php"  style="font-weight:normal;">Home</a></li>
