@@ -63,7 +63,7 @@ a.header { display: block; font-weight: 700 }
 .h20 { height: 20px }
 .h40 { height: 40px }
 
-img { margin: 0; padding: 0; border: none; width: 200px; height: 120px;}
+img { margin: 0; padding: 0; border: none;}
 .img_border { background: #525252; padding: 4px; border: 1px solid #282828 }
 .img_nom { display: block; margin-bottom: 15px }
 .img_fl { float: left; margin: 3px 15px 5px 0 }

@@ -42,7 +42,7 @@ Forums.php:	1) the thrash and delete icons size increased a lot
 authorhome.php: 1) create profile tab
 				2) show uploaded resources tab by author himself and their status like courses
 
-course_detail.php: 	1)add action to remove button
+course_detail.php: 	1)add action to 'remove' button
 					2)give hint regarding the method of input for questions to be inserted
 					3)disable course evaluation & show appropriate messages for disapproved courses
 admin_home.php:	1)add profile tab

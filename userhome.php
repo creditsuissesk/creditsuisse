@@ -486,7 +486,7 @@ else {
 	          		<?php echo  "<div class='section section_with_padding' id='a".$var."'>";?>
 	                <h1><a style="font-size: 36px; margin: 0 0 30px; padding: 5px 0;color: #fff; font-weight: normal; "href="course_details_stud.php?c_id=<?php echo $row_incomplete_courses['c_id']?>" ><?php echo $row_incomplete_courses['c_name']?></a></h1> 
 	                <div class="half right">
-                    <div class="img_border img_temp"> <img src="<?php echo $row_incomplete_courses['course_image']; ?>" alt="image 1" /></div>
+                    <div class="img_border img_temp"> <img width="200px" height="120px"src="<?php echo $row_incomplete_courses['course_image']; ?>" alt="image 1" /></div>
 	                	<p><em><?php echo $row_incomplete_courses['description']?></em></p>            
                     <?php //list all resources of that course    
 					$query_resources = sprintf("SELECT * FROM `resource` WHERE c_id=%s AND approve_status=1",GetSQLValueString($row_incomplete_courses['c_id'], "int"));
@@ -553,7 +553,7 @@ else {
                         
 	                </div>
 	    			<div class="half right">
-	                	<div class="img_border img_nom"> <a href="#gallery"><img src="images/templatemo_image_01.jpg" alt="image 1" /></a>	
+	                	<div class="img_border img_nom"> <a href="#gallery"><img width="200px" height="120px"src="images/templatemo_image_01.jpg" alt="image 1" /></a>	
 	                    </div>
                      
     		            <?php 
