@@ -7,7 +7,7 @@ Basic automated recommendations based on student stream, ratings etc. and peer r
 //Moderation of forum by admin
 //Display QR code against published article/resource.
 
-NOTE: FOLLOWING TEST DONE IN GOOGLE CHROME & NOTED DOWN ARE BUGS OR LEFTOVERS
+NOTE: FOLLOWING TEST DONE IN GOOGLE CHROME AND IN MOZILLA ALSO & NOTED DOWN ARE BUGS OR LEFTOVERS
 
 
 
