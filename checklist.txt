@@ -25,12 +25,12 @@ index.php: 	1)need to replace one sign up tile with current no. of courses and u
 			7)login mein show reasons for not being able to login //done
 			8)forgot password functionality(optional)
 
-registration.php: 	1) show profile picture compulsory
+registration.php: 	1) show profile picture compulsory//done
 					2) add more stringent conditions
-					3) improve error messages regarding the profile pic uploads
+					3) improve error messages regarding the profile pic uploads//done
 					
 Userhome.php:	1) add view all link in every tab used
-				2) personalize errors provided by upload_res.php
+				2) personalize errors provided by upload_res.php//done
 			
 
 Forums.php:	1) the thrash and delete icons size increased a lot//done
