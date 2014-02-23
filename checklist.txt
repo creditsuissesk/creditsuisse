@@ -12,13 +12,13 @@ NOTE: FOLLOWING TEST DONE IN GOOGLE CHROME AND IN MOZILLA ALSO & NOTED DOWN ARE 
 
 
 All php:  
-			1)show tab in all
+			1)show tab in all //done
 			2)add copyright and all in all pages
 			3)deny copy pasting by using the javascript earlier found
 		
 index.php: 	1)need to replace one sign up tile with current no. of courses and users //done
 			2)hashing password
-			3)adding home button in transition
+			3)adding home button in transition //done
 			4)adding action to send button
 			5)add details of all tabs
 			6)back button not working
@@ -51,7 +51,7 @@ cmhome.php:	1) add author name column in approve courses//done & add author deta
 			2) in pending resource tab change the place holder of search heading //done
 			3) add profile tab
 			4) In approved resource or pending resource tab give link of viewing swf files rather then download path ka &
-				if possible will make like floating in course_detail_stud.php 
+				if possible will make like floating in course_detail_stud.php //done
 					
 course_details_stud.php: 1)add send button's link and update data
 						 2)make qr off-line available (optional)
