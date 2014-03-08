@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 08, 2014 at 10:20 AM
+-- Generation Time: Mar 08, 2014 at 11:40 AM
 -- Server version: 5.6.14
 -- PHP Version: 5.5.6
 
@@ -320,7 +320,7 @@ INSERT INTO `resource_type` (`type_id`, `r_type`) VALUES
 CREATE TABLE IF NOT EXISTS `user` (
   `u_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `u_name` varchar(30) NOT NULL,
-  `password` varchar(20) NOT NULL,
+  `password` varchar(64) NOT NULL,
   `f_name` varchar(20) NOT NULL,
   `l_name` varchar(20) NOT NULL,
   `contact_no` int(10) NOT NULL,
@@ -339,7 +339,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `created_comments` int(11) NOT NULL DEFAULT '0',
   `count_discussions` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`u_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
 
 --
 -- Dumping data for table `user`
