@@ -131,6 +131,17 @@ $totalRows_categories = mysql_num_rows($categories);
 <script src="lib/jquery.upvote.js" type="text/javascript"></script>
 <link href="lib/jquery.upvote.css" rel="stylesheet" type="text/css">
 
+<style>
+	@import "css/LightFace.css";
+</style>
+	<link rel="stylesheet" href="css/lightface.css" />
+	<script src="js/mootools.js"></script>
+	<script src="js/LightFace.js"></script>
+	<script src="js/LightFace.js"></script>
+	<script src="js/LightFace.IFrame.js"></script>
+	<script src="js/LightFace.Image.js"></script>
+	<script src="js/LightFace.Request.js"></script>
+
 <!--- new discussion form validation--->
 <script type="text/javascript">
 	  function MM_validateForm() { //v4.0
@@ -278,6 +289,15 @@ $totalRows_categories = mysql_num_rows($categories);
 		}
 	}
 
+	//function to show user float
+	function showUser(id,name) {
+	light = new LightFace.IFrame({
+		height:400,
+		width:500,
+		url: 'show_user_float.php?u_id='+id,
+		title: name
+		}).addButton('Close', function() { light.close(); },true).open();
+	}
 </script>
 </head>
 
@@ -377,7 +397,7 @@ $totalRows_categories = mysql_num_rows($categories);
                     	<div class="container">
                     	<main class="content" style="width:80%">
                         <slimline>
-                        <datetime style="color:#999999;"><?php echo $row_sort_disc['f_name']." ".$row_sort_disc['l_name']." started new discussion "; ?> </datetime>
+                        <datetime style="color:#999999;"><a onclick="showUser(<?php echo $row_sort_disc['insert_uid'].",'".$row_sort_disc['f_name']." ".$row_sort_disc['l_name'];?>');return false;" style="cursor:pointer;"><?php echo $row_sort_disc['f_name']." ".$row_sort_disc['l_name']." ";?></a>started new discussion</datetime>
                         <dt>
                         <a href="forum_new.php?showTab=discussions&mode=disc&discussionid=<?php echo $row_sort_disc['discussion_id'];?> "> <?php echo $row_sort_disc['name'];?> </a> </dt>
                         </slimline>
@@ -403,7 +423,7 @@ $totalRows_categories = mysql_num_rows($categories);
                     	<div class="container">
                     	<main class="content" style="width:80%">
                         <slimline>
-                        <datetime style="color:#999999;"><?php echo $row_sort_comments['f_name']." ".$row_sort_comments['l_name']." commented on topic";?></datetime>
+                        <datetime style="color:#999999;"><a onclick="showUser(<?php echo $row_sort_comments['insert_uid'].",'".$row_sort_comments['f_name']." ".$row_sort_comments['l_name'];?>');return false;" style="cursor:pointer;"><?php echo $row_sort_comments['f_name']." ".$row_sort_comments['l_name']." ";?></a>commented on topic</datetime>
                         <dt>
                         <a href="forum_new.php?showTab=discussions&mode=disc&discussionid=<?php echo $row_sort_comments['discussion_id'];?> "> <?php echo $row_sort_comments['name'];?> </a> </dt>
                         </slimline>
@@ -455,7 +475,7 @@ $totalRows_categories = mysql_num_rows($categories);
 
 						<aside class="left-sidebar">
                         <img src="<?php echo $row_disc['photo'];?>" width="100" height="100" alt="Profile picture"/><br />
-							<dt><?php echo $row_disc['f_name']." ".$row_disc['l_name'];?></dt>
+							<dt><a onclick="showUser(<?php echo $row_disc['insert_uid'].",'".$row_disc['f_name']." ".$row_disc['l_name'];?>');return false;" style="cursor:pointer;"><?php echo $row_disc['f_name']." ".$row_disc['l_name'];?></a></dt>
 						</aside><!-- .left-sidebar -->
 
 						<aside class="right-sidebar">
@@ -490,7 +510,7 @@ $totalRows_categories = mysql_num_rows($categories);
 					
 					<?php
 					mysql_select_db($database_conn, $conn);
-					$query_comments = sprintf("SELECT * FROM `discussion` JOIN `comment` ON discussion.discussion_id = comment.discussion_id JOIN `user` ON comment.insert_uid = user.u_id LEFT OUTER JOIN `user_comment` ON comment.comment_id = user_comment.user_comment_id AND user_comment.user_id=%s WHERE discussion.discussion_id =%s ORDER BY date_inserted_c",GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($_GET['discussionid'], "int"));
+					$query_comments = sprintf("SELECT *,comment.insert_uid AS c_ins_id FROM `discussion` JOIN `comment` ON discussion.discussion_id = comment.discussion_id JOIN `user` ON comment.insert_uid = user.u_id LEFT OUTER JOIN `user_comment` ON comment.comment_id = user_comment.user_comment_id AND user_comment.user_id=%s WHERE discussion.discussion_id =%s ORDER BY date_inserted_c",GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($_GET['discussionid'], "int"));
 					$comments = mysql_query($query_comments, $conn) or die(mysql_error());
 					$row_comments = mysql_fetch_assoc($comments);
 					$totalRows_comments = mysql_num_rows($comments);
@@ -544,7 +564,7 @@ $totalRows_categories = mysql_num_rows($categories);
 
 						<aside class="left-sidebar">
                         	<img src="<?php echo $row_comments['photo'];?>" width="100" height="100" alt="Profile picture"/><br />
-							<dt><?php echo $row_comments['f_name']." ".$row_comments['l_name'];?></dt>
+							<dt><a onclick="showUser(<?php echo $row_comments['c_ins_id'].",'".$row_comments['f_name']." ".$row_comments['l_name'];?>');return false;" style="cursor:pointer;"><?php echo $row_comments['f_name']." ".$row_comments['l_name'];?></a></dt>
 						</aside><!-- .left-sidebar -->
 
 						<aside class="right-sidebar">
@@ -698,8 +718,8 @@ $totalRows_categories = mysql_num_rows($categories);
                     	<div class="container">
                     	<main class="content">
                         <dt>
-                        <a href="forum_new.php?showTab=discussions&mode=disc&discussionid=<?php echo $row_discussions['discussion_id'];?> "> <?php echo $row_discussions['name'];?> </a> </dt>
-                        <datetime style="color:#999999;"><?php echo "By ".$row_discussions['f_name']." ".$row_discussions['l_name']." on ".$row_discussions['date_inserted_d'];?></datetime> <br />
+                        <a href="forum_new.php?showTab=discussions&mode=disc&discussionid=<?php echo $row_discussions['discussion_id'];?> "> <?php echo $row_discussions['name']." ";?> </a> </dt>
+                        <datetime style="color:#999999;">By<a onclick="showUser(<?php echo $row_discussions['insert_uid'].",'".$row_discussions['f_name']." ".$row_discussions['l_name'];?>');return false;" style="cursor:pointer;"><?php echo " ".$row_discussions['f_name']." ".$row_discussions['l_name'];?></a><?php echo" on ".$row_discussions['date_inserted_d'];?></datetime> <br />
                         <dd <?php if($row_discussions['flag']==1) {echo "style='color:#ff0000;'";}?> >
                         <?php if (strlen($row_discussions['disc_body'])>400) {
 							echo substr($row_discussions['disc_body'],0,400)."....";
@@ -869,7 +889,7 @@ $totalRows_categories = mysql_num_rows($categories);
 				
 				
 				mysql_select_db($database_conn, $conn);
-				$query_discussions = sprintf("SELECT * FROM discussion JOIN user ON discussion.insert_uid=user.u_id LEFT OUTER JOIN `user_discussion` ON discussion.discussion_id=user_discussion.user_discussion_id AND user_discussion.u_id=%s WHERE discussion.category_id=%s ORDER BY date_updated_d DESC LIMIT %s,%s",GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($_GET['categoryid'], "int"),GetSQLValueString($lower_limit, "int"),GetSQLValueString($higher_limit, "int"));
+				$query_discussions = sprintf("SELECT *,discussion.insert_uid AS d_ins_id FROM discussion JOIN user ON discussion.insert_uid=user.u_id LEFT OUTER JOIN `user_discussion` ON discussion.discussion_id=user_discussion.user_discussion_id AND user_discussion.u_id=%s WHERE discussion.category_id=%s ORDER BY date_updated_d DESC LIMIT %s,%s",GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($_GET['categoryid'], "int"),GetSQLValueString($lower_limit, "int"),GetSQLValueString($higher_limit, "int"));
 				$discussions = mysql_query($query_discussions, $conn) or die(mysql_error());
 				$row_discussions = mysql_fetch_assoc($discussions);
 				$totalRows_discussions = mysql_num_rows($discussions);
@@ -888,8 +908,8 @@ $totalRows_categories = mysql_num_rows($categories);
                     	<div class="container">
                     	<main class="content">
                         <dt>
-                        <a href="forum_new.php?showTab=discussions&mode=disc&discussionid=<?php echo $row_discussions['discussion_id'];?> "> <?php echo $row_discussions['name'];?> </a> </dt>
-                        <datetime><?php echo "By ".$row_discussions['f_name']." ".$row_discussions['l_name']." on ".$row_discussions['date_inserted_d'];?></datetime> <br />
+                        <a href="forum_new.php?showTab=discussions&mode=disc&discussionid=<?php echo $row_discussions['discussion_id'];?> "> <?php echo $row_discussions['name']." ";?> </a> </dt>
+                        <datetime style="color:#999999;">By <a onclick="showUser(<?php echo $row_discussions['d_ins_id'].",'".$row_discussions['f_name']." ".$row_discussions['l_name'];?>');return false;" style="cursor:pointer;"><?php echo " ".$row_discussions['f_name']." ".$row_discussions['l_name']?></a><?php echo " on ".$row_discussions['date_inserted_d'];?></datetime> <br />
                         <dd>
                         <?php if (strlen($row_discussions['disc_body'])>400) {
 							echo substr($row_discussions['disc_body'],0,400)."....";

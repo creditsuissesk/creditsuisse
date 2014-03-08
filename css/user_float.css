@@ -1,0 +1,140 @@
+/* Credit: http://www.templatemo.com */
+
+body{ 
+	margin: 0;
+	padding: 0;
+	color: #e2e2e2;
+	font-size: 12px;
+	line-height: 1.6em; 
+	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	background-color: #313030;
+	background-image:  url(../images/templatemo_body.jpg);
+	background-position: center top;
+	background-repeat: no-repeat
+}
+
+a, a:link, a:visited { color: #FFFFFF; font-weight: normal; text-decoration: none }
+
+ul, li {
+	padding:0;
+	margin:0;
+	list-style:none;
+}
+
+h1, h2, h3, h4, h5, h6 { color: #fff; font-weight: normal; }
+h1 { font-size: 36px; margin: 0 0 30px; padding: 5px 0 }
+h2 { font-size: 24px; margin: 0 0 25px; padding: 5px 0 }
+h3 { font-size: 20px; margin: 0 0 20px; padding: 0; }
+h4 { font-size: 16px; margin: 0 0 15px; padding: 0; }
+h5 { font-size: 14px; margin: 0 0 10px; padding: 0;  }
+h6 { font-size: 12px; margin: 0 0 5px; padding: 0; font-weight: 700 }
+
+p { padding: 0; margin: 0 0 15px 0 }
+p.inline_details {}
+
+p a, p a:link, p a:visited { color: #00CCFF; font-weight: normal; text-decoration: none }
+p a:hover { color: #CC66FF; text-decoration: none; }
+
+.clear{ clear:left; }
+
+blockquote.testimonial_block { margin: 40px; background:  url(../images/icon_testimonial.png) left center no-repeat; padding-left: 120px }
+cite { font-weight: bold; color:#fff; }
+cite a, cite a:link, cite a:visited  { font-size: 12px; text-decoration: none; font-style: normal }
+cite span { font-weight: 400; color: #ccc; }
+
+.list_bullet { margin: 10px 0 10px 15px; padding: 0; list-style: none }
+.list_bullet li { color:#fff; margin: 0 0 7px 0; padding: 0 0 0 20px; background: url(../images/templatemo_list.png) no-repeat scroll 0 6px  }
+.list_bullet li a { color: #fff; font-weight: normal; text-decoration: none }
+.list_bullet li a:hover { color: #fff }
+
+.no_bullet { margin: 0; padding: 0; list-style: none }
+.no_bullet li { margin: 0 0 20px 0; padding: 0 }
+a.header { display: block; font-weight: 700 }
+
+.half { width: 200px }
+
+.h20 { height: 20px }
+.h40 { height: 40px }
+
+img { margin: 0; padding: 0; border: none }
+.img_border { margin-left:10px; background: #525252; padding: 4px; border: 1px solid #282828 }
+.img_nom { display: block; margin-bottom: 15px }
+.img_fl { float: left; margin: 3px 15px 5px 0 }
+.img_fr { float: left; margin: 3px 0 5px 15px }
+.img_user {width: 120px; height:150px;}
+
+.left { float: left }
+.right { float: right }
+
+#templatemo_header_wrapper {
+	width: 100%;
+	background: url(../images/templatemo_header.png) center bottom no-repeat 
+}
+
+#templatemo_header {
+	/*width: 800px;*/
+	margin: 0 auto;
+	padding: 35px 20px 15px;
+	background: url(../images/templatemo-header-bg.png) no-repeat center;
+	position:relative;
+}
+.templatemo_header_bg {
+	position:absolute;
+	right:157px;
+	top:14px;
+	cursor:default;
+}
+#templatemo_main_wrapper {
+	/*width: 800px;
+	height: 480px;*/
+	margin: 0 auto;
+	padding: 9px;
+	/*background: url(../images/templatemo_content_bg.png) no-repeat*/
+}
+
+#templatemo_main {
+	/*width: 800px;
+	height: 480px;*/
+	overflow: hidden;
+}
+
+#site_title { display: block; width: 300px; margin: 0 auto; text-align: center;font-size: 28px; color: #fff; font-weight: 700 }
+#site_title a { font-size: 28px; color: #fff; font-weight: 700 }
+
+#content{
+	overflow:hidden;
+	/*width: 7000px;*/
+	position:relative;
+	/*height: 480px;*/
+	/*background: #3c3b3b;	*/
+}
+
+.section {
+	position:relative;
+	float:left;
+	/*width: 800px;
+	height: 480px;*/
+	margin-right: 20px;
+	/*background: #3c3b3b;*/
+}
+
+.section_with_padding {
+	padding:40px;
+	width: 720px;
+	height: 400px;
+}
+
+.info {
+	font-size:18px;
+	
+}
+
+.role {
+	text-align:center;
+	font-size:16px;
+	font-weight:bold;
+}
+
+.about {
+	margin-left:20px;
+}
