@@ -182,7 +182,10 @@ if(isset($_GET['r_id']) && (isset($_GET['actiontype']) && $_GET['actiontype']=="
 		 $dir .= $parts[$i] . "/";
 	}
 	$redirect=urlencode('http://'.$dir.'index.php?mode=qr&viewId='.$row_get_resource['r_id']);
-	 header( 'Location: https://api.qrserver.com/v1/create-qr-code/?size=150x150&data='.$redirect) ;
+	 //header( 'Location: https://api.qrserver.com/v1/create-qr-code/?size=150x150&data='.$redirect) ;
+	echo '<a href="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data='.$redirect.'">';
+	echo '<img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data='.$redirect.'"/>';
+	echo '</a>';
 }
 ?>
 </body>
