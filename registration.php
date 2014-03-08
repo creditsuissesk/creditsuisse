@@ -82,7 +82,7 @@
 	  } }
 	  </script>
 		  <link rel="stylesheet" type="text/css" href="css/reg_style.css" media="all" />
-		  <link rel="stylesheet" type="text/css" href="css/registration.css" media="all"/>
+		  <link rel="stylesheet" type="text/css" href="css/registration.css?" media="all"/>
 		  <link rel="stylesheet" type="text/css" media="all" href="css/jsDatePick_ltr.min.css" />
 	  <link href="SpryAssets/SpryValidationPassword.css" rel="stylesheet" type="text/css" />
 	  <link href="SpryAssets/SpryValidationConfirm.css" rel="stylesheet" type="text/css" />
@@ -107,10 +107,17 @@
 			  });
 		  };
 	  </script>
-	  </head>
+      </head>
 	  
 	  <body>
+      
+      <div class="freshdesignweb-top" >
+      <div class="span.right">
+      <a href="index.php#home" ><img src="images/home_btn.png" name="h_btn" id="h_btn" onclick="index.php#home" /></a>
+	  </div>
+      </div>
 	  <div class="container">
+     
 	  <header>
 					  <h1>Registration Form</h1>
 				  </header>       
