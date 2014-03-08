@@ -177,8 +177,14 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 <?php 
 //php code to update resource status
 if ((isset($_POST["MM_update_r"])) && ($_POST["MM_update_r"] == "form2")) {
-  $updateSQL_r = sprintf("UPDATE `resource` SET approve_status =%s WHERE r_id=%s",
+		if($_POST['r_stat']==1)
+		$flag=0;
+		else
+		$flag=1;
+
+  $updateSQL_r = sprintf("UPDATE `resource` SET approve_status =%s,flag_status=%s WHERE r_id=%s",
                        GetSQLValueString($_POST['r_stat'], "int"),
+					   GetSQLValueString($flag, "int"),
                        GetSQLValueString($_POST['rid'], "int"));
 
   mysql_select_db($database_conn, $conn);
@@ -278,7 +284,7 @@ function MM_validateForm() { //v4.0
     <li class="TabbedPanelsTab" tabindex="0">Pending Courses</li>
     <li class="TabbedPanelsTab" tabindex="0">Upload Resource</li>
      <li class="TabbedPanelsTab" tabindex="0">Approved Resource</li>
-      <li class="TabbedPanelsTab" tabindex="0">Pending Resource</li>
+      <li class="TabbedPanelsTab" tabindex="0">Pending/Flagged Resource</li>
   </ul>
 <div class="TabbedPanelsContentGroup">
     <div class="TabbedPanelsContent">

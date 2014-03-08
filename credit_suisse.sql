@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 21, 2014 at 01:29 PM
+-- Generation Time: Mar 08, 2014 at 10:20 AM
 -- Server version: 5.6.14
 -- PHP Version: 5.5.6
 
@@ -283,7 +283,7 @@ CREATE TABLE IF NOT EXISTS `resource` (
 --
 
 INSERT INTO `resource` (`r_id`, `c_id`, `type_id`, `filename`, `file_type`, `file_size`, `file_location`, `view_location`, `uploaded_by`, `uploaded_date`, `download_status`, `approve_status`, `avg_rating`, `flag_status`) VALUES
-(1, 18, 1, 'Reference.pdf', 'application/pdf', 5.3696355819702, 'resource/18/Reference.pdf', 'resource/18-s/abstract.swf', 2, '2014-02-09 00:15:49', 1, 1, '1.0', 1),
+(1, 18, 1, 'Reference.pdf', 'application/pdf', 5.3696355819702, 'resource/18/Reference.pdf', 'resource/18-s/abstract.swf', 2, '2014-02-09 00:15:49', 1, 1, '1.0', 0),
 (2, 18, 7, 'Example.jpg', 'image/jpeg', 0.13896942138672, 'resource/18/Example.jpg', 'resource/18-s/des.swf', 2, '2014-02-09 00:17:09', 0, 1, '2.0', 1);
 
 -- --------------------------------------------------------
@@ -353,7 +353,7 @@ INSERT INTO `user` (`u_id`, `u_name`, `password`, `f_name`, `l_name`, `contact_n
 (5, 'sh@yahoo.co.in', 'password', 'sahil', 'shah', 25406858, '1994-01-18', 'vjti', 'comp', 'B.E.', 'student', 1, 'images/profiles/05.jpg', '', 0, 0, 6, 0, 0, 0),
 (6, 'root', 'rootpass', 'root', 'root', 2147483647, '1964-08-25', 'root', 'root', 'B.E.', 'admin', 1, 'images/profiles/06.jpg', '', 0, 0, 0, 0, 0, 0),
 (8, 'kunalshah@gmail.com', 'pass1234', 'Kunal', 'Shah', 2147483647, '1993-07-17', 'VJTI', 'computers', 'B.E.', 'student', 1, 'images/profiles/08.jpg', '', 0, 0, -1, 0, 0, 0),
-(9, 'nw@gmail.com', 'password', 'Nachiket', 'wagle', 982680350, '1993-04-07', 'vjti', 'Civil', 'B.E.', 'student', 2, '', '', 0, 0, 0, 0, 0, 0),
+(9, 'nw@gmail.com', 'password', 'Nachiket', 'wagle', 982680350, '1993-04-07', 'vjti', 'Civil', 'B.E.', 'student', 1, '', '', 0, 0, 0, 0, 0, 0),
 (10, 'new@gmail.com', 'password', 'Niket', 'wagle', 21474836, '1991-12-09', 'vjti', 'mechanical', 'B.E.', 'student', 0, '', '', 0, 0, 0, 0, 0, 0),
 (12, 'photouser@gmail.com', 'password', 'Palak', 'Kulkarni', 987654321, '1995-01-06', 'SPCE', 'Civil', 'B.E.', 'student', 1, 'images/profiles/lamborghini-cars-logo-emblem.jpg', '', 0, 0, -1, 0, 1, 1),
 (13, 'cm@gmail.com', 'qwerty', 'Chandresh', 'Mehta', 28964512, '1989-02-02', 'IIT-B', 'Computer Science', 'PHD in algorithims', 'cm', 1, 'images/profiles/cm@gmail.com', '', 0, 0, 0, 0, 0, 0);
@@ -395,7 +395,7 @@ INSERT INTO `user_comment` (`user_comment_id`, `user_id`, `vote_status`, `bookma
 (10, 3, 1, 0, '2014-02-19 18:27:13'),
 (2, 5, 0, 0, '2014-02-18 12:54:19'),
 (3, 5, 0, 0, '2014-02-18 12:54:19'),
-(5, 5, 0, 0, '2014-02-19 18:39:03'),
+(5, 5, 0, 0, '2014-02-22 07:27:57'),
 (6, 5, 0, 0, '2014-02-18 12:54:19'),
 (7, 5, 0, 0, '2014-01-30 12:02:25'),
 (8, 5, 0, 0, '2014-02-18 12:54:19'),
@@ -447,7 +447,7 @@ INSERT INTO `user_discussion` (`u_id`, `user_discussion_id`, `seen_comments`, `d
 (3, 8, 1, '2014-02-19 18:27:34', 0, 0),
 (5, 2, 5, '2014-02-18 12:54:19', 0, 0),
 (5, 3, 0, '2014-02-09 10:08:10', 0, 0),
-(5, 4, 3, '2014-02-19 18:39:03', 1, 0),
+(5, 4, 1, '2014-02-22 07:27:57', 1, 0),
 (5, 8, 1, '2014-02-09 11:16:42', 1, 0),
 (5, 9, 0, '2014-01-30 11:59:18', 0, 0),
 (5, 10, 1, '2014-02-09 11:17:43', 1, 0),
@@ -500,7 +500,7 @@ ALTER TABLE `comment`
 -- Constraints for table `course`
 --
 ALTER TABLE `course`
-  ADD CONSTRAINT `course_ibfk_1` FOREIGN KEY (`u_id`) REFERENCES `user` (`u_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `course_ibfk_1` FOREIGN KEY (`u_id`) REFERENCES `user` (`u_id`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
 -- Constraints for table `course_eval`
@@ -536,7 +536,7 @@ ALTER TABLE `enroll_course`
 ALTER TABLE `resource`
   ADD CONSTRAINT `resource_ibfk_1` FOREIGN KEY (`c_id`) REFERENCES `course` (`c_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `resource_ibfk_2` FOREIGN KEY (`type_id`) REFERENCES `resource_type` (`type_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `resource_ibfk_3` FOREIGN KEY (`uploaded_by`) REFERENCES `user` (`u_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `resource_ibfk_3` FOREIGN KEY (`uploaded_by`) REFERENCES `user` (`u_id`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
 -- Constraints for table `user_comment`

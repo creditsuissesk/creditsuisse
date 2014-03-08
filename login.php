@@ -50,7 +50,7 @@ if (isset($_POST['username'])) {
   $MM_redirectLoginSuccessAuthor = "authorhome.php";
   $MM_redirectLoginSuccessRoot = "admin_home.php";
   $MM_redirectLoginSuccessCM = "cmhome.php";
-  $MM_redirectLoginFailed = "index.php#login";
+  $MM_redirectLoginFailed = "index.php#home";
   $MM_redirecttoReferrer = false;
   mysql_select_db($database_conn, $conn);
   	

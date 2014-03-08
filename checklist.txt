@@ -18,8 +18,8 @@ All php:
 		
 index.php: 	1)need to replace one sign up tile with current no. of courses and users //done
 			2)hashing password
-			3)adding home button in transition
-			4)adding action to send button
+			3)adding home button in transition //done
+			4)adding action to send button 
 			5)add details of all tabs
 			6)back button not working
 			7)login mein show reasons for not being able to login //done
@@ -28,6 +28,7 @@ index.php: 	1)need to replace one sign up tile with current no. of courses and u
 registration.php: 	1) show profile picture compulsory
 					2) add more stringent conditions
 					3) improve error messages regarding the profile pic uploads
+					4) adding captcha
 					
 Userhome.php:	1) add view all link in every tab used
 				2) personalize errors provided by upload_res.php
@@ -35,7 +36,7 @@ Userhome.php:	1) add view all link in every tab used
 
 Forums.php:	1) the thrash and delete icons size increased a lot//done
 			2) category should have courses name also as an option
-			3) on creating discussion reload the web page
+			3) on creating discussion reload the web page //done
 			4) to any activity of click reload whole page
 			5) add that admin gets only delete option coz flagging the comment/discussion makes no sense for admin
 
@@ -52,16 +53,17 @@ cmhome.php:	1) add author name column in approve courses//done & add author deta
 			3) add profile tab
 			4) In approved resource or pending resource tab give link of viewing swf files rather then download path ka &
 				if possible will make like floating in course_detail_stud.php 
+			5) Add new category on approving the course
 					
 course_details_stud.php: 1)add send button's link and update data
-						 2)make qr off-line available (optional)
+						 2)make qr off-line available (optional) & downloadable
 						 3)add download link in resource //done
 						 
 						 
 NOTE:  FUNCTIONALITIES LEFT TO IMPLEMENT
 
 1) User score calculated
-2) Recently trending Discussion/comment
+2) Recently trending Discussion/comment //done
 3) build user reputation
 4) approval for enrolling
 5) adding bookmark button in browse resource tab
