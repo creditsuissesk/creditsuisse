@@ -33,6 +33,17 @@ if (!function_exists("GetSQLValueString")) {
 	  }
 
 ?>
+
+<?php //captcha validation
+ require_once('recaptchalib.php');
+ $privatekey = "6Le6u-8SAAAAABwYZOiltZWMoBFWdx7451JMEkTT";
+ $resp = recaptcha_check_answer ($privatekey,$_SERVER["REMOTE_ADDR"],$_POST["recaptcha_challenge_field"],$_POST["recaptcha_response_field"]);
+if (!$resp->is_valid) {
+	//die ("The reCAPTCHA wasn't entered correctly. Go back and try it again." ."(reCAPTCHA said: " . $resp->error . ")");
+	echo '<script type="text/javascript">alert("Please enter the captcha correctly"); window.history.back(); </script>';
+}else {
+?>
+
 <?php 
 if($_FILES["file"]["size"]==0 )
 {
@@ -118,13 +129,7 @@ else
   }
 }
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title></title>
-</head>
 
-<body>
-</body>
-</html>
+<?php 
+} //end of captcha validation if
+?>

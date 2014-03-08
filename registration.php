@@ -168,6 +168,12 @@
       <p> <label for="file">Profile Pciture:</label>
 <input type="file" name="file" id="file">
 		</p>
+        <?php
+     require_once('recaptchalib.php');
+     $publickey = "6Le6u-8SAAAAAAbbVmypQOuHJ1sxwzwHS3BBYi76";
+     echo recaptcha_get_html($publickey);
+   ?>
+	<br /><br />
       <p ><input class="buttom" name="submit" id="submit" value="Sign me up!" type="submit" onClick="MM_validateForm('pass','','R','f_name','','R','l_name','','R','contact','','RisNum','inst_name','','R','stream','','R','degree','','R','about','','R');return document.MM_returnValue" 
 	action="reg_data.php"	  />
 		  <input class="buttom" type="reset" name="reset" id="reset" value="Reset" />
