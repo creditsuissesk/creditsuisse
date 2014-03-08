@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 08, 2014 at 11:40 AM
+-- Generation Time: Mar 08, 2014 at 01:13 PM
 -- Server version: 5.6.14
 -- PHP Version: 5.5.6
 
@@ -346,17 +346,17 @@ CREATE TABLE IF NOT EXISTS `user` (
 --
 
 INSERT INTO `user` (`u_id`, `u_name`, `password`, `f_name`, `l_name`, `contact_no`, `dob`, `institute`, `stream`, `degree`, `role`, `approve_id`, `photo`, `about`, `show_email`, `gender`, `user_score`, `count_bookmarks`, `created_comments`, `count_discussions`) VALUES
-(1, 'xyz@gmail.com', 'qwerty', 'Abdul', 'Shaikh', 2147483647, '1993-03-01', 'SPIT', 'Computers', 'B.E.', 'student', 1, 'images/profiles/01.jpg', '', 0, 0, 1, 0, 1, 0),
-(2, 'abc@tech.org', 'qwerty', 'Abhishek', 'Chaturvedi', 26845172, '1979-04-02', 'VJTI', 'Information Technolo', 'PHD in cryptography and Security', 'author', 1, 'images/profiles/02.jpg', '', 0, 0, 4, 0, 0, 0),
-(3, 'dalvishaarad@gmail.c', 'password', 'Shaarad', 'Dalvi', 2147483647, '1992-04-01', 'vjti', 'comps', 'B.E.', 'student', 1, 'images/profiles/03.jpg', '', 0, 0, 2, 0, 0, 0),
-(4, 'shaaraddalvi@outlook.com', 'password', 'Shaarad', 'Inamdar', 25406266, '1993-11-01', 'TSEC', 'Electronics', 'B.E.', 'student', 1, 'images/profiles/04.jpg', '', 0, 0, 0, 0, 0, 0),
-(5, 'sh@yahoo.co.in', 'password', 'sahil', 'shah', 25406858, '1994-01-18', 'vjti', 'comp', 'B.E.', 'student', 1, 'images/profiles/05.jpg', '', 0, 0, 6, 0, 0, 0),
-(6, 'root', 'rootpass', 'root', 'root', 2147483647, '1964-08-25', 'root', 'root', 'B.E.', 'admin', 1, 'images/profiles/06.jpg', '', 0, 0, 0, 0, 0, 0),
-(8, 'kunalshah@gmail.com', 'pass1234', 'Kunal', 'Shah', 2147483647, '1993-07-17', 'VJTI', 'computers', 'B.E.', 'student', 1, 'images/profiles/08.jpg', '', 0, 0, -1, 0, 0, 0),
-(9, 'nw@gmail.com', 'password', 'Nachiket', 'wagle', 982680350, '1993-04-07', 'vjti', 'Civil', 'B.E.', 'student', 1, '', '', 0, 0, 0, 0, 0, 0),
-(10, 'new@gmail.com', 'password', 'Niket', 'wagle', 21474836, '1991-12-09', 'vjti', 'mechanical', 'B.E.', 'student', 0, '', '', 0, 0, 0, 0, 0, 0),
-(12, 'photouser@gmail.com', 'password', 'Palak', 'Kulkarni', 987654321, '1995-01-06', 'SPCE', 'Civil', 'B.E.', 'student', 1, 'images/profiles/lamborghini-cars-logo-emblem.jpg', '', 0, 0, -1, 0, 1, 1),
-(13, 'cm@gmail.com', 'qwerty', 'Chandresh', 'Mehta', 28964512, '1989-02-02', 'IIT-B', 'Computer Science', 'PHD in algorithims', 'cm', 1, 'images/profiles/cm@gmail.com', '', 0, 0, 0, 0, 0, 0);
+(1, 'xyz@gmail.com', '65e84be33532fb784c48129675f9eff3a682b27168c0ea744b2cf58ee02337c5', 'Abdul', 'Shaikh', 2147483647, '1993-03-01', 'SPIT', 'Computers', 'B.E.', 'student', 1, 'images/profiles/01.jpg', '', 0, 0, 1, 0, 1, 0),
+(2, 'abc@tech.org', '65e84be33532fb784c48129675f9eff3a682b27168c0ea744b2cf58ee02337c5', 'Abhishek', 'Chaturvedi', 26845172, '1979-04-02', 'VJTI', 'Information Technolo', 'PHD in cryptography and Security', 'author', 1, 'images/profiles/02.jpg', '', 0, 0, 4, 0, 0, 0),
+(3, 'dalvishaarad@gmail.c', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', 'Shaarad', 'Dalvi', 2147483647, '1992-04-01', 'vjti', 'comps', 'B.E.', 'student', 1, 'images/profiles/03.jpg', '', 0, 0, 2, 0, 0, 0),
+(4, 'shaaraddalvi@outlook.com', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', 'Shaarad', 'Inamdar', 25406266, '1993-11-01', 'TSEC', 'Electronics', 'B.E.', 'student', 1, 'images/profiles/04.jpg', '', 0, 0, 0, 0, 0, 0),
+(5, 'sh@yahoo.co.in', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', 'sahil', 'shah', 25406858, '1994-01-18', 'vjti', 'comp', 'B.E.', 'student', 1, 'images/profiles/05.jpg', '', 0, 0, 6, 0, 0, 0),
+(6, 'root', '5012f5182061c46e57859cf617128c6f70eddfba4db27772bdede5a039fa7085', 'root', 'root', 2147483647, '1964-08-25', 'root', 'root', 'B.E.', 'admin', 1, 'images/profiles/06.jpg', '', 0, 0, 0, 0, 0, 0),
+(8, 'kunalshah@gmail.com', 'bd94dcda26fccb4e68d6a31f9b5aac0b571ae266d822620e901ef7ebe3a11d4f', 'Kunal', 'Shah', 2147483647, '1993-07-17', 'VJTI', 'computers', 'B.E.', 'student', 1, 'images/profiles/08.jpg', '', 0, 0, -1, 0, 0, 0),
+(9, 'nw@gmail.com', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', 'Nachiket', 'wagle', 982680350, '1993-04-07', 'vjti', 'Civil', 'B.E.', 'student', 1, '', '', 0, 0, 0, 0, 0, 0),
+(10, 'new@gmail.com', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', 'Niket', 'wagle', 21474836, '1991-12-09', 'vjti', 'mechanical', 'B.E.', 'student', 0, '', '', 0, 0, 0, 0, 0, 0),
+(12, 'photouser@gmail.com', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', 'Palak', 'Kulkarni', 987654321, '1995-01-06', 'SPCE', 'Civil', 'B.E.', 'student', 1, 'images/profiles/lamborghini-cars-logo-emblem.jpg', '', 0, 0, -1, 0, 1, 1),
+(13, 'cm@gmail.com', '65e84be33532fb784c48129675f9eff3a682b27168c0ea744b2cf58ee02337c5', 'Chandresh', 'Mehta', 28964512, '1989-02-02', 'IIT-B', 'Computer Science', 'PHD in algorithims', 'cm', 1, 'images/profiles/cm@gmail.com', '', 0, 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
