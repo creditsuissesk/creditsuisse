@@ -53,8 +53,7 @@ if (isset($_POST['username'])) {
   $MM_redirectLoginFailed = "index.php#home";
   $MM_redirecttoReferrer = false;
   mysql_select_db($database_conn, $conn);
-  	
-  $LoginRS__query=sprintf("SELECT u_id,f_name, u_name, password, role,stream FROM `user` WHERE u_name=%s AND password=%s AND approve_id=1",GetSQLValueString($loginUsername, "text"), GetSQLValueString($password, "text")); 
+  $LoginRS__query=sprintf("SELECT u_id,f_name, u_name, password, role,stream FROM `user` WHERE u_name=%s AND password=%s AND approve_id=1",GetSQLValueString($loginUsername, "text"), GetSQLValueString(hash('sha256', $password), "text")); 
   $LoginRS = mysql_query($LoginRS__query, $conn) or die(mysql_error());
   $loginFoundUser = mysql_num_rows($LoginRS);
   if ($loginFoundUser) {
@@ -95,7 +94,7 @@ if (isset($_POST['username'])) {
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <?php 
 mysql_select_db($database_conn, $conn);
-  $error__query=sprintf("SELECT approve_id FROM `user` WHERE u_name=%s AND password=%s ",GetSQLValueString($loginUsername, "text"), GetSQLValueString($password, "text")); 
+  $error__query=sprintf("SELECT approve_id FROM `user` WHERE u_name=%s AND password=%s ",GetSQLValueString($loginUsername, "text"), GetSQLValueString(hash('sha256', $password), "text")); 
   $error = mysql_query($error__query, $conn) or die(mysql_error());
   $row_error = mysql_fetch_assoc($error);
 	  if($row_error['approve_id']==2 && $flag==1)
