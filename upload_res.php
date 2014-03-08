@@ -91,15 +91,19 @@ else
 	else
 	$redirect="http://localhost/dreamweaver/userhome.php";
 }
+if($_FILES["file"]["size"]==0)
+{
+		echo '<script type="text/javascript">alert("Upload File to proceed"); window.location="'.$redirect.'"; </script>';
+
+}
+else
+{
 $allowedExts = array("gif", "jpeg", "jpg", "png","pdf","mp4","doc","docx","pptx","ppt","txt");
-
-	
-
-
 $temp = explode(".", $_FILES["file"]["name"]);
 $extension = end($temp);
 $max_size=500000000;
 $max_size_mb=(500000000/1024)/1024;
+$filesize=$_FILES["file"]["size"]/1024/1024;
 $filename=$_POST['r_name'] . "." . $extension;
 if ((($_FILES["file"]["type"] == "image/gif")
 || ($_FILES["file"]["type"] == "image/jpeg")
@@ -146,7 +150,7 @@ if ( ! is_dir($path)) {
       move_uploaded_file($_FILES["file"]["tmp_name"],
       $upload_add);
 
-	  $filesize=$_FILES["file"]["size"]/1024/1024;	  
+	  	  
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form")){
 		$insertSQL = sprintf("INSERT INTO resource (c_id,type_id,filename, file_type,file_size, file_location,uploaded_by,download_status,approve_status) ".
            "VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)",
@@ -171,22 +175,29 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form")){
 else
   {
 	  if (!(($_FILES["file"]["type"] == "image/gif")
-			|| ($_FILES["file"]["type"] == "image/jpeg")
-			|| ($_FILES["file"]["type"] == "image/jpg")
-			|| ($_FILES["file"]["type"] == "image/pjpeg")
-			|| ($_FILES["file"]["type"] == "image/x-png")
-			|| ($_FILES["file"]["type"] == "image/png")
-			|| ($_FILES["file"]["type"] =="application/pdf")))
-  echo '<script type="text/javascript">alert("Invalid File Type");  window.location="'.$redirect.'";</script>';
+|| ($_FILES["file"]["type"] == "image/jpeg")
+|| ($_FILES["file"]["type"] == "image/jpg")
+|| ($_FILES["file"]["type"] == "image/pjpeg")
+|| ($_FILES["file"]["type"] == "image/x-png")
+|| ($_FILES["file"]["type"] == "image/png")
+|| ($_FILES["file"]["type"] == "application/pdf")
+|| ($_FILES["file"]["type"] == "application/x-pdf")
+||($_FILES["file"]["type"] == "video/mp4")
+||($_FILES["file"]["type"] == "application/msword")
+||($_FILES["file"]["type"] == "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+||($_FILES["file"]["type"] == "application/vnd.ms-powerpoint")
+||($_FILES["file"]["type"] == "application/vnd.openxmlformats-officedocument.presentationml.presentation")
+||($_FILES["file"]["type"] == "text/plain")))
+  echo '<script type="text/javascript">alert("Invalid File Type. Please upload valid file.");  window.location="'.$redirect.'";</script>';
   else 
   if(($_FILES["file"]["size"] > $max_size))
-  echo '<script type="text/javascript">alert("File Size is '.$_FILES["file"]["size"].'which GREATER than the allowed size. Allowed Size is '.$max_size_mb.' mb.");
+  echo '<script type="text/javascript">alert("File Size is '.$filesize.' mb which GREATER than the allowed size. Allowed Size is '.$max_size_mb.' mb.");
   window.location="'.$redirect.'";</script>';
   else
   echo '<script type="text/javascript">alert("Problem in uploading");window.location="'.$redirect.'";</script>';
   }
 
-		/*$insertGoTo = "authorhome.php";
+}/*$insertGoTo = "authorhome.php";
 		if (isset($_SERVER['QUERY_STRING'])) {
 		  $insertGoTo .= (strpos($insertGoTo, '?')) ? "&" : "?";
 		  $insertGoTo .= $_SERVER['QUERY_STRING'];
