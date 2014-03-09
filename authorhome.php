@@ -256,6 +256,18 @@ body,td,th {
 }
 </style>
 <script type="text/javascript" src="js/jsDatePick.min.1.3.js"></script>
+
+<style>
+	@import "css/LightFace.css";
+</style>
+<link rel="stylesheet" href="css/lightface.css" />
+<script src="js/mootools.js"></script>
+<script src="js/LightFace.js"></script>
+<script src="js/LightFace.js"></script>
+<script src="js/LightFace.IFrame.js"></script>
+<script src="js/LightFace.Image.js"></script>
+<script src="js/LightFace.Request.js"></script>
+    
 <script type="text/javascript">
 window.onload = function(){
 		new JsDatePick({
@@ -303,6 +315,16 @@ function showResource(id,type,name) {
 		title: 'Resource : '+name
 		}).addButton('Close', function() { light.close(); },true).open();		
 }
+
+//function to show user float
+	function showUser(id,name) {
+	light = new LightFace.IFrame({
+		height:400,
+		width:500,
+		url: 'show_user_float.php?u_id='+id,
+		title: name
+		}).addButton('Close', function() { light.close(); },true).open();
+	}
 </script>
 </head>
 
@@ -488,7 +510,14 @@ var allList = new List('all_courses', allOptions);
     <tbody class="list">
     <?php do { ?>
     <tr>
-      <td class="r_name"><a href='<?php echo $row_approved_resources["file_location"]?>'><?php echo $row_approved_resources['filename']; ?></a></td>
+      <td class="r_name"><a><?php echo '<div id="'.$row_approved_resources['r_id'].'" style="cursor:pointer;" onclick="showResource('.$row_approved_resources['r_id'].',\'';
+					if(strpos($row_approved_resources['file_type'],"application/pdf")!==false) {
+						echo "pdf";
+					}else if (strpos($row_approved_resources['file_type'],"image")!==false) {
+						echo "image";
+					}
+					echo '\',\''.$row_approved_resources['filename'].'\');">' ?>
+				<?php echo $row_approved_resources['filename'].'</div>'; ?></a></td>
       <td class="c_name"><?php echo $row_approved_resources['c_name']; ?></td>
       <td class="r_size"><?php echo $row_approved_resources['file_size']; ?></td>
       <td class="r_type"><?php echo $row_approved_resources['file_type']; ?></td>
@@ -552,14 +581,14 @@ var arList = new List('approved_res', arOptions);
     <tbody class="list">
     <?php do { ?>
     <tr>
-      <td class="r_name"><?php echo '<div id="'.$row_all_resources['r_id'].'" style="cursor:pointer;" onclick="showResource('.$row_all_resources['r_id'].',\'';
+      <td class="r_name"><a><?php echo '<div id="'.$row_all_resources['r_id'].'" style="cursor:pointer;" onclick="showResource('.$row_all_resources['r_id'].',\'';
 					if(strpos($row_all_resources['file_type'],"application/pdf")!==false) {
 						echo "pdf";
 					}else if (strpos($row_all_resources['file_type'],"image")!==false) {
 						echo "image";
 					}
 					echo '\',\''.$row_all_resources['filename'].'\');">' ?>
-      <?php echo $row_all_resources['filename'].'</div>'; ?></td>
+      <?php echo $row_all_resources['filename'].'</div>'; ?></a></td>
       <td class="c_name"><?php echo $row_all_resources['c_name']; ?></td>
       <td class="r_size"><?php echo $row_all_resources['file_size']; ?></td>
       <td class="r_type"><?php echo $row_all_resources['file_type']; ?></td>
@@ -679,8 +708,8 @@ var arList = new List('all_res', arOptions);
   
     <tr>
       
-      <td class="first_name"><?php echo $row_update['f_name']; ?></td>
-      <td class="last_name"> <?php echo $row_update['l_name']; ?></td>
+      <td class="first_name"><a onclick="showUser(<?php echo $row_update['u'].",'".$row_update['f_name']." ".$row_update['l_name'];?>');return false;" style="cursor:pointer;"><?php echo $row_update['f_name']; ?></a></td>
+      <td class="last_name"><a onclick="showUser(<?php echo $row_update['u'].",'".$row_update['f_name']." ".$row_update['l_name'];?>');return false;" style="cursor:pointer;"><?php echo $row_update['l_name']; ?></a></td>
       <td class="stream"><?php echo $row_update['s_stream']; ?></td>
       <td class="course_m"><a href="course_detail.php?c_id=<?php echo $row_update['c_id']; ?>"><?php echo $row_update['c_name']; ?></a></td>
       <td class="score"><?php echo $row_update['user_score']; ?></td>
@@ -742,8 +771,8 @@ var currList = new List('new_students', currOptions);
     
   
     <tr>
-      <td class="ex_f_name"><?php echo $row_all_students['f_name']; ?></td>
-      <td class="ex_l_name"><?php echo $row_all_students['l_name']; ?></td>
+      <td class="ex_f_name"><a onclick="showUser(<?php echo $row_all_students['u'].",'".$row_all_students['f_name']." ".$row_all_students['l_name'];?>');return false;" style="cursor:pointer;"><?php echo $row_all_students['f_name']; ?></a></td>
+      <td class="ex_l_name"><a onclick="showUser(<?php echo $row_all_students['u'].",'".$row_all_students['f_name']." ".$row_all_students['l_name'];?>');return false;" style="cursor:pointer;"><?php echo $row_all_students['l_name']; ?></a></td>
       <td class="ex_stream"><?php echo $row_all_students['s_stream']; ?></td>
       <td class="ex_course"><a href="course_detail.php?c_id=<?php echo $row_all_students['c_id']; ?>"><?php echo $row_all_students['c_name']; ?></a></td>
       <td class="ex_score"><?php echo $row_all_students['user_score']; ?></td>
