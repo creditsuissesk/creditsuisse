@@ -120,6 +120,9 @@ else if (isset($_GET['enrollId'])) {
 	//for enrolling courses
 	$enroll_query=sprintf("INSERT INTO `enroll_course`(u_id,c_enroll_id,completion_stat) VALUES (%s,%s,0)",GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($_GET['enrollId'], "int"));
 	$enroll = mysql_query($enroll_query, $conn) or die(mysql_error());
+	//delete all recommendation entries about that user-course pair
+	$query_delete_recos=sprintf("DELETE FROM `course_reco` WHERE c_reco_id=%s AND to_u_id=%s",GetSQLValueString($_GET['enrollId'], "int"),GetSQLValueString($_SESSION['MM_UserID'], "int"));
+	$delete_recos = mysql_query($query_delete_recos, $conn) or die(mysql_error());
 }else if (isset($_GET['showCourses'])) {
 	//for showing courses currently going on
 	if($_GET['showCourses']==1) {

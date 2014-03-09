@@ -67,4 +67,4 @@ NOTE:  FUNCTIONALITIES LEFT TO IMPLEMENT
 3) build user reputation
 4) approval for enrolling
 5) adding bookmark button in browse resource tab
-6) tab of peer recommendation
+6) tab of peer recommendation //done

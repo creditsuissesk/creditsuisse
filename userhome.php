@@ -133,10 +133,10 @@ $row_new_resource = mysql_fetch_assoc($new_resource);
 $totalRows_new_resource = mysql_num_rows($new_resource);
 
 mysql_select_db($database_conn, $conn);
-$query_author_details = sprintf("SELECT * FROM user WHERE u_id = %s", GetSQLValueString($_SESSION['MM_UserID'], "int"));
-$author_details = mysql_query($query_author_details, $conn) or die(mysql_error());
-$row_author_details = mysql_fetch_assoc($author_details);
-$totalRows_author_details = mysql_num_rows($author_details);
+$query_user_details = sprintf("SELECT * FROM user WHERE u_id = %s", GetSQLValueString($_SESSION['MM_UserID'], "int"));
+$user_details = mysql_query($query_user_details, $conn) or die(mysql_error());
+$row_user_details = mysql_fetch_assoc($user_details);
+$totalRows_user_details = mysql_num_rows($user_details);
 
 $value=GetSQLValueString($_SESSION['MM_stream'], "text");
 $value2=GetSQLValueString($_SESSION['MM_UserID'], "int");
@@ -159,6 +159,7 @@ $peer_reco = mysql_query($query_peer_reco, $conn) or die(mysql_error());
 <link rel="stylesheet" type="text/css" media="screen" href="css/nav_bar.css" />
 <link rel="stylesheet" type="text/css" media="screen" href="css/course_list.css" />
 <link rel="stylesheet" type="text/css" media="screen" href="css/resource_list.css" />
+<link rel="stylesheet" type="text/css" media="screen" href="css/user_profile.css" />
 
 <script type="text/javascript" src="js/jquery.min.js"></script> 
 <script type="text/javascript" src="js/jquery.scrollTo-min.js"></script> 
@@ -653,12 +654,35 @@ else {
     
     <!-- start of profile tab-->
     <div class="TabbedPanelsContent">
-    <img src="<?php echo $row_author_details['photo'];?>" alt="" height=200 width =300 />
-							<p><b>Name : </b><i><?php echo $row_author_details['f_name']." ".$row_author_details['l_name'];?></i></p>
-                            <p><b>Degree of specialization : </b><i><?php echo $row_author_details['degree'];?></i></p>
-                            <p><b>Institute of Specialization :</b><i> <?php echo $row_author_details['institute'];?></i></p>
-                            <p><b>Contact me at : </b><i><?php echo $row_author_details['u_name'];?></i></p>
-                            <p><b> About myself:</b> <p style="font-style:italic"><?php echo $row_author_details['about'];?></p></p>
+
+	<div class="user-pro-content" style="background-color:#FFF;border-radius:5px;">
+	<div id="pagewidth" >
+	<div id="wrapper" class="clearfix">
+		<div id="twocols"> 
+			<div id="rightcol"><b>Name : </b><i><?php echo $row_user_details['f_name']." ".$row_user_details['l_name'];?></i></p>
+    <form id="profileform">
+	<p><b>Degree of specialization : </b><input type="text" value="<?php echo $row_user_details['degree'];?>"/></p>
+	<p><b>Institute of Specialization : </b><input type="text" value="<?php echo $row_user_details['institute'];?>" /></p>
+	<p><b>Contact number : </b><input type="text" value="<?php echo $row_user_details['contact_no'];?>"/></p>
+	<p><b> About myself:</b></p><textarea rows="10" cols="75"><?php echo $row_user_details['about'];?></textarea><br><br>
+    <input name="submit" value="Update Profile" id="submit" class="buttom" type="submit">
+    </form>
+    </div>
+	</div> 
+	<div id="leftcol">
+    	<p><img src="<?php echo $row_user_details['photo'];?>" alt="" height="300" width ="200" /></p>
+        <div class="userstats">Stats:<br>
+		Score: <?php echo $row_user_details['user_score'];?>
+        
+        
+        </div>
+    </div>
+	</div>
+</div>	
+    </div>
+    
+        
+
     </div>
     <!-- end of profile tab-->
     <div class="TabbedPanelsContent">
@@ -713,7 +737,7 @@ var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1",{defaultTab:<?p
 <?php
 mysql_free_result($incomplete_courses);
 mysql_free_result($new_resource);
-mysql_free_result($author_details);
+mysql_free_result($user_details);
 mysql_free_result($completed_courses);
 //mysql_free_result($resource);
 mysql_free_result($auto_reco);
