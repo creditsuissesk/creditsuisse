@@ -112,7 +112,7 @@ if (isset($_GET['c_id'])) {
 }
 $value=GetSQLValueString($colname_course_details, "int");
 mysql_select_db($database_conn, $conn);
-$query_course_details = "SELECT c_id,c_name,c_stream,inserted_on,course.u_id,approve_status,course_image,avg_rating,description,enroll_course.u_id as u_enroll_id,enroll_course.marks,enroll_course.rating,c_enroll_id,completion_stat,DATE_FORMAT(start_date,'%d-%m-%Y') AS date_start,DATE_FORMAT(end_date,'%d-%m-%Y') AS date_end FROM `course` LEFT OUTER JOIN `enroll_course` ON course.c_id=enroll_course.c_enroll_id AND enroll_course.u_id=".$_SESSION['MM_UserID']." WHERE c_id =".$value;
+$query_course_details = "SELECT a_stat,c_id,c_name,c_stream,inserted_on,course.u_id,approve_status,course_image,avg_rating,description,enroll_course.u_id as u_enroll_id,enroll_course.marks,enroll_course.rating,c_enroll_id,completion_stat,DATE_FORMAT(start_date,'%d-%m-%Y') AS date_start,DATE_FORMAT(end_date,'%d-%m-%Y') AS date_end FROM `course` LEFT OUTER JOIN `enroll_course` ON course.c_id=enroll_course.c_enroll_id AND enroll_course.u_id=".$_SESSION['MM_UserID']." WHERE c_id =".$value;
 $course_details = mysql_query($query_course_details, $conn) or die(mysql_error());
 $row_course_details = mysql_fetch_assoc($course_details);
 $totalRows_course_details = mysql_num_rows($course_details);
@@ -234,10 +234,20 @@ function clearText(field)
                     </div>
                     <div class="row1 box2">
                     	<div class="box_with_padding">
-                        	<?php if(!empty($row_course_details['u_enroll_id'])){
-								//user has enrolled, show him link to resources
+                        	<?php if(!empty($row_course_details['u_enroll_id'])&&$row_course_details['a_stat']==1){
+								//user has enrolled and approved, show him link to resources
 								echo '<h2><a href="#resources">Resources</a></h2>';
-							}else {
+							}else if(!empty($row_course_details['u_enroll_id'])&&$row_course_details['a_stat']==0){
+								//user has enrolled but yet to be approved
+								echo '<h2 style="cursor:pointer;"><a onclick="alert(\'You have enrolled for the course.But you are yet to be approved to access resources and evaluation!\'); return false;">Resources</a></h2>';
+								}
+							else
+							 if(!empty($row_course_details['u_enroll_id'])&&$row_course_details['a_stat']==0){
+								//user has enrolled but rejected
+								echo '<h2 style="cursor:pointer;"><a onclick="alert(\'You have enrolled for the course.But you have been rejected to take the course!\'); return false;">Resources</a></h2>';
+								}
+							else
+							{
 								//user has not enrolled, disable the link
 								echo '<h2 style="cursor:pointer;"><a onclick="alert(\'You have not enrolled for the cource. Please enroll to access resources and evaluation!\'); return false;">Resources</a></h2>';
 							}
@@ -247,10 +257,22 @@ function clearText(field)
                     </div>
                     <div class="row1 box3">
                     	<div class="box_with_padding">
-                        	<?php if(!empty($row_course_details['u_enroll_id'])) {
-								echo '<h2><a href="#evaluation">Evaluation</a></h2>';
-							}else {
-								echo '<h2 style="cursor:pointer;"><a onclick="alert(\'You have not enrolled for the cource. Please enroll to access resources and evaluation!\'); return false;">Evaluation</a></h2>';
+                        	<?php if(!empty($row_course_details['u_enroll_id'])&&$row_course_details['a_stat']==1){
+								//user has enrolled and approved, show him link to resources
+								echo '<h2><a href="#resources">Resources</a></h2>';
+							}else if(!empty($row_course_details['u_enroll_id'])&&$row_course_details['a_stat']==0){
+								//user has enrolled but yet to be approved
+								echo '<h2 style="cursor:pointer;"><a onclick="alert(\'You have enrolled for the course.But you are yet to be approved to access resources and evaluation!\'); return false;">Resources</a></h2>';
+								}
+							else
+							 if(!empty($row_course_details['u_enroll_id'])&&$row_course_details['a_stat']==0){
+								//user has enrolled but rejected
+								echo '<h2 style="cursor:pointer;"><a onclick="alert(\'You have enrolled for the course.But you have been rejected to take the course!\'); return false;">Resources</a></h2>';
+								}
+							else
+							{
+								//user has not enrolled, disable the link
+								echo '<h2 style="cursor:pointer;"><a onclick="alert(\'You have not enrolled for the cource. Please enroll to access resources and evaluation!\'); return false;">Resources</a></h2>';
 							}
 							?>
                              Prepared to get evaluated? Take the test now!
@@ -361,14 +383,14 @@ function clearText(field)
                 <a href="#home" class="home_btn">home</a> 
                 <a href="#home" class="page_nav_btn previous">Previous</a>
                 <?php //if user is enrolled then go next to resources else go next to contact
-				if (!empty($row_course_details['u_enroll_id'])) { 
+				if (!empty($row_course_details['u_enroll_id'])&&$row_course_details['a_stat']==1) { 
 					echo '<a href="#resources" class="page_nav_btn next">Next</a>';
 				}else {
 					echo '<a href="#contact" class="page_nav_btn next">Next</a>';
 				}  ?>
             </div> <!-- END of About -->
             
-            <?php if (!empty($row_course_details['u_enroll_id'])) { 
+            <?php if (!empty($row_course_details['u_enroll_id'])&&$row_course_details['a_stat']==1) { 
 				//show the two tabs only if user has enrolled
 			?>
             <div class="section section_with_padding" id="resources"> 
@@ -433,7 +455,7 @@ function clearText(field)
 				$totalRows_test_exists = mysql_num_rows($check_test_exists);
 				if($totalRows_test_exists>0){
 					//test is available. check if candidate has already taken the test.
-					$query_test_check=sprintf("SELECT * FROM `enroll_course` WHERE u_id=%s AND c_enroll_id=%s",GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($_GET['c_id'], "int"));
+					$query_test_check=sprintf("SELECT * FROM `enroll_course` WHERE u_id=%s AND c_enroll_id=%s AND a_stat=1",GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($_GET['c_id'], "int"));
 					$check_test=mysql_query($query_test_check,$conn) or die(mysql_error());
 					$row_check_test=mysql_fetch_assoc($check_test);
 					if($row_check_test['marks']==-1) {
@@ -478,7 +500,7 @@ function clearText(field)
                 
                 <a href="#home" class="home_btn">home</a> 
                 <?php //if user is enrolled, previous page is evaluation, else is about
-				if (!empty($row_course_details['u_enroll_id'])) {
+				if (!empty($row_course_details['u_enroll_id'])&&$row_course_details['a_stat']==1) {
 					echo '<a href="#evaluation" class="page_nav_btn previous">Previous</a>';
 				}else {
 					echo '<a href="#about" class="page_nav_btn previous">Previous</a>';

@@ -115,7 +115,7 @@ $row_course_details = mysql_fetch_assoc($course_details);
 $totalRows_course_details = mysql_num_rows($course_details);
 
 mysql_select_db($database_conn, $conn);
-$query_course_students = sprintf("SELECT * FROM `user` NATURAL JOIN `enroll_course` WHERE c_enroll_id=%s",GetSQLValueString($_GET['c_id'], "int"));
+$query_course_students = sprintf("SELECT * FROM `user` NATURAL JOIN `enroll_course` WHERE c_enroll_id=%s AND a_stat=1",GetSQLValueString($_GET['c_id'], "int"));
 $course_students = mysql_query($query_course_students, $conn) or die(mysql_error());
 $row_course_students = mysql_fetch_assoc($course_students);
 $totalRows_course_students = mysql_num_rows($course_students);
