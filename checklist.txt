@@ -1,9 +1,9 @@
 viewing resourses 
 //Student must be able to rate a library resource 
-and recommend it to peers.
+//and recommend it to peers.
 //Any user can report a library resource as spam/offensive, which is moderated by the content manager
 //Bookmarks/pinning of resources
-Basic automated recommendations based on student stream, ratings etc. and peer recommendations
+//Basic automated recommendations based on student stream, ratings etc. and peer recommendations
 //Moderation of forum by admin
 //Display QR code against published article/resource.
 
@@ -62,9 +62,9 @@ course_details_stud.php: 1)add send button's link and update data
 						 
 NOTE:  FUNCTIONALITIES LEFT TO IMPLEMENT
 
-1) User score calculated
+1) User score calculated //done
 2) Recently trending Discussion/comment //done
 3) build user reputation
 4) approval for enrolling
-5) adding bookmark button in browse resource tab
+5) adding bookmark button in browse resource tab //done
 6) tab of peer recommendation //done
