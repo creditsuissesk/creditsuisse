@@ -1,4 +1,6 @@
 @charset "utf-8";
+
+
 #auto_reco-wrapper
 {
 	clear: both;
@@ -110,7 +112,7 @@ aside,main {
 
 #auto_reco div div.first{   
 	float: right;
-	width: 85%;
+	width: 100%;
 	margin: 0 0 0 30px;
 	position: relative;
 }
@@ -135,7 +137,7 @@ aside,main {
 	border-radius: 5px;
 }
 #auto_reco div ul li{
-	height: 15%;
+	/*height: 15%;*/
 	overflow: hidden;
 	margin: 0 0 20px 0;
 	_margin: 0 0 10px 0;
@@ -193,8 +195,16 @@ aside,main {
 	line-height: 18px;
 	margin: 0 5px 0 0;
 	position: static;
-	padding: 0;
 }
+
+#auto_reco div ul li a.name{
+	font-size: 14px;
+	color: #039;
+	font-family: arial;
+	float:right;
+	padding-left:10px;
+}
+
 #auto_reco div ul li a.enroll{
 	color: #d4ffff;
 	text-decoration: none;
@@ -231,7 +241,7 @@ aside,main {
 	line-height: 18px;
 	margin: 0 5px 0 0;
 	position: static;
-	padding: 0;
+	padding-left: 155px;
 }
 #auto_reco div a{
 	font-family:arial;
@@ -253,12 +263,15 @@ form#mcqform input {
 	margin:5px;
 }
 
-form#mcqform input.buttom{ background: #4b8df9; display: inline-block; padding: 5px 10px 6px; color: #fbf7f7; text-decoration: none; font-weight: bold; line-height: 1; -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px; -moz-box-shadow: 0 1px 3px #999; -webkit-box-shadow: 0 1px 3px #999; box-shadow: 0 1px 3px #999; text-shadow: 0 -1px 1px #222; border: none; position: relative; cursor: pointer; font-size: 14px; font-family:Verdana, Geneva, sans-serif;}
-form#mcqform input.buttom:hover	{ background-color: #2a78f6; }
+.autoreco-header {
+	padding-left:50px;
+	padding-top:10px;
+	margin:0px 0px 0px;
+	font-size: 24px;
+}
 
-div#question {
-	color: #333;
-	font:inherit;
-	font-size:16px;
-}/* CSS Document */
-
+.peer-name {
+	width:auto;
+	text-align:right;
+	font:"Arial Black", Gadget, sans-serif;
+}

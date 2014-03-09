@@ -141,10 +141,15 @@ $totalRows_author_details = mysql_num_rows($author_details);
 $value=GetSQLValueString($_SESSION['MM_stream'], "text");
 $value2=GetSQLValueString($_SESSION['MM_UserID'], "int");
 mysql_select_db($database_conn, $conn);
-$query_sort_courses = "SELECT * FROM `course` WHERE (c_id NOT IN (SELECT c_enroll_id FROM `enroll_course` WHERE u_id='".$value2."')) AND approve_status=1 AND c_stream LIKE '%".$_SESSION['MM_stream']."%' ORDER BY avg_rating DESC";
-$sort = mysql_query($query_sort_courses, $conn) or die(mysql_error());
-	$row_sort = mysql_fetch_assoc($sort);
-	$totalRows_sort = mysql_num_rows($sort);
+$query_auto_reco = "SELECT * FROM `course` WHERE (c_id NOT IN (SELECT c_enroll_id FROM `enroll_course` WHERE u_id='".$value2."')) AND approve_status=1 AND c_stream LIKE '%".$_SESSION['MM_stream']."%' ORDER BY avg_rating DESC";
+$auto_reco = mysql_query($query_auto_reco, $conn) or die(mysql_error());
+	$row_auto_reco= mysql_fetch_assoc($auto_reco);
+	$totalRows_auto_reco = mysql_num_rows($auto_reco);
+	
+$query_peer_reco = "SELECT * FROM course_reco JOIN course ON c_reco_id=c_id JOIN user ON from_u_id=user.u_id WHERE to_u_id=".$_SESSION['MM_UserID'];
+$peer_reco = mysql_query($query_peer_reco, $conn) or die(mysql_error());
+	$row_peer_reco= mysql_fetch_assoc($peer_reco);
+	$totalRows_peer_reco = mysql_num_rows($peer_reco);
 ?>
 
 <title><?php echo /*$row_['f_name']*/$_SESSION['MM_f_name'];?></title>
@@ -166,6 +171,18 @@ body,td,th {
 	font-size: 14px;
 }
 </style>
+
+<style>
+	@import "css/LightFace.css";
+</style>
+	<link rel="stylesheet" href="css/lightface.css" />
+	<script src="js/mootools.js"></script>
+	<script src="js/LightFace.js"></script>
+	<script src="js/LightFace.js"></script>
+	<script src="js/LightFace.IFrame.js"></script>
+	<script src="js/LightFace.Image.js"></script>
+	<script src="js/LightFace.Request.js"></script>
+
 <link href="SpryAssets/SpryRating.css" rel="stylesheet" type="text/css">
 <link href="css/auto_rec.css" rel="stylesheet" type="text/css">
 <script type="text/JavaScript" src="js/slimbox2.js"></script>
@@ -307,6 +324,16 @@ function searchresources() {
 		xmlhttp.send();
 	}
 }
+
+//function to show user float
+	function showUser(id,name) {
+	light = new LightFace.IFrame({
+		height:400,
+		width:500,
+		url: 'show_user_float.php?u_id='+id,
+		title: name
+		}).addButton('Close', function() { light.close(); },true).open();
+	}
 </script>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 </head>
@@ -552,47 +579,74 @@ else {
     </div>
     
     
-    <!-- start of auto recommendation tab-->
+    <!-- start of recommendation tab-->
     <div class="TabbedPanelsContent">
-     <!--- browse auto_reco tab --->
+	<!--- browse auto_reco tab --->
+	<div class="autoreco-header">Courses Based on Auto recommendation</div>
+    <?php if($totalRows_auto_reco>0){ //auto_reoc courses appear here dynamically ?>
     <div class="auto_reco-wrapper">
-	    	<div class="auto_reco-content-wrapper">
-			    <div class="auto_reco-content">
-				<div class="middle">
-						<div class="container">
-							<main class="auto_reco-content">
-                            <div id="auto_reco">
-				<div>	
-				<div class="first">
-					<h2 >Courses Based on Auto recommendation</h2>
-					<ul id="auto_recolist">
-					<!---  auto_reoc courses appear here dynamically --->	<?php if($totalRows_sort>0){
+	<div class="auto_reco-content-wrapper">
+	<div class="auto_reco-content">
+	<div class="middle">
+	<div class="container">
+	<main class="auto_reco-content" style="background-color:#FFF;border-radius:5px;">
+	<div id="auto_reco"style="height:250px;position:relative;padding:0px;">
+	<div  style="max-height:100%;overflow:auto;">	
+	<div class="first">
+		<ul id="auto_recolist" style="overflow:auto;">
+		<?php
 		do {
 			echo "<li>";
-			echo '<a href="course_details_stud.php?c_id='.$row_sort['c_id'].'"><img src="'.$row_sort['course_image'].'" alt=""/></a>';
-			echo '<span><a href="course_details_stud.php?c_id='.$row_sort['c_id'].'">'.$row_sort['c_name'].'</a> in '.$row_sort['c_stream'].'</span><br>';
-			echo '<p>'.$row_sort['description'].'</p>';
-			echo '<p class="dates">Duration : '.$row_sort['start_date'].' - '.$row_sort['end_date'].'</p>';
-			echo '<a href="course_details_stud.php?c_id='.$row_sort['c_id'].'" class="details">See Details</a>';
+			echo '<a href="course_details_stud.php?c_id='.$row_auto_reco['c_id'].'"><img src="'.$row_auto_reco['course_image'].'" alt=""/></a>';
+			echo '<span><a href="course_details_stud.php?c_id='.$row_auto_reco['c_id'].'">'.$row_auto_reco['c_name'].'</a> in '.$row_auto_reco['c_stream'].'</span><br>';
+			echo '<p>'.$row_auto_reco['description'].'</p>';
+			echo '<p class="dates">Duration : '.$row_auto_reco['start_date'].' - '.$row_auto_reco['end_date'].'</p>';
+			echo '<a href="course_details_stud.php?c_id='.$row_auto_reco['c_id'].'" class="details">See Details</a>';
 			
-				echo '<a id="'.$row_sort['c_id'].'" class="enroll" onClick="enrollCourse(this); return false;">Enroll Now!</a>';
+				echo '<a id="'.$row_auto_reco['c_id'].'" class="enroll" onClick="enrollCourse(this); return false;">Enroll Now!</a>';
 			echo "</li>";
-		}while($row_sort = mysql_fetch_assoc($sort));
-	} else { 
-		echo "No courses can be recommended at present";}
-?>
-					</ul>
-					<a href="index.php">View all</a>
-				</div></div></div>
-							</main><!-- .content -->
-						</div><!-- .container-->
-
-					
-                        </div>
-                            </div></div></div> <!--- course divs closing --->
+		}while($row_auto_reco = mysql_fetch_assoc($auto_reco));?>
+		</ul>
+	</div></div></div>
+	</main><!-- .content -->
+	</div><!-- .container-->
+	</div></div></div></div> <!--- course divs closing --->
+    <?php } else { 
+		echo "<div style='padding-left:60px;'>No courses can be recommended at present</div>";}
+	?>
     
-    
-    
+    <div class="autoreco-header">Courses Based on Peer recommendation</div>
+    <?php if($totalRows_peer_reco>0){ //auto_reoc courses appear here dynamically ?>
+    <div class="auto_reco-wrapper">
+	<div class="auto_reco-content-wrapper">
+	<div class="auto_reco-content">
+	<div class="middle">
+	<div class="container">
+	<main class="auto_reco-content" style="background-color:#FFF;border-radius:5px;">
+	<div id="auto_reco"style="height:250px;position:relative;padding:0px;">
+	<div  style="max-height:100%;overflow:auto;">	
+	<div class="first">
+		<ul id="auto_recolist" style="overflow:auto;">
+		<?php
+		do {
+			echo "<li>";
+			echo '<a href="course_details_stud.php?c_id='.$row_peer_reco['c_id'].'"><img src="'.$row_peer_reco['course_image'].'" alt=""/></a>';
+			echo '<span><a href="course_details_stud.php?c_id='.$row_peer_reco['c_id'].'">'.$row_peer_reco['c_name'].'</a> in '.$row_peer_reco['c_stream'].'</span><div class="peer-name">Recommended by<a onclick="showUser('.$row_peer_reco['u_id'].',\''.$row_peer_reco['f_name'].' '.$row_peer_reco['l_name'].'\');return false;" class="name">'.$row_peer_reco['f_name'].' '.$row_peer_reco['l_name'].'</a></div><br>';
+			echo '<p>'.$row_peer_reco['description'].'</p>';
+			echo '<p class="dates">Duration : '.$row_peer_reco['start_date'].' - '.$row_peer_reco['end_date'].'</p>';
+			echo '<a href="course_details_stud.php?c_id='.$row_peer_reco['c_id'].'" class="details">See Details</a>';
+			
+				echo '<a id="'.$row_peer_reco['c_id'].'" class="enroll" onClick="enrollCourse(this); return false;">Enroll Now!</a>';
+			echo "</li>";
+		}while($row_peer_reco = mysql_fetch_assoc($peer_reco)); ?>
+		</ul>
+	</div></div></div>
+	</main><!-- .content -->
+	</div><!-- .container-->
+	</div></div></div></div> <!--- course divs closing --->
+    <?php } else { 
+		echo "<div style='padding-left:60px;'>No peer recommendations at present</div>";}
+		?>
     </div>
     <!-- end of auto recommendation tab-->
     
@@ -661,7 +715,7 @@ mysql_free_result($incomplete_courses);
 mysql_free_result($new_resource);
 mysql_free_result($author_details);
 mysql_free_result($completed_courses);
-mysql_free_result($resource);
-mysql_free_result($sort);
+//mysql_free_result($resource);
+mysql_free_result($auto_reco);
 //mysql_free_result($get_user_details);
 ?>
