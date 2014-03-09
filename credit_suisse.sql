@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 08, 2014 at 01:13 PM
+-- Generation Time: Mar 08, 2014 at 10:48 PM
 -- Server version: 5.6.14
 -- PHP Version: 5.5.6
 
@@ -234,6 +234,7 @@ CREATE TABLE IF NOT EXISTS `enroll_course` (
   `u_id` int(10) unsigned NOT NULL,
   `c_enroll_id` int(10) unsigned NOT NULL,
   `completion_stat` tinyint(1) NOT NULL DEFAULT '0',
+  `a_stat` tinyint(1) NOT NULL DEFAULT '0',
   `marks` int(11) NOT NULL DEFAULT '-1',
   `rating` decimal(2,1) DEFAULT '0.0',
   PRIMARY KEY (`u_id`,`c_enroll_id`),
@@ -245,11 +246,11 @@ CREATE TABLE IF NOT EXISTS `enroll_course` (
 -- Dumping data for table `enroll_course`
 --
 
-INSERT INTO `enroll_course` (`u_id`, `c_enroll_id`, `completion_stat`, `marks`, `rating`) VALUES
-(4, 18, 0, -1, '0.0'),
-(5, 18, 0, 30, '1.5'),
-(5, 21, 0, -1, '0.0'),
-(8, 18, 0, -1, '0.0');
+INSERT INTO `enroll_course` (`u_id`, `c_enroll_id`, `completion_stat`, `a_stat`, `marks`, `rating`) VALUES
+(4, 18, 0, 0, -1, '0.0'),
+(5, 18, 0, 1, 30, '1.5'),
+(5, 21, 0, 0, -1, '0.0'),
+(8, 18, 0, 0, -1, '0.0');
 
 -- --------------------------------------------------------
 

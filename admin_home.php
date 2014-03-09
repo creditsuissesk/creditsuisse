@@ -274,7 +274,6 @@ else {
   <tr>
   	 <th class="sort" data-sort="user_id">User Id</th>
     <th class="sort" data-sort="user_name">User Name</th>
-     <th class="sort" data-sort="password">Password</th>
     <th class="sort" data-sort="first_name">First Name</th>
     <th class="sort" data-sort="last_name">Last Name</th>
     <th class="sort" data-sort="contact_no">Contact No</th>
@@ -298,7 +297,6 @@ else {
     <tr>
       <td class="user_id"><?php echo $row_update['u_id']; ?></td>
       <td class="user_name"><?php echo $row_update['u_name']; ?></td>
-      <td class="password"><?php echo $row_update['password']; ?></td>
       <td class="first_name"><?php echo $row_update['f_name']; ?></td>
       <td class="last_name"> <?php echo $row_update['l_name']; ?></td>
       <td class="contact_no"><?php echo $row_update['contact_no']; ?></td>
