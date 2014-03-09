@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 08, 2014 at 10:48 PM
+-- Generation Time: Mar 09, 2014 at 11:03 PM
 -- Server version: 5.6.14
 -- PHP Version: 5.5.6
 
@@ -106,9 +106,9 @@ CREATE TABLE IF NOT EXISTS `course` (
 
 INSERT INTO `course` (`c_id`, `c_name`, `c_stream`, `inserted_on`, `start_date`, `end_date`, `u_id`, `approve_status`, `course_image`, `avg_rating`, `description`) VALUES
 (18, 'Cryptography-Basic', 'Computer Science', '2014-01-03 16:12:36', '2014-01-12', '2016-01-11', 2, 1, 'images/gallery/09-l.jpg', 0, 'This is course on cryptography. In this course we will introduce you to basic ciphers and the basics of cryptography.'),
-(19, 'Networking Protocols', 'Networking', '2014-02-27 16:12:36', '2014-05-01', '2014-10-31', 2, 0, 'images/gallery/07.jpg', 0, ''),
+(19, 'Networking Protocols', 'Networking', '2014-02-27 16:12:36', '2014-05-01', '2014-10-31', 2, 1, 'images/gallery/07.jpg', 0, ''),
 (20, 'Cryptography-Advanced', 'Computer Science', '2014-01-15 16:12:36', '2014-01-22', '2014-07-17', 2, 1, 'images/gallery/05.jpg', 0, 'this is crypto'),
-(21, 'Web Designing', 'Computer Science', '2014-02-14 16:12:36', '2014-01-03', '2014-07-17', 2, 1, 'images/gallery/03.jpg', 0, ''),
+(21, 'Web Designing', 'Computer Science', '2014-02-14 16:12:36', '2014-01-03', '2014-07-17', 13, 1, 'images/gallery/03.jpg', 0, ''),
 (22, 'Database Management', 'Computer Science', '2014-02-14 16:12:36', '2014-01-16', '2014-08-18', 2, 0, 'images/gallery/03.jpg', 0, 'Description!'),
 (23, 'Database-Advanced', 'Computer Science', '2014-02-14 16:12:36', '2014-03-06', '2014-08-05', 2, 0, 'images/gallery/04.jpg', 0, 'This course is based n advance techniques of using database'),
 (27, 'PHP', 'Computer Science', '2014-02-14 16:12:36', '2014-02-20', '2017-02-20', 2, 0, 'images/course_picture/PHP.jpg', 0, 'this is basic course'),
@@ -214,7 +214,7 @@ CREATE TABLE IF NOT EXISTS `discussion_category` (
   `category_id` int(11) NOT NULL AUTO_INCREMENT,
   `category_name` text NOT NULL,
   PRIMARY KEY (`category_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `discussion_category`
@@ -222,7 +222,8 @@ CREATE TABLE IF NOT EXISTS `discussion_category` (
 
 INSERT INTO `discussion_category` (`category_id`, `category_name`) VALUES
 (1, 'General'),
-(2, 'Doubts');
+(2, 'Doubts'),
+(3, 'Networking Protocols');
 
 -- --------------------------------------------------------
 
@@ -247,7 +248,8 @@ CREATE TABLE IF NOT EXISTS `enroll_course` (
 --
 
 INSERT INTO `enroll_course` (`u_id`, `c_enroll_id`, `completion_stat`, `a_stat`, `marks`, `rating`) VALUES
-(4, 18, 0, 0, -1, '0.0'),
+(1, 20, 0, 0, -1, '0.0'),
+(4, 18, 0, 2, -1, '0.0'),
 (5, 18, 0, 1, 30, '1.5'),
 (5, 21, 0, 0, -1, '0.0'),
 (8, 18, 0, 0, -1, '0.0');
@@ -340,24 +342,25 @@ CREATE TABLE IF NOT EXISTS `user` (
   `created_comments` int(11) NOT NULL DEFAULT '0',
   `count_discussions` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`u_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=15 ;
 
 --
 -- Dumping data for table `user`
 --
 
 INSERT INTO `user` (`u_id`, `u_name`, `password`, `f_name`, `l_name`, `contact_no`, `dob`, `institute`, `stream`, `degree`, `role`, `approve_id`, `photo`, `about`, `show_email`, `gender`, `user_score`, `count_bookmarks`, `created_comments`, `count_discussions`) VALUES
-(1, 'xyz@gmail.com', '65e84be33532fb784c48129675f9eff3a682b27168c0ea744b2cf58ee02337c5', 'Abdul', 'Shaikh', 2147483647, '1993-03-01', 'SPIT', 'Computers', 'B.E.', 'student', 1, 'images/profiles/01.jpg', '', 0, 0, 1, 0, 1, 0),
-(2, 'abc@tech.org', '65e84be33532fb784c48129675f9eff3a682b27168c0ea744b2cf58ee02337c5', 'Abhishek', 'Chaturvedi', 26845172, '1979-04-02', 'VJTI', 'Information Technolo', 'PHD in cryptography and Security', 'author', 1, 'images/profiles/02.jpg', '', 0, 0, 4, 0, 0, 0),
-(3, 'dalvishaarad@gmail.c', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', 'Shaarad', 'Dalvi', 2147483647, '1992-04-01', 'vjti', 'comps', 'B.E.', 'student', 1, 'images/profiles/03.jpg', '', 0, 0, 2, 0, 0, 0),
-(4, 'shaaraddalvi@outlook.com', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', 'Shaarad', 'Inamdar', 25406266, '1993-11-01', 'TSEC', 'Electronics', 'B.E.', 'student', 1, 'images/profiles/04.jpg', '', 0, 0, 0, 0, 0, 0),
-(5, 'sh@yahoo.co.in', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', 'sahil', 'shah', 25406858, '1994-01-18', 'vjti', 'comp', 'B.E.', 'student', 1, 'images/profiles/05.jpg', '', 0, 0, 6, 0, 0, 0),
-(6, 'root', '5012f5182061c46e57859cf617128c6f70eddfba4db27772bdede5a039fa7085', 'root', 'root', 2147483647, '1964-08-25', 'root', 'root', 'B.E.', 'admin', 1, 'images/profiles/06.jpg', '', 0, 0, 0, 0, 0, 0),
-(8, 'kunalshah@gmail.com', 'bd94dcda26fccb4e68d6a31f9b5aac0b571ae266d822620e901ef7ebe3a11d4f', 'Kunal', 'Shah', 2147483647, '1993-07-17', 'VJTI', 'computers', 'B.E.', 'student', 1, 'images/profiles/08.jpg', '', 0, 0, -1, 0, 0, 0),
-(9, 'nw@gmail.com', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', 'Nachiket', 'wagle', 982680350, '1993-04-07', 'vjti', 'Civil', 'B.E.', 'student', 1, '', '', 0, 0, 0, 0, 0, 0),
-(10, 'new@gmail.com', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', 'Niket', 'wagle', 21474836, '1991-12-09', 'vjti', 'mechanical', 'B.E.', 'student', 0, '', '', 0, 0, 0, 0, 0, 0),
-(12, 'photouser@gmail.com', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', 'Palak', 'Kulkarni', 987654321, '1995-01-06', 'SPCE', 'Civil', 'B.E.', 'student', 1, 'images/profiles/lamborghini-cars-logo-emblem.jpg', '', 0, 0, -1, 0, 1, 1),
-(13, 'cm@gmail.com', '65e84be33532fb784c48129675f9eff3a682b27168c0ea744b2cf58ee02337c5', 'Chandresh', 'Mehta', 28964512, '1989-02-02', 'IIT-B', 'Computer Science', 'PHD in algorithims', 'cm', 1, 'images/profiles/cm@gmail.com', '', 0, 0, 0, 0, 0, 0);
+(1, 'xyz@gmail.com', '65e84be33532fb784c48129675f9eff3a682b27168c0ea744b2cf58ee02337c5', 'Abdul', 'Shaikh', 2147483647, '1993-03-01', 'SPIT', 'Computers', 'B.E.', 'student', 1, 'images/profiles/1.jpg', '', 0, 0, 1, 0, 1, 0),
+(2, 'abc@tech.org', '65e84be33532fb784c48129675f9eff3a682b27168c0ea744b2cf58ee02337c5', 'Abhishek', 'Chaturvedi', 26845172, '1979-04-02', 'VJTI', 'Information Technolo', 'PHD in cryptography and Security', 'author', 1, 'images/profiles/2.jpg', '', 0, 0, 4, 0, 0, 0),
+(3, 'dalvishaarad@gmail.c', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', 'Shaarad', 'Dalvi', 2147483647, '1992-04-01', 'vjti', 'comps', 'B.E.', 'student', 1, 'images/profiles/3.jpg', '', 0, 0, 2, 0, 0, 0),
+(4, 'shaaraddalvi@outlook.com', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', 'Shaarad', 'Inamdar', 25406266, '1993-11-01', 'TSEC', 'Electronics', 'B.E.', 'student', 1, 'images/profiles/4.jpg', '', 0, 0, 0, 0, 0, 0),
+(5, 'sh@yahoo.co.in', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', 'sahil', 'shah', 25406858, '1994-01-18', 'vjti', 'comp', 'B.E.', 'student', 1, 'images/profiles/5.jpg', 'Hi, I''m Sahil Shah', 0, 0, 6, 0, 0, 0),
+(6, 'root', '5012f5182061c46e57859cf617128c6f70eddfba4db27772bdede5a039fa7085', 'root', 'root', 2147483647, '1964-08-25', 'root', 'root', 'B.E.', 'admin', 1, 'images/profiles/6.jpg', '', 0, 0, 0, 0, 0, 0),
+(8, 'kunalshah@gmail.com', 'bd94dcda26fccb4e68d6a31f9b5aac0b571ae266d822620e901ef7ebe3a11d4f', 'Kunal', 'Shah', 2147483647, '1993-07-17', 'VJTI', 'computers', 'B.E.', 'student', 1, 'images/profiles/8.jpg', '', 0, 0, -1, 0, 0, 0),
+(9, 'nw@gmail.com', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', 'Nachiket', 'wagle', 982680350, '1993-04-07', 'vjti', 'Civil', 'B.E.', 'student', 1, 'images/profiles/9.jpg', '', 0, 0, 0, 0, 0, 0),
+(10, 'new@gmail.com', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', 'Niket', 'wagle', 21474836, '1991-12-09', 'vjti', 'mechanical', 'B.E.', 'student', 0, 'images/profiles/10.jpg', '', 0, 0, 0, 0, 0, 0),
+(12, 'photouser@gmail.com', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', 'Palak', 'Kulkarni', 987654321, '1995-01-06', 'SPCE', 'Civil', 'B.E.', 'student', 1, 'images/profiles/12.jpg', '', 0, 0, -1, 0, 1, 1),
+(13, 'cm@gmail.com', '65e84be33532fb784c48129675f9eff3a682b27168c0ea744b2cf58ee02337c5', 'Chandresh', 'Mehta', 28964512, '1989-02-02', 'IIT-B', 'Computer Science', 'PHD in algorithims', 'cm', 1, 'images/profiles/13.jpg', '', 0, 0, 0, 0, 0, 0),
+(14, 'test@gmail.com', 'qwerty', 'Tanmay', 'Gandhi', 2147483647, '2013-03-05', 'IIT_B', 'Computer Science', 'B.Tech', 'cm', 1, 'images/profiles/14.jpg', 'HI', 0, 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 

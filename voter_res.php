@@ -106,7 +106,7 @@ if (isset($_GET['r_id']) &&  isset($_GET['rate_value'])){
 			$update_userres=mysql_query($query_update_userres, $conn) or die(mysql_error());
 			
 			mysql_select_db($database_conn, $conn);
-			$query_set_avg_rating=sprintf("update `resource` set `avg_rating`= (select avg(rating) from `user_resource` where user_resource_id=%s )where r_id=%s",GetSQLValueString($_GET['r_id'], "int"),GetSQLValueString($_GET['r_id'], "int"));
+			$query_set_avg_rating=sprintf("update `resource` set `avg_rating`= (select avg(rating) from `user_resource` where user_resource_id=%s )where r_id=%s AND rating>0",GetSQLValueString($_GET['r_id'], "int"),GetSQLValueString($_GET['r_id'], "int"));
 		$set_avg_rating = mysql_query($query_set_avg_rating, $conn) or die(mysql_error());
 		
 			//update the score of user to whom vote was given
