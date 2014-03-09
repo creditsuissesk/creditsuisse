@@ -91,7 +91,7 @@
 		  window.onload = function(){
 			  new JsDatePick({
 				  useMode:2,
-				  target:"dob",
+				  target:"Date of Birth",
 				  dateFormat:"%Y-%m-%d"
 				  /*selectedDate:{				This is an example of what the full configuration offers.
 					  day:5,						For full documentation about these settings please see the full version of the code.
@@ -113,7 +113,7 @@
       
       <div class="freshdesignweb-top" >
       <div class="span.right">
-      <a href="index.php#home" ><img src="images/home_btn.png" name="h_btn" id="h_btn" onclick="index.php#home" /></a>
+      <a href="index.php#home" ><img src="images/home_btn.png" name="h_btn" id="h_btn" onClick="index.php#home" /></a>
 	  </div>
       </div>
 	  <div class="container">
@@ -129,41 +129,41 @@
 	   <p class="contact">
 		<label for="pass">Password* : </label></p>
 		  <p><span id="sprypassword1"> 
-		<input type="password" name="pass" id="pass" required/><br> 
+		<input type="password" name="password" id="password" required="required"/><br> 
 		<span class="passwordRequiredMsg">     A value is required.</span><span class="passwordInvalidStrengthMsg">     The password doesn't meet the specified strength.</span></span></p>
         </br>
 		<p class="contact">
-		  <label for="confirm_pass">Confirm Password* :</label></p>
+		  <label for="confirm_password">Confirm Password* :</label></p>
 		 <p><span id="spryconfirm2"> 
-		  <input type="password" name="confirm_pass" id="confirm_pass" />
+		  <input type="password" name="confirm_password" id="confirm_password" required="required"/>
           <br>
 	  <span class="confirmRequiredMsg">     A value is required.</span><span class="confirmInvalidMsg">     The values don't match.</span></span></p></br>
 		<p class="contact">
-		  <label for="f_name">First Name* : </label></p>
-		  <input type="text" name="f_name" id="f_name" placeholder="First Name"/>
+		  <label for="First Name">First Name* : </label></p>
+		  <input type="text" required="required" name="First Name" id="First Name" placeholder="First Name"/>
 		  
 		<p class="contact">
-		  <label for="l_name">Last Name* : </label></p>
-		  <input type="text" name="l_name" id="l_name" placeholder="Last Name"/>
+		  <label for="Last Name">Last Name* : </label></p>
+		  <input type="text" required="required" name="Last Name" id="Last Name" placeholder="Last Name"/>
 	   <p class="contact">
-		  <label for="dob">Date of Birth* : </label></p>
-		  <input name="dob" type="text" id="dob" readonly placeholder="Date of Birth"/>
+		  <label for="Date of Birth">Date of Birth* : </label></p>
+		  <input name="Date of Birth" required="required" type="text" id="Date of Birth" readonly placeholder="Date of Birth"/>
 				  
 	   <p class="contact">
-		  <label for="contact">Contact No.* : </label></p>
-		  <input type="text" name="contact" id="contact" placeholder="Contact No. of 10 Digits"/>
+		  <label for="Contact Number">Contact No.* : </label></p>
+		  <input type="text" name="Contact Number" required="required" id="Contact Number" placeholder="Contact No. of 10 Digits"/>
 	   <p class="contact">
-		  <label for="inst_name">Institute Name* : </label></p>
-		  <input type="text" name="inst_name" id="inst_name" placeholder="Institute of Specialization"/>
+		  <label for="Institute Name">Institute Name* : </label></p>
+		  <input type="text" name="Institute Name" id="Institute Name" required="required" placeholder="Institute of Specialization"/>
 		<p class="contact">
-		  <label for="stream">Stream* : </label></p>
-		  <input type="text" name="stream" id="stream" placeholder="Field of Specialization"/>
+		  <label for="Stream">Stream* : </label></p>
+		  <input type="text" name="Stream" id="Stream" required="required" placeholder="Field of Specialization"/>
           <p class="contact">
-		  <label for="degree">Qualification* : </label></p>
-		  <input type="text" name="degree" id="degree" placeholder="Enter the Qualification of study eg. B.Tech"/>
+		  <label for="Qualification">Qualification* : </label></p>
+		  <input type="text" required="required" name="Qualification" id="Qualification" placeholder="Enter the Qualification of study eg. B.Tech"/>
 		  <p class="contact">
-		  <label for="about">About* : </label></p>
-		  <textarea name="about" id="about" placeholder="About Yourself" rows="5" cols="45"></textarea><br/>
+		  <label for="About">About* : </label></p>
+		  <textarea name="About" required="required" id="About" placeholder="About Yourself" rows="5" cols="45"></textarea><br/>
           <p><label for="role">I am...* : </label></p>
           <p>
 		   <select class="select-style gender" name="role" id="role">
@@ -172,8 +172,8 @@
 				  <option value="cm">Content Manager</option>
 				  </select><br /><br />
 	  </p>  
-      <p> <label for="file">Profile Pciture:</label>
-<input type="file" name="file" id="file">
+      <p> <label for="File">Profile Pciture:</label>
+<input type="file" name="File" required="required" id="File">
 		</p>
         <?php
      require_once('recaptchalib.php');
@@ -181,7 +181,7 @@
      echo recaptcha_get_html($publickey);
    ?>
 	<br /><br />
-      <p ><input class="buttom" name="submit" id="submit" value="Sign me up!" type="submit" onClick="MM_validateForm('pass','','R','f_name','','R','l_name','','R','contact','','RisNum','inst_name','','R','stream','','R','degree','','R','about','','R');return document.MM_returnValue" 
+      <p ><input class="buttom" name="submit" id="submit" value="Sign me up!" type="submit" onClick="MM_validateForm('password','','R','First Name','','R','Last Name','','R','Contact Number','','RisNum','Institute Name','','R','Stream','','R','Qualification','','R','About','','R','File','','R');return document.MM_returnValue" 
 	action="reg_data.php"	  />
 		  <input class="buttom" type="reset" name="reset" id="reset" value="Reset" />
 		</p>
@@ -191,7 +191,7 @@
       </div>
 	  <script type="text/javascript">
 	  var sprypassword1 = new Spry.Widget.ValidationPassword("sprypassword1", {minAlphaChars:6, validateOn:["change"]});
-	  var spryconfirm2 = new Spry.Widget.ValidationConfirm("spryconfirm2", "pass", {validateOn:["change"]});
+	  var spryconfirm2 = new Spry.Widget.ValidationConfirm("spryconfirm2", "password", {validateOn:["change"]});
 	  </script>
 	  </body>
 	  </html>
