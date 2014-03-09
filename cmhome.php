@@ -92,7 +92,7 @@ function isAuthorized($strUsers, $strGroups, $UserName, $UserGroup) {
   return $isValid; 
 }
 
-$MM_restrictGoTo = "userhome.php";
+$MM_restrictGoTo = "index.php";
 if (!((isset($_SESSION['MM_Username'])) && (isAuthorized("",$MM_authorizedUsers, $_SESSION['MM_Username'], $_SESSION['MM_UserGroup'])))) {   
   $MM_qsChar = "?";
   $MM_referrer = $_SERVER['PHP_SELF'];
@@ -228,7 +228,13 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
 
   mysql_select_db($database_conn, $conn);
   $Result1 = mysql_query($updateSQL, $conn) or die(mysql_error());
-
+  if($_POST['app_id']==1)
+  	{ 
+		$updateSQL=sprintf("INSERT INTO discussion_category (category_name) VALUES (%s)",
+		GetSQLValueString($_POST['update_n'], "text"));
+		mysql_select_db($database_conn, $conn);
+  		$Result1 = mysql_query($updateSQL, $conn) or die(mysql_error());
+	}
   $updateGoTo = "cmhome.php";
   if (isset($_SERVER['QUERY_STRING'])) {
     $updateGoTo .= (strpos($updateGoTo, '?')) ? "&" : "?";
@@ -472,6 +478,7 @@ var currList = new List('curr_courses', currOptions);
       <input name="update" id="update" value="update" type="submit" ></input> 
         <input type="hidden" name="MM_update" value="form1" />
         <input type="hidden" id="update_q" name="update_q" value="<?php echo $row_pending_courses['c_id']?>" />
+        <input type="hidden" id="update_n" name="update_n" value="<?php echo $row_pending_courses['c_name']?>" />
         </td></form>
           </tr>
     <?php } while ($row_pending_courses = mysql_fetch_assoc($pending_courses)); ?>
