@@ -45,7 +45,7 @@ if (!$resp->is_valid) {
 ?>
 
 <?php 
-if($_FILES["file"]["size"]==0 )
+if($_FILES["File"]["size"]==0 )
 {
 		echo '<script type="text/javascript">alert("Upload profile image to register"); window.location="registration.php"; </script>';
 
@@ -53,34 +53,33 @@ if($_FILES["file"]["size"]==0 )
 else
 {
 $allowedExts = array("gif", "jpeg", "jpg", "png");
-$temp = explode(".", $_FILES["file"]["name"]);
+$temp = explode(".", $_FILES["File"]["name"]);
 $extension = end($temp);
-if ((($_FILES["file"]["type"] == "image/gif")
-|| ($_FILES["file"]["type"] == "image/jpeg")
-|| ($_FILES["file"]["type"] == "image/jpg")
-|| ($_FILES["file"]["type"] == "image/pjpeg")
-|| ($_FILES["file"]["type"] == "image/x-png")
-|| ($_FILES["file"]["type"] == "image/png"))
-&& ($_FILES["file"]["size"] < 50000)
+if ((($_FILES["File"]["type"] == "image/gif")
+|| ($_FILES["File"]["type"] == "image/jpeg")
+|| ($_FILES["File"]["type"] == "image/jpg")
+|| ($_FILES["File"]["type"] == "image/pjpeg")
+|| ($_FILES["File"]["type"] == "image/x-png")
+|| ($_FILES["File"]["type"] == "image/png"))
+&& ($_FILES["File"]["size"] < 50000)
 /*&& in_array($extension, $allowedExts)*/
 )
   {
-  if ($_FILES["file"]["error"] > 0)
+  if ($_FILES["File"]["error"] > 0)
     {
-     echo '<script type="text/javascript">alert("File Error: '. $_FILES["file"]["error"] . ' ");window.location="http://localhost/dreamweaver/registration.php";</script>';
+     echo '<script type="text/javascript">alert("File Error: '. $_FILES["File"]["error"] . ' ");window.location="registration.php";</script>';
     }
   else
     {
-   /* echo "Upload: " . $_FILES["file"]["name"] . "<br>";
-    echo "Type: " . $_FILES["file"]["type"] . "<br>";
-    echo "Size: " . ($_FILES["file"]["size"] / 1024) . " kB<br>";
-    echo "Temp file: " . $_FILES["file"]["tmp_name"] . "<br>";
+   /* echo "Upload: " . $_FILES["File"]["name"] . "<br>";
+    echo "Type: " . $_FILES["File"]["type"] . "<br>";
+    echo "Size: " . ($_FILES["File"]["size"] / 1024) . " kB<br>";
+    echo "Temp File: " . $_FILES["File"]["tmp_name"] . "<br>";
 	*/
 	$max_size=50000;
 	$max_size_mb=(50000/1024)/1024;
-	$filesize=$_FILES["file"]["size"]/1024/1024;
-	$filename=$_POST['u_name'];
-	$upload_add="images/profiles/" . $filename;
+	$filesize=$_FILES["File"]["size"]/1024/1024;
+	$filename=".".$extension;
     if (file_exists("images/profiles/" . $filename))
       {
       echo  '<script type="text/javascript">alert("Username already exists."); window.location="index.php";</script>';
@@ -88,24 +87,46 @@ if ((($_FILES["file"]["type"] == "image/gif")
     else
       {
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form")) {
-		$insertSQL = sprintf("INSERT INTO `user` (u_name, password, f_name, l_name, contact_no, dob, institute, stream,role,photo,degree,about) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s,%s,%s,%s)",
+		$insertSQL = sprintf("INSERT INTO `user` (u_name, password, f_name, l_name, contact_no, dob, institute, stream,role,degree,about) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s,%s,%s)",
 							 GetSQLValueString($_POST['u_name'], "text"),
-							 GetSQLValueString($_POST['pass'], "text"),
-							 GetSQLValueString($_POST['f_name'], "text"),
-							 GetSQLValueString($_POST['l_name'], "text"),
-							 GetSQLValueString($_POST['contact'], "int"),
-							 GetSQLValueString($_POST['dob'], "date"),
-							 GetSQLValueString($_POST['inst_name'], "text"),
-							 GetSQLValueString($_POST['stream'], "text"),
+							 GetSQLValueString($_POST['password'], "text"),
+							 GetSQLValueString($_POST['First_Name'], "text"),
+							 GetSQLValueString($_POST['Last_Name'], "text"),
+							 GetSQLValueString($_POST['Contact_Number'], "int"),
+							 GetSQLValueString($_POST['Date_of_Birth'], "date"),
+							 GetSQLValueString($_POST['Institute_Name'], "text"),
+							 GetSQLValueString($_POST['Stream'], "text"),
 							 GetSQLValueString($_POST['role'], "text"),
-							 GetSQLValueString( $upload_add,"text"),
-							 GetSQLValueString($_POST['degree'], "text"),
-							 GetSQLValueString($_POST['about'], "text"));
+							 
+							 GetSQLValueString($_POST['Qualification'], "text"),
+							 GetSQLValueString($_POST['About'], "text"));
 	  
 		mysql_select_db($database_conn, $conn);
 		$Result1 = mysql_query($insertSQL, $conn) or die(mysql_error());
-		 move_uploaded_file($_FILES["file"]["tmp_name"],
+	  $query_select=sprintf("SELECT u_id FROM user WHERE u_name=%s",GetSQLValueString($_POST['u_name'], "text"));
+	  $select = mysql_query($query_select, $conn) or die(mysql_error());
+$row_select = mysql_fetch_assoc($select);
+$totalRows_all_students = mysql_num_rows($select);
+if($totalRows_all_students==1)
+{
+	$filename=$row_select['u_id'].$filename;
+	$upload_add="images/profiles/" . $filename;
+	 $updateSQL = sprintf("UPDATE `user` SET photo=%s WHERE u_id=%s ",
+                       GetSQLValueString( $upload_add,"text"),
+                       GetSQLValueString($row_select['u_id'], "int"));
+
+  mysql_select_db($database_conn, $conn);
+  $Result1 = mysql_query($updateSQL, $conn) or die(mysql_error());
+	move_uploaded_file($_FILES["File"]["tmp_name"],
       $upload_add);
+}
+else
+{
+	$updateSQL = sprintf("DELETE `user` WHERE u_id=%s ",GetSQLValueString($row_select['u_id'], "int"));
+  mysql_select_db($database_conn, $conn);
+  $Result1 = mysql_query($updateSQL, $conn) or die(mysql_error());
+  echo  '<script type="text/javascript">alert("Username already exists."); window.location="index.php";</script>';
+}
 	   	echo '<script type="text/javascript">alert("Registered Successfully. Waiting for the approval by Administrator"); window.location="index.php"; </script>';
 	  }
 	  }
@@ -113,15 +134,15 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form")) {
 	    }
 else
   {
-	  if (!(($_FILES["file"]["type"] == "image/gif")
-|| ($_FILES["file"]["type"] == "image/jpeg")
-|| ($_FILES["file"]["type"] == "image/jpg")
-|| ($_FILES["file"]["type"] == "image/pjpeg")
-|| ($_FILES["file"]["type"] == "image/x-png")
-|| ($_FILES["file"]["type"] == "image/png")))
+	  if (!(($_FILES["File"]["type"] == "image/gif")
+|| ($_FILES["File"]["type"] == "image/jpeg")
+|| ($_FILES["File"]["type"] == "image/jpg")
+|| ($_FILES["File"]["type"] == "image/pjpeg")
+|| ($_FILES["File"]["type"] == "image/x-png")
+|| ($_FILES["File"]["type"] == "image/png")))
   echo '<script type="text/javascript">alert("Invalid File Type. Please upload valid file.");  window.location="registration.php";</script>';
   else 
-	   if(($_FILES["file"]["size"] > $max_size))
+	   if(($_FILES["File"]["size"] > $max_size))
   echo '<script type="text/javascript">alert("File Size is '.$filesize.' mb which GREATER than the allowed size. Allowed Size is '.$max_size_mb.' mb.");
   window.location="registration.php";</script>';
   else

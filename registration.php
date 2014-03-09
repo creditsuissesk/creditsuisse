@@ -91,7 +91,7 @@
 		  window.onload = function(){
 			  new JsDatePick({
 				  useMode:2,
-				  target:"Date of Birth",
+				  target:"Date_of_Birth",
 				  dateFormat:"%Y-%m-%d"
 				  /*selectedDate:{				This is an example of what the full configuration offers.
 					  day:5,						For full documentation about these settings please see the full version of the code.
@@ -129,41 +129,41 @@
 	   <p class="contact">
 		<label for="pass">Password* : </label></p>
 		  <p><span id="sprypassword1"> 
-		<input type="password" name="password" id="password" required="required"/><br> 
+		<input type="password" name="password" id="password" required/><br> 
 		<span class="passwordRequiredMsg">     A value is required.</span><span class="passwordInvalidStrengthMsg">     The password doesn't meet the specified strength.</span></span></p>
         </br>
 		<p class="contact">
 		  <label for="confirm_password">Confirm Password* :</label></p>
 		 <p><span id="spryconfirm2"> 
-		  <input type="password" name="confirm_password" id="confirm_password" required="required"/>
+		  <input type="password" name="confirm_password" id="confirm_password" required/>
           <br>
 	  <span class="confirmRequiredMsg">     A value is required.</span><span class="confirmInvalidMsg">     The values don't match.</span></span></p></br>
 		<p class="contact">
-		  <label for="First Name">First Name* : </label></p>
-		  <input type="text" required="required" name="First Name" id="First Name" placeholder="First Name"/>
+		  <label for="First_Name">First Name* : </label></p>
+		  <input type="text" required name="First_Name" id="First_Name" placeholder="First Name"/>
 		  
 		<p class="contact">
-		  <label for="Last Name">Last Name* : </label></p>
-		  <input type="text" required="required" name="Last Name" id="Last Name" placeholder="Last Name"/>
+		  <label for="Last_Name">Last Name* : </label></p>
+		  <input type="text" required name="Last_Name" id="Last_Name" placeholder="Last Name"/>
 	   <p class="contact">
-		  <label for="Date of Birth">Date of Birth* : </label></p>
-		  <input name="Date of Birth" required="required" type="text" id="Date of Birth" readonly placeholder="Date of Birth"/>
+		  <label for="Date_of_Birth">Date_of_Birth* : </label></p>
+		  <input name="Date_of_Birth" required type="text" id="Date_of_Birth" readonly placeholder="Date_of_Birth"/>
 				  
 	   <p class="contact">
-		  <label for="Contact Number">Contact No.* : </label></p>
-		  <input type="text" name="Contact Number" required="required" id="Contact Number" placeholder="Contact No. of 10 Digits"/>
+		  <label for="Contact_Number">Contact No.* : </label></p>
+		  <input type="text" name="Contact_Number" required id="Contact_Number" placeholder="Contact No. of 10 Digits"/>
 	   <p class="contact">
-		  <label for="Institute Name">Institute Name* : </label></p>
-		  <input type="text" name="Institute Name" id="Institute Name" required="required" placeholder="Institute of Specialization"/>
+		  <label for="Institute_Name">Institute Name* : </label></p>
+		  <input type="text" name="Institute_Name" id="Institute_Name" required placeholder="Institute of Specialization"/>
 		<p class="contact">
 		  <label for="Stream">Stream* : </label></p>
-		  <input type="text" name="Stream" id="Stream" required="required" placeholder="Field of Specialization"/>
+		  <input type="text" name="Stream" id="Stream" required placeholder="Field of Specialization"/>
           <p class="contact">
 		  <label for="Qualification">Qualification* : </label></p>
-		  <input type="text" required="required" name="Qualification" id="Qualification" placeholder="Enter the Qualification of study eg. B.Tech"/>
+		  <input type="text" required name="Qualification" id="Qualification" placeholder="Enter the Qualification of study eg. B.Tech"/>
 		  <p class="contact">
 		  <label for="About">About* : </label></p>
-		  <textarea name="About" required="required" id="About" placeholder="About Yourself" rows="5" cols="45"></textarea><br/>
+		  <textarea name="About" required id="About" placeholder="About Yourself" rows="5" cols="45"></textarea><br/>
           <p><label for="role">I am...* : </label></p>
           <p>
 		   <select class="select-style gender" name="role" id="role">
@@ -173,7 +173,7 @@
 				  </select><br /><br />
 	  </p>  
       <p> <label for="File">Profile Pciture:</label>
-<input type="file" name="File" required="required" id="File">
+<input type="file" name="File" required id="File">
 		</p>
         <?php
      require_once('recaptchalib.php');
@@ -181,7 +181,7 @@
      echo recaptcha_get_html($publickey);
    ?>
 	<br /><br />
-      <p ><input class="buttom" name="submit" id="submit" value="Sign me up!" type="submit" onClick="MM_validateForm('password','','R','First Name','','R','Last Name','','R','Contact Number','','RisNum','Institute Name','','R','Stream','','R','Qualification','','R','About','','R','File','','R');return document.MM_returnValue" 
+      <p ><input class="buttom" name="submit" id="submit" value="Sign me up!" type="submit" onClick="MM_validateForm('password','','R','First_Name','','R','Last_Name','','R','Contact_Number','','RisNum','Institute_Name','','R','Stream','','R','Qualification','','R','About','','R','File','','R');return document.MM_returnValue" 
 	action="reg_data.php"	  />
 		  <input class="buttom" type="reset" name="reset" id="reset" value="Reset" />
 		</p>

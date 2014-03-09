@@ -767,16 +767,24 @@ else {
 	<div id="wrapper" class="clearfix">
 		<div id="twocols"> 
 			<div id="rightcol"><b>Name : </b><i><?php echo $row_user_details['f_name']." ".$row_user_details['l_name'];?></i></p>
-    <form id="profileform">
-	<p><b>Degree of specialization : </b><input type="text" value="<?php echo $row_user_details['degree'];?>"/></p>
-	<p><b>Institute of Specialization : </b><input type="text" value="<?php echo $row_user_details['institute'];?>" /></p>
-	<p><b>Contact number : </b><input type="text" value="<?php echo $row_user_details['contact_no'];?>"/></p>
-	<p><b> About myself:</b></p><textarea rows="10" cols="75"><?php echo $row_user_details['about'];?></textarea><br><br>
-    <input name="submit" value="Update Profile" id="submit" class="buttom" type="submit">
+    <form id="profileform" action="profile_data.php" method="post">
+	<p><b>Degree of specialization : </b><input name="degree" type="text" value="<?php echo $row_user_details['degree'];?>"/></p>
+	<p><b>Institute of Specialization : </b><input type="text" name="inst_name" value="<?php echo $row_user_details['institute'];?>" /></p>
+	<p><b>Contact number : </b><input type="text" name="contact" value="<?php echo $row_user_details['contact_no'];?>"/></p>
+	<p><b> About myself:</b></p><textarea name="about" rows="10" cols="75"><?php echo $row_user_details['about'];?></textarea><br><br>
+    <input type="hidden" name="u_id" value="<?php echo $_SESSION['MM_UserID'];?>" />
+    <input name="submit" value="Update Profile" id="submit" class="buttom" type="submit" action="profile_data.php">
+    <input type="hidden" name="MM_insert" value="profileform" />
     </form>
     <br>
-    <form id="dpform">
-    <input name="submit" value="Update Profile Picture"  class="buttom" type="submit">
+    <form id="dpform" action="profile_data.php" enctype="multipart/form-data" method="post">
+   <p> <label for="File"><b>Profile Pciture:</b></label><br />
+	   <input type="file" name="File" id="File">
+		</p>
+   
+    <input type="hidden" name="u_id" value="<?php echo $_SESSION['MM_UserID'];?>" />
+    <input name="submit" value="Update Profile Picture"  class="buttom" type="submit" action="profile_data.php">
+    <input type="hidden" name="MM_update" value="dpform" />
     </form>
     </div>
 	</div> 
