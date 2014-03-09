@@ -672,7 +672,7 @@ var prList = new List('pending_resources', prOptions);
     <th class="sort" data-sort="first_name">First Name</th>
     <th class="sort" data-sort="last_name">Last Name</th>
     <th class="sort" data-sort="stream">Student Stream</th>
-    <th class="sort" data-sort="course">Course Name</th>
+    <th class="sort" data-sort="course_m">Course Name</th>
     <th class="sort" data-sort="score">Reputation</th>
     <th>Final Status</th>
     <th>    </th>
@@ -690,7 +690,7 @@ var prList = new List('pending_resources', prOptions);
       <td class="first_name"><?php echo $row_update['f_name']; ?></td>
       <td class="last_name"> <?php echo $row_update['l_name']; ?></td>
       <td class="stream"><?php echo $row_update['s_stream']; ?></td>
-      <td class="course"><a href="course_detail.php?c_id=<?php echo $row_update['c_id']; ?>"><?php echo $row_update['c_name']; ?></a></td>
+      <td class="course_m"><a href="course_detail.php?c_id=<?php echo $row_update['c_id']; ?>"><?php echo $row_update['c_name']; ?></a></td>
       <td class="score"><?php echo $row_update['user_score']; ?></td>
 
       
@@ -718,7 +718,7 @@ var prList = new List('pending_resources', prOptions);
 	} ?>
     <script>
 var currOptions = {
-  valueNames: [ 'first_name','last_name','stream','course','score']
+  valueNames: [ 'first_name','last_name','stream','course_m','score']
 };
 
 // Init list
@@ -753,7 +753,7 @@ var currList = new List('new_students', currOptions);
       <td class="ex_f_name"><?php echo $row_all_students['f_name']; ?></td>
       <td class="ex_l_name"><?php echo $row_all_students['l_name']; ?></td>
       <td class="ex_stream"><?php echo $row_all_students['s_stream']; ?></td>
-      <td class="ex_course"><?php echo $row_all_students['c_name']; ?></td>
+      <td class="ex_course"><a href="course_detail.php?c_id=<?php echo $row_all_students['c_id']; ?>"><?php echo $row_all_students['c_name']; ?></a></td>
       <td class="ex_score"><?php echo $row_all_students['user_score']; ?></td>
       <td class="ex_status"><?php if($row_all_students['a_stat']==1) echo "Approved"; else echo "Rejected"; ?></td>
 <form  id="form9" name="form9" method="POST" action="<?php echo $editFormAction; ?>">      

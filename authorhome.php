@@ -148,8 +148,71 @@ $all_resources = mysql_query($query_all_resources, $conn) or die(mysql_error());
 $row_all_resources = mysql_fetch_assoc($all_resources);
 $totalRows_all_resources = mysql_num_rows($all_resources);
 
+mysql_select_db($database_conn, $conn);
+$query_update = sprintf("SELECT u,c_id,c_name,f_name,l_name,user_score,a_stat,s_stream FROM( select distinct *,user.stream as s_stream,user.u_id as u from `user` natural join `enroll_course`)as a JOIN `course` as c ON a.c_enroll_id=c.c_id WHERE a.a_stat=0 AND c.u_id=%s ORDER BY a.u_id ASC ",GetSQLValueString($_SESSION['MM_UserID'], "int"));
+$update = mysql_query($query_update, $conn) or die(mysql_error());
+$row_update = mysql_fetch_assoc($update);
+$totalRows_update = mysql_num_rows($update);
+
+mysql_select_db($database_conn, $conn);
+$query_all_students = sprintf("SELECT u,c_name,f_name,l_name,user_score,a_stat,s_stream,c_id FROM( select distinct *,user.stream as s_stream,user.u_id as u from `user` natural join `enroll_course`)as a JOIN `course` as c ON a.c_enroll_id=c.c_id WHERE a.a_stat between 1 and 3 AND c.u_id=%s ORDER BY a.u ASC ",GetSQLValueString($_SESSION['MM_UserID'], "int"));
+$all_students = mysql_query($query_all_students, $conn) or die(mysql_error());
+$row_all_students = mysql_fetch_assoc($all_students);
+$totalRows_all_students = mysql_num_rows($all_students);
 
 
+?>
+<?php 
+//start of php code for permitting new student
+$editFormAction = $_SERVER['PHP_SELF'];
+if (isset($_SERVER['QUERY_STRING'])) {
+  $editFormAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
+}
+
+if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form10")) {
+  $updateSQL = sprintf("UPDATE `enroll_course` SET a_stat=%s WHERE u_id=%s AND c_enroll_id=%s",
+                       GetSQLValueString($_POST['app_id'], "int"),
+                       GetSQLValueString($_POST['update_q'], "int"),
+					   GetSQLValueString($_POST['update_c'], "int"));
+
+  mysql_select_db($database_conn, $conn);
+  $Result1 = mysql_query($updateSQL, $conn) or die(mysql_error());
+
+  $updateGoTo = "authorhome.php";
+  if (isset($_SERVER['QUERY_STRING'])) {
+    $updateGoTo .= (strpos($updateGoTo, '?')) ? "&" : "?";
+    $updateGoTo .= $_SERVER['QUERY_STRING'];
+  }
+  header(sprintf("Location: %s", $updateGoTo));
+}
+
+//end of php code for permitting new user
+
+/* permitted students ka query*/
+$editFormAction = $_SERVER['PHP_SELF'];
+if (isset($_SERVER['QUERY_STRING'])) {
+  $editFormAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
+}
+
+if ((isset($_POST["MM_change"])) && ($_POST["MM_change"] == "form9")) {
+
+  $updateSQL = sprintf("UPDATE `enroll_course` SET a_stat=%s WHERE u_id=%s AND c_enroll_id=%s",
+                       GetSQLValueString($_POST['approve_id'], "int"),
+                       GetSQLValueString($_POST['change_q'], "int"),
+					   GetSQLValueString($_POST['change_c'], "int"));
+
+  mysql_select_db($database_conn, $conn);
+  $Result1 = mysql_query($updateSQL, $conn) or die(mysql_error());
+
+  $updateGoTo = "authorhome.php";
+  if (isset($_SERVER['QUERY_STRING'])) {
+    $updateGoTo .= (strpos($updateGoTo, '?')) ? "&" : "?";
+    $updateGoTo .= $_SERVER['QUERY_STRING'];
+  }
+  header(sprintf("Location: %s", $updateGoTo));
+
+}
+/*end of permitted ka  query*/
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -270,6 +333,8 @@ function showResource(id,type,name) {
      <li class="TabbedPanelsTab" tabindex="0">Current Approved resources</li>
     <li class="TabbedPanelsTab" tabindex="0">All resources</li>
     <li class="TabbedPanelsTab" tabindex="0">Upload Resource</li>
+    <li class="TabbedPanelsTab" tabindex="0">Permit Students</li>
+      <li class="TabbedPanelsTab" tabindex="0">Permitted Students</li>
   </ul>
   <div class="TabbedPanelsContentGroup">
     <div class="TabbedPanelsContent">
@@ -584,6 +649,130 @@ var arList = new List('all_res', arOptions);
       </form>
       	</div><!--end of tab upload resource-->
       </div>
+      
+       <div class="TabbedPanelsContent">
+    <!--- if no new students to be permitted then skip whole table--->
+    
+        <div id="new_students">
+    <div class="datagrid">
+    <?php if ($totalRows_update>0 ) { ?>
+    <table>
+    <thead>
+    
+  <tr>
+  	 
+    <th class="sort" data-sort="first_name">First Name</th>
+    <th class="sort" data-sort="last_name">Last Name</th>
+    <th class="sort" data-sort="stream">Student Stream</th>
+    <th class="sort" data-sort="course_m">Course Name</th>
+    <th class="sort" data-sort="score">Reputation</th>
+    <th>Final Status</th>
+    <th>    </th>
+    <th colspan="2">
+          <input type="text" class="search" placeholder="Search Student" />
+        </th>
+  </tr>
+  </thead>
+  <tbody class="list">
+  <?php do { ?>
+    
+  
+    <tr>
+      
+      <td class="first_name"><?php echo $row_update['f_name']; ?></td>
+      <td class="last_name"> <?php echo $row_update['l_name']; ?></td>
+      <td class="stream"><?php echo $row_update['s_stream']; ?></td>
+      <td class="course_m"><a href="course_detail.php?c_id=<?php echo $row_update['c_id']; ?>"><?php echo $row_update['c_name']; ?></a></td>
+      <td class="score"><?php echo $row_update['user_score']; ?></td>
+
+      
+<form  id="form10" name="form10" method="POST" action="<?php echo $editFormAction; ?>">      
+<td><select name="app_id" id="app_id">
+        <option value="0">  </option>
+        <option value="1">Approved</option>
+        <option value="2">Blocked</option>
+        <option value="3">Rejected</option>
+      </select></td>
+      <td> 
+      <input name="update" id="update" value="update" type="submit" ></input> 
+        <input type="hidden" name="MM_update" value="form10" />
+        <input type="hidden" id="update_q" name="update_q" value="<?php echo $row_update['u']?>" />
+		<input type="hidden" id="update_c" name="update_c" value="<?php echo $row_update['c_id']?>" />
+
+        </td></form>
+    </tr>
+    <?php } while ($row_update = mysql_fetch_assoc($update)); ?>
+    </tbody>
+    </table>
+    </div></div>
+    <?php } else {
+		echo "No new students";
+	} ?>
+    <script>
+var currOptions = {
+  valueNames: [ 'first_name','last_name','stream','course_m','score']
+};
+
+// Init list
+var currList = new List('new_students', currOptions);
+</script>
+    </div>
+    <!--start of tab content--><div class="TabbedPanelsContent">
+    <?php if ($totalRows_all_students>0 ) { ?>
+        <div id="existing_students">
+    <div class="datagrid">
+    <table>
+    <thead>
+  <tr>
+  
+  	 <th class="sort" data-sort="ex_f_name">First Name</th>
+    <th class="sort" data-sort="ex_l_name">Last Name</th>
+    <th class="sort" data-sort="ex_stream">Stream</th>
+    <th class="sort" data-sort="ex_course">Course</th>
+    <th class="sort" data-sort="ex_score">Reputation</th>
+    <th class="sort" data-sort="ex_status">Current Status</th>
+    <th>    </th>
+    <th colspan="2">
+          <input type="text" class="search" placeholder="Search Student" />
+        </th>
+  </tr>
+  </thead>
+  <tbody class="list">
+  <?php do { ?>
+    
+  
+    <tr>
+      <td class="ex_f_name"><?php echo $row_all_students['f_name']; ?></td>
+      <td class="ex_l_name"><?php echo $row_all_students['l_name']; ?></td>
+      <td class="ex_stream"><?php echo $row_all_students['s_stream']; ?></td>
+      <td class="ex_course"><a href="course_detail.php?c_id=<?php echo $row_all_students['c_id']; ?>"><?php echo $row_all_students['c_name']; ?></a></td>
+      <td class="ex_score"><?php echo $row_all_students['user_score']; ?></td>
+      <td class="ex_status"><?php if($row_all_students['a_stat']==1) echo "Approved"; else echo "Rejected"; ?></td>
+<form  id="form9" name="form9" method="POST" action="<?php echo $editFormAction; ?>">      
+      <td> 
+  <input name="change" id="change" value="<?php if($row_all_students['a_stat']==1){echo "Reject";}else {echo "Approve";}?>" type="submit" ></input> 
+        <input type="hidden" name="MM_change" value="form9" />
+        <input type="hidden" id="change_q" name="change_q" value="<?php echo $row_all_students['u']?>" />
+        <input type="hidden" id="change_q" name="change_c" value="<?php echo $row_all_students['c_id']?>" />
+        <input type="hidden" id="approve_id" name="approve_id" value="<?php if($row_all_students['a_stat']==1){echo "2";}else {echo "1";}?>"/>
+        </td></form>
+    </tr>
+    <?php } while ($row_all_students = mysql_fetch_assoc($all_students)); ?>
+    </tbody>
+    </table>
+    </div></div>
+    <?php } else {
+		echo "No Permitted students";
+	} ?>
+    <script>
+var ex_Options = {
+  valueNames: [ 'ex_f_name','ex_l_name','ex_stream','ex_course','ex_score','ex_status']
+};
+
+// Init list
+var ex_List = new List('existing_students', ex_Options);
+</script>
+    </div><!--end of existing permitted students tab content-->
       </div>
     </div>
 <br />
