@@ -100,10 +100,13 @@ if(isset($_GET['sortType'])) {
 			if (($row_sort['download_status']==1)) {
 				//enrolled for course already
 				echo '<p class="enrolled"><a href="download_res.php?id='.$row_sort['r_id'].'">Download</a></p>';
+				//echo '<form><input type="button" class="buttom" value="Download" onclick ="download_res.php?id='.$row_sort['r_id'].'/>';
+				
 			}else {
 				//not yet enrolled for course
 			/*	echo '<a id="'.$row_sort['c_id'].'" class="enroll" onClick="enrollCourse(this); return false;">Enroll Course Now!</a>';*/
 			}
+			echo '<img src="images/rating-icon.png" title="Rate/Bookmark this resource"style="cursor:pointer;padding-left:10px;" width="25px" height="25px" onclick="showResourceRating('.$row_sort['r_id'].',\''.$row_sort['filename'].'\');"/>';
 			echo "</li>";
 		}while($row_sort = mysql_fetch_assoc($sort));
 	} else { 

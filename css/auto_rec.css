@@ -203,6 +203,7 @@ aside,main {
 	font-family: arial;
 	float:right;
 	padding-left:10px;
+	cursor:pointer;
 }
 
 #auto_reco div ul li a.enroll{
@@ -264,14 +265,17 @@ form#mcqform input {
 }
 
 .autoreco-header {
-	padding-left:50px;
-	padding-top:10px;
-	margin:0px 0px 0px;
-	font-size: 24px;
+	color: #93CDF5;
+	font-size: 22px;
+	text-transform: uppercase;
+	margin: 20px 0 15px 20px;
 }
 
 .peer-name {
 	width:auto;
 	text-align:right;
 	font:"Arial Black", Gadget, sans-serif;
+}
+
+.reco_header{
 }

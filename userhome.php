@@ -113,7 +113,7 @@ $row_incomplete_courses = mysql_fetch_assoc($incomplete_courses);
 $totalRows_incomplete_courses = mysql_num_rows($incomplete_courses);
 
 
-$query_completed_courses = sprintf("SELECT * FROM course JOIN enroll_course ON course.c_id=enroll_course.c_enroll_id WHERE enroll_course.u_id=%s AND completion_stat=1 AND DATE(NOW())> end_date",GetSQLValueString($_SESSION['MM_UserID'], "int"));
+$query_completed_courses = sprintf("SELECT * FROM course JOIN enroll_course ON course.c_id=enroll_course.c_enroll_id WHERE enroll_course.u_id=%s AND (completion_stat=1 OR DATE(NOW())> end_date)",GetSQLValueString($_SESSION['MM_UserID'], "int"));
 $completed_courses = mysql_query($query_completed_courses, $conn) or die(mysql_error());
 $row_completed_courses = mysql_fetch_assoc($completed_courses);
 $totalRows_completed_courses = mysql_num_rows($completed_courses);
@@ -133,7 +133,7 @@ $row_new_resource = mysql_fetch_assoc($new_resource);
 $totalRows_new_resource = mysql_num_rows($new_resource);
 
 mysql_select_db($database_conn, $conn);
-$query_user_details = sprintf("SELECT * FROM user WHERE u_id = %s", GetSQLValueString($_SESSION['MM_UserID'], "int"));
+$query_user_details = sprintf("select * from (select * from ((select * from user where user.u_id=%s) as temp join (select discussion.insert_uid,count(*)as disc_count from discussion where discussion.insert_uid=%s) as temp2 on temp.u_id=temp2.insert_uid)) as temp3 join (select comment.insert_uid,count(*) as comment_count from comment where comment.insert_uid=%s) as temp4 on temp3.u_id=temp4.insert_uid", GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($_SESSION['MM_UserID'], "int"));
 $user_details = mysql_query($query_user_details, $conn) or die(mysql_error());
 $row_user_details = mysql_fetch_assoc($user_details);
 $totalRows_user_details = mysql_num_rows($user_details);
@@ -159,7 +159,7 @@ $peer_reco = mysql_query($query_peer_reco, $conn) or die(mysql_error());
 <link rel="stylesheet" type="text/css" media="screen" href="css/nav_bar.css" />
 <link rel="stylesheet" type="text/css" media="screen" href="css/course_list.css" />
 <link rel="stylesheet" type="text/css" media="screen" href="css/resource_list.css" />
-<link rel="stylesheet" type="text/css" media="screen" href="css/user_profile.css" />
+<link rel="stylesheet" type="text/css" media="screen" href="css/userhome.css" />
 
 <script type="text/javascript" src="js/jquery.min.js"></script> 
 <script type="text/javascript" src="js/jquery.scrollTo-min.js"></script> 
@@ -176,13 +176,16 @@ body,td,th {
 <style>
 	@import "css/LightFace.css";
 </style>
-	<link rel="stylesheet" href="css/lightface.css" />
-	<script src="js/mootools.js"></script>
-	<script src="js/LightFace.js"></script>
-	<script src="js/LightFace.js"></script>
-	<script src="js/LightFace.IFrame.js"></script>
-	<script src="js/LightFace.Image.js"></script>
-	<script src="js/LightFace.Request.js"></script>
+<link rel="stylesheet" href="css/lightface.css" />
+<script src="js/mootools.js"></script>
+<script src="js/LightFace.js"></script>
+<script src="js/LightFace.js"></script>
+<script src="js/LightFace.IFrame.js"></script>
+<script src="js/LightFace.Image.js"></script>
+<script src="js/LightFace.Request.js"></script>
+    
+<script src="./js/jquery.rateit.js" type="text/javascript"></script>
+<link href="./css/rateit.css" rel="stylesheet" type="text/css">
 
 <link href="SpryAssets/SpryRating.css" rel="stylesheet" type="text/css">
 <link href="css/auto_rec.css" rel="stylesheet" type="text/css">
@@ -335,6 +338,53 @@ function searchresources() {
 		title: name
 		}).addButton('Close', function() { light.close(); },true).open();
 	}
+	
+function showResource(id,type,name) {
+	//show dimensions based on content type
+	var height_set,width_set;
+	if(type=="pdf") {
+		height_set=520;
+		width_set=920;
+	}else if (type=="image") {
+		height_set=320;
+		width_set=620;
+	}
+	light = new LightFace.IFrame({
+		height:height_set,
+		width:width_set,
+		url: 'show_resource_float.php?actiontype=loadResource&r_id='+id,
+		title: 'Resource : '+name
+		}).addButton('Close', function() { light.close(); },true).open();		
+}
+
+function rateCourse(id,rate) {
+	//rates course id with rate value. calls rate_course.php with c_id and rate_value
+	if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+		  xmlhttp=new XMLHttpRequest();
+		} else {// code for IE6, IE5
+		  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  		}
+		xmlhttp.onreadystatechange=function()
+		{
+		  if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+			}
+			else {
+			}
+		}
+		xmlhttp.open("GET","rate_course.php?c_id="+id+"&rate_value="+rate,true);
+		xmlhttp.send();
+}
+
+function showResourceRating(id,name) {
+	//loads the rating + flagging float.
+	light = new LightFace.IFrame({
+		height:120,
+		width:250,
+		url: 'show_resource_float.php?actiontype=loadRating&r_id='+id,
+		title: name
+		}).addButton('Close', function() { light.close(); },true).open();
+}
+
 </script>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 </head>
@@ -478,25 +528,38 @@ else {
 		    	<div id="content"> 
                 <?php do { ?>
 	          		<?php echo  "<div class='section section_with_padding' id='a".$var."'>";?>
-	                <h1><a style="font-size: 36px; margin: 0 0 30px; padding: 5px 0;color: #fff; font-weight: normal; "href="course_details_stud.php?c_id=<?php echo $row_incomplete_courses['c_id']?>" ><?php echo $row_incomplete_courses['c_name']?></a></h1> 
+	                <h1><a style="font-size: 36px; margin: 0 0 30px; padding: 5px 0;color: #fff; font-weight: normal; "href="course_details_stud.php?c_id=<?php echo $row_incomplete_courses['c_id'];?>" ><?php echo $row_incomplete_courses['c_name'];?></a></h1> 
 	                <div class="half right">
+                    <div class="incomcoursecontainer">
+                    <div class="incomcourseholder">
                     <div class="img_border img_temp"> <img width="200px" height="120px"src="<?php echo $row_incomplete_courses['course_image']; ?>" alt="image 1" /></div>
-	                	<p><em><?php echo $row_incomplete_courses['description']?></em></p>            
+	                	<p><em><?php echo $row_incomplete_courses['description'];?></em></p>
+                    </div>
+                    </div>
+					</div>
                     <?php //list all resources of that course    
 					$query_resources = sprintf("SELECT * FROM `resource` WHERE c_id=%s AND approve_status=1",GetSQLValueString($row_incomplete_courses['c_id'], "int"));
 		$resource = mysql_query($query_resources, $GLOBALS['conn']) or die(mysql_error());
 		$row_resource = mysql_fetch_assoc($resource);
 					?>
-                    </div>
+
 	    			<div class="half left">
-					<table>
+                    <div class="tablecontainer">
+                    <div class="tableholder">
+					<table class="restable">
 					<?php 
 						do {
-							echo "<tr><td><a href='view_resource.php'>".$row_resource['filename']."</a></td>";
+							echo '<tr><td><div class="resourcename" onclick="showResource('.$row_resource['r_id'].',\'';
+					if(strpos($row_resource['file_type'],"application/pdf")!==false) {
+						echo "pdf";
+					}else if (strpos($row_resource['file_type'],"image")!==false) {
+						echo "image";
+					}
+					echo '\',\''.$row_resource['filename'].'\');">'.$row_resource['filename']."</div></td>";
 							if($row_resource['download_status']==1){?>
 	                            <td>
 						        <form  id="form1" name="form1" method="POST" action="download_res.php">            
-						        <input name="change" id="change" value="Download" type="submit" ></input>
+						        <input class="buttom" name="change" id="change" value="Download" type="submit" ></input>
 								<input type="hidden" name="id" id="id" value="<?php echo $row_resource['r_id'];?>"  />
 								<input type="hidden" name="MM_change" value="form1" />
 								</form>
@@ -504,7 +567,10 @@ else {
 					<?php 	}else {echo "";}
 							echo "</tr>";
 						}while ($row_resource= mysql_fetch_assoc($resource));
-					?></table>
+					?>
+                    </table>
+                    </div>
+                    </div>
               		</div>
     		            <?php 
 							if ($var ==0) {
@@ -541,15 +607,55 @@ else {
                 
 				    <?php do { ?>
 	          		<?php echo  "<div class='section section_with_padding' id='a".$row_completed_courses['c_id']."'>";?>
-	                <h1><?php echo $row_completed_courses['c_name']?></h1> 
+	                <h1><a style="font-size: 36px; margin: 0 0 30px; padding: 5px 0;color: #fff; font-weight: normal; "href="course_details_stud.php?c_id=<?php echo $row_completed_courses['c_id'];?>" ><?php echo $row_completed_courses['c_name']?></a></h1> 
 	                <div class="half left">
+                    <div class="comcoursecontainer">
+                    <div class="comcourseholder">
 	                	<p><em><?php echo $row_completed_courses['description']?></em></p>
-                        
+                        <?php //rate widget code ?>
+                        <br>Rate this course : 
+						<div class= "rateit bigstars" data-rateit-starwidth="32" data-rateit-starheight="32" id="rateit"data-rateit-value="<?php echo $row_completed_courses['rating'];?>" data-rateit-ispreset="true">
+						</div>
+						<div>
+						<span style="margin-left:150px;" id="hover"></span>
+						</div>
+						<script type="text/javascript">
+						var ratingType=['Poor','Fair','Good','Very Good','Excellent!'];
+						$('#rateit').bind('over', function (event,value) { 
+							$(this).attr('title', value);
+							if(value==null) {
+								$('#hover').text("");
+							}else {
+								$('#hover').text(ratingType[value-1]);
+							}
+						});
+						$('#rateit').on('beforerated', function (e, value) {
+         					if (!confirm('Are you sure you want to rate this course '+ ratingType[Math.floor(value)-1]+ "?")) {
+				              e.preventDefault();
+							}
+						});
+						$('#rateit').on('beforereset', function (e) {
+							if (!confirm('Are you sure you want to reset the rating?')) {
+								e.preventDefault();
+							}
+						});
+						$("#rateit").bind('rated', function (event, value) { 
+							var rateReturn=rateCourse(<?php echo $row_completed_courses['c_id'];?>,value);
+						});
+						$("#rateit").bind('reset', function () { rateCourse(<?php echo $row_completed_courses['c_id'];?>,0); });
+						</script>
+					</div>
 	                </div>
+                    </div>
 	    			<div class="half right">
-	                	<div class="img_border img_nom"> <a href="#gallery"><img width="200px" height="120px"src="images/templatemo_image_01.jpg" alt="image 1" /></a>	
+	                	<div class="img_border img_temp"> <a href="#gallery"><img width="200px" height="120px"src="images/templatemo_image_01.jpg" alt="image 1" /></a>	
 	                    </div>
-                     
+                     	<?php if($row_completed_courses['marks']>-1) {
+							echo "You have scored ".$row_completed_courses['marks']." marks";
+						}else {
+							echo "You have not taken test of this course";
+						}
+						?>
     		            <?php 
 							if ($var ==0) {
 								//echo "<a href='#a".$row_courses['c_id']."' class='page_nav_btn previous'>Previous</a>";
@@ -563,6 +669,7 @@ else {
 								echo "<a href='#a".$temp."' class='page_nav_btn next'>Next</a> ";
 							}
 		                ?>
+                        
         	       	</div> <!---END of  half right --->
 	            <?php echo "</div>"; ?> <!-- END of Services -->
     	        <?php $var=$var+1; ?>
@@ -654,8 +761,8 @@ else {
     
     <!-- start of profile tab-->
     <div class="TabbedPanelsContent">
-
-	<div class="user-pro-content" style="background-color:#FFF;border-radius:5px;">
+	<div class="profile-resource-header"> Your Profile</div>
+	<div class="profile-upload-box" style="background-color:#FFF;border-radius:5px;">
 	<div id="pagewidth" >
 	<div id="wrapper" class="clearfix">
 		<div id="twocols"> 
@@ -667,13 +774,18 @@ else {
 	<p><b> About myself:</b></p><textarea rows="10" cols="75"><?php echo $row_user_details['about'];?></textarea><br><br>
     <input name="submit" value="Update Profile" id="submit" class="buttom" type="submit">
     </form>
+    <br>
+    <form id="dpform">
+    <input name="submit" value="Update Profile Picture"  class="buttom" type="submit">
+    </form>
     </div>
 	</div> 
 	<div id="leftcol">
     	<p><img src="<?php echo $row_user_details['photo'];?>" alt="" height="300" width ="200" /></p>
-        <div class="userstats">Stats:<br>
-		Score: <?php echo $row_user_details['user_score'];?>
-        
+        <div class="userstats"><b>Stats:</b><br>
+		Score: <?php echo $row_user_details['user_score'];?><br>
+        Discussions : <?php echo $row_user_details['disc_count'];?><br>
+        Comments : <?php echo $row_user_details['comment_count'];?><br>
         
         </div>
     </div>
@@ -687,7 +799,9 @@ else {
     <!-- end of profile tab-->
     <div class="TabbedPanelsContent">
      <!--start of tab upload resource-->
-     <div id="New Resource">
+     <div class="profile-resource-header"> Upload Self-Written Papers</div>
+	<div class="profile-upload-box" style="background-color:#FFF;border-radius:5px;">
+         <div id="New Resource">
       <p>Please enter the Resource details : </p>
       <form id="new_resource" method="POST" action="upload_res.php" enctype="multipart/form-data">
        <p>
@@ -720,11 +834,12 @@ else {
        <label for="file">File* :</label>
 <input type="file" name="file" id="file">
 		</p>  
-      	   <input name="submit" type="submit" id="submit" onClick="MM_validateForm('co_name','','R','r_name','','R','r_type','','R');return document.MM_returnValue" value="Upload" action="upload_res.php"/>
+      	   <input name="submit" class="buttom" type="submit" id="submit" onClick="MM_validateForm('co_name','','R','r_name','','R','r_type','','R');return document.MM_returnValue" value="Upload" action="upload_res.php"/>
       <input type="hidden" name="MM_insert" value="form" />
       </form>
-      	</div><!--end of tab upload resource-->
-      </div>
+	</div>
+    </div>
+      </div><!--end of tab upload resource-->
   </div>
 </div>
 <p><br />

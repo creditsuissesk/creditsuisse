@@ -1,0 +1,101 @@
+.profile-upload-box {
+	padding: 20px 50px 20px;
+	width:80%;
+	margin:20px 90px;
+}
+#leftcol{
+ width:20%; 
+ float:left; 
+ position:relative; 
+  }
+ 
+#twocols{
+ width:80%; 
+ float:right; 
+ position:relative; 
+  }
+ 
+#rightcol{
+ width:100%; 
+ float:right; 
+ position:relative; 
+ }
+ 
+ .clearfix:after {
+ content: "."; 
+ display: block; 
+height: 0; 
+ clear: both; 
+ visibility: hidden;
+ }
+ 
+.clearfix{display: inline-block;}
+
+/* Hides from IE-mac \*/
+* html .clearfix{height: 1%;}
+.clearfix{display: block;}
+/* End hide from IE-mac */  
+
+input.buttom{ background: #4b8df9; display: inline-block; padding: 5px 10px 6px; color: #fbf7f7; text-decoration: none; font-weight: bold; line-height: 1; -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px; -moz-box-shadow: 0 1px 3px #999; -webkit-box-shadow: 0 1px 3px #999; box-shadow: 0 1px 3px #999; text-shadow: 0 -1px 1px #222; border: none; position: relative; cursor: pointer; font-size: 14px; font-family:Verdana, Geneva, sans-serif;}
+input.buttom:hover	{ background-color: #2a78f6; }
+
+.userstats {
+	font-size:12px;
+}
+
+.profile-resource-header {
+	color: #93CDF5;
+	font-size: 22px;
+	text-transform: uppercase;
+	margin: 20px 0 15px 20px;
+}
+
+/*css for resources table in course slides*/
+table.restable {
+	overflow:auto;
+}
+table.restable td {
+	padding-right:10px;
+}
+.tablecontainer {
+	height:250px;
+	overflow:hidden;
+	padding:0px;
+	position:relative;
+	overflow-y:auto;
+}
+.tableholder{
+	overflow:auto;
+	max-height:100%;
+}
+
+.resourcename {
+	cursor:pointer;
+	color:#CCC;
+}
+
+.comcoursecontainer {
+	height:250px;
+	overflow:hidden;
+	padding:0px;
+	position:relative;
+	overflow-y:auto;
+}
+
+.comcourseholder {
+	overflow:auto;
+	max-height:100%;
+}
+
+.incomcoursecontainer {
+	height:300px;
+	overflow:hidden;
+	padding:0px;
+	position:relative;
+	overflow-y:auto;
+}
+
+.incomcourseholder {
+	overflow:auto;
+	max-height:100%;
+}

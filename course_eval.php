@@ -225,7 +225,7 @@ if(isset($_GET['c_id']) && isset($_GET['ques']) && isset($_GET['opt1']) && isset
 		$totalRows_eval_test = mysql_num_rows($eval_test);
 		
 		//$totalRows_eval_test contains number of answers correctly given. Save score= this * 10 into database as candidates score.
-		$query_save_score=sprintf("UPDATE `enroll_course` SET marks=%s WHERE u_id=%s AND c_enroll_id=%s",GetSQLValueString($totalRows_eval_test*10, "int"),GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($_GET['evalTest'], "int"));
+		$query_save_score=sprintf("UPDATE `enroll_course` SET marks=%s,completion_stat=1 WHERE u_id=%s AND c_enroll_id=%s",GetSQLValueString($totalRows_eval_test*10, "int"),GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($_GET['evalTest'], "int"));
 		$save_score = mysql_query($query_save_score, $conn) or die(mysql_error());
 		
 		echo "Score recorded successfully! You scored ".($totalRows_eval_test*10)." marks out of ".($totalRows_load_test*10).".";
