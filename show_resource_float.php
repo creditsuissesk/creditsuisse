@@ -8,8 +8,9 @@
 <script type="text/javascript" src="js/jquery.min.js"></script> 
 <script src="./js/jquery.rateit.js" type="text/javascript"></script>
 <script type="text/javascript" src="js/course_details_stud.js"></script>
+<script type="text/javascript" src="js/flowplayer-3.2.11.min.js"></script>
+<script type="text/javascript" src="js/resource_float.js"></script>
 <link href="./css/rateit.css" rel="stylesheet" type="text/css">
-
 </head>
 <?php
 //this page generates resource floating layout.
@@ -105,6 +106,10 @@ if(isset($_GET['r_id']) && (isset($_GET['actiontype']) && $_GET['actiontype']=="
 		echo '<embed height="500" width="900" src="'.$row_get_resource['view_location'].'">';
 	}else if ($row_get_resource['file_type']=="image/jpeg") {
 		echo '<embed height="300" width="600" src="'.$row_get_resource['view_location'].'">';
+	}else if (strpos($row_get_resource['file_type'],"video")!==false) {
+		echo '<div id="holder"></div>';
+		echo '<script>$(document).ready(function(){load('.$row_get_resource['r_id'].');});</script>';
+		
 	}
 }
 

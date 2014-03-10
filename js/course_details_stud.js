@@ -70,6 +70,9 @@ function showResource(id,type,name) {
 	}else if (type=="image") {
 		height_set=320;
 		width_set=620;
+	}else if (type=="video") {
+		height_set=336;
+		width_set=635;
 	}
 	light = new LightFace.IFrame({
 		height:height_set,

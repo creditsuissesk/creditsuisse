@@ -417,6 +417,8 @@ function clearText(field)
 						echo "pdf";
 					}else if (strpos($row_get_resources['file_type'],"image")!==false) {
 						echo "image";
+					}else if (strpos($row_get_resources['file_type'],"video")!==false) {
+						echo "video";
 					}
 					echo '\',\''.$row_get_resources['filename'].'\');"><div id="rname" title="View this resource" style="cursor:pointer;">'.$row_get_resources['filename'].'</div></div></b></td>';
 					if($row_get_resources['download_status']==1) {
