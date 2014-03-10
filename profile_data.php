@@ -4,7 +4,7 @@
 if (!isset($_SESSION)) {
   session_start();
 }
-$MM_authorizedUsers = "cm,author,student";
+$MM_authorizedUsers = "cm,author,student,admin";
 $MM_donotCheckaccess = "false";
 
 // *** Restrict Access To Page: Grant or deny access to this page
@@ -80,6 +80,20 @@ if (!function_exists("GetSQLValueString")) {
 
 ?>
 <?php 
+if($_SESSION['MM_UserGroup']=="cm")
+{
+	$redirect="cmhome.php";
+}
+else
+{
+	if($_SESSION['MM_UserGroup']=="author")
+	$redirect="authorhome.php";
+	else
+	if($_SESSION['MM_UserGroup']=="admin")
+	$redirect="admin_home.php";
+	else
+	$redirect="userhome.php";
+}
 //start profileform
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "profileform")) {
 		$insertSQL = sprintf("UPDATE  `user` SET contact_no=%s,institute=%s,degree=%s,about=%s WHERE u_id=%s",
@@ -91,6 +105,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "profileform")) {
 	  
 		mysql_select_db($database_conn, $conn);
 		$Result1 = mysql_query($insertSQL, $conn) or die(mysql_error());
+		echo '<script type="text/javascript">alert("Profile Updated Successfully."); 	window.location="'.$redirect.'"; </script>';
 }
 else
 { 
@@ -99,7 +114,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "dpform"))
 {
 if($_FILES["File"]["size"]==0 )
 {
-		echo '<script type="text/javascript">alert("Upload profile image"); window.location="userhome.php"; </script>';
+		echo '<script type="text/javascript">alert("Upload profile image"); window.location="'.$redirect.'"; </script>';
 
 }
 else
@@ -119,7 +134,7 @@ if ((($_FILES["File"]["type"] == "image/gif")
   {
   if ($_FILES["File"]["error"] > 0)
     {
-     echo '<script type="text/javascript">alert("File Error: '. $_FILES["File"]["error"] . ' ");window.location="userhome.php";</script>';
+     echo '<script type="text/javascript">alert("File Error: '. $_FILES["File"]["error"] . ' ");window.location="'.$redirect.'";</script>';
     }
   else
     {
@@ -134,7 +149,7 @@ if ((($_FILES["File"]["type"] == "image/gif")
 	$filename=$_POST['u_id'].".".$extension;
 	$upload_add="images/profiles/" . $filename;
     move_uploaded_file($_FILES["File"]["tmp_name"],$upload_add);
-	echo '<script type="text/javascript">alert("Profile Picture Successfully. Waiting for the approval by Administrator"); 	window.location="userhome.php"; </script>';
+	echo '<script type="text/javascript">alert("Profile Picture Successfully."); 	window.location="'.$redirect.'"; </script>';
     }
 	    }
 else
@@ -145,13 +160,13 @@ else
 || ($_FILES["File"]["type"] == "image/pjpeg")
 || ($_FILES["File"]["type"] == "image/x-png")
 || ($_FILES["File"]["type"] == "image/png")))
-  echo '<script type="text/javascript">alert("Invalid File Type. Please upload valid file.");  window.location="userhome.php";</script>';
+  echo '<script type="text/javascript">alert("Invalid File Type. Please upload valid file.");  window.location="'.$redirect.'";</script>';
   else 
 	   if(($_FILES["File"]["size"] > $max_size))
   echo '<script type="text/javascript">alert("File Size is '.$filesize.' mb which GREATER than the allowed size. Allowed Size is '.$max_size_mb.' mb.");
-  window.location="userhome.php";</script>';
+  window.location="'.$redirect.'";</script>';
   else
-  echo '<script type="text/javascript">alert("Problem in uploading file.Please upload again");window.location="userhome.php";</script>';
+  echo '<script type="text/javascript">alert("Problem in uploading file.Please upload again");window.location="'.$redirect.'";</script>';
   }
 }
 }

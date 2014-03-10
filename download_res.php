@@ -4,7 +4,7 @@
 if (!isset($_SESSION)) {
   session_start();
 }
-$MM_authorizedUsers = "cm,author,student";
+$MM_authorizedUsers = "cm,author,student,admin";
 $MM_donotCheckaccess = "false";
 
 // *** Restrict Access To Page: Grant or deny access to this page
@@ -92,7 +92,20 @@ if(isset($_POST['id'])||isset($_GET['id']))
 	$result = mysql_query($query) or die('Error, query failed'); 
 	list($name, $type, $size, $location) =  mysql_fetch_row($result);
 	$size=$size*1024*1024;
-	
+	if($_SESSION['MM_UserGroup']=="cm")
+{
+	$redirect="cmhome.php";
+}
+else
+{
+	if($_SESSION['MM_UserGroup']=="author")
+	$redirect="authorhome.php";
+	else
+	if($_SESSION['MM_UserGroup']=="admin")
+	$redirect="admin_home.php";
+	else
+	$redirect="userhome.php";
+}
 /*	$extract = fopen($location, 'r');
 	$content = fread($extract, $size);
 	$content = addslashes($content);
@@ -123,7 +136,7 @@ if(isset($_POST['id'])||isset($_GET['id']))
     exit;	
 }
 else
-echo '<script type="text/javascript">alert("Id not set");window.location="http://localhost/dreamweaver/authorhome.php";</script>';
+echo '<script type="text/javascript">alert("Id not set");window.location="'.$redirect.'";</script>';
 
 ?>
 

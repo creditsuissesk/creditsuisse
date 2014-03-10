@@ -107,7 +107,7 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 }
 
 mysql_select_db($database_conn, $conn);
-$query_incomplete_courses = sprintf("SELECT * FROM course JOIN enroll_course  ON course.c_id=enroll_course.c_enroll_id where enroll_course.u_id=%s AND completion_stat=0 AND DATE(NOW()) BETWEEN start_date AND end_date",GetSQLValueString($_SESSION['MM_UserID'], "int"));
+$query_incomplete_courses = sprintf("SELECT * FROM course JOIN enroll_course  ON course.c_id=enroll_course.c_enroll_id where enroll_course.u_id=%s AND a_stat=1 AND completion_stat=0 AND DATE(NOW()) BETWEEN start_date AND end_date",GetSQLValueString($_SESSION['MM_UserID'], "int"));
 $incomplete_courses = mysql_query($query_incomplete_courses, $conn) or die(mysql_error());
 $row_incomplete_courses = mysql_fetch_assoc($incomplete_courses);
 $totalRows_incomplete_courses = mysql_num_rows($incomplete_courses);
@@ -133,7 +133,7 @@ $row_new_resource = mysql_fetch_assoc($new_resource);
 $totalRows_new_resource = mysql_num_rows($new_resource);
 
 mysql_select_db($database_conn, $conn);
-$query_user_details = sprintf("select * from (select * from ((select * from user where user.u_id=%s) as temp join (select discussion.insert_uid,count(*)as disc_count from discussion where discussion.insert_uid=%s) as temp2 on temp.u_id=temp2.insert_uid)) as temp3 join (select comment.insert_uid,count(*) as comment_count from comment where comment.insert_uid=%s) as temp4 on temp3.u_id=temp4.insert_uid", GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($_SESSION['MM_UserID'], "int"));
+$query_user_details = sprintf("select * from (select * from ((select * from user where user.u_id=%s) as temp left join (select discussion.insert_uid,count(*)as disc_count from discussion where discussion.insert_uid=%s) as temp2 on temp.u_id=temp2.insert_uid)) as temp3 left join (select comment.insert_uid,count(*) as comment_count from comment where comment.insert_uid=%s) as temp4 on temp3.u_id=temp4.insert_uid", GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($_SESSION['MM_UserID'], "int"));
 $user_details = mysql_query($query_user_details, $conn) or die(mysql_error());
 $row_user_details = mysql_fetch_assoc($user_details);
 $totalRows_user_details = mysql_num_rows($user_details);
@@ -792,8 +792,8 @@ else {
     	<p><img src="<?php echo $row_user_details['photo'];?>" alt="" height="300" width ="200" /></p>
         <div class="userstats"><b>Stats:</b><br>
 		Score: <?php echo $row_user_details['user_score'];?><br>
-        Discussions : <?php echo $row_user_details['disc_count'];?><br>
-        Comments : <?php echo $row_user_details['comment_count'];?><br>
+        Discussions : <?php if($row_user_details['disc_count']==NULL)echo "0" ;else echo $row_user_details['disc_count'];?><br>
+        Comments : <?php if($row_user_details['comment_count']==NULL)echo "0" ;else echo $row_user_details['comment_count'];?>
         
         </div>
     </div>

@@ -161,6 +161,12 @@ $all_students = mysql_query($query_all_students, $conn) or die(mysql_error());
 $row_all_students = mysql_fetch_assoc($all_students);
 $totalRows_all_students = mysql_num_rows($all_students);
 
+mysql_select_db($database_conn, $conn);
+$query_user_details = sprintf("select * from (select * from ((select * from user where user.u_id=%s) as temp left join (select discussion.insert_uid,count(*)as disc_count from discussion where discussion.insert_uid=%s) as temp2 on temp.u_id=temp2.insert_uid)) as temp3 left join (select comment.insert_uid,count(*) as comment_count from comment where comment.insert_uid=%s) as temp4 on temp3.u_id=temp4.insert_uid", GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($_SESSION['MM_UserID'], "int"));
+$user_details = mysql_query($query_user_details, $conn) or die(mysql_error());
+$row_user_details = mysql_fetch_assoc($user_details);
+$totalRows_user_details = mysql_num_rows($user_details);
+
 ?>
 <?php 
 //start of php code for permitting new student
@@ -274,7 +280,7 @@ if ((isset($_POST["MM_update_r"])) && ($_POST["MM_update_r"] == "form2")) {
 <script src="SpryAssets/SpryTabbedPanels.js" type="text/javascript"></script>
 <link href="SpryAssets/SpryTabbedPanels.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" media="screen" href="css/nav_bar.css" />
-<link href="css/templatemo_style.css" type="text/css" rel="stylesheet" />
+<link href="css/cmhome.css" type="text/css" rel="stylesheet" />
 <link href="css/table.css" type="text/css" rel="stylesheet" /> 
 <!---
 script for js/list.js tables
@@ -394,7 +400,7 @@ function showResource(id,type,name) {
       <li class="TabbedPanelsTab" tabindex="0">Pending/Flagged Resource</li>
       <li class="TabbedPanelsTab" tabindex="0">Permit Students</li>
       <li class="TabbedPanelsTab" tabindex="0">Permitted Students</li>
-      
+      <li class="TabbedPanelsTab" tabindex="0">Profile</li> 
   </ul>
 <div class="TabbedPanelsContentGroup">
     <div class="TabbedPanelsContent">
@@ -845,6 +851,52 @@ var ex_List = new List('existing_students', ex_Options);
 </script>
     </div><!--end of existing permitted students tab content-->
   
+       <!-- start of profile tab-->
+    <div class="TabbedPanelsContent">
+	<div class="profile-resource-header"> Your Profile</div>
+	<div class="profile-upload-box" style="background-color:#FFF;border-radius:5px;">
+	<div id="pagewidth" >
+	<div id="wrapper" class="clearfix">
+		<div id="twocols"> 
+			<div id="rightcol"><b>Name : </b><i><?php echo $row_user_details['f_name']." ".$row_user_details['l_name'];?></i></p>
+    <form id="profileform" action="profile_data.php" method="post">
+	<p><b>Degree of specialization : </b><input name="degree" type="text" value="<?php echo $row_user_details['degree'];?>"/></p>
+	<p><b>Institute of Specialization : </b><input type="text" name="inst_name" value="<?php echo $row_user_details['institute'];?>" /></p>
+	<p><b>Contact number : </b><input type="text" name="contact" value="<?php echo $row_user_details['contact_no'];?>"/></p>
+	<p><b> About myself:</b></p><textarea name="about" rows="10" cols="75"><?php echo $row_user_details['about'];?></textarea><br><br>
+    <input type="hidden" name="u_id" value="<?php echo $_SESSION['MM_UserID'];?>" />
+    <input name="submit" value="Update Profile" id="submit" class="buttom" type="submit" action="profile_data.php">
+    <input type="hidden" name="MM_insert" value="profileform" />
+    </form>
+    <br>
+    <form id="dpform" action="profile_data.php" enctype="multipart/form-data" method="post">
+   <p> <label for="File"><b>Profile Pciture:</b></label><br />
+	   <input type="file" name="File" id="File">
+		</p>
+   
+    <input type="hidden" name="u_id" value="<?php echo $_SESSION['MM_UserID'];?>" />
+    <input name="submit" value="Update Profile Picture"  class="buttom" type="submit" action="profile_data.php">
+    <input type="hidden" name="MM_update" value="dpform" />
+    </form>
+    </div>
+	</div> 
+	<div id="leftcol">
+    	<p><img src="<?php echo $row_user_details['photo'];?>" alt="" height="300" width ="200" /></p>
+        <div class="userstats"><b>Stats:</b><br>
+		Score: <?php echo $row_user_details['user_score'];?><br>
+        Discussions : <?php if($row_user_details['disc_count']==NULL)echo "0" ;else echo $row_user_details['disc_count'];?><br>
+        Comments : <?php if($row_user_details['comment_count']==NULL)echo "0" ;else echo $row_user_details['comment_count'];?><br>
+        
+        </div>
+    </div>
+	</div>
+</div>	
+    </div>
+    
+        
+
+    </div>
+    <!-- end of profile tab-->
 
     
       </div>

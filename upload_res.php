@@ -81,15 +81,15 @@ if (!((isset($_SESSION['MM_Username'])) && (isAuthorized("",$MM_authorizedUsers,
 if($_SESSION['MM_UserGroup']=="cm")
 {
 	$approve_stat = 1;
-	$redirect="http://localhost/dreamweaver/cmhome.php";
+	$redirect="cmhome.php";
 }
 else
 {
 	$approve_stat = 0;
 	if($_SESSION['MM_UserGroup']=="author")
-	$redirect="http://localhost/dreamweaver/authorhome.php";
+	$redirect="authorhome.php";
 	else
-	$redirect="http://localhost/dreamweaver/userhome.php";
+	$redirect="userhome.php";
 }
 if($_FILES["file"]["size"]==0)
 {
