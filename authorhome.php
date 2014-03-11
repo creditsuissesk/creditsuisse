@@ -313,12 +313,20 @@ function showResource(id,type,name) {
 	}else if (type=="image") {
 		height_set=320;
 		width_set=620;
+	}else if (type=="video") {
+		height_set=336;
+		width_set=635;
 	}
 	light = new LightFace.IFrame({
 		height:height_set,
 		width:width_set,
 		url: 'show_resource_float.php?actiontype=loadResource&r_id='+id,
-		title: 'Resource : '+name
+		title: 'Resource : '+name,
+		onClose:function() {
+			if(type=="video") {
+				window.location.reload();
+			}
+		}
 		}).addButton('Close', function() { light.close(); },true).open();		
 }
 
@@ -522,6 +530,8 @@ var allList = new List('all_courses', allOptions);
 						echo "pdf";
 					}else if (strpos($row_approved_resources['file_type'],"image")!==false) {
 						echo "image";
+					}else if (strpos($row_approved_resources['file_type'],"video")!==false) {
+						echo "video";
 					}
 					echo '\',\''.$row_approved_resources['filename'].'\');">' ?>
 				<?php echo $row_approved_resources['filename'].'</div>'; ?></a></td>
@@ -593,6 +603,8 @@ var arList = new List('approved_res', arOptions);
 						echo "pdf";
 					}else if (strpos($row_all_resources['file_type'],"image")!==false) {
 						echo "image";
+					}else if (strpos($row_all_resources['file_type'],"video")!==false) {
+						echo "video";
 					}
 					echo '\',\''.$row_all_resources['filename'].'\');">' ?>
       <?php echo $row_all_resources['filename'].'</div>'; ?></a></td>

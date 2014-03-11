@@ -348,12 +348,20 @@ function showResource(id,type,name) {
 	}else if (type=="image") {
 		height_set=320;
 		width_set=620;
+	}else if (type=="video") {
+		height_set=336;
+		width_set=635;
 	}
 	light = new LightFace.IFrame({
 		height:height_set,
 		width:width_set,
 		url: 'show_resource_float.php?actiontype=loadResource&r_id='+id,
-		title: 'Resource : '+name
+		title: 'Resource : '+name,
+		onClose:function() {
+			if(type=="video") {
+				window.location.reload();
+			}
+		}
 		}).addButton('Close', function() { light.close(); },true).open();		
 }
 
@@ -554,6 +562,8 @@ else {
 						echo "pdf";
 					}else if (strpos($row_resource['file_type'],"image")!==false) {
 						echo "image";
+					}else if (strpos($row_resource['file_type'],"video")!==false) {
+						echo "video";
 					}
 					echo '\',\''.$row_resource['filename'].'\');">'.$row_resource['filename']."</div></td>";
 							if($row_resource['download_status']==1){?>
@@ -778,7 +788,7 @@ else {
     </form>
     <br>
     <form id="dpform" action="profile_data.php" enctype="multipart/form-data" method="post">
-   <p> <label for="File"><b>Profile Pciture:</b></label><br />
+   <p> <label for="File"><b>Profile Picture:</b></label><br />
 	   <input type="file" name="File" id="File">
 		</p>
    

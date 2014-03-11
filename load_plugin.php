@@ -90,7 +90,7 @@ if(isset($_GET['div'])) {
 			 <img src="images/play.png" style="padding-left:150px" width="320px" height="320px"/>
 		</a> 
 		<script>
-			flowplayer("player", "swf/flowplayer-3.2.15.swf");
+			var player=flowplayer("player", "swf/flowplayer-3.2.15.swf");
 		</script>';
 }
 ?>

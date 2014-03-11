@@ -78,7 +78,12 @@ function showResource(id,type,name) {
 		height:height_set,
 		width:width_set,
 		url: 'show_resource_float.php?actiontype=loadResource&r_id='+id,
-		title: 'Resource : '+name
+		title: 'Resource : '+name,
+		onClose:function() {
+				if(type=="video") {
+				window.location.reload();
+				}
+		}
 		}).addButton('Close', function() { light.close(); },true).open();		
 }
 
