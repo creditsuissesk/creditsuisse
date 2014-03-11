@@ -334,9 +334,10 @@ var userList = new List('users', options);
                          <input type="hidden" name="MM_change" value="form1" /></td>
                      </form>
                      <?php }else echo "<td> </td>";?>
-                     <form  id="form2" name="form2" method="POST" action="remove_res.php">
-                       <td><input name="change" id="change" value="Remove" type="submit" />
+                     <form  id="form2" name="form2" method="POST" action="update.php">
+                       <td><input name="change" id="change" value="Update" type="submit" />
                          <input type="hidden" name="id" id="id" value="<?php echo $row_resource['r_id'];?>"  />
+                          <input type="hidden" name="co_name" id="co_name" value="<?php echo $row_resource['filename'];?>"/>
                          <input type="hidden" name="MM_change" value="form2" /></td>
                      </form>
                    </tr>
