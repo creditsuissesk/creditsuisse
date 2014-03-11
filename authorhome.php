@@ -868,17 +868,9 @@ var ex_List = new List('existing_students', ex_Options);
 
     </div>
     <!-- end of profile tab-->
-    
-    
-    
-    
-    
-    
-    
       </div>
     </div>
 <br />
-<a href="<?php echo $logoutAction ?>">Log out</a>
 <script type="text/javascript">
 var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1");
 </script>

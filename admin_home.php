@@ -578,13 +578,8 @@ var comlist = new List('flag_c', currcom);
 
     </div>
     <!-- end of profile tab-->
-  
-  
-  
-  
   </div>
 </div>
-<a href="<?php echo $logoutAction ?>">Log out</a>
 <script type="text/javascript">
 var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1",{defaultTab:<?php echo $tabToShow;?>});
 </script>
