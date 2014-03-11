@@ -70,6 +70,10 @@ function clearText(field)
     if (field.defaultValue == field.value) field.value = '';
     else if (field.value == '') field.value = field.defaultValue;
 }
+function mailer() {
+	var url="mailto:?subject=Query-"+document.getElementById("namefield").value+"&body="+document.getElementById("textfield");
+	window.location=url;
+}
 </script>
 
 <script src="js/jquery.min.js"></script>
@@ -135,6 +139,8 @@ if(isset($_GET['mode']) && isset($_GET['viewId'])) {
 		echo "pdf";
 	}else if (strpos($row_get_resource['file_type'],"image")!==false) {
 		echo "image";
+	}else if (strpos($row_get_resource['file_type'],"video")!==false) {
+		echo "video";
 	}
 	echo "','".$row_get_resource['filename']."');});";?>
 </script>
@@ -273,16 +279,13 @@ if(isset($_GET['mode']) && isset($_GET['viewId'])) {
                 
                 <div class="half left">
                     <h4>Mailing Address</h4>
-                    220-440 Nullam lacus diam,<br />
-                	Pulvinar sit amet convallis eget, 10220<br />
-                	Lorem ipsum dolor<br /><br />
+                    VJTI,<br />
+                	Matunga, Mumbai 400019<br />
+                	<br /><br />
                  
-                 	Email: info[at]company.com | Phone: 020-010-0101<br />
+                 	Email: dalvishaarad[at]gmail.com<br />
 
                     <div class="clear h20"></div>
-                <div class="img_nom img_border"><span></span>
-                    <iframe width="320" height="160" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=new+york+central+park&amp;aq=&amp;sll=37.0625,-95.677068&amp;sspn=60.158465,135.263672&amp;vpsrc=6&amp;ie=UTF8&amp;hq=&amp;hnear=Central+Park,+New+York&amp;t=m&amp;ll=40.769606,-73.973372&amp;spn=0.014284,0.033023&amp;z=14&amp;output=embed"></iframe>
-                </div>
                 
                 <a href="#home" class="home_btn">home</a> 
                 <a href="#institution" class="page_nav_btn previous">Previous</a>
@@ -292,19 +295,18 @@ if(isset($_GET['mode']) && isset($_GET['viewId'])) {
                 
                 <div class="half right">
                     <h4>Quick Contact</h4>
-                    <p>Nullam a tortor est, congue fermentum nisi. Maecenas nulla nulla, eu volutpat euismod, scelerisque ut dui.</p>
+                    <p>If you have any queries, write to us.</p>
+                    <script>
+					
+					</script>
                     <div id="contact_form">
-                        <form method="post" name="contact" action="#contact">
-                            <div class="left">
-                                <label for="author">Name:</label> <input type="text" id="author" name="author" class="required input_field" />
-                            </div>
-                            <div class="right">                           
-                                <label for="email">Email:</label> <input type="text" id="email" name="email" class="validate-email required input_field" />
-                            </div>
-                            <div class="clear"></div>
-                            <label for="text">Message:</label> <textarea id="text" name="text" rows="0" cols="0" class="required"></textarea>
-                            <input type="submit" class="submit_btn float_l" name="submit" id="submit" value="Send" />
+                        <form>
+                        <label for="author">Name:</label> <input type="text" id="namefield" name="author" class="required input_field" />
+	                            <div class="clear"></div>
+                            <label for="text">Message:</label> <textarea id="textfield" name="text" rows="0" cols="0" class="required"></textarea>
+                            <input type="button" onclick="mailer(); return false;" class="submit_btn float_l" value="Send" />
                         </form>
+                        
                     </div>
                 </div>
                 

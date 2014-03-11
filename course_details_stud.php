@@ -186,6 +186,8 @@ function clearText(field)
 		$filetype="pdf";
 	}else if (strpos($row_get_resource['file_type'],"image")!==false) {
 		$filetype="image";
+	}else if (strpos($row_get_resource['file_type'],"video")!==false) {
+		$filetype="video";
 	}
 	?>
 	$(document).ready(function(){showResource(<?php echo $_GET['show_res'];?>,'<?php echo $filetype;?>','<?php echo $row_get_resource['filename'];?>')});
