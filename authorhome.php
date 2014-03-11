@@ -360,7 +360,7 @@ function showResource(id,type,name) {
 <br/>
 
 
-<h1>Hello, <?php echo $_SESSION['MM_f_name'];?></h1>
+<div id="authname_title">Hello, <?php echo $_SESSION['MM_f_name'];?></div>
 <div id="TabbedPanels1" class="TabbedPanels">
   <ul class="TabbedPanelsTabGroup">
     <li class="TabbedPanelsTab" tabindex="0">Create Course</li>
@@ -375,6 +375,8 @@ function showResource(id,type,name) {
   </ul>
   <div class="TabbedPanelsContentGroup">
     <div class="TabbedPanelsContent">
+    <div class="tab-header">Create a new course</div>
+    	<div class="tab-form-box" style="background-color:#FFF;border-radius:5px;">
       <p>Please enter the course details : </p>
       <form id="form1" name="new_course" method="POST" enctype="multipart/form-data" action="author_home_data.php">
         <p>
@@ -397,22 +399,19 @@ function showResource(id,type,name) {
 <input type="file" name="file" id="file">
 		</p>
         <p>
-          <input name="submit" type="submit" id="submit" onclick="MM_validateForm('c_name','','R','start_date','','R','c_stream','','R','end_date','','R','desc','','R');return document.MM_returnValue" value="Submit" />
-          <input type="reset" name="reset" id="reset" value="Reset" />
+          <input name="submit" type="submit" class="buttom" id="submit" onclick="MM_validateForm('c_name','','R','start_date','','R','c_stream','','R','end_date','','R','desc','','R');return document.MM_returnValue" value="Submit" />
+          <input type="reset" class="buttom" name="reset" id="reset" value="Reset" />
           <?php require_once('Connections/conn.php'); ?>
 
         </p>
-        <p>&nbsp;</p>
-        <p>&nbsp;</p>
-        <p>&nbsp;</p>
         <p>
           <label for="uid"></label>
         </p>
-        <p>&nbsp;</p>
         <p>
           <input type="hidden" name="MM_insert" value="new_course" />
         </p>
       </form>
+	</div>
     </div>	<!---ends tab 1--->
     
     <!-- start of second tab -->
@@ -652,6 +651,8 @@ var arList = new List('all_res', arOptions);
     <div class="TabbedPanelsContent">
      <!--start of tab upload resource-->
      <div id="New Resource">
+	<div class="tab-header">Upload a new resource</div>
+	<div class="tab-form-box" style="background-color:#FFF;border-radius:5px;">
       <p>Please enter the Resource details : </p>
       <form id="new_resource" method="POST" action="upload_res.php" enctype="multipart/form-data">
        <p>
@@ -692,12 +693,12 @@ var arList = new List('all_res', arOptions);
        <label for="file">File* :</label>
 <input type="file" name="file" id="file">
 		</p>  
-      	   <input name="submit" type="submit" id="submit" onclick="MM_validateForm('co_name','','R','r_name','','R','r_type','','R');return document.MM_returnValue" value="Upload" action="upload_res.php"/>
+      	   <input name="submit" class="buttom" type="submit" id="submit" onclick="MM_validateForm('co_name','','R','r_name','','R','r_type','','R');return document.MM_returnValue" value="Upload" action="upload_res.php"/>
       <input type="hidden" name="MM_insert" value="form" />
       </form>
-      	</div><!--end of tab upload resource-->
-      </div>
-      
+      	</div>
+        </div>
+      </div><!--end of tab upload resource-->
        <div class="TabbedPanelsContent">
     <!--- if no new students to be permitted then skip whole table--->
     
@@ -823,8 +824,8 @@ var ex_List = new List('existing_students', ex_Options);
     </div><!--end of existing permitted students tab content-->
      <!-- start of profile tab-->
     <div class="TabbedPanelsContent">
-	<div class="profile-resource-header"> Your Profile</div>
-	<div class="profile-upload-box" style="background-color:#FFF;border-radius:5px;">
+	<div class="tab-header"> Your Profile</div>
+	<div class="tab-form-box" style="background-color:#FFF;border-radius:5px;">
 	<div id="pagewidth" >
 	<div id="wrapper" class="clearfix">
 		<div id="twocols"> 

@@ -425,7 +425,7 @@ else {
 </nav>
 <br/>
             
-<h1><?php echo /*$row_get_user_details['f_name']*/$_SESSION['MM_f_name'];?>'s home </h1>
+<div id="uname_title"><?php echo /*$row_get_user_details['f_name']*/$_SESSION['MM_f_name'];?>'s home </div>
 <div id="TabbedPanels1" class="TabbedPanels">
   <ul class="TabbedPanelsTabGroup">
     <li class="TabbedPanelsTab" tabindex="0">Browse Resources</li>

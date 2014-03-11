@@ -397,7 +397,7 @@ function showResource(id,type,name) {
 </nav>
 <br/>
 
-<h1>Hello, <?php echo $_SESSION['MM_f_name'];?></h1>
+<div id="cmname_title">Hello, <?php echo $_SESSION['MM_f_name'];?></div>
 <div id="TabbedPanels1" class="TabbedPanels">
   <ul class="TabbedPanelsTabGroup">
     <li class="TabbedPanelsTab" tabindex="0">Create Course</li>

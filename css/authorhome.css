@@ -31,6 +31,20 @@ ul, li {
 	list-style:none;
 }
 
+#authname_title { 
+	display: block;
+	width: 300px;
+	margin: 0 auto;
+	text-align: center;
+	font-size: 28px;
+	color: #fff;
+	font-weight: 700;
+	line-height: 1.6em;
+	font-family: "Lucida Sans Unicode","Lucida Grande",sans-serif;
+	padding-top:10px;
+	padding-bottom:10px;
+}
+
 h1, h2, h3, h4, h5, h6 { color: #fff; font-weight: normal; }
 h1 { font-size: 36px; margin: 0 0 30px; padding: 5px 0 }
 h2 { font-size: 24px; margin: 0 0 25px; padding: 5px 0 }
@@ -385,7 +399,7 @@ course-title {
 	font:Verdana, Geneva, sans-serif bold;
 	display:inline;
 }
-.profile-upload-box {
+.tab-form-box {
 	padding: 20px 50px 20px;
 	width:80%;
 	margin:20px 90px;
@@ -429,7 +443,7 @@ input.buttom:hover	{ background-color: #2a78f6; }
 	font-size:12px;
 }
 
-.profile-resource-header {
+.tab-header {
 	color: #93CDF5;
 	font-size: 22px;
 	text-transform: uppercase;

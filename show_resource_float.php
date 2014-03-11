@@ -108,9 +108,7 @@ if(isset($_GET['r_id']) && (isset($_GET['actiontype']) && $_GET['actiontype']=="
 		echo '<embed height="300" width="600" src="'.$row_get_resource['view_location'].'">';
 	}else if (strpos($row_get_resource['file_type'],"video")!==false) {
 		echo '<div id="holder"></div>';
-		echo '<script>$(document).ready(function(){load('.$row_get_resource['r_id'].');});
-				$(document).unload(function(){alert("unloaded");unloadplayer();});</script>';
-		
+		echo '<script>$(document).ready(function(){load('.$row_get_resource['r_id'].');});</script>';	
 	}
 }
 

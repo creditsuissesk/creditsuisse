@@ -1,3 +1,17 @@
+#uname_title { 
+	display: block;
+	width: 300px;
+	margin: 0 auto;
+	text-align: center;
+	font-size: 28px;
+	color: #fff;
+	font-weight: 700;
+	line-height: 1.6em;
+	font-family: "Lucida Sans Unicode","Lucida Grande",sans-serif;
+	padding-top:10px;
+	padding-bottom:10px;
+}
+
 .profile-upload-box {
 	padding: 20px 50px 20px;
 	width:80%;

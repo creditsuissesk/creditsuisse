@@ -154,7 +154,7 @@ if(isset($_GET['mode']) && isset($_GET['viewId'])) {
 <div id="templatemo_header_wrapper">
 	<div id="templatemo_header">
     	<div id="site_title">Virtual Library</div>
-        <a class="templatemo_header_bg" href="" title="Creative commons beelden"  target="_blank"><img src="images/header.png" alt="Creative commons beelden" title="Creative commons beelden" /></a>
+        <a class="templatemo_header_bg" href="" title=""  target="_blank"><img src="images/header.png"/></a>
     </div>
 </div>
 
@@ -351,5 +351,4 @@ if(isset($_GET['mode']) && isset($_GET['viewId'])) {
 </div>
 
 </body> 
-<script type='text/javascript' src='js/logging.js'></script>
 </html>
