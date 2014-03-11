@@ -249,7 +249,7 @@ body,td {
 	</ul>
 </nav>
 <br/>
-<h1><?php echo /*$row_get_user_details['f_name']*/$_SESSION['MM_f_name'];?>'s home </h1>
+<div id="adminname_title"><?php echo /*$row_get_user_details['f_name']*/$_SESSION['MM_f_name'];?>'s home </div>
 
 <?php 
 if (isset($_GET['showTab'])) {

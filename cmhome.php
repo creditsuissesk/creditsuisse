@@ -412,6 +412,8 @@ function showResource(id,type,name) {
   </ul>
 <div class="TabbedPanelsContentGroup">
     <div class="TabbedPanelsContent">
+    <div class="tab-header">Create new course here</div>
+	<div class="tab-form-box" style="background-color:#FFF;border-radius:5px;">
       <p>Please enter the course details : </p>
       <form id="form1" name="new_course" method="POST" enctype="multipart/form-data" action="author_home_data.php">
         <p>
@@ -434,22 +436,19 @@ function showResource(id,type,name) {
 <input type="file" name="file" id="file">
 		</p>
         <p>
-          <input name="submit" type="submit" id="submit" onclick="MM_validateForm('c_name','','R','start_date','','R','c_stream','','R','end_date','','R','desc','','R');return document.MM_returnValue" value="Submit" />
-          <input type="reset" name="reset" id="reset" value="Reset" />
+          <input name="submit" class="buttom" type="submit" id="submit" onclick="MM_validateForm('c_name','','R','start_date','','R','c_stream','','R','end_date','','R','desc','','R');return document.MM_returnValue" value="Submit" />
+          <input type="reset" class="buttom" name="reset" id="reset" value="Reset" />
           <?php require_once('Connections/conn.php'); ?>
 
         </p>
-        <p>&nbsp;</p>
-        <p>&nbsp;</p>
-        <p>&nbsp;</p>
         <p>
           <label for="uid"></label>
         </p>
-        <p>&nbsp;</p>
         <p>
           <input type="hidden" name="MM_insert" value="new_course" />
         </p>
       </form>
+      </div>
     </div>	<!---ends tab 1--->
         <div class="TabbedPanelsContent">
     <div id="curr_courses">
@@ -554,6 +553,8 @@ var allList = new List('pending_courses', allOptions);
     <div class="TabbedPanelsContent">
      <!--start of tab upload resource-->
      <div id="New Resource">
+     <div class="tab-header">Upload new resource here</div>
+     	<div class="tab-form-box" style="background-color:#FFF;border-radius:5px;">
       <p>Please enter the Resource details : </p>
       <form id="new_resource" method="POST" action="upload_res.php" enctype="multipart/form-data">
        <p>
@@ -594,11 +595,12 @@ var allList = new List('pending_courses', allOptions);
        <label for="file">File* :</label>
 <input type="file" name="file" id="file">
 		</p>  
-      	   <input name="submit" type="submit" id="submit" onclick="MM_validateForm('co_name','','R','r_name','','R','r_type','','R');return document.MM_returnValue" value="Upload" action="upload_res.php"/>
+      	   <input name="submit" class="buttom" type="submit" id="submit" onclick="MM_validateForm('co_name','','R','r_name','','R','r_type','','R');return document.MM_returnValue" value="Upload" action="upload_res.php"/>
       <input type="hidden" name="MM_insert" value="form" />
       </form>
-      	</div><!--end of tab upload resource-->
-      </div>
+      	</div>
+        </div>
+      </div><!--end of tab upload resource-->
       <!-- start of approved resource tab-->
       <div class="TabbedPanelsContent">
     <?php if($totalRows_approved_resources>0){?>
@@ -865,8 +867,8 @@ var ex_List = new List('existing_students', ex_Options);
   
        <!-- start of profile tab-->
     <div class="TabbedPanelsContent">
-	<div class="profile-resource-header"> Your Profile</div>
-	<div class="profile-upload-box" style="background-color:#FFF;border-radius:5px;">
+	<div class="tab-header"> Your Profile</div>
+	<div class="tab-form-box" style="background-color:#FFF;border-radius:5px;">
 	<div id="pagewidth" >
 	<div id="wrapper" class="clearfix">
 		<div id="twocols"> 
