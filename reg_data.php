@@ -87,9 +87,10 @@ if ((($_FILES["File"]["type"] == "image/gif")
     else
       {
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form")) {
+			$passhash=hash('sha256', $_POST['password']);
 		$insertSQL = sprintf("INSERT INTO `user` (u_name, password, f_name, l_name, contact_no, dob, institute, stream,role,degree,about) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s,%s,%s)",
 							 GetSQLValueString($_POST['u_name'], "text"),
-							 GetSQLValueString($_POST['password'], "text"),
+							 GetSQLValueString($passhash, "text"),
 							 GetSQLValueString($_POST['First_Name'], "text"),
 							 GetSQLValueString($_POST['Last_Name'], "text"),
 							 GetSQLValueString($_POST['Contact_Number'], "int"),
