@@ -475,7 +475,7 @@ $totalRows_categories = mysql_num_rows($categories);
 
 						<aside class="left-sidebar">
                         <img src="<?php echo $row_disc['photo'];?>" width="100" height="100" alt="Profile picture"/><br />
-							<dt><a onclick="showUser(<?php echo $row_disc['insert_uid'].",'".$row_disc['f_name']." ".$row_disc['l_name'];?>');return false;" style="cursor:pointer;"><?php echo $row_disc['f_name']." ".$row_disc['l_name'];?></a></dt>
+							<dt style="cursor:pointer;"><a onclick="showUser(<?php echo $row_disc['insert_uid'].",'".$row_disc['f_name']." ".$row_disc['l_name'];?>');return false;"><?php echo $row_disc['f_name']." ".$row_disc['l_name'];?></a></dt>
 						</aside><!-- .left-sidebar -->
 
 						<aside class="right-sidebar">
@@ -491,15 +491,15 @@ $totalRows_categories = mysql_num_rows($categories);
                             <td>
                             <?php echo '<script> var path="forum_new.php?mode=showmain" </script> ';?>
                             <?php if(($_SESSION['MM_UserID']==$row_disc['insert_uid']) || ($_SESSION['MM_UserGroup']=='admin')) {
-                            echo '<img id="'.$row_disc['discussion_id'].'" src="images/trash.png" width="30" height="30" onclick="edit_discussion(this,path,0)"/>';
+                            echo '<img id="'.$row_disc['discussion_id'].'" src="images/trash.png" width="30" height="30" onclick="edit_discussion(this,path,0)" style="cursor:pointer;"/>';
 									$padding=1;
 							}else {
 									$padding=0;
 							}
 							if($row_disc['flag']==0) {
-							echo "<img id='".$row_disc['discussion_id']."' src='images/flag.png' width='30' height='30' onclick='edit_discussion(this,path,1)' ";if($padding==0) {echo "style='padding-left:30px;'";} echo " />";
+							echo "<img id='".$row_disc['discussion_id']."'  src='images/flag.png' width='30' height='30' onclick='edit_discussion(this,path,1)' ";if($padding==0) {echo "style='cursor:pointer;padding-left:30px;'";} echo " />";
 							} else {
-							echo "<img id='".$row_disc['discussion_id']."' src='images/red_flag.png' width='30' height='30' ";if($padding==0) {echo "style='padding-left:30px;'";} echo"/>";
+							echo "<img id='".$row_disc['discussion_id']."' src='images/red_flag.png' width='30' height='30' ";if($padding==0) {echo "style='cursor:pointer;padding-left:30px;'";} echo"/>";
 							}
 							?>
                             </td>
@@ -580,14 +580,14 @@ $totalRows_categories = mysql_num_rows($categories);
 						    </div>
                             </td>
                             <td><?php if (($row_comments['insert_uid']==$_SESSION['MM_UserID']) || ($_SESSION['MM_UserGroup']=='admin')) {
-							echo "<img id='".$row_comments['comment_id']."' src='images/trash.png' width='30' height='30' onclick='edit_comment(this,".$row_comments['discussion_id'].",0)'/>";
+							echo "<img id='".$row_comments['comment_id']."' src='images/trash.png' width='30' height='30' onclick='edit_comment(this,".$row_comments['discussion_id'].",0)' style='cursor:pointer;'/>";
 								$padding=0;
 							}else {$padding=1;}?>
                             <?php if ($row_comments['flag']==1) {$padding=0;} ?>
                             <?php if($row_comments['flag']==0) {
-							echo "<img id='".$row_comments['comment_id']."' src='images/flag.png' width='30' height='30'onclick='edit_comment(this,".$row_comments['discussion_id'].",1)'";if($padding==1) {echo "style='padding-left:30px;'";} echo " />";
+							echo "<img id='".$row_comments['comment_id']."' src='images/flag.png' width='30' height='30'onclick='edit_comment(this,".$row_comments['discussion_id'].",1)'";if($padding==1) {echo "style='cursor:pointer;padding-left:30px;'";} echo " />";
 							} else {
-							echo "<img id='".$row_comments['comment_id']."' src='images/red_flag.png' width='30' height='30'";if($padding==0) {echo "style='padding-left:30px;'";} echo " />";
+							echo "<img id='".$row_comments['comment_id']."' src='images/red_flag.png' width='30' height='30'";if($padding==0) {echo "style='cursor:pointer;padding-left:30px;'";} echo " />";
 							}
 							?>
                             </td></tr></table>                           
@@ -765,15 +765,15 @@ $totalRows_categories = mysql_num_rows($categories);
                             <?php echo '<script> var path="http://'. $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'].'";</script> ';?>
                             <?php if(($_SESSION['MM_UserID']==$row_discussions['insert_uid']) || ($_SESSION['MM_UserGroup']=='admin')) {
 								
-                            echo '<img id="'.$row_discussions['discussion_id'].'" src="images/trash.png" width="30" height="30" onclick="edit_discussion(this,path,0)"/>';
+                            echo '<img id="'.$row_discussions['discussion_id'].'" src="images/trash.png" width="30" height="30" onclick="edit_discussion(this,path,0)"/ style="cursor:pointer;">';
 									$padding=1;
 							}else {
 									$padding=0;
 							}
 							if($row_discussions['flag']==0) {
-							echo "<img id='".$row_discussions['discussion_id']."' src='images/flag.png' width='30' height='30' onclick='edit_discussion(this,path,1)' ";if($padding==0) {echo "style='padding-left:30px;'";} echo " />";
+							echo "<img id='".$row_discussions['discussion_id']."' src='images/flag.png' width='30' height='30' onclick='edit_discussion(this,path,1)' ";if($padding==0) {echo "style='cursor:pointer;padding-left:30px;'";} echo " />";
 							} else {
-							echo "<img id='".$row_discussions['discussion_id']."' src='images/red_flag.png' width='30' height='30' ";if($padding==0) {echo "style='padding-left:30px;'";} echo"/>";
+							echo "<img id='".$row_discussions['discussion_id']."' src='images/red_flag.png' width='30' height='30' ";if($padding==0) {echo "style='cursor:pointer;padding-left:30px;'";} echo"/>";
 							}
 							?>
                             </td>
@@ -831,14 +831,34 @@ $totalRows_categories = mysql_num_rows($categories);
                     <label for="category">Discussion Category :</label>
 		  	 	  <select class="select-style gender" name="category" id="category" placeholder="I am...">
 					<?php
+						//select non-course common categories
 						mysql_select_db($database_conn, $conn);
-						$query_disc_cat = sprintf("SELECT * FROM discussion_category");
-						$disc_cat = mysql_query($query_disc_cat, $conn) or die(mysql_error());
-						$row_disc_cat = mysql_fetch_assoc($disc_cat);
-						$totalRows_disc_cat = mysql_num_rows($disc_cat);
+						$query_common_cat = sprintf("select * from `discussion_category` where category_name not in (select c_name from `course`)");
+						$common_cat = mysql_query($query_common_cat, $conn) or die(mysql_error());
+						$row_common_cat = mysql_fetch_assoc($common_cat);
+						$totalRows_common_cat = mysql_num_rows($common_cat);
 						do {?>
-                        <option value="<?php echo $row_disc_cat['category_id'];?>"><?php echo $row_disc_cat['category_name'];?></option>
-						<?php }while($row_disc_cat = mysql_fetch_assoc($disc_cat));?>
+                        <option value="<?php echo $row_common_cat['category_id'];?>"><?php echo $row_common_cat['category_name'];?></option>
+						<?php }while($row_common_cat = mysql_fetch_assoc($common_cat));
+						//display admitted course categories now
+						if($_SESSION['MM_UserGroup']=='student') {
+							//show courses enrolled
+							$query_spc_cat= sprintf("select category_id,category_name from discussion_category join course on c_name=category_name join enroll_course on course.c_id=enroll_course.c_enroll_id AND enroll_course.u_id=%s AND (a_stat=1 OR a_stat=0)",GetSQLValueString($_SESSION['MM_UserID'], "int"));
+						}else if ($_SESSION['MM_UserGroup']=='author') {
+							//show courses created
+							$query_spc_cat=sprintf("select category_id,category_name from discussion_category join course on category_name=c_name where course.u_id=%s",GetSQLValueString($_SESSION['MM_UserID'], "int"));
+						}else {
+							//cm and admin can post anywhere
+							$query_spc_cat="select category_id,category_name from discussion_category join course where category_name=c_name";
+						}
+						$spc_cat = mysql_query($query_spc_cat, $conn) or die(mysql_error());
+						$row_spc_cat = mysql_fetch_assoc($spc_cat);
+						$totalRows_spc_cat = mysql_num_rows($spc_cat);
+						do {?>
+                        <option value="<?php echo $row_spc_cat['category_id'];?>"><?php echo $row_spc_cat['category_name'];?></option>
+						<?php }while($row_spc_cat = mysql_fetch_assoc($spc_cat));
+						?>
+                        
 				  </select><br /><br />
 				  </p>
                     <p><label for="disc_body">Discussion Body :</label><br /></p>
