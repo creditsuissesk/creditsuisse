@@ -148,62 +148,18 @@ $totalRows_author_details = mysql_num_rows($author_details);
 <link rel="stylesheet" type="text/css" media="screen" href="css/course_list.css" /> 
 <link rel="stylesheet" type="text/css" media="screen" href="css/nav_bar.css" />
 <link href="css/table.css" type="text/css" rel="stylesheet" /> 
-<script>
-function addQuestion() {
-	var question = document.getElementById("ques").value;
-	var opt1 = document.getElementById("opt1").value;
-	var opt2 = document.getElementById("opt2").value;
-	var opt3 = document.getElementById("opt3").value;
-	var opt4 = document.getElementById("opt4").value;
-	var correct=0;
-	var cId = document.getElementById("c_id").value;
-	if(document.getElementById("r1").checked) {correct=1;}
-	else if(document.getElementById("r2").checked) {correct=2;}
-	else if(document.getElementById("r3").checked) {correct=3;}
-	else if(document.getElementById("r4").checked) {correct=4;}
-	if (question!="" && opt1!="" && opt2!="" && opt3!="" && opt4!="" && correct>0) {
-		//all fields are filled
-		if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
-	  		xmlhttp=new XMLHttpRequest();
-	  	} else {// code for IE6, IE5
-			xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-		}
-		xmlhttp.onreadystatechange=function() {
-			if (xmlhttp.readyState==4 && xmlhttp.status==200) {
-		    	//document.getElementById("courselist").innerHTML=xmlhttp.responseText;
-				alert("Question added successfully!");
-				showquestions();
-			}
-		}
-		xmlhttp.open("GET","course_eval.php?c_id="+cId+"&ques="+question+"&opt1="+opt1+"&opt2="+opt2+"&opt3="+opt3+"&opt4="+opt4+"&correct="+correct,true);
-		xmlhttp.send();
-	} else {
-		alert("Please fill all the fields");
-	}
-}
+<script src="js/course_detail.js"></script>
 
-function showquestions() {
-	var cId = document.getElementById("c_id").value;
-	if (window.XMLHttpRequest)
-  {// code for IE7+, Firefox, Chrome, Opera, Safari
-  xmlhttp=new XMLHttpRequest();
-  }
-else
-  {// code for IE6, IE5
-  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-  }
-xmlhttp.onreadystatechange=function()
-  {
-  if (xmlhttp.readyState==4 && xmlhttp.status==200)
-    {
-    document.getElementById("questionslist").innerHTML=xmlhttp.responseText;
-    }
-  }
-xmlhttp.open("GET","course_eval.php?show_questions="+cId,true);
-xmlhttp.send();
-}
-</script>
-
+<style>
+	@import "css/LightFace.css";
+</style>
+<link rel="stylesheet" href="css/lightface.css" />
+<script src="js/mootools.js"></script>
+<script src="js/LightFace.js"></script>
+<script src="js/LightFace.js"></script>
+<script src="js/LightFace.IFrame.js"></script>
+<script src="js/LightFace.Image.js"></script>
+<script src="js/LightFace.Request.js"></script>
 </head>
 
 <body onLoad="javascript:TabbedPanels1.showPanel(<?php echo $_COOKIE['index'];?>)">
@@ -274,7 +230,7 @@ table td, table th {
     <tbody class="list">
     <?php do { ?>
       <tr>
-        <td class="name"><?php echo $row_course_students['f_name'];?> <?php echo $row_course_students['l_name'];?></td>
+        <td class="name"><a onclick="showUser(<?php echo $row_course_students['u_id'].",'".$row_course_students['f_name']." ".$row_course_students['l_name'];?>');return false;" style="cursor:pointer;"><?php echo $row_course_students['f_name'];?> <?php echo $row_course_students['l_name'];?></a></td>
         <td class="contact"><?php echo $row_course_students['contact_no'];?></td>
         <td class="email"><?php echo $row_course_students['u_name'];?></td>
         <td class="dob"><?php echo $row_course_students['dob'];?></td>
@@ -322,7 +278,17 @@ var userList = new List('users', options);
                  <tbody class="list">
                    <?php do { ?>
                    <tr>
-                     <td class="name"><?php echo $row_resource['filename'];?></td>
+                     <td class="name"><a><?php echo '<div id="'.$row_resource['r_id'].'" style="cursor:pointer;" onclick="showResource('.$row_resource['r_id'].',\'';
+					if(strpos($row_resource['file_type'],"application/pdf")!==false) {
+						echo "pdf";
+					}else if (strpos($row_resource['file_type'],"image")!==false) {
+						echo "image";
+					}else if (strpos($row_resource['file_type'],"video")!==false) {
+						echo "video";
+					}
+					echo '\',\''.$row_resource['filename'].'\');">' ?>
+					 <?php echo $row_resource['filename'];?></a>
+                     </td>
                      <td class="size"><?php echo $row_resource['file_size'];?></td>
                      <td class="type"><?php echo $row_resource['r_type'];?></td>
                      <td class="date"><?php echo $row_resource['uploaded_date'];?></td>
