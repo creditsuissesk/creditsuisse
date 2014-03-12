@@ -87,3 +87,12 @@ function showResource(id,type,name) {
 		title: name
 		}).addButton('Close', function() { light.close(); },true).open();
 	}
+
+function updateResource(id,co_name) {
+	light = new LightFace.IFrame({
+		height:160,
+		width:350,
+		url: 'update.php?id='+id+"&co_name="+co_name,
+		title: co_name
+		}).addButton('Close', function() { light.close(); },true).open();
+}

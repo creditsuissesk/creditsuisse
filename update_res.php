@@ -192,10 +192,10 @@ $insertSQL = sprintf("UPDATE resource SET file_size=%s, uploaded_by=%s, approve_
 		mysql_select_db($database_conn, $conn);
 		$Result1 = mysql_query($insertSQL, $conn) or die(mysql_error());
 	  move_uploaded_file($_FILES["file"]["tmp_name"],$upload_add);
-	  echo '<script type="text/javascript">alert("File Succesfully Uploaded"); window.location="'.$redirect.'"; </script>';
+	  echo 'You can safely close the window now.<script type="text/javascript">alert("File Succesfully Uploaded"); window.close(); </script>';
     
 		}else
-		echo '<script type="text/javascript">alert("Problem in the uploaded file."); window.location="'.$redirect.'"; </script>';
+		echo 'Problem in file upload. Please close this window and try again.<script type="text/javascript">alert("Problem in the uploaded file."); window.close(); </script>';
 		}
 else
   {
