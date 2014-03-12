@@ -135,8 +135,8 @@
 		  <label for="Last_Name">Last Name* : </label></p>
 		  <input type="text" required name="Last_Name" id="Last_Name" placeholder="Last Name"/>
 	   <p class="contact">
-		  <label for="Date_of_Birth">Date_of_Birth* : </label></p>
-		  <input name="Date_of_Birth" required type="text" id="Date_of_Birth" readonly placeholder="Date_of_Birth"/>
+		  <label for="Date of Birth">Date of Birth* : </label></p>
+		  <input name="Date_of_Birth" required type="text" id="Date_of_Birth" readonly placeholder="Date of Birth"/>
 				  
 	   <p class="contact">
 		  <label for="Contact_Number">Contact No.* : </label></p>

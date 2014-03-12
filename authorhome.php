@@ -258,21 +258,7 @@ body,td,th {
 </style>
 <script type="text/javascript" src="js/jsDatePick.min.1.3.js"></script>
     
-<script type="text/javascript">
-window.onload = function(){
-		alert("loaded");
-		new JsDatePick({
-			useMode:2,
-			target:"start_date",
-			dateFormat:"%Y-%m-%d"
-		});
-		new JsDatePick({
-			useMode:2,
-			target:"end_date",
-			dateFormat:"%Y-%m-%d"
-		});
-	};
-</script>
+
 <!---
 script for js/list.js tables
 --->
@@ -336,7 +322,21 @@ function showResource(id,type,name) {
 </head>
 
 <body onLoad="javascript:TabbedPanels1.showPanel(<?php echo $_COOKIE['index'];?>)" alink="#D6D6D6">
-
+<script type="text/javascript">
+window.onload = function(){
+		alert("loaded");
+		new JsDatePick({
+			useMode:2,
+			target:"start_date",
+			dateFormat:"%Y-%m-%d"
+		});
+		new JsDatePick({
+			useMode:2,
+			target:"end_date",
+			dateFormat:"%Y-%m-%d"
+		});
+	};
+</script>
 <nav id="headerbar">
 	<ul id="headerbar">
 		<li id="headerbar"><a href="authorhome.php">Home</a></li>
