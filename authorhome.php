@@ -231,11 +231,6 @@ if ((isset($_POST["MM_change"])) && ($_POST["MM_change"] == "form9")) {
 <link href="css/authorhome.css" type="text/css" rel="stylesheet" />
 <link href="css/table.css" type="text/css" rel="stylesheet" />
 <link rel="stylesheet" type="text/css" media="screen" href="css/nav_bar.css" /> 
-<!---
-script for js/list.js tables
---->
-<script src="js/list.js"></script>
-<script src="js/jquery.min.js"></script>
 
 <!--- script for resource viewing --->
 <style>
@@ -262,20 +257,10 @@ body,td,th {
 }
 </style>
 <script type="text/javascript" src="js/jsDatePick.min.1.3.js"></script>
-
-<style>
-	@import "css/LightFace.css";
-</style>
-<link rel="stylesheet" href="css/lightface.css" />
-<script src="js/mootools.js"></script>
-<script src="js/LightFace.js"></script>
-<script src="js/LightFace.js"></script>
-<script src="js/LightFace.IFrame.js"></script>
-<script src="js/LightFace.Image.js"></script>
-<script src="js/LightFace.Request.js"></script>
     
 <script type="text/javascript">
 window.onload = function(){
+		alert("loaded");
 		new JsDatePick({
 			useMode:2,
 			target:"start_date",
@@ -287,6 +272,14 @@ window.onload = function(){
 			dateFormat:"%Y-%m-%d"
 		});
 	};
+</script>
+<!---
+script for js/list.js tables
+--->
+<script src="js/list.js"></script>
+<script src="js/jquery.min.js"></script>
+
+<script type="text/javascript">
 function MM_validateForm() { //v4.0
   if (document.getElementById){
     var i,p,q,nm,test,num,min,max,errors='',args=MM_validateForm.arguments;
@@ -416,6 +409,7 @@ function showResource(id,type,name) {
     
     <!-- start of second tab -->
     <div class="TabbedPanelsContent">
+    <?php if ($totalRows_current_courses>0) {?>
     <div id="curr_courses">
     <div class="datagrid">
      <table>
@@ -441,10 +435,14 @@ function showResource(id,type,name) {
       <td class="currentrating"><?php echo $row_current_courses['avg_rating']; ?></td>
         </tr>
     <?php } while ($row_current_courses = mysql_fetch_assoc($current_courses)); ?>
-      </tbody>
-      </table>
+    </tbody>
+    </table>
     </div>
     </div>
+    <?php } else {
+		echo "No approved courses yet";
+	}?>
+      
     <script>
 var currOptions = {
   valueNames: [ 'currentname', 'currentstream','currentstart','currentend','currentrating']
@@ -456,8 +454,11 @@ var currList = new List('curr_courses', currOptions);
     </div> <!---end of second tab--->
     
     <div class="TabbedPanelsContent">
-    <div id="all_courses">
+    
+    <?php if($totalRows_all_courses>0) { ?>
+        <div id="all_courses">
     <div class="datagrid">
+
     <table>
     <thead>
       <tr>
@@ -472,7 +473,8 @@ var currList = new List('curr_courses', currOptions);
         </th>
       </tr>
     </thead>
-    <tbody class="list">
+
+        <tbody class="list">
      <?php do { ?>
               <tr>
       <td class="allname"><a href="course_detail.php?c_id=<?php echo $row_all_courses['c_id']; ?>"><?php echo $row_all_courses['c_name']; ?></a></td>
@@ -480,13 +482,17 @@ var currList = new List('curr_courses', currOptions);
       <td class="allstart"><?php echo $row_all_courses['start_date']; ?></td>
       <td class="allend"><?php echo $row_all_courses['end_date']; ?></td>
       <td class="allrating"><?php echo $row_all_courses['avg_rating']; ?></td>
-      <td class="app_status"><?php if ($row_all_courses['approve_status']==0) echo "Course waiting for approval"; else if ($row_all_courses['approve_status']==1) echo "Course Approved"; else if ($row_all_courses['approve_status']==2) echo "Course is rejected by the Administrator"; ?>
+      <td class="app_status"><?php if ($row_all_courses['approve_status']==0) {echo "Course waiting for approval";} else if ($row_all_courses['approve_status']==1) {echo "Course Approved";} else if ($row_all_courses['approve_status']==2) {echo "Course is rejected by the Administrator";} ?>
           </tr>
     <?php } while ($row_all_courses = mysql_fetch_assoc($all_courses)); ?>
-      </tbody>
+          </tbody>
       </table>
-      </div> 
+            </div> 
     </div>
+
+    <?php }else {
+		echo "You haven't created any courses yet";
+	}?>
 
     <script>
 var allOptions = {
@@ -702,9 +708,10 @@ var arList = new List('all_res', arOptions);
        <div class="TabbedPanelsContent">
     <!--- if no new students to be permitted then skip whole table--->
     
+
+    <?php if ($totalRows_update>0 ) { ?>
         <div id="new_students">
     <div class="datagrid">
-    <?php if ($totalRows_update>0 ) { ?>
     <table>
     <thead>
     
@@ -724,10 +731,7 @@ var arList = new List('all_res', arOptions);
   </thead>
   <tbody class="list">
   <?php do { ?>
-    
-  
     <tr>
-      
       <td class="first_name"><a onclick="showUser(<?php echo $row_update['u'].",'".$row_update['f_name']." ".$row_update['l_name'];?>');return false;" style="cursor:pointer;"><?php echo $row_update['f_name']; ?></a></td>
       <td class="last_name"><a onclick="showUser(<?php echo $row_update['u'].",'".$row_update['f_name']." ".$row_update['l_name'];?>');return false;" style="cursor:pointer;"><?php echo $row_update['l_name']; ?></a></td>
       <td class="stream"><?php echo $row_update['s_stream']; ?></td>
@@ -757,6 +761,7 @@ var arList = new List('all_res', arOptions);
     <?php } else {
 		echo "No new students";
 	} ?>
+
     <script>
 var currOptions = {
   valueNames: [ 'first_name','last_name','stream','course_m','score']
@@ -766,7 +771,8 @@ var currOptions = {
 var currList = new List('new_students', currOptions);
 </script>
     </div>
-    <!--start of tab content--><div class="TabbedPanelsContent">
+    <!--start of tab content-->
+    <div class="TabbedPanelsContent">
     <?php if ($totalRows_all_students>0 ) { ?>
         <div id="existing_students">
     <div class="datagrid">
@@ -788,8 +794,6 @@ var currList = new List('new_students', currOptions);
   </thead>
   <tbody class="list">
   <?php do { ?>
-    
-  
     <tr>
       <td class="ex_f_name"><a onclick="showUser(<?php echo $row_all_students['u'].",'".$row_all_students['f_name']." ".$row_all_students['l_name'];?>');return false;" style="cursor:pointer;"><?php echo $row_all_students['f_name']; ?></a></td>
       <td class="ex_l_name"><a onclick="showUser(<?php echo $row_all_students['u'].",'".$row_all_students['f_name']." ".$row_all_students['l_name'];?>');return false;" style="cursor:pointer;"><?php echo $row_all_students['l_name']; ?></a></td>
