@@ -148,6 +148,7 @@ $totalRows_author_details = mysql_num_rows($author_details);
 <link rel="stylesheet" type="text/css" media="screen" href="css/course_list.css" /> 
 <link rel="stylesheet" type="text/css" media="screen" href="css/nav_bar.css" />
 <link href="css/table.css" type="text/css" rel="stylesheet" /> 
+<link href="css/course_detail.css" type="text/css" rel="stylesheet" /> 
 <script src="js/course_detail.js"></script>
 
 <style>
@@ -196,7 +197,7 @@ table td, table th {
   padding:5px;`
 }
 </style>
-<h1><?php echo $row_course_details['c_name']?></h1>
+<div id="coursename_title"><?php echo $row_course_details['c_name']?></div>
 <div id="TabbedPanels1" class="TabbedPanels">
   <ul class="TabbedPanelsTabGroup">
     <li class="TabbedPanelsTab" tabindex="0">Description</li>
@@ -207,7 +208,10 @@ table td, table th {
   </ul>
   <div class="TabbedPanelsContentGroup">
     <div class="TabbedPanelsContent">
-      <p>&nbsp;<?php echo $row_course_details['description']; ?></p>
+    <div class="tab-header">Course Description</div>
+    	<div class="tab-form-box" style="background-color:#FFF;border-radius:5px;">
+      	<p><?php echo $row_course_details['description']; ?></p>
+      	</div>
     </div>
     <div class="TabbedPanelsContent">
     <?php if($totalRows_course_students>0) {?>
@@ -367,18 +371,31 @@ var resList = new List('resource', resOptions);
          </div> <!--- end of evaluation tab--->
          <!-- start of author details tab -->
          <div class="TabbedPanelsContent">
-    <img src="<?php echo $row_author_details['photo'];?>" alt="" height=200 width =300 />
-							<p><b>Name : </b><i><?php echo $row_author_details['f_name']." ".$row_author_details['l_name'];?></i></p>
-                            <p><b>Degree of specialization : </b><i><?php echo $row_author_details['degree'];?></i></p>
-                            <p><b>Institute of Specialization :</b><i> <?php echo $row_author_details['institute'];?></i></p>
-                            <p><b>Contact me at : </b><i><?php echo $row_author_details['u_name'];?></i></p>
-                            <p><b> About myself:</b> <p style="font-style:italic"><?php echo $row_author_details['about'];?></p></p>
+         <div class="tab-header"> Course Author's Profile</div>
+         	<div class="tab-form-box" style="background-color:#FFF;border-radius:5px;">
+	<div id="pagewidth" >
+	<div id="wrapper" class="clearfix">
+		<div id="twocols"> 
+			<div id="rightcol">
+			<p><b>Name : </b><i><?php echo $row_author_details['f_name']." ".$row_author_details['l_name'];?></i></p>
+			<p><b>Degree of specialization : </b><i><?php echo $row_author_details['degree'];?></i></p>
+			<p><b>Institute of Specialization :</b><i> <?php echo $row_author_details['institute'];?></i></p>
+			<p><b>Contact me at : </b><i><?php echo $row_author_details['u_name'];?></i></p>
+			<p><b> About myself:</b> <p style="font-style:italic"><?php echo $row_author_details['about'];?></p></p>            
+            </div>
+        </div>
+		<div id="leftcol">
+    	<img src="<?php echo $row_author_details['photo'];?>" alt="" height="300" width="200" />    
+        </div>
+
+            </div></div></div>
+    
+							
     </div>
          
          <!-- end of author details tab -->
    </div>
 </div>
-<p><a href=<?php if ($_SESSION['MM_UserGroup'] == 'author')echo '"authorhome.php"';else if($_SESSION['MM_UserGroup'] == 'cm')echo '"cmhome.php"' ?>>Back to Home</a></p>
 <script type="text/javascript">
 var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1");
 </script>

@@ -144,7 +144,7 @@ $totalRows_other_course = mysql_num_rows($other_course);
 <title><?php echo $row_course_details['c_name']; ?></title>
 <meta name="keywords" content="tech layer, free template, one page layout" />
 <meta name="description" content="Tech Layer is free one-page template layout by templatemo.com using colorful navigations and darkgray background." />
-<link href="css/course_details_page.css" type="text/css" rel="stylesheet" /> 
+<link href="css/course_details_stud.css" type="text/css" rel="stylesheet" /> 
 <script type="text/javascript" src="js/jquery.min.js"></script> 
 <script type="text/javascript" src="js/jquery.scrollTo-min.js"></script> 
 <script type="text/javascript" src="js/jquery.localscroll-min.js"></script> 

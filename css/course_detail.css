@@ -1,0 +1,55 @@
+#coursename_title { 
+	display: block;
+	width: 300px;
+	margin: 0 auto;
+	text-align: center;
+	font-size: 28px;
+	color: #fff;
+	font-weight: 700;
+	line-height: 1.6em;
+	font-family: "Lucida Sans Unicode","Lucida Grande",sans-serif;
+	padding-top:10px;
+	padding-bottom:10px;
+}
+.tab-header {
+	color: #93CDF5;
+	font-size: 22px;
+	text-transform: uppercase;
+	margin: 20px 0 15px 20px;
+}
+.tab-form-box {
+	padding: 20px 50px 20px;
+	width:80%;
+	margin:20px 90px;
+}
+#leftcol{
+ width:20%; 
+ float:left; 
+ position:relative; 
+  }
+ 
+#twocols{
+ width:80%; 
+ float:right; 
+ position:relative; 
+  }
+ 
+#rightcol{
+ width:100%; 
+ float:right; 
+ position:relative; 
+ }
+ .clearfix:after {
+ content: "."; 
+ display: block; 
+height: 0; 
+ clear: both; 
+ visibility: hidden;
+ }
+ 
+.clearfix{display: inline-block;}
+
+/* Hides from IE-mac \*/
+* html .clearfix{height: 1%;}
+.clearfix{display: block;}
+/* End hide from IE-mac */  
