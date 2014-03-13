@@ -53,6 +53,10 @@ if(isset($_GET['r_id']) && (isset($_GET['actiontype']) && $_GET['actiontype']=="
 		echo '<embed height="500" width="900" src="'.$row_get_resource['view_location'].'">';
 	}else if ($row_get_resource['file_type']=="image/jpeg") {
 		echo '<embed height="300" width="600" src="'.$row_get_resource['view_location'].'">';
+	}else if (strpos($row_get_resource['file_type'],"video")!==false) {
+		echo "video";
+	}else if (strpos($row_get_resource['file_type'],"powerpoint")!==false || strpos($row_get_resource['file_type'],"presentation")!==false) {
+		echo "presentation";
 	}
 }
 ?>

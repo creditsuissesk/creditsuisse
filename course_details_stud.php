@@ -186,6 +186,8 @@ function clearText(field)
 		$filetype="image";
 	}else if (strpos($row_get_resource['file_type'],"video")!==false) {
 		$filetype="video";
+	}else if (strpos($row_get_resource['file_type'],"powerpoint")!==false || strpos($row_get_resource['file_type'],"presentation")!==false) {
+						echo "presentation";
 	}
 	?>
 	$(document).ready(function(){showResource(<?php echo $_GET['show_res'];?>,'<?php echo $filetype;?>','<?php echo $row_get_resource['filename'];?>')});
@@ -407,6 +409,8 @@ function clearText(field)
 						echo "image";
 					}else if (strpos($row_get_resources['file_type'],"video")!==false) {
 						echo "video";
+					}else if (strpos($row_get_resources['file_type'],"powerpoint")!==false || strpos($row_get_resources['file_type'],"presentation")!==false) {
+						echo "presentation";
 					}
 					echo '\',\''.$row_get_resources['filename'].'\');"><div id="rname" title="View this resource" style="cursor:pointer;">'.$row_get_resources['filename'].'</div></div></b></td>';
 					if($row_get_resources['download_status']==1) {

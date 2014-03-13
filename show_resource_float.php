@@ -109,6 +109,8 @@ if(isset($_GET['r_id']) && (isset($_GET['actiontype']) && $_GET['actiontype']=="
 	}else if (strpos($row_get_resource['file_type'],"video")!==false) {
 		echo '<div id="holder"></div>';
 		echo '<script>$(document).ready(function(){load('.$row_get_resource['r_id'].');});</script>';	
+	}else if (strpos($row_get_resource['file_type'],"powerpoint")!==false || strpos($row_get_resource['file_type'],"presentation")!==false) {
+		echo '<embed height="500" width="900" src="'.$row_get_resource['view_location'].'">';
 	}
 }
 

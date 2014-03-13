@@ -289,6 +289,8 @@ var userList = new List('users', options);
 						echo "image";
 					}else if (strpos($row_resource['file_type'],"video")!==false) {
 						echo "video";
+					}else if (strpos($row_resource['file_type'],"powerpoint")!==false || strpos($row_resource['file_type'],"presentation")!==false) {
+						echo "presentation";
 					}
 					echo '\',\''.$row_resource['filename'].'\');">' ?>
 					 <?php echo $row_resource['filename'];?></a>

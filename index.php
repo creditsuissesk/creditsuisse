@@ -125,6 +125,9 @@ if(isset($_GET['mode']) && isset($_GET['viewId'])) {
 	}else if (type=="image") {
 		height_set=320;
 		width_set=620;
+	}else if (type=="presentation") {
+		height_set=520;
+		width_set=920;
 	}
 	light = new LightFace.IFrame({
 		height:height_set,
@@ -141,6 +144,8 @@ if(isset($_GET['mode']) && isset($_GET['viewId'])) {
 		echo "image";
 	}else if (strpos($row_get_resource['file_type'],"video")!==false) {
 		echo "video";
+	}else if (strpos($row_get_resource['file_type'],"powerpoint")!==false || strpos($row_get_resource['file_type'],"presentation")!==false) {
+		echo "presentation";
 	}
 	echo "','".$row_get_resource['filename']."');});";?>
 </script>

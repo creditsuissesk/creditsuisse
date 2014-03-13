@@ -148,6 +148,9 @@ function showResource(id,type,name) {
 	}else if (type=="video") {
 		height_set=336;
 		width_set=635;
+	}else if (type=="presentation") {
+		height_set=520;
+		width_set=920;
 	}
 	light = new LightFace.IFrame({
 		height:height_set,

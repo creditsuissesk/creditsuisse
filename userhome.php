@@ -370,6 +370,8 @@ else {
 						echo "image";
 					}else if (strpos($row_resource['file_type'],"video")!==false) {
 						echo "video";
+					}else if (strpos($row_resource['file_type'],"powerpoint")!==false || strpos($row_resource['file_type'],"presentation")!==false) {
+						echo "presentation";
 					}
 					echo '\',\''.$row_resource['filename'].'\');">'.$row_resource['filename']."</div></td>";
 							if($row_resource['download_status']==1){?>

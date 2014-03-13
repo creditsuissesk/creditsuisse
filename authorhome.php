@@ -295,6 +295,9 @@ function showResource(id,type,name) {
 	}else if (type=="video") {
 		height_set=336;
 		width_set=635;
+	}else if (type=="presentation") {
+		height_set=520;
+		width_set=920;
 	}
 	light = new LightFace.IFrame({
 		height:height_set,
@@ -536,6 +539,8 @@ var allList = new List('all_courses', allOptions);
 						echo "image";
 					}else if (strpos($row_approved_resources['file_type'],"video")!==false) {
 						echo "video";
+					}else if (strpos($row_approved_resources['file_type'],"powerpoint")!==false || strpos($row_approved_resources['file_type'],"presentation")!==false) {
+						echo "presentation";
 					}
 					echo '\',\''.$row_approved_resources['filename'].'\');">' ?>
 				<?php echo $row_approved_resources['filename'].'</div>'; ?></a></td>
@@ -609,6 +614,8 @@ var arList = new List('approved_res', arOptions);
 						echo "image";
 					}else if (strpos($row_all_resources['file_type'],"video")!==false) {
 						echo "video";
+					}else if (strpos($row_all_resources['file_type'],"powerpoint")!==false || strpos($row_all_resources['file_type'],"presentation")!==false) {
+						echo "presentation";
 					}
 					echo '\',\''.$row_all_resources['filename'].'\');">' ?>
       <?php echo $row_all_resources['filename'].'</div>'; ?></a></td>
