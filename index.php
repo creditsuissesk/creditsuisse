@@ -237,11 +237,11 @@ if(isset($_GET['mode']) && isset($_GET['viewId'])) {
             <div class="section section_with_padding" id="about"> 
                 <h1>About</h1>
                 <div class="half left">
-                    <div class="img_border img_fl"> <a href="#gallery"><img src="images/templatemo_image_02.jpg" alt="image 2" /></a>	
-                  </div>
-                    write here fr about slide				</div>
+                    <div class="img_border img_fl"> <a href="#gallery"><img src="images/about.jpg" width="320" height="120" alt="image 2" /></a></div>
+                    Virtual Library helps students access the lectures and educational material easily and at any time. We have made sure you never miss the lectures. 
+                    </div>
                 <div class="half right">
-                     this is ryt of about
+                	This website is made by Kunal Shah and Shaarad Dalvi. We are the students of TYBTech Computer Engineering at VJTI. We have designed this website in an attempt to provide great online courses to students without having to waste time and energy in travelling.
 				</div>
                 <a href="#home" class="home_btn">home</a> 
                 <a href="#home" class="page_nav_btn previous">Previous</a>
@@ -251,13 +251,12 @@ if(isset($_GET['mode']) && isset($_GET['viewId'])) {
             <div class="section section_with_padding" id="services"> 
                 <h1>Services</h1>
                 <div class="half left">
-                	this is left of services
+                	The Virtual Library is equipped with many facitlities such as enrolling into multiple courses at a time, Take tests after you complete the course, discussion forums to discuss and solve your doubts, peer course recommendations. You can also share course resources with others by means of QR code.
                                     </div>
                 <div class="half right">
-                    <div class="img_border img_nom"> <a href="#gallery"><img src="images/templatemo_image_01.jpg" alt="image 1" /></a>	
+                    <div class="img_border img_nom"> <a href="#gallery"><img src="images/services.jpg" width="320" height="120" alt="image 1" /></a>	
                     </div>
-                    
-               	  this is right of services
+
                 </div>
                 <a href="#home" class="home_btn">home</a> 
                 <a href="#about" class="page_nav_btn previous">Previous</a>
@@ -267,7 +266,7 @@ if(isset($_GET['mode']) && isset($_GET['viewId'])) {
             
             <div class="section section_with_padding" id="institution"> 
                	<h1>institutions</h1>
-              <div> this is institutions </div>
+              <div> Here is the list of institutions tie-uped with us </div>
             
                 <a href="#home" class="home_btn">home</a> 
                 <a href="#services" class="page_nav_btn previous">Previous</a>
