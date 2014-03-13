@@ -881,6 +881,13 @@ var ex_List = new List('existing_students', ex_Options);
       </div>
     </div>
 <br />
+
+<div id="templatemo_footer_wrapper">
+	<div id="templatemo_footer">
+    	<p>Copyright © 2014 <a href="#">Shaarad and Kunal</a> | <a rel="nofollow" href="index.php">Virtual Library</a> by <a href="https://www.facebook.com/kunal.shah.96780" target="_blank" rel="nofollow">Kunal and Shaarad</a></p>
+    </div>
+</div>
+
 <script type="text/javascript">
 var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1");
 </script>
