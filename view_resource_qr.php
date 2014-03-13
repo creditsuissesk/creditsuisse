@@ -4,7 +4,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Resource</title>
 </head>
-
+<script type="text/javascript" src="js/jquery.min.js"></script> 
+<script type="text/javascript" src="js/flowplayer-3.2.11.min.js"></script>
+<script type="text/javascript" src="js/resource_float.js"></script>
 <?php require_once('Connections/conn.php'); ?>
 <?php
 	if (!function_exists("GetSQLValueString")) {
@@ -51,12 +53,13 @@ if(isset($_GET['r_id']) && (isset($_GET['actiontype']) && $_GET['actiontype']=="
 	if($row_get_resource['file_type']=="application/pdf") {
 		//outputting code to show pdf
 		echo '<embed height="500" width="900" src="'.$row_get_resource['view_location'].'">';
-	}else if ($row_get_resource['file_type']=="image/jpeg") {
+	}else if (strpos($row_get_resource['file_type'],"image")!==false) {
 		echo '<embed height="300" width="600" src="'.$row_get_resource['view_location'].'">';
 	}else if (strpos($row_get_resource['file_type'],"video")!==false) {
-		echo "video";
+		echo '<div id="holder"></div>';
+		echo '<script>$(document).ready(function(){load('.$row_get_resource['r_id'].');});</script>';	
 	}else if (strpos($row_get_resource['file_type'],"powerpoint")!==false || strpos($row_get_resource['file_type'],"presentation")!==false) {
-		echo "presentation";
+		echo '<embed height="500" width="900" src="'.$row_get_resource['view_location'].'">';
 	}
 }
 ?>

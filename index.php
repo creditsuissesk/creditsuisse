@@ -125,6 +125,9 @@ if(isset($_GET['mode']) && isset($_GET['viewId'])) {
 	}else if (type=="image") {
 		height_set=320;
 		width_set=620;
+	}else if (type=="video") {
+		height_set=336;
+		width_set=635;
 	}else if (type=="presentation") {
 		height_set=520;
 		width_set=920;
@@ -133,7 +136,12 @@ if(isset($_GET['mode']) && isset($_GET['viewId'])) {
 		height:height_set,
 		width:width_set,
 		url: 'view_resource_qr.php?actiontype=loadResource&r_id='+id,
-		title: 'Resource : '+name
+		title: 'Resource : '+name,
+		onClose:function() {
+				if(type=="video") {
+				window.location.href="index.php";
+				}
+		}
 		}).addButton('Close', function() { light.close(); },true).open();		
 }
 
