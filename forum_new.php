@@ -301,7 +301,7 @@ $totalRows_categories = mysql_num_rows($categories);
 </script>
 </head>
 
-<body onLoad="javascript:TabbedPanels1.showPanel(<?php echo $_COOKIE['index'];?>)">
+<body>
 <!--- decide the tab number to show--->
 <?php if ( isset($_GET['showTab'])) {
 	if($_GET['showTab']=="discussions") {
@@ -392,6 +392,7 @@ $totalRows_categories = mysql_num_rows($categories);
 					$totalRows_sort_comments = mysql_num_rows($sort_comments);
 					?>
                     <forum-h4> Discussions</forum-h4>
+                    <?php if($totalRows_sort_disc>0) {?>
                     <?php do { ?>
                 	<div class="middle">
                     	<div class="container">
@@ -415,9 +416,12 @@ $totalRows_categories = mysql_num_rows($categories);
                 	</script>
                     
                     <?php } while($row_sort_disc=mysql_fetch_assoc($sort_disc));?>
-                    
+                    <?php }else {
+						echo "<br> No discussions found <br>";
+					}?>
                     <?php //now showing comments ?>
                      <forum-h4> Comments</forum-h4>
+                     <?php if ($totalRows_sort_comments>0) {?>
                      <?php do { ?>
                 	<div class="middle">
                     	<div class="container">
@@ -441,7 +445,9 @@ $totalRows_categories = mysql_num_rows($categories);
                 	</script>
                     
                     <?php } while($row_sort_comments=mysql_fetch_assoc($sort_comments));?>
-                     
+                     <?php }else {
+						 echo "<br> No comments found<br>";
+					 }?>
 				</div>
             </div>
      </div>
@@ -459,6 +465,11 @@ $totalRows_categories = mysql_num_rows($categories);
 					<!--- viewing a particular discussion--->
                     <?php
 					mysql_select_db($database_conn, $conn);
+					$query_check=sprintf("select * from `enroll_course` where u_id=%s and c_enroll_id=(select course.c_id from course where c_name=(select dc.category_name from `discussion_category` as dc where dc.category_id=(select category_id from discussion where discussion_id=%s) ))",GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($_GET['discussionid'], "int"));
+					$check = mysql_query($query_check, $conn) or die(mysql_error());
+					$row_check = mysql_fetch_assoc($check);
+					$totalRows_check = mysql_num_rows($check);
+					
 					$query_disc = sprintf("SELECT * FROM `discussion` JOIN `user` ON insert_uid=u_id LEFT OUTER JOIN user_discussion ON discussion.discussion_id=user_discussion.user_discussion_id AND user_discussion.u_id=%s WHERE discussion.discussion_id =%s",GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($_GET['discussionid'], "int"));
 					$disc = mysql_query($query_disc, $conn) or die(mysql_error());
 					$row_disc = mysql_fetch_assoc($disc);
@@ -643,8 +654,8 @@ $totalRows_categories = mysql_num_rows($categories);
 									});
 							<?php }?>
 					</script>		
-                    <!---show new comment form if discussion is not flagged--->
-                    <?php if ($row_disc['flag']==0) { ?>
+                    <!---show new comment form if discussion is not flagged and user is enrolled--->
+                    <?php if ($row_disc['flag']==0 && (($row_check['a_stat']==1 && $_SESSION['MM_UserGroup']=='student') || ($_SESSION['MM_UserGroup']=='admin'|| $_SESSION['MM_UserGroup']=='author'|| $_SESSION['MM_UserGroup']=='cm')) ) { ?>
                         <?php
                         $query_own_comment = sprintf("SELECT * from `user` WHERE u_id=%s;",GetSQLValueString($_SESSION['MM_UserID'], "int"));
 					$own_comment = mysql_query($query_own_comment, $conn) or die(mysql_error());
@@ -669,7 +680,7 @@ $totalRows_categories = mysql_num_rows($categories);
 					</aside><!-- .left-sidebar -->
                     </div> 
                     <?php }else {
-						echo '<div class="middle"><div class="container"><main class="content"><dd>This discussion has been flagged. Users can\'t comment on flagged discussions</dd></main></div></div>';
+						echo '<div class="middle"><div class="container"><main class="content"><dd>You can\'t comment in discussion if you are not enrolled in course or if the discussion is flagged.</dd></main></div></div>';
 					}//end of comment form if not flagged if?>
                     <!---end of discussion case --->                  
                 <?php	
@@ -712,7 +723,7 @@ $totalRows_categories = mysql_num_rows($categories);
 				?>
                 <!--- make list of all the discussions under that category--->
                 <!---<dl> --->
-                
+                <?php if($totalRows_discussions>0) {?>
                 <?php do { ?>
                 	<div class="middle">
                     	<div class="container">
@@ -805,6 +816,9 @@ $totalRows_categories = mysql_num_rows($categories);
                 </script>
                     
                     <?php } while($row_discussions=mysql_fetch_assoc($discussions));?>
+                    <?php }else {
+						echo "<br>No discussions in this category<br>";
+					}?>
                     <?php 
 					if($totalRows_discussions>4) {
 
@@ -1027,6 +1041,7 @@ $totalRows_categories = mysql_num_rows($categories);
 	    			<div class="forum-content-wrapper">
 			    		<div class="forum-content">
                         <forum-h4> Your bookmarks</forum-h4>
+                    <?php if($totalRows_bookmarks>0) {?>
                     <?php do { ?>
                 	<div class="middle">
                     	<div class="container">
@@ -1060,6 +1075,9 @@ $totalRows_categories = mysql_num_rows($categories);
                 	</script>
                     
                     <?php } while($row_bookmarks=mysql_fetch_assoc($bookmarks));?>
+                    <?php }else {
+						echo "<br>No discussions have been bookmarked yet";
+					}?>
                 		</div>
             		</div>
      			</div>

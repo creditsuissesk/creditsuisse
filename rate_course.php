@@ -90,9 +90,17 @@ if (isset($_GET['c_id']) && isset($_GET['rate_value']) && $_GET['rate_value']>=0
 		$query_set_rating=sprintf("UPDATE `enroll_course` SET rating=%s WHERE u_id=%s AND c_enroll_id=%s",GetSQLValueString($_GET['rate_value'], "double"),GetSQLValueString($_SESSION['MM_UserID'], "int"),GetSQLValueString($_GET['c_id'], "int"));
 		$set_rating = mysql_query($query_set_rating, $conn) or die(mysql_error());
 		//setting avg_rating after change
-	mysql_select_db($database_conn, $conn);	
+	mysql_select_db($database_conn, $conn);
+	$query_old_rating=sprintf("((SELECT avg_rating * (SELECT count( * ) FROM enroll_course WHERE c_enroll_id =%s ) as old_count FROM course WHERE c_id =%s))",GetSQLValueString($_GET['c_id'], "int"),GetSQLValueString($_GET['c_id'], "int"));
+	$old_rating = mysql_query($query_old_rating, $conn) or die(mysql_error());
+	$row_old_rating= mysql_fetch_assoc($old_rating);
+	
 	$query_set_avg_rating=sprintf("update `course` set `avg_rating`= (select avg(rating) from `enroll_course` where c_enroll_id=%s AND rating>0 )where c_id=%s",GetSQLValueString($_GET['c_id'], "int"),GetSQLValueString($_GET['c_id'], "int"));
-		$set_avg_rating = mysql_query($query_set_avg_rating, $conn) or die(mysql_error());
+	$set_avg_rating = mysql_query($query_set_avg_rating, $conn) or die(mysql_error());
+	
+	$query_set_author_score=sprintf("UPDATE `user` set user_score=(user_score-%s+((SELECT avg_rating * (SELECT count( * ) FROM enroll_course WHERE c_enroll_id =%s ) as old_count FROM course WHERE c_id =%s))) where user.u_id=(select course.u_id from `course` where course.c_id=%s)",GetSQLValueString($row_old_rating['old_count'], "int"),GetSQLValueString($_GET['c_id'], "int"),GetSQLValueString($_GET['c_id'], "int"),GetSQLValueString($_GET['c_id'], "int"));
+	$set_author_score = mysql_query($query_set_author_score, $conn) or die(mysql_error());
+	
 	}
 }
 

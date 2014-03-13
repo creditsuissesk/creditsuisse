@@ -304,12 +304,8 @@ var userList = new List('users', options);
                          <input type="hidden" name="MM_change" value="form1" /></td>
                      </form>
                      <?php }else echo "<td> </td>";?>
-                      <form  id="form2" name="form2" method="POST" action="update.php">
-                       <td><input name="change" id="change" value="Update" type="submit" />
-                         <input type="hidden" name="id" id="id" value="<?php echo $row_resource['r_id'];?>"  />
-                          <input type="hidden" name="r_name" id="r_name" value="<?php echo $row_resource['filename'];?>"/>
-                          <input type="hidden" name="co_name" id="co_name" value="<?php echo $_GET['c_id'];?>"/>
-                         <input type="hidden" name="MM_change" value="form2" /></td>
+                       <td><input name="change" onclick="updateResource(<?php echo $row_resource['r_id'];?>,'<?php echo $row_resource['filename'];?>',<?php echo $_GET['c_id'];?>)" id="change" value="Update" type="button" />
+                      	</td>
                      </form>
                    </tr>
                  </tbody>

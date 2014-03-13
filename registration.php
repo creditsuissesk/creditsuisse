@@ -161,7 +161,7 @@
 				  <option value="cm">Content Manager</option>
 				  </select><br /><br />
 	  </p>  
-      <p> <label for="File">Profile Pciture:</label>
+      <p> <label for="File">Profile Picture:</label>
 <input type="file" name="File" required id="File">
 		</p>
         <?php

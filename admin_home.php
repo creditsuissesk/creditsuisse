@@ -241,7 +241,7 @@ body,td {
 		<li id="headerbar" style="color:#E2E2E2;font-size:12px;"><a href="forum_new.php?mode=showmain" style="font-weight:normal;">Forums</a></li>
 		<li id="headerbar" style="color:#E2E2E2;font-size:12px;width:100px;"><a href="#" style="font-weight:normal;"><?php echo $_SESSION['MM_Username'];?></a>
 			<ul id="headerbar" style="color:#E2E2E2;font-size:12px;width:100px;">
-				<li id="headerbar" style="color:#E2E2E2;font-size:12px;"><a href="admin_home.php" style="font-weight:normal;padding-left:10px;">Profile</a></li>
+				<li id="headerbar" style="color:#E2E2E2;font-size:12px;"><a href="adminhome.php#profile" style="font-weight:normal;padding-left:10px;">Profile</a></li>
 				<li id="headerbar" style="color:#E2E2E2;font-size:12px;"><a href="<?php echo $logoutAction ?>" style="font-weight:normal;padding-left:10px;width">Log Out</a>
 				</li>
 			</ul>
@@ -253,7 +253,7 @@ body,td {
 
 <?php 
 if (isset($_GET['showTab'])) {
-	if($_GET['showTab']<4) {
+	if($_GET['showTab']<5) {
 		$tabToShow=$_GET['showTab'];
 	}
 }
@@ -273,9 +273,10 @@ else {
     <div class="TabbedPanelsContent">
     <!--- if no new users then skip whole table--->
     
-        <div id="new_users">
-    <div class="datagrid">
+        
     <?php if ($totalRows_update>0 ) { ?>
+    <div id="new_users">
+    <div class="datagrid">
     <table>
     <thead>
     
@@ -408,8 +409,9 @@ var ex_List = new List('existing_users', ex_Options);
   
   <!--start of Flagged Discussion tab content-->
   <div class="TabbedPanelsContent">
-  <div id="flag_d">
+  
     <?php if ($totalRows_discussion>0 ) { ?>
+    <div id="flag_d">
     <div class="datagrid">
     
     <table>
@@ -452,6 +454,7 @@ var ex_List = new List('existing_users', ex_Options);
     </tbody>
     </table>
   </div>
+  </div>
     <?php } else {
 		echo "No Flagged Discussion";
 	} ?>
@@ -463,7 +466,7 @@ var currdis = {
 // Init list
 var dislist = new List('flag_d', currdis);
 </script>
-  </div>
+  
   </div>
   <!--End of Flagged Discussion tab content-->
   

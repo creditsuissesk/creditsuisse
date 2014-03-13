@@ -321,10 +321,9 @@ function showResource(id,type,name) {
 </script>
 </head>
 
-<body onLoad="javascript:TabbedPanels1.showPanel(<?php echo $_COOKIE['index'];?>)" alink="#D6D6D6">
+<body onLoad="javascript:TabbedPanels1.showPanel(<?php echo $_COOKIE['index'];?>)">
 <script type="text/javascript">
 window.onload = function(){
-		alert("loaded");
 		new JsDatePick({
 			useMode:2,
 			target:"start_date",

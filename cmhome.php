@@ -451,9 +451,10 @@ function showResource(id,type,name) {
       </div>
     </div>	<!---ends tab 1--->
         <div class="TabbedPanelsContent">
+    
+    <?php if($totalRows_approved_courses>0){?>
     <div id="curr_courses">
     <div class="datagrid">
-    <?php if($totalRows_approved_courses>0){?>
      <table>
     <thead>
       <tr>
@@ -479,9 +480,10 @@ function showResource(id,type,name) {
       </tr>
       </tbody>
       </table>
+       </div>
+    </div>
       <?php }else echo"NO Approved Courses"; ?>
-    </div>
-    </div>
+   
     <script>
 var currOptions = {
   valueNames: [ 'currentname', 'currentstream','currentstart','currentend','currentrating']
@@ -492,9 +494,10 @@ var currList = new List('curr_courses', currOptions);
 </script>
     </div> <!---end of second tab--->
 <div class="TabbedPanelsContent">
-    <div id="pending_courses">
-    <div class="datagrid">
+    
      <?php if($totalRows_pending_courses>0){?>
+     <div id="pending_courses">
+    <div class="datagrid">
     <table>
     <thead>
       <tr>
@@ -537,9 +540,10 @@ var currList = new List('curr_courses', currOptions);
     <?php } while ($row_pending_courses = mysql_fetch_assoc($pending_courses)); ?>
       </tbody>
       </table>
-      <?php }else echo"No Pending Courses"; ?>
       </div> 
     </div>
+      <?php }else echo"No Pending Courses"; ?>
+      
 
     <script>
 var allOptions = {
@@ -744,9 +748,9 @@ var prList = new List('pending_resources', prOptions);
     <div class="TabbedPanelsContent">
     <!--- if no new students to be permitted then skip whole table--->
     
-        <div id="new_students">
-    <div class="datagrid">
     <?php if ($totalRows_update>0 ) { ?>
+            <div id="new_students">
+    <div class="datagrid">
     <table>
     <thead>
     
@@ -808,7 +812,8 @@ var currOptions = {
 var currList = new List('new_students', currOptions);
 </script>
     </div>
-    <!--start of tab content--><div class="TabbedPanelsContent">
+    <!--start of tab content-->
+    <div class="TabbedPanelsContent">
     <?php if ($totalRows_all_students>0 ) { ?>
         <div id="existing_students">
     <div class="datagrid">

@@ -107,7 +107,7 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 }
 
 mysql_select_db($database_conn, $conn);
-$query_incomplete_courses = sprintf("SELECT * FROM course JOIN enroll_course  ON course.c_id=enroll_course.c_enroll_id where enroll_course.u_id=%s AND a_stat=1 AND completion_stat=0 AND DATE(NOW()) BETWEEN start_date AND end_date",GetSQLValueString($_SESSION['MM_UserID'], "int"));
+$query_incomplete_courses = sprintf("SELECT * FROM course JOIN enroll_course  ON course.c_id=enroll_course.c_enroll_id where enroll_course.u_id=%s AND a_stat=1 AND completion_stat=0 AND DATE(NOW())<end_date",GetSQLValueString($_SESSION['MM_UserID'], "int"));
 $incomplete_courses = mysql_query($query_incomplete_courses, $conn) or die(mysql_error());
 $row_incomplete_courses = mysql_fetch_assoc($incomplete_courses);
 $totalRows_incomplete_courses = mysql_num_rows($incomplete_courses);

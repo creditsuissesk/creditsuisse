@@ -94,10 +94,10 @@ else
 <title>Update</title>
 </head>
 <body>
-<?php if (isset($_POST["MM_change"])&&$_POST['MM_change']=="form2"){ ?>
+<?php if (isset($_GET["id"])&&isset($_GET['r_name'])&&isset($_GET['co_name'])){ ?>
 <form  name ="form3" method="post" action="update_res.php" enctype="multipart/form-data">
- <input type="text" readonly="readonly" name="r_name" id="r_name" value="<?php echo $_POST['r_name'];?>"/>
-  <input type="hidden" name="co_name" id="co_name" value="<?php echo $_POST['co_name'];?>"/>
+ <input type="text" readonly="readonly" name="r_name" id="r_name" value="<?php echo $_GET['r_name'];?>"/>
+  <input type="hidden" name="co_name" id="co_name" value="<?php echo $_GET['co_name'];?>"/>
  <br />
   <p>
        <label for="download">Download Status* :</label>
@@ -108,7 +108,7 @@ else
        </p>
  <label for="file">Updated File:</label>
  <input type="file" name="file" id="file" /><br />
-  <input type="hidden" name="id" id="id" value="<?php echo $_POST['id'];?>"  />
+  <input type="hidden" name="id" id="id" value="<?php echo $_GET['id'];?>"  />
  <input type="submit" name="update" value="Update" id="update" />
   <input type="hidden" name="MM_change" value="form2" />
 </form>

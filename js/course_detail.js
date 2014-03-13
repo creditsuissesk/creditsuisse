@@ -88,11 +88,11 @@ function showResource(id,type,name) {
 		}).addButton('Close', function() { light.close(); },true).open();
 	}
 
-function updateResource(id,co_name) {
+function updateResource(id,r_name,co_name) {
 	light = new LightFace.IFrame({
 		height:160,
 		width:350,
-		url: 'update.php?id='+id+"&co_name="+co_name,
-		title: co_name
+		url: 'update.php?id='+id+"&co_name="+co_name+"&r_name="+r_name,
+		title: r_name
 		}).addButton('Close', function() { light.close(); },true).open();
 }

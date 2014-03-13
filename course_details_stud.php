@@ -261,7 +261,7 @@ function clearText(field)
                     	<div class="box_with_padding">
                         	<?php if(!empty($row_course_details['u_enroll_id'])&&$row_course_details['a_stat']==1){
 								//user has enrolled and approved, show him link to resources
-								echo '<h2><a href="#resources">Resources</a></h2>';
+								echo '<h2><a href="#evaluation">Evaluation</a></h2>';
 							}else if(!empty($row_course_details['u_enroll_id'])&&$row_course_details['a_stat']==0){
 								//user has enrolled but yet to be approved
 								echo '<h2 style="cursor:pointer;"><a onclick="alert(\'You have enrolled for the course.But you are yet to be approved to access resources and evaluation!\'); return false;">Resources</a></h2>';
@@ -269,12 +269,12 @@ function clearText(field)
 							else
 							 if(!empty($row_course_details['u_enroll_id'])&&$row_course_details['a_stat']==0){
 								//user has enrolled but rejected
-								echo '<h2 style="cursor:pointer;"><a onclick="alert(\'You have enrolled for the course.But you have been rejected to take the course!\'); return false;">Resources</a></h2>';
+								echo '<h2 style="cursor:pointer;"><a onclick="alert(\'You have enrolled for the course.But you have been rejected to take the course!\'); return false;">Evaluation</a></h2>';
 								}
 							else
 							{
 								//user has not enrolled, disable the link
-								echo '<h2 style="cursor:pointer;"><a onclick="alert(\'You have not enrolled for the cource. Please enroll to access resources and evaluation!\'); return false;">Resources</a></h2>';
+								echo '<h2 style="cursor:pointer;"><a onclick="alert(\'You have not enrolled for the cource. Please enroll to access resources and evaluation!\'); return false;">Evaluation</a></h2>';
 							}
 							?>
                              Prepared to get evaluated? Take the test now!
@@ -336,7 +336,7 @@ function clearText(field)
 						echo '<form id="recoform">';
                     	echo '<input id="submit" type="button" class="buttom" value="Recommend to others" onclick="recoCourse('.$row_course_details['c_id'].')" />';
                     	echo '</form>';
-					}if($row_course_details['marks']!=-1){
+					}if($row_course_details['marks']!=-1 and $row_course_details['a_stat']==1){
 						//student has taken the test and to be shown rating widget.
 						?>
 						<br>Rate this course : 
@@ -398,7 +398,7 @@ function clearText(field)
             <div class="section section_with_padding" id="resources"> 
                 <h1>Resources</h1>
                 <?php //get all resources of the course and show container only if resources are available 
-					$query_get_resources=sprintf("SELECT * FROM `resource` WHERE c_id=%s",GetSQLValueString($_GET['c_id'],"int"));
+					$query_get_resources=sprintf("SELECT * FROM `resource` WHERE c_id=%s AND approve_status=1",GetSQLValueString($_GET['c_id'],"int"));
 					$get_resources = mysql_query($query_get_resources, $conn) or die(mysql_error());
 					$row_get_resources = mysql_fetch_assoc($get_resources);
 					$totalRows_get_resources = mysql_num_rows($get_resources);
