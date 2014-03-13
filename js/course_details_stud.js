@@ -222,3 +222,8 @@ function bookmarkResource(ele,id) {
 		}
 	});	
 }
+
+function mailer() {
+	var url="mailto:?subject=Query-"+document.getElementById("namefield").value+"&body="+document.getElementById("textfield");
+	window.location=url;
+}

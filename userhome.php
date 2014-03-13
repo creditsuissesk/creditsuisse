@@ -304,7 +304,7 @@ else {
 					<ul id="courselist">
 					<!--- courses appear here dynamically --->	
 					</ul>
-					<a href="index.php">View all</a>
+					<!--- <a href="index.php">View all</a> --->
 				</div></div></div>
 							</main><!-- .content -->
 						</div><!-- .container-->

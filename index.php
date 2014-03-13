@@ -152,9 +152,25 @@ if(isset($_GET['mode']) && isset($_GET['viewId'])) {
 <?php } //end of mode=qr if
 }//end of resource popup if?>
 
+<script>
+function setFocus()
+{
+    document.getElementById("hiddenfield").focus();
+}
+function bookmarkme() {
+      if (window.sidebar) { // Mozilla Firefox Bookmark
+        window.sidebar.addPanel(location.href,document.title,"");
+      } else if(window.external) { // IE Favorite
+        window.external.AddFavorite(location.href,document.title); }
+      else if(window.opera && window.print) { // Opera Hotlist
+        this.title=document.title;
+        return true;
+  }
+}
+</script>
 
 </head> 
-<body> 
+<body onload="setFocus()"> 
 
 <div id="templatemo_header_wrapper">
 	<div id="templatemo_header">
@@ -167,7 +183,9 @@ if(isset($_GET['mode']) && isset($_GET['viewId'])) {
 	<div id="templatemo_main">
 		<div id="content"> 
             <div id="home" class="section">
+            	
                 <div class="home_box left">
+                <form><input type="hidden" id="hiddenfield"  /></form>
                 	<div class="row1 box box1">
                     	<div class="box_with_padding">
                         	<h2><a href="#about">About</a></h2>
@@ -217,21 +235,9 @@ if(isset($_GET['mode']) && isset($_GET['viewId'])) {
 						</div>
                     </div>                        
                     <div class="row1 box6">
-                        <div id="mini_contact_form">
-                        	<h5>Quick Contact</h5>
-                            <form method="post" name="contact" action="#">
-                            	<div class="col_half left">
-                               	  	<textarea id="text_small" name="text" rows="0" cols="0" 
-                                  		onfocus="clearText(this)" onblur="clearText(this)">Message</textarea>
-                                </div>                                
-                            	<div class="col_half right">
-                                	<input name="author" type="text" class="input_field" id="author_small" 
-                                    	onfocus="clearText(this)" onblur="clearText(this)" value="Name" maxlength="40" />
-                                    <input name="email" type="text" class="input_field" id="email_small" 
-                                    	onfocus="clearText(this)" onblur="clearText(this)" value="Email" maxlength="40" />
-                                  	<input type="submit" class="submit_btn float_l" name="submit" id="submit_small" value="Send" />
-                              	</div>                                
-                            </form>
+                        <div class="box_with_padding">
+                        	<h5 style="color: #FFF;font-size: 28px;margin-bottom: 10px;margin: 0px 0px 0px;padding: 0px 0px;"><a id="bookmarkme" href="#" rel="sidebar" title="bookmark this page">Bookmark Us</a></h5>
+                            Bookmark our website so that you can access your Virtual Library easily!
                             <div class="clear"></div>
                         </div>
                         
@@ -295,7 +301,7 @@ if(isset($_GET['mode']) && isset($_GET['viewId'])) {
                 <a href="#institution" class="page_nav_btn previous">Previous</a>
                 <a href="#login" class="page_nav_btn next">Next</a>
                 
-            	</div> <!-- END of Contact -->
+            	</div> 
                 
                 <div class="half right">
                     <h4>Quick Contact</h4>
@@ -304,22 +310,17 @@ if(isset($_GET['mode']) && isset($_GET['viewId'])) {
 					
 					</script>
                     <div id="contact_form">
-                        <form>
-                        <label for="author">Name:</label> <input type="text" id="namefield" name="author" class="required input_field" />
+                       <form>
+                        <label for="author">Name:</label> <input onfocus="clearText(this)" onblur="clearText(this)" type="text" id="namefield" name="author" class="required input_field" />
 	                            <div class="clear"></div>
-                            <label for="text">Message:</label> <textarea id="textfield" name="text" rows="0" cols="0" class="required"></textarea>
+                            <label for="text">Message:</label> <textarea id="textfield" onfocus="clearText(this)" onblur="clearText(this)" name="text" rows="0" cols="0" class="required"></textarea>
                             <input type="button" onclick="mailer(); return false;" class="submit_btn float_l" value="Send" />
                         </form>
                         
                     </div>
-                </div>
-                
-                
-            
-            
-            
+                </div><!-- END of Contact -->
         </div> 
-         <div class="section section_with_padding log" id="login"> 
+         <div class="section section_with_padding log"  id="login"> 
           <div class="log">    
 		<div class="rain">
 			<div class="border start">
@@ -337,12 +338,6 @@ if(isset($_GET['mode']) && isset($_GET['viewId'])) {
                 <a href="#contact" class="page_nav_btn previous">Previous</a>
                 <a href="#home" class="page_nav_btn next">Next</a>
             </div> <!-- END of Login -->
-        
-        
-        
-        
-        
-        
     </div>
 </div>
 
