@@ -129,12 +129,10 @@ $author_details = mysql_query($query_author_details, $conn) or die(mysql_error()
 $row_author_details = mysql_fetch_assoc($author_details);
 $totalRows_author_details = mysql_num_rows($author_details);
 
-/*mysql_select_db($database_conn, $conn);
-$query_other_course = sprintf("SELECT * FROM course WHERE u_id = %s", GetSQLValueString($row_course_details['u_id'], "int"));
-$other_course = mysql_query($query_other_course, $conn) or die(mysql_error());
-$row_other_course = mysql_fetch_assoc($other_course);
-$totalRows_other_course = mysql_num_rows($other_course);
-*/
+$query_no_of_users = sprintf("SELECT * FROM `enroll_course` WHERE c_enroll_id=%s ",GetSQLValueString($_GET['c_id'], "int"));
+$no_of_users = mysql_query($query_no_of_users, $conn) or die(mysql_error());
+$row_no_of_users = mysql_fetch_assoc($no_of_users);
+$totalRows_no_of_users = mysql_num_rows($no_of_users);
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -299,21 +297,9 @@ function clearText(field)
                     	<img src="<?php echo $row_course_details['course_image'];?>" alt="image 1" width="400" height="240"/>
 					</div>
                     <div class="row1 box6">
-                        <div id="mini_contact_form">
-                        	<h5>Quick Contact</h5>
-                            <form method="post" name="contact" action="#">
-                            	<div class="col_half left">
-                               	  	<textarea id="text_small" name="text" rows="0" cols="0" 
-                                  		onfocus="clearText(this)" onblur="clearText(this)">Message</textarea>
-                                </div>                                
-                            	<div class="col_half right">
-                                	<input name="author" type="text" class="input_field" id="author_small" 
-                                    	onfocus="clearText(this)" onblur="clearText(this)" value="Name" maxlength="40" />
-                                    <input name="email" type="text" class="input_field" id="email_small" 
-                                    	onfocus="clearText(this)" onblur="clearText(this)" value="Email" maxlength="40" />
-                                  	<input type="submit" class="submit_btn float_l" name="submit" id="submit_small" value="Send" />
-                              	</div>                                
-                            </form>
+                        <div class="box_with_padding">
+                        	<h5>Course statistics</h5>
+                            There are <?php echo $totalRows_no_of_users;?> users enrolled!
                             <div class="clear"></div>
                         </div>
                         

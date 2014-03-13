@@ -187,7 +187,7 @@ img { margin: 0; padding: 0; border: none }
 .box5 { background: #413959 url(../images/fancy_clock.png) scroll 18px 15px no-repeat  }
 .box5:hover { background-color: #302945 }
 
-.box6 { background: #3c3b3b }
+.box6 { background: #3c3b3b url(../images/peers_icon.png) scroll 18px 15px no-repeat}
 
 .home_box .box_with_padding { padding: 25px 15px 15px 140px }
 
@@ -197,50 +197,6 @@ img { margin: 0; padding: 0; border: none }
 	position: relative;
 }
 
-#mini_contact_form { padding: 15px; width: 370px }
-
-#mini_contact_form .input_field { 
-	display: block; 
-	margin-left: 5px; 
-	float: left; 
-	width: 78px; 
-	padding: 2px; 
-	height: 18px;
-	font-size: 11px;
-	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
-	color: #999999; 
-	border: 1px solid #525252; 
-	background: #292929; 
-	margin-bottom: 5px; 
-}
-
-#mini_contact_form textarea { 
-	clear: both; 
-	width: 160px; 
-	height: 50px;
-	padding: 2px; 
-	font-size: 11px;
-	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
-	color: #999999; 
-	border: 1px solid #525252;
-	background: #292929; 
-	margin-bottom: 10px;
-}
-
-#mini_contact_form .submit_btn { 
-	display: block; 
-	float: right; 
-	font-size: 11px;
-	font-weight: bold;
-	background: #15171d; 
-	color: #999999;
-	cursor: pointer; 
-	border: 1px solid #30333c; 
-	padding: 4px 10px; 
-	margin-right: 8px;
-}
-
-#mini_contact_form .col_half { width: 185px }
 
 #social_links {
 }
