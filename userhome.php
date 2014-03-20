@@ -466,7 +466,7 @@ else {
 	                </div>
                     </div>
 	    			<div class="half right">
-	                	<div class="img_border img_temp"> <a href="#gallery"><img width="200px" height="120px"src="images/templatemo_image_01.jpg" alt="image 1" /></a>	
+	                	<div class="img_border img_temp"> <a href="#gallery"><img width="200px" height="120px"src="<?php echo $row_completed_courses['course_image'];?>" alt="image 1" /></a>	
 	                    </div>
                      	<?php if($row_completed_courses['marks']>-1) {
 							echo "You have scored ".$row_completed_courses['marks']." marks";

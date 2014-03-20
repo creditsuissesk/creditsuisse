@@ -55,13 +55,14 @@ else
 $allowedExts = array("gif", "jpeg", "jpg", "png");
 $temp = explode(".", $_FILES["File"]["name"]);
 $extension = end($temp);
+$size=1024*1024;
 if ((($_FILES["File"]["type"] == "image/gif")
 || ($_FILES["File"]["type"] == "image/jpeg")
 || ($_FILES["File"]["type"] == "image/jpg")
 || ($_FILES["File"]["type"] == "image/pjpeg")
 || ($_FILES["File"]["type"] == "image/x-png")
 || ($_FILES["File"]["type"] == "image/png"))
-&& ($_FILES["File"]["size"] < 50000)
+&& ($_FILES["File"]["size"] < $size)
 /*&& in_array($extension, $allowedExts)*/
 )
   {
@@ -76,8 +77,8 @@ if ((($_FILES["File"]["type"] == "image/gif")
     echo "Size: " . ($_FILES["File"]["size"] / 1024) . " kB<br>";
     echo "Temp File: " . $_FILES["File"]["tmp_name"] . "<br>";
 	*/
-	$max_size=50000;
-	$max_size_mb=(50000/1024)/1024;
+	$max_size=$size;
+	$max_size_mb=($size/1024)/1024;
 	$filesize=$_FILES["File"]["size"]/1024/1024;
 	$filename=".".$extension;
     if (file_exists("images/profiles/" . $filename))
@@ -144,7 +145,7 @@ else
   echo '<script type="text/javascript">alert("Invalid File Type. Please upload valid file.");  window.location="registration.php";</script>';
   else 
 	   if(($_FILES["File"]["size"] > $max_size))
-  echo '<script type="text/javascript">alert("File Size is '.$filesize.' mb which GREATER than the allowed size. Allowed Size is '.$max_size_mb.' mb.");
+  echo '<script type="text/javascript">alert("File Size is '.$filesize.' MB which GREATER than the allowed size. Allowed Size is '.$max_size_mb.' MB.");
   window.location="registration.php";</script>';
   else
   echo '<script type="text/javascript">alert("Problem in uploading file.Please register again");window.location="registration.php";</script>';

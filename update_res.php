@@ -172,6 +172,7 @@ if ((($_FILES["file"]["type"] == "image/gif")
     echo "Temp file: " . $_FILES["file"]["tmp_name"] . "<br>";*/
 	$upload_add="resource/".$_POST["co_name"]."/" . $filename;
 	$path = "resource/".$_POST["co_name"];
+
 	
 if ( ! is_dir($path)) {
     mkdir($path,0777);

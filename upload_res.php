@@ -215,7 +215,7 @@ else
   echo '<script type="text/javascript">alert("Invalid File Type. Please upload valid file.");  window.location="'.$redirect.'";</script>';
   else 
   if(($_FILES["file"]["size"] > $max_size))
-  echo '<script type="text/javascript">alert("File Size is '.$filesize.' mb which GREATER than the allowed size. Allowed Size is '.$max_size_mb.' mb.");
+  echo '<script type="text/javascript">alert("File Size is '.$filesize.' MB which GREATER than the allowed size. Allowed Size is '.$max_size_mb.' MB.");
   window.location="'.$redirect.'";</script>';
   else
   echo '<script type="text/javascript">alert("Problem in uploading");window.location="'.$redirect.'";</script>';

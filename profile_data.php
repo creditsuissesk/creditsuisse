@@ -122,13 +122,16 @@ else
 $allowedExts = array("gif", "jpeg", "jpg", "png");
 $temp = explode(".", $_FILES["File"]["name"]);
 $extension = end($temp);
+$max_size=1024*1024;
+$max_size_mb=(1024*1024/1024)/1024;
+$filesize=$_FILES["File"]["size"]/1024/1024;
 if ((($_FILES["File"]["type"] == "image/gif")
 || ($_FILES["File"]["type"] == "image/jpeg")
 || ($_FILES["File"]["type"] == "image/jpg")
 || ($_FILES["File"]["type"] == "image/pjpeg")
 || ($_FILES["File"]["type"] == "image/x-png")
 || ($_FILES["File"]["type"] == "image/png"))
-&& ($_FILES["File"]["size"] < 50000)
+&& ($_FILES["File"]["size"] < 1024*1024)
 /*&& in_array($extension, $allowedExts)*/
 )
   {
@@ -143,11 +146,17 @@ if ((($_FILES["File"]["type"] == "image/gif")
     echo "Size: " . ($_FILES["File"]["size"] / 1024) . " kB<br>";
     echo "Temp File: " . $_FILES["File"]["tmp_name"] . "<br>";
 	*/
-	$max_size=50000;
-	$max_size_mb=(50000/1024)/1024;
-	$filesize=$_FILES["File"]["size"]/1024/1024;
+	
 	$filename=$_POST['u_id'].".".$extension;
 	$upload_add="images/profiles/" . $filename;
+	$insertSQL = sprintf("UPDATE user SET photo=%s WHERE u_id=%s",
+							 GetSQLValueString($upload_add, "text"),
+							 GetSQLValueString($_SESSION['MM_UserID'], "int")
+							 );
+	  
+		mysql_select_db($database_conn, $conn);
+		$Result1 = mysql_query($insertSQL, $conn) or die(mysql_error());
+
     move_uploaded_file($_FILES["File"]["tmp_name"],$upload_add);
 	echo '<script type="text/javascript">alert("Profile Picture Successfully."); 	window.location="'.$redirect.'"; </script>';
     }
@@ -163,7 +172,7 @@ else
   echo '<script type="text/javascript">alert("Invalid File Type. Please upload valid file.");  window.location="'.$redirect.'";</script>';
   else 
 	   if(($_FILES["File"]["size"] > $max_size))
-  echo '<script type="text/javascript">alert("File Size is '.$filesize.' mb which GREATER than the allowed size. Allowed Size is '.$max_size_mb.' mb.");
+  echo '<script type="text/javascript">alert("File Size is '.$filesize.' MB which GREATER than the allowed size. Allowed Size is '.$max_size_mb.' MB.");
   window.location="'.$redirect.'";</script>';
   else
   echo '<script type="text/javascript">alert("Problem in uploading file.Please upload again");window.location="'.$redirect.'";</script>';

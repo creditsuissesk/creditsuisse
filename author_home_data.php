@@ -90,13 +90,14 @@ else if($_SESSION['MM_UserGroup']=='author')
 }
 $temp = explode(".", $_FILES["file"]["name"]);
 $extension = end($temp);
+$size=1024*1024;
 if ((($_FILES["file"]["type"] == "image/gif")
 || ($_FILES["file"]["type"] == "image/jpeg")
 || ($_FILES["file"]["type"] == "image/jpg")
 || ($_FILES["file"]["type"] == "image/pjpeg")
 || ($_FILES["file"]["type"] == "image/x-png")
 || ($_FILES["file"]["type"] == "image/png"))
-&& ($_FILES["file"]["size"] < 500000))
+&& ($_FILES["file"]["size"] < $size))
 {
  if ($_FILES["file"]["error"] > 0)
     {
@@ -105,7 +106,7 @@ if ((($_FILES["file"]["type"] == "image/gif")
   else
     {
 	$filename=$_POST['c_name'].'.'.$extension;
-	$upload_add="images/course_picture/" . $filename;
+   	$upload_add="images/course_picture/" . $filename;
     if (file_exists("images/course_picture/" . $filename))
       {
       echo  '<script type="text/javascript">alert("'. $filename . '  already exists. "); window.location="'.$redirect_id.'";</script>';
@@ -125,11 +126,11 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "new_course")) {
   $Result1 = mysql_query($insertSQL, $conn) or die(mysql_error());
 	   move_uploaded_file($_FILES["file"]["tmp_name"],
       $upload_add);
-	   	echo '<script type="text/javascript">alert("File Succesfully Uploaded"); window.location="'.$redirect_id.'"; </script>';
+	   	echo '<script type="text/javascript">alert("Course Succesfully Created"); window.location="'.$redirect_id.'"; </script>';
 	}}}}
 else
   {
-  echo '<script type="text/javascript">alert("Invalid File. Please Create Course again");window.location="'.$redirect_id.'";</script>';
+  echo '<script type="text/javascript">alert("Upload Another file.File size might be greater than the allowed size. Allowed size is 1 MB. Please Create Course again");window.location="'.$redirect_id.'";</script>';
   }
   
   

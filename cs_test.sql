@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 13, 2014 at 02:10 PM
+-- Generation Time: Mar 13, 2014 at 10:04 PM
 -- Server version: 5.6.14
 -- PHP Version: 5.5.6
 
@@ -254,7 +254,7 @@ CREATE TABLE IF NOT EXISTS `resource` (
 INSERT INTO `resource` (`r_id`, `c_id`, `type_id`, `filename`, `file_type`, `file_size`, `file_location`, `view_location`, `uploaded_by`, `uploaded_date`, `download_status`, `approve_status`, `avg_rating`, `flag_status`) VALUES
 (6, 32, 7, 'Mergesort representation.png', 'image/png', 0.011210441589355, 'resource/32/Mergesort representation.png', 'resource/32-s/mergesort.swf', 21, '2014-03-13 17:56:28', 1, 1, '0.0', 0),
 (7, 32, 2, 'lecture 1.mp4', 'video/mp4', 9.5926952362061, 'resource/32/lecture 1.mp4', '', 21, '2014-03-13 18:07:51', 1, 1, '0.0', 0),
-(8, 32, 3, 'how mergesort works.ppt', 'application/vnd.ms-powerpoint', 0.27880859375, 'resource/32/how mergesort works.ppt', 'resource/32-s/03-dc.swf', 21, '2014-03-13 18:21:24', 0, 1, '0.0', 0);
+(8, 32, 3, 'how mergesort works.ppt', 'application/vnd.ms-powerpoint', 0.27880859375, 'resource/32/how mergesort works.ppt', 'resource/32-s/03-dc.swf', 21, '2014-03-13 18:21:24', 0, 1, '0.0', 1);
 
 -- --------------------------------------------------------
 
@@ -302,8 +302,6 @@ CREATE TABLE IF NOT EXISTS `user` (
   `approve_id` tinyint(1) NOT NULL DEFAULT '0',
   `photo` varchar(255) NOT NULL,
   `about` text NOT NULL,
-  `show_email` tinyint(4) NOT NULL DEFAULT '0',
-  `gender` tinyint(4) NOT NULL DEFAULT '0',
   `user_score` float NOT NULL DEFAULT '0',
   `count_bookmarks` int(11) NOT NULL DEFAULT '0',
   `created_comments` int(11) NOT NULL DEFAULT '0',
@@ -315,12 +313,12 @@ CREATE TABLE IF NOT EXISTS `user` (
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`u_id`, `u_name`, `password`, `f_name`, `l_name`, `contact_no`, `dob`, `institute`, `stream`, `degree`, `role`, `approve_id`, `photo`, `about`, `show_email`, `gender`, `user_score`, `count_bookmarks`, `created_comments`, `count_discussions`) VALUES
-(18, 'sidsh@gmail.com', '5012f5182061c46e57859cf617128c6f70eddfba4db27772bdede5a039fa7085', 'Siddharth', 'Shah', 987654321, '2014-03-02', 'VJTI', 'Computers', 'B.E.', 'admin', 1, 'images/profiles/18/jpg', 'something', 0, 0, 0, 0, 0, 0),
-(19, 'sh@yahoo.co.in', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', 'Shaarad', 'Dalvi', 1234567890, '2014-03-01', 'vjti', 'Computers', 'B.E.', 'student', 1, 'images/profiles/19.jpg', 'temp', 0, 0, 1, 0, 0, 1),
-(20, 'aksrat@tech.org', '65e84be33532fb784c48129675f9eff3a682b27168c0ea744b2cf58ee02337c5', 'Akshay', 'Rathod', 1234567890, '2014-03-03', 'vjti', 'Computers', 'B.E.', 'cm', 1, 'images/profiles/20.jpg', 'temp', 0, 0, 0, 0, 0, 0),
-(21, 'inamtan@gmail.com', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', 'Tanmay', 'Inamdar', 1234567890, '2014-03-03', 'VJTI', 'Computers', 'B.E.', 'author', 1, 'images/profiles/21.jpg', 'about', 0, 0, 9, 0, 1, 0),
-(22, 'kunsh@gmail.com', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', 'Kunal', 'Shah', 1234567890, '2013-09-23', 'VJTI', 'Computers', 'B.Tech.', 'student', 1, 'images/profiles/22.jpg', 'I am Kunal Shah', 0, 0, 1, 0, 1, 0);
+INSERT INTO `user` (`u_id`, `u_name`, `password`, `f_name`, `l_name`, `contact_no`, `dob`, `institute`, `stream`, `degree`, `role`, `approve_id`, `photo`, `about`, `user_score`, `count_bookmarks`, `created_comments`, `count_discussions`) VALUES
+(18, 'sidsh@gmail.com', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', 'Siddharth', 'Shah', 987654321, '2014-03-02', 'VJTI', 'Computers', 'B.E.', 'admin', 1, 'images/profiles/18.jpg', 'something', 0, 0, 0, 0),
+(19, 'sh@yahoo.co.in', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', 'Shaarad', 'Dalvi', 1234567890, '2014-03-01', 'vjti', 'Computers', 'B.E.', 'student', 1, 'images/profiles/19.jpg', 'temp', 1, 0, 0, 1),
+(20, 'aksrat@tech.org', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', 'Akshay', 'Rathod', 1234567890, '2014-03-03', 'vjti', 'Computers', 'B.E.', 'cm', 1, 'images/profiles/20.jpg', 'temp', 0, 0, 0, 0),
+(21, 'inamtan@gmail.com', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', 'Tanmay', 'Inamdar', 1234567890, '2014-03-03', 'VJTI', 'Computers', 'B.E.', 'author', 1, 'images/profiles/21.jpg', 'about', 9, 0, 1, 0),
+(22, 'kunsh@gmail.com', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', 'Kunal', 'Shah', 1234567890, '2013-09-23', 'VJTI', 'Computers', 'B.Tech.', 'student', 1, 'images/profiles/22.jpg', 'I am Kunal Shah', 1, 0, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -392,6 +390,14 @@ CREATE TABLE IF NOT EXISTS `user_resource` (
   PRIMARY KEY (`user_resource_id`,`u_id`),
   KEY `u_id` (`u_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `user_resource`
+--
+
+INSERT INTO `user_resource` (`user_resource_id`, `u_id`, `rating`, `bookmarked`, `date_last_viewed`) VALUES
+(7, 22, '0.0', 1, '2014-03-13 20:26:08'),
+(8, 22, '0.0', 1, '2014-03-13 20:26:15');
 
 --
 -- Constraints for dumped tables
